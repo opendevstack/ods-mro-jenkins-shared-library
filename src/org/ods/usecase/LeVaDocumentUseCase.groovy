@@ -63,6 +63,48 @@ class LeVaDocumentUseCase {
         this.pdf = pdf
     }
 
+    static boolean appliesToProject(String documentType, Map project) {
+        if (documentType == LeVaDocumentUseCase.DocumentTypes.DTP) {
+            return project.repositories.any {
+                appliesToRepo(LeVaDocumentUseCase.DocumentTypes.DTR, it)
+            }
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.DTR) { // overall DTR
+            return project.repositories.any {
+                appliesToRepo(LeVaDocumentUseCase.DocumentTypes.DTR, it)
+            }
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.SCP) {
+            return project.repositories.any {
+                appliesToRepo(LeVaDocumentUseCase.DocumentTypes.SCR, it)
+            }
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.SCR) { // overall SCR
+            return project.repositories.any {
+                appliesToRepo(LeVaDocumentUseCase.DocumentTypes.SCR, it)
+            }
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.TIP) {
+            return project.repositories.any {
+                appliesToRepo(LeVaDocumentUseCase.DocumentTypes.TIR, it)
+            }
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.TIR) { // overall TIR
+            return project.repositories.any {
+                appliesToRepo(LeVaDocumentUseCase.DocumentTypes.TIR, it)
+            }
+        }
+
+        return false
+    }
+
+    static boolean appliesToRepo(String documentType, Map repo) {
+        if (documentType == LeVaDocumentUseCase.DocumentTypes.DTR) {
+            return repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.SCR) {
+            return repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.TIR) {
+            return true
+        }
+
+        return false
+    }
+
     private static String computeDocumentFileBaseName(String type, IPipelineSteps steps, Map buildParams, Map project, Map repo = null) {
         def result = project.id
 
