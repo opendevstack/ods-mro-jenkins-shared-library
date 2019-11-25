@@ -140,6 +140,9 @@ def call() {
     echo "Creating and archiving a User Requirements Specification for project '${project.id}'"
     levaDoc.createURS(project)
     
+    echo "Creating and archiving a Configuration Specification for project '${project.id}'"
+    levaDoc.createCS(project)
+    
     return [ project: project, repos: repos ]
 }
 

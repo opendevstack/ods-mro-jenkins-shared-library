@@ -21,6 +21,7 @@ import org.ods.util.PDFUtil
 class LeVaDocumentUseCase {
 
     class DocumentTypes {
+        static final String CS = "CS"
         static final String DTP = "DTP"
         static final String DTR = "DTR"
         static final String SCP = "SCP"
@@ -34,6 +35,7 @@ class LeVaDocumentUseCase {
     }
 
     private static Map DOCUMENT_TYPE_NAMES = [
+        (DocumentTypes.CS): "Configuration Specification",
         (DocumentTypes.DTP): "Software Development Testing Plan",
         (DocumentTypes.DTR): "Software Development Testing Report",
         (DocumentTypes.SCP): "Software Development (Coding and Code Review) Plan",
@@ -168,6 +170,71 @@ class LeVaDocumentUseCase {
         }
 
         return result
+    }
+
+    String createCS(Map project) {
+        def documentType = DocumentTypes.CS
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        // Component: Configurable Items
+        def configurableItems = this.jira.getIssuesForComponent(project.id, "${documentType}:Configurable Items", ["Configuration Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }.findAll { it.key != "${documentType}:Configurable Items" }
+
+        if (!sections."sec3") {
+            sections."sec3" = [:]
+        }
+
+        if (!configurableItems.isEmpty()) {
+            sections."sec3".components = configurableItems.collect { name, issues ->
+                // Remove the Technology_ prefix for ODS components
+                def matcher = name =~ /Technology_/
+                if (matcher.find()) {
+                    name = matcher.replaceAll("")
+                }
+
+                issues.each { issue ->
+                    // Map the key of a linked user requirement
+                    issue.ur_key = issue.issuelinks.first().issue.key
+                }
+
+                return [ name: name, items: issues ]
+            }
+        }
+
+        // Component: Interfaces
+        def interfaces = this.jira.getIssuesForComponent(project.id, "${documentType}:Interfaces", ["Configuration Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }
+
+        if (!sections."sec4") {
+            sections."sec4" = [:]
+        }
+
+        if (!interfaces.isEmpty()) {
+            sections."sec4".items = interfaces["${documentType}:Interfaces"].each { issue ->
+                // Map the key of a linked user requirement
+                issue.ur_key = issue.issuelinks.first().issue.key
+            }
+        }
+
+        def data = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
+            data: [
+                sections: sections
+            ]
+        ]
+
+        return createDocument(
+            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
+            documentType, project, null, data, [:], null, null
+        )
     }
 
     private static String createDocument(Map deps, String type, Map project, Map repo, Map data, Map<String, byte[]> files = [:], Closure modifier = null, String typeName = null) {

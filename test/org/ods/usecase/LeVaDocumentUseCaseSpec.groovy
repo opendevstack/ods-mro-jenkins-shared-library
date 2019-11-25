@@ -445,6 +445,48 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         result == "${type}-${project.id}-${buildParams.version}-${steps.env.BUILD_ID}"
     }
 
+    // CS will only work with JIRA
+    def "create CS"() {
+        given:
+        def buildParams = createBuildEnvironment(env)
+
+        def util = Mock(MROPipelineUtil)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def os = Mock(OpenShiftService)
+        def usecase = createUseCase(
+            Spy(util.PipelineSteps),
+            util,
+            Mock(DocGenService),
+            jenkins,
+            jira,
+            levaFiles,
+            Mock(NexusService),
+            os,
+            Mock(PDFUtil)
+        )
+
+        GroovyMock(LeVaDocumentUseCase, global: true)
+
+        def project = createProject()
+        def type = LeVaDocumentUseCase.DocumentTypes.CS
+
+        when:
+        usecase.createCS(project)
+
+        then:
+        1 * jira.getDocumentChapterData(project.id, type) >> ["sec1": "myContent"]
+        0 * levaFiles.getDocumentChapterData(type)
+
+        then:
+        1 * jira.getIssuesForComponent(project.id, "${type}:Configurable Items", ["Configuration Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForComponent(project.id, "${type}:Interfaces",         ["Configuration Specification Task"], [], false, _) >> [:]
+
+        then:
+        1 * LeVaDocumentUseCase.createDocument(_, type, project, null, _, [:], _, null)
+    }
+
     def "create document"() {
         given:
         def buildParams = createBuildParams()
