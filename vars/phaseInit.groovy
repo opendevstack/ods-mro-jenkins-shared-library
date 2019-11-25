@@ -1,4 +1,4 @@
-@Grab(group="com.konghq", module="unirest-java", version="2.3.08", classifier="standalone")
+@Grab(group="com.konghq", module="unirest-java", version="2.4.03", classifier="standalone")
 
 import kong.unirest.Unirest
 
@@ -122,6 +122,9 @@ def call() {
         )
     )
 
+
+    def levaDoc = registry.get(LeVaDocumentUseCase.class.name)
+
     // Checkout repositories into the workspace
     parallel(util.prepareCheckoutReposNamedJob(repos) { steps_, repo ->
         echo "Repository: ${repo}"
@@ -134,6 +137,9 @@ def call() {
     // Compute groups of repository configs for convenient parallelization
     repos = util.computeRepoGroups(repos)
 
+    echo "Creating and archiving a User Requirements Specification for project '${project.id}'"
+    levaDoc.createURS(project)
+    
     return [ project: project, repos: repos ]
 }
 

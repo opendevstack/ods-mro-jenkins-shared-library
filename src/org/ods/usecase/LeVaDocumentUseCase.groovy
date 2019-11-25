@@ -27,6 +27,7 @@ class LeVaDocumentUseCase {
         static final String SCR = "SCR"
         static final String TIP = "TIP"
         static final String TIR = "TIR"
+        static final String URS = "URS"
 
         static final String OVERALL_COVER = "Overall-Cover"
         static final String OVERALL_TIR_COVER = "Overall-TIR-Cover"
@@ -38,7 +39,8 @@ class LeVaDocumentUseCase {
         (DocumentTypes.SCP): "Software Development (Coding and Code Review) Plan",
         (DocumentTypes.SCR): "Software Development (Coding and Code Review) Report",
         (DocumentTypes.TIP): "Technical Installation Plan",
-        (DocumentTypes.TIR): "Technical Installation Report"
+        (DocumentTypes.TIR): "Technical Installation Report",
+        (DocumentTypes.URS): "User Requirements Specification"
     ]
 
     private IPipelineSteps steps
@@ -207,7 +209,7 @@ class LeVaDocumentUseCase {
             "application/zip"
         )
 
-        deps.jira.notifyLeVaDocumentTrackingIssue(project.id, typeName ?: type, "A new ${DOCUMENT_TYPE_NAMES[type]} has been generated and is available at: ${uri}.")
+        deps.jira.notifyLeVaDocumentTrackingIssue(project.id, typeName ?: type, "A new ${DOCUMENT_TYPE_NAMES[typeName ?: type]} has been generated and is available at: ${uri}.")
 
         return uri.toString()
     }
@@ -511,6 +513,111 @@ class LeVaDocumentUseCase {
                 log: this.jenkins.getCurrentBuildLogAsText()
             ]
         }
+    }
+
+    String createURS(Map project) {
+        def documentType = DocumentTypes.URS
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        // Component: Availability
+        def availability = this.jira.getIssuesForComponent(project.id, "${documentType}:Availability", ["Epic"], ["Story"])
+
+        if (!sections."sec3s3s2") {
+            sections."sec3s3s2" = [:]
+        }
+
+        if (!availability.isEmpty()) {
+            sections."sec3s3s2".requirements = availability["${documentType}:Availability"]
+        }
+
+        // Component: Compatibility
+        def compatibility = this.jira.getIssuesForComponent(project.id, "${documentType}:Compatibility", ["Epic"], ["Story"])
+
+        if (!sections."sec4s1") {
+            sections."sec4s1" = [:]
+        }
+
+        if (!compatibility.isEmpty()) {
+            sections."sec4s1".requirements = compatibility["${documentType}:Compatibility"]
+        }
+
+        // Component: Interfaces
+        def interfaces = this.jira.getIssuesForComponent(project.id, "${documentType}:Interfaces", ["Epic"], ["Story"])
+
+        if (!sections."sec3s4") {
+            sections."sec3s4" = [:]
+        }
+
+        if (!interfaces.isEmpty()) {
+            sections."sec3s4".requirements = interfaces["${documentType}:Interfaces"]
+        }
+
+        // Component: Operational
+        def operational = this.jira.getIssuesForComponent(project.id, "${documentType}:Operational", ["Epic"], ["Story"])
+            .findAll { it.key != "${documentType}:Operational" }
+
+        if (!sections."sec3s2") {
+            sections."sec3s2" = [:]
+        }
+
+        sections."sec3s2".components = operational.collect { name, issues ->
+            // Remove the Technology_ prefix for ODS components
+            def matcher = name =~ /Technology_/
+            if (matcher.find()) {
+                name = matcher.replaceAll("")
+            }
+
+            [ name: name, requirements: issues ]
+        }
+
+        // Component: Operational Environment
+        def environment = this.jira.getIssuesForComponent(project.id, "${documentType}:Operational Environment", ["Epic"], ["Story"])
+
+        if (!sections."sec3s5") {
+            sections."sec3s5" = [:]
+        }
+
+        if (!environment.isEmpty()) {
+            sections."sec3s5".requirements = environment["${documentType}:Operational Environment"]
+        }
+
+        // Component: Performance
+        def performance = this.jira.getIssuesForComponent(project.id, "${documentType}:Performance", ["Epic"], ["Story"])
+
+        if (!sections."sec3s3s1") {
+            sections."sec3s3s1" = [:]
+        }
+
+        if (!performance.isEmpty()) {
+            sections."sec3s3s1".requirements = performance["${documentType}:Performance"]
+        }
+
+        // Component: Procedural Constraints
+        def procedural = this.jira.getIssuesForComponent(project.id, "${documentType}:Procedural Constraints", ["Epic"], ["Story"])
+
+        if (!sections."sec4s2") {
+            sections."sec4s2" = [:]
+        }
+
+        if (!procedural.isEmpty()) {
+            sections."sec4s2".requirements = procedural["${documentType}:Procedural Constraints"]
+        }
+
+        def data = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
+            data: [
+                sections: sections
+            ]
+        ]
+
+        return createDocument(
+            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
+            documentType, project, null, data, [:], null, null
+        )
     }
 
     private Map getDocumentMetadata(String type, Map project, Map repo = null) {

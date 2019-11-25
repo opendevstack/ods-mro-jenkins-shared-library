@@ -1067,6 +1067,7 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         GroovyMock(LeVaDocumentUseCase, global: true)
 
         def project = createProject()
+        project.services.jira = null
         def repo = project.repositories.first()
 
         def type = LeVaDocumentUseCase.DocumentTypes.TIR
@@ -1080,5 +1081,52 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jira.getDocumentChapterData(project.id, type) >> [:]
         1 * levaFiles.getDocumentChapterData(type)
+    }
+
+    // URS will only work with JIRA
+    def "create URS"() {
+        given:
+        def buildParams = createBuildEnvironment(env)
+
+        def util = Mock(MROPipelineUtil)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def os = Mock(OpenShiftService)
+        def usecase = createUseCase(
+            Spy(util.PipelineSteps),
+            util,
+            Mock(DocGenService),
+            jenkins,
+            jira,
+            levaFiles,
+            Mock(NexusService),
+            os,
+            Mock(PDFUtil)
+        )
+
+        GroovyMock(LeVaDocumentUseCase, global: true)
+
+        def project = createProject()
+        def type = LeVaDocumentUseCase.DocumentTypes.URS
+
+        when:
+        usecase.createURS(project)
+
+        then:
+        1 * jira.getDocumentChapterData(project.id, type) >> ["sec1": "myContent"]
+        0 * levaFiles.getDocumentChapterData(type)
+
+        then:
+        1 * jira.getIssuesForComponent(project.id, "${type}:Availability",            ["Epic"], ["Story"]) >> [:]
+        1 * jira.getIssuesForComponent(project.id, "${type}:Compatibility",           ["Epic"], ["Story"]) >> [:]
+        1 * jira.getIssuesForComponent(project.id, "${type}:Interfaces",              ["Epic"], ["Story"]) >> [:]
+        1 * jira.getIssuesForComponent(project.id, "${type}:Operational",             ["Epic"], ["Story"]) >> [:]
+        1 * jira.getIssuesForComponent(project.id, "${type}:Operational Environment", ["Epic"], ["Story"]) >> [:]
+        1 * jira.getIssuesForComponent(project.id, "${type}:Performance",             ["Epic"], ["Story"]) >> [:]
+        1 * jira.getIssuesForComponent(project.id, "${type}:Procedural Constraints",  ["Epic"], ["Story"]) >> [:]
+
+        then:
+        1 * LeVaDocumentUseCase.createDocument(_, type, project, null, _, [:], _, null)
     }
 }
