@@ -24,6 +24,7 @@ class LeVaDocumentUseCase {
         static final String CS = "CS"
         static final String DTP = "DTP"
         static final String DTR = "DTR"
+        static final String FS = "FS"
         static final String SCP = "SCP"
         static final String SCR = "SCR"
         static final String TIP = "TIP"
@@ -38,6 +39,7 @@ class LeVaDocumentUseCase {
         (DocumentTypes.CS): "Configuration Specification",
         (DocumentTypes.DTP): "Software Development Testing Plan",
         (DocumentTypes.DTR): "Software Development Testing Report",
+        (DocumentTypes.FS): "Functional Specification",
         (DocumentTypes.SCP): "Software Development (Coding and Code Review) Plan",
         (DocumentTypes.SCR): "Software Development (Coding and Code Review) Report",
         (DocumentTypes.TIP): "Technical Installation Plan",
@@ -426,6 +428,139 @@ class LeVaDocumentUseCase {
 
     String createOverallDTR(Map project) {
         return createOverallDocument(DocumentTypes.OVERALL_COVER, DocumentTypes.DTR, project)
+    }
+
+    String createFS(Map project) {
+        def documentType = DocumentTypes.FS
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        // Component: Constraints
+        def constraints = this.jira.getIssuesForComponent(project.id, "${documentType}:Constraints", ["Functional Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }
+
+        if (!sections."sec8") {
+            sections."sec8" = [:]
+        }
+
+        if (!constraints.isEmpty()) {
+            sections."sec8".items = constraints["${documentType}:Constraints"].each { issue ->
+                // Map the key of a linked user requirement
+                issue.ur_key = issue.issuelinks.first().issue.key
+            }
+        }
+
+        // Component: Data
+        def data = this.jira.getIssuesForComponent(project.id, "${documentType}:Data", ["Functional Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }
+
+        if (!sections."sec5") {
+            sections."sec5" = [:]
+        }
+
+        if (!data.isEmpty()) {
+            sections."sec5".items = data["${documentType}:Data"].each { issue ->
+                // Map the key of a linked user requirement
+                issue.ur_key = issue.issuelinks.first().issue.key
+            }
+        }
+
+        // Component: Function
+        def functions = this.jira.getIssuesForComponent(project.id, "${documentType}:Function", ["Functional Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }.findAll { it.key != "${documentType}:Function" }
+
+        if (!sections."sec3") {
+            sections."sec3" = [:]
+        }
+
+        if (!functions.isEmpty()) {
+            sections."sec3".components = functions.collect { name, issues ->
+                issues.each { issue ->
+                    // Map the key of a linked user requirement
+                    issue.ur_key = issue.issuelinks.first().issue.key
+                }
+
+                return [ name: name, items: issues ]
+            }
+        }
+
+        // Component: Interfaces
+        def interfaces = this.jira.getIssuesForComponent(project.id, "${documentType}:Interfaces", ["Functional Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }
+
+        if (!sections."sec6") {
+            sections."sec6" = [:]
+        }
+
+        if (!interfaces.isEmpty()) {
+            sections."sec6".items = interfaces["${documentType}:Interfaces"].each { issue ->
+                // Map the key of a linked user requirement
+                issue.ur_key = issue.issuelinks.first().issue.key
+            }
+        }
+
+        // Component: Operational Environment
+        def environment = this.jira.getIssuesForComponent(project.id, "${documentType}:Operational Environment", ["Functional Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }
+
+        if (!sections."sec7") {
+            sections."sec7" = [:]
+        }
+
+        if (!environment.isEmpty()) {
+            sections."sec7".items = environment["${documentType}:Operational Environment"].each { issue ->
+                // Map the key of a linked user requirement
+                issue.ur_key = issue.issuelinks.first().issue.key
+            }
+        }
+
+        // Component: Roles
+        def roles = this.jira.getIssuesForComponent(project.id, "${documentType}:Roles", ["Functional Specification Task"], [], false) { issuelink ->
+            // TODO: constrain to proper issuelink.type.relation
+            return issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story"
+        }
+
+        if (!sections."sec4") {
+            sections."sec4" = [:]
+        }
+
+        if (!roles.isEmpty()) {
+            def index = 0
+            sections."sec4".items = roles["${documentType}:Roles"].collect { issue ->
+                index += 1
+                return issue << [
+                    name: issue.summary,
+                    number: index,
+                    // Map the key of a linked user requirement
+                    ur_key: issue.issuelinks.first().issue.key
+                ]
+            }
+        }
+
+        def data_ = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
+            data: [
+                sections: sections
+            ]
+        ]
+
+        return createDocument(
+            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
+            documentType, project, null, data_, [:], null, null
+        )
     }
 
     String createSCP(Map project) {

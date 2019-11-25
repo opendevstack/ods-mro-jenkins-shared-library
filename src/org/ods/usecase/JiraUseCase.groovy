@@ -396,6 +396,9 @@ class JiraUseCase {
         }
 
         result.description = (issue.renderedFields?.description) ? issue.renderedFields.description : issue.fields.description
+        if (result.description) {
+            result.description = result.description.replaceAll("\u00a0", " ")
+        }
 
         return result << mixins
     }

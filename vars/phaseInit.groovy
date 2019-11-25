@@ -143,6 +143,9 @@ def call() {
     echo "Creating and archiving a Configuration Specification for project '${project.id}'"
     levaDoc.createCS(project)
     
+    echo "Creating and archiving a Functional Specification for project '${project.id}'"
+    levaDoc.createFS(project)
+    
     return [ project: project, repos: repos ]
 }
 
