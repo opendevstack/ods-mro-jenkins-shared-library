@@ -70,33 +70,40 @@ class LeVaDocumentUseCase {
     }
 
     static boolean appliesToProject(String documentType, Map project) {
-        // approve creation of a DTP iff at least one repo is eligible to create a DTR
+        if (documentType == LeVaDocumentUseCase.DocumentTypes.CS
+         || documentType == LeVaDocumentUseCase.DocumentTypes.FS
+         || documentType == LeVaDocumentUseCase.DocumentTypes.URS) {
+            // approve creation of document iff Jira has been configured
+            return project.services?.jira != null
+        }
+
         if (documentType == LeVaDocumentUseCase.DocumentTypes.DTP) {
+            // approve creation of a DTP iff at least one repo is eligible to create a DTR
             return project.repositories.any {
                 appliesToRepo(LeVaDocumentUseCase.DocumentTypes.DTR, it)
             }
-        // approve creation of a (overall) DTR iff at least one repo is eligible to create one
         } else if (documentType == LeVaDocumentUseCase.DocumentTypes.DTR) {
+            // approve creation of a (overall) DTR iff at least one repo is eligible to create one
             return project.repositories.any {
                 appliesToRepo(LeVaDocumentUseCase.DocumentTypes.DTR, it)
             }
-        // approve creation of an SCP iff at least one repo is eligible to create a SCR
         } else if (documentType == LeVaDocumentUseCase.DocumentTypes.SCP) {
+            // approve creation of an SCP iff at least one repo is eligible to create an SCR
             return project.repositories.any {
                 appliesToRepo(LeVaDocumentUseCase.DocumentTypes.SCR, it)
             }
-        // approve creation of a (overall) SCR iff at least one repo is eligible to create one
         } else if (documentType == LeVaDocumentUseCase.DocumentTypes.SCR) {
+            // approve creation of a (overall) SCR iff at least one repo is eligible to create one
             return project.repositories.any {
                 appliesToRepo(LeVaDocumentUseCase.DocumentTypes.SCR, it)
             }
-        // approve creation of a TIP iff at least one repo is eligible to create a TIR
         } else if (documentType == LeVaDocumentUseCase.DocumentTypes.TIP) {
+            // approve creation of a TIP iff at least one repo is eligible to create a TIR
             return project.repositories.any {
                 appliesToRepo(LeVaDocumentUseCase.DocumentTypes.TIR, it)
             }
-        // approve creation of a (overall) TIR iff at least one repo is eligible to create one
         } else if (documentType == LeVaDocumentUseCase.DocumentTypes.TIR) {
+            // approve creation of a (overall) TIR iff at least one repo is eligible to create one
             return project.repositories.any {
                 appliesToRepo(LeVaDocumentUseCase.DocumentTypes.TIR, it)
             }

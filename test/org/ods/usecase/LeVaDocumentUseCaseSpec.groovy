@@ -170,6 +170,63 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         result
     }
 
+    def "applies to project for documents only applicable when Jira is configured"() {
+        given:
+        def steps = Spy(util.PipelineSteps)
+        def usecase = createUseCase(
+            steps,
+            Mock(MROPipelineUtil),
+            Mock(DocGenService),
+            Mock(JenkinsService),
+            Mock(JiraUseCase),
+            Mock(LeVaDocumentChaptersFileService),
+            Mock(NexusService),
+            Mock(OpenShiftService),
+            Mock(PDFUtil)
+        )
+
+        def project = createProject()
+
+        when:
+        def result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.CS, project)
+
+        then:
+        result
+
+        when:
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.FS, project)
+
+        then:
+        result
+
+        when:
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.URS, project)
+
+        then:
+        result
+
+        when:
+        project.services.jira = null
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.CS, project)
+
+        then:
+        !result // not applicable if Jira is not configured
+
+        when:
+        project.services.jira = null
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.FS, project)
+
+        then:
+        !result // not applicable if Jira is not configured
+
+        when:
+        project.services.jira = null
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.URS, project)
+
+        then:
+        !result // not applicable if Jira is not configured
+    }
+
     def "applies to repo"() {
         given:
         def steps = Spy(util.PipelineSteps)

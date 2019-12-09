@@ -56,7 +56,7 @@ def call() {
         )
     )
 
-    if (project.services.jira) {
+    if (project.services?.jira) {
         withCredentials([ usernamePassword(credentialsId: project.services.jira.credentials.id, usernameVariable: "JIRA_USERNAME", passwordVariable: "JIRA_PASSWORD") ]) {
             registry.add(JiraService.class.name,
                 new JiraService(
@@ -137,15 +137,21 @@ def call() {
     // Compute groups of repository configs for convenient parallelization
     repos = util.computeRepoGroups(repos)
 
-    echo "Creating and archiving a User Requirements Specification for project '${project.id}'"
-    levaDoc.createURS(project)
-    
-    echo "Creating and archiving a Configuration Specification for project '${project.id}'"
-    levaDoc.createCS(project)
-    
-    echo "Creating and archiving a Functional Specification for project '${project.id}'"
-    levaDoc.createFS(project)
-    
+    if (LeVaDocumentUseCase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.URS, project)) {
+        echo "Creating and archiving a User Requirements Specification for project '${project.id}'"
+        levaDoc.createURS(project)
+    }
+
+    if (LeVaDocumentUseCase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.FS, project)) {
+        echo "Creating and archiving a Functional Specification for project '${project.id}'"
+        levaDoc.createFS(project)
+    }
+
+    if (LeVaDocumentUseCase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.CS, project)) {
+        echo "Creating and archiving a Configuration Specification for project '${project.id}'"
+        levaDoc.createCS(project)
+    }
+
     return [ project: project, repos: repos ]
 }
 
