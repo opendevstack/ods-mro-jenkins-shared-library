@@ -145,6 +145,15 @@ class FixtureHelper {
             name: "Story"
         ]
         result << issue3
+
+        // Create an issue belonging to 0 components and 0 outward links
+        def issue4 = createJiraIssue("4")
+        issue4.fields.components = []
+        issue4.fields.issuelinks = []
+        issue4.fields.issuetype = [
+            name: "Story"
+        ]
+        result << issue4
     }
 
     static List createJiraDocumentIssues() {

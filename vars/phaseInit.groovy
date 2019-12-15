@@ -152,6 +152,14 @@ def call() {
         levaDoc.createCS(project)
     }
 
+    if (LeVaDocumentUseCase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.DSD, project)) {
+        echo "Creating and archiving a System Design Specification for project '${project.id}'"
+        levaDoc.createDSD(project)
+    }
+
+    // FIXME
+    throw new RuntimeException("END")
+
     return [ project: project, repos: repos ]
 }
 

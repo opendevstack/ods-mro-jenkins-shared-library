@@ -22,6 +22,7 @@ class LeVaDocumentUseCase {
 
     class DocumentTypes {
         static final String CS = "CS"
+        static final String DSD = "DSD"
         static final String DTP = "DTP"
         static final String DTR = "DTR"
         static final String FS = "FS"
@@ -37,6 +38,7 @@ class LeVaDocumentUseCase {
 
     private static Map DOCUMENT_TYPE_NAMES = [
         (DocumentTypes.CS): "Configuration Specification",
+        (DocumentTypes.DSD): "System Design Specification",
         (DocumentTypes.DTP): "Software Development Testing Plan",
         (DocumentTypes.DTR): "Software Development Testing Report",
         (DocumentTypes.FS): "Functional Specification",
@@ -71,6 +73,7 @@ class LeVaDocumentUseCase {
 
     static boolean appliesToProject(String documentType, Map project) {
         if (documentType == LeVaDocumentUseCase.DocumentTypes.CS
+         || documentType == LeVaDocumentUseCase.DocumentTypes.DSD
          || documentType == LeVaDocumentUseCase.DocumentTypes.FS
          || documentType == LeVaDocumentUseCase.DocumentTypes.URS) {
             // approve creation of document iff Jira has been configured
@@ -202,7 +205,7 @@ class LeVaDocumentUseCase {
         if (!configurableItems.isEmpty()) {
             sections."sec3".components = configurableItems.collect { name, issues ->
                 // Remove the Technology_ prefix for ODS components
-                def matcher = name =~ /Technology_/
+                def matcher = name =~ /^Technology_/
                 if (matcher.find()) {
                     name = matcher.replaceAll("")
                 }
@@ -327,6 +330,105 @@ class LeVaDocumentUseCase {
         }
 
         return result
+    }
+
+    String createDSD(Map project) {
+        def documentType = DocumentTypes.DSD
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        // A mapping of component names to issues
+        def specifications = this.jira.getIssuesForComponent(project.id, null, ["System Design Specification Task"], [], false) { issuelink ->
+            return issuelink.type.relation == "specifies" && (issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story")
+        }
+
+        // System Design Specifications
+        if (!sections."sec3") {
+            sections."sec3" = [:]
+        }
+
+        if (!specifications.isEmpty()) {
+            // Create a collection of disjoint issues across all components
+            def specificationsList = specifications.values().flatten().toSet()
+            
+            // Reduce the issues to the data points required by the document
+            specificationsList = specificationsList.collect { issue ->
+                return issue.subMap(["key", "description"]) << [
+                    // Map the key of a linked user requirement
+                    ur_key: issue.issuelinks.first().issue.key
+                ]
+            }
+
+            sections."sec3".specifications = this.sortIssuesByUserRequirement(specificationsList)
+        }
+
+        // A mapping of component names starting with Technology_ to issues
+        def specificationsForTechnologyComponents = specifications.findAll { it.key.startsWith("Technology_") }
+
+        // A mapping of component names to corresponding repository metadata
+        def componentsMetadata = specificationsForTechnologyComponents.collectEntries { componentName, issues ->
+            def normalizedComponentName = componentName.replaceAll("Technology_", "")
+
+            def repo = project.repositories.find { [it.id, it.name].contains(normalizedComponentName) }
+            if (!repo) {
+                throw new RuntimeException("Error: unable to create ${documentType}. Could not find a repository definition with id or name equal to '${normalizedComponentName}' for Jira component '${componentName}' in project '${project.id}'.")
+            }
+
+            def metadata = repo.pipelineConfig.metadata
+
+            return [
+                componentName,
+                [
+                    componentId: metadata.id ?: "N/A - part of this application",
+                    componentType: (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS) ? "ODS Component" : "Software",
+                    description: metadata.description,
+                    nameOfSoftware: metadata.name,
+                    references: metadata.references ?: "N/A",
+                    supplier: metadata.supplier,
+                    version: metadata.version
+                ]
+            ]
+        }
+
+        // System Components List
+        if (!sections."sec5s1") {
+            sections."sec5s1" = [:]
+        }
+
+        if (!specificationsForTechnologyComponents.isEmpty()) {
+            // Create a collection of disjoint issues across all components starting with Technology_
+            def specificationsForTechnologyComponentsList = specificationsForTechnologyComponents.values().flatten().toSet()
+
+            // Reduce the issues to the data points required by the document
+            specificationsForTechnologyComponentsList = specificationsForTechnologyComponentsList.collect { issue ->
+                def result = issue.subMap(["key"])
+
+                // Mix-in compnoent metadata
+                def componentName = issue.components.first()
+                result << componentsMetadata[componentName]
+
+                return result
+            }
+
+            sections."sec5s1".specifications = sortIssuesByUserRequirement(specificationsForTechnologyComponentsList)
+        }
+
+        // System Components Specification (fully contained in data for System Components List)
+
+        def data = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
+            data: [
+                sections: sections
+            ]
+        ]
+
+        return createDocument(
+            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
+            documentType, project, null, data, [:], null, null
+        )
     }
 
     String createDTP(Map project) {
@@ -775,7 +877,7 @@ class LeVaDocumentUseCase {
 
         sections."sec3s2".components = operational.collect { name, issues ->
             // Remove the Technology_ prefix for ODS components
-            def matcher = name =~ /Technology_/
+            def matcher = name =~ /^Technology_/
             if (matcher.find()) {
                 name = matcher.replaceAll("")
             }
@@ -850,5 +952,11 @@ class LeVaDocumentUseCase {
                 jobName: this.steps.env.JOB_NAME
             ]
         ]
+    }
+
+    @NonCPS
+    private List sortIssuesByUserRequirement(def issues) {
+        // Sort issues by UR key, then by issue key
+        return issues.sort { it.ur_key + "-" + it.key }
     }
 }

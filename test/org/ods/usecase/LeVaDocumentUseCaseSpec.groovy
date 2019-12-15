@@ -715,6 +715,46 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         1 * nexus.storeArtifact(_, _, { "${type}-${project.id}-${version}.zip" }, *_) >> nexusUri
     }
 
+    // DSD only works with Jira
+    def "create DSD"() {
+        given:
+        createBuildEnvironment(env)
+
+        def steps = Spy(util.PipelineSteps)
+        def jira = Mock(JiraUseCase)
+        def junit = new JUnitTestReportsUseCase(steps)
+        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def usecase = createUseCase(
+            steps,
+            Mock(MROPipelineUtil),
+            Mock(DocGenService),
+            Mock(JenkinsService),
+            jira,
+            levaFiles,
+            Mock(NexusService),
+            Mock(OpenShiftService),
+            Mock(PDFUtil)
+        )
+
+        GroovyMock(LeVaDocumentUseCase, global: true)
+
+        def project = createProject()
+        def type = LeVaDocumentUseCase.DocumentTypes.DSD
+
+        when:
+        usecase.createDSD(project)
+
+        then:
+        1 * jira.getDocumentChapterData(project.id, type) >> ["sec1": "myContent"]
+        0 * levaFiles.getDocumentChapterData(type)
+
+        then:
+        1 * jira.getIssuesForComponent(project.id, null, ["System Design Specification Task"], [], false, _) >> [:]
+
+        then:
+        1 * LeVaDocumentUseCase.createDocument(_, type, project, null, _, [:], null, null)
+    }
+
     def "create DTP"() {
         given:
         createBuildEnvironment(env)

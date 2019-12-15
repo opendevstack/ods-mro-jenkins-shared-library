@@ -284,10 +284,9 @@ class JiraUseCaseSpec extends SpecHelper {
         def usecase = createUseCase(steps, jira)
 
         def project = createProject()
-        def componentName = "myComponent"
 
         def jqlQuery1 = [
-            jql: "project = ${project.id} AND component = '${componentName}'",
+            jql: "project = ${project.id}",
             expand: ["renderedFields"],
             fields: ["components", "description", "issuelinks", "issuetype", "summary"]
         ]
@@ -311,7 +310,7 @@ class JiraUseCaseSpec extends SpecHelper {
         ]
 
         when:
-        def components = usecase.getIssuesForComponent(project.id, componentName)
+        def components = usecase.getIssuesForComponent(project.id)
 
         then:
         1 * jira.getIssuesForJQLQuery(jqlQuery1) >> issues1
@@ -319,10 +318,15 @@ class JiraUseCaseSpec extends SpecHelper {
         1 * jira.getIssuesForJQLQuery(jqlQuery2) >> issues2
 
         then:
-        components.size() == 3
+        components.size() == 4
 
         then:
         def issue1 = usecase.toSimpleIssue(createJiraIssue("1"), [
+            components: [
+                "myComponentA",
+                "myComponentB",
+                "myComponentC"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("1", null, createJiraIssue("100"))),
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("101")))
@@ -334,6 +338,10 @@ class JiraUseCaseSpec extends SpecHelper {
         ])
 
         def issue2 = usecase.toSimpleIssue(createJiraIssue("2"), [
+            components: [
+                "myComponentA",
+                "myComponentB"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("1", createJiraIssue("200"))),
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("201")))
@@ -344,6 +352,16 @@ class JiraUseCaseSpec extends SpecHelper {
         ])
 
         def issue3 = usecase.toSimpleIssue(createJiraIssue("3"), [
+            components: [
+                "myComponentA"
+            ],
+            issuelinks: [],
+            issuetype: [
+                name: "Story"
+            ]
+        ])
+
+        def issue4 = usecase.toSimpleIssue(createJiraIssue("4"), [
             issuelinks: [],
             issuetype: [
                 name: "Story"
@@ -358,6 +376,31 @@ class JiraUseCaseSpec extends SpecHelper {
 
         components["myComponentC"].size == 1
         components["myComponentC"] == [ issue1 ]
+
+        components["undefined"].size == 1
+        components["undefined"] == [ issue4 ]
+    }
+
+    def "get issues for component with componentName"() {
+        given:
+        def steps = Spy(util.PipelineSteps)
+        def jira = Mock(JiraService)
+        def usecase = createUseCase(steps, jira)
+
+        def project = createProject()
+        def componentName = "myComponent"
+
+        def jqlQuery1 = [
+            jql: "project = ${project.id} AND component = '${componentName}'",
+            expand: ["renderedFields"],
+            fields: ["components", "description", "issuelinks", "issuetype", "summary"]
+        ]
+
+        when:
+        usecase.getIssuesForComponent(project.id, componentName)
+
+        then:
+        1 * jira.getIssuesForJQLQuery(jqlQuery1) >> [] // don't care
     }
 
     def "get issues for component with componentIssueTypesSelector"() {
@@ -448,6 +491,11 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         def issue1 = usecase.toSimpleIssue(createJiraIssue("1"), [
+            components: [
+                "myComponentA",
+                "myComponentB",
+                "myComponentC"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("1", null, createJiraIssue("100"))),
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("101")))
@@ -459,6 +507,10 @@ class JiraUseCaseSpec extends SpecHelper {
         ])
 
         def issue2 = usecase.toSimpleIssue(createJiraIssue("2"), [
+            components: [
+                "myComponentA",
+                "myComponentB"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("1", createJiraIssue("200"))),
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("201")))
@@ -470,6 +522,9 @@ class JiraUseCaseSpec extends SpecHelper {
         ])
 
         def issue3 = usecase.toSimpleIssue(createJiraIssue("3"), [
+            components: [
+                "myComponentA"
+            ],
             issuelinks: [],
             issues: [],
             issuetype: [
@@ -553,6 +608,11 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         def issue1 = usecase.toSimpleIssue(createJiraIssue("1"), [
+            components: [
+                "myComponentA",
+                "myComponentB",
+                "myComponentC"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("1", null, createJiraIssue("100"))),
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("101")))
@@ -564,6 +624,10 @@ class JiraUseCaseSpec extends SpecHelper {
         ])
 
         def issue2 = usecase.toSimpleIssue(createJiraIssue("2"), [
+            components: [
+                "myComponentA",
+                "myComponentB"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("1", createJiraIssue("200"))),
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("201")))
@@ -575,6 +639,9 @@ class JiraUseCaseSpec extends SpecHelper {
         ])
 
         def issue3 = usecase.toSimpleIssue(createJiraIssue("3"), [
+            components: [
+                "myComponentA"
+            ],
             issuelinks: [],
             issues: [],
             issuetype: [
@@ -629,6 +696,11 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         def issue1 = usecase.toSimpleIssue(createJiraIssue("1"), [
+            components: [
+                "myComponentA",
+                "myComponentB",
+                "myComponentC"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("1", null, createJiraIssue("100"))),
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("101")))
@@ -640,6 +712,10 @@ class JiraUseCaseSpec extends SpecHelper {
         ])
 
         def issue2 = usecase.toSimpleIssue(createJiraIssue("2"), [
+            components: [
+                "myComponentA",
+                "myComponentB"
+            ],
             issuelinks: [
                 usecase.toSimpleIssueLink(createJiraIssueLink("2", null, createJiraIssue("201")))
             ],
@@ -677,7 +753,7 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         def e = thrown(RuntimeException)
-        e.message == "Error: links are missing for issues: JIRA-3."
+        e.message == "Error: links are missing for issues: JIRA-3, JIRA-4."
     }
 
     def "get linked issues for issue"() {

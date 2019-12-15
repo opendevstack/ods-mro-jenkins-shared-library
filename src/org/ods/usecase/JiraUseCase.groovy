@@ -1,7 +1,5 @@
 package org.ods.usecase
 
-import groovy.json.JsonOutput
-
 import org.ods.parser.JUnitParser
 import org.ods.service.JiraService
 import org.ods.util.IPipelineSteps
@@ -146,28 +144,32 @@ class JiraUseCase {
         return result
     }
 
-    Map getIssuesForComponent(String projectKey, String componentName, List<String> componentIssueTypesSelector = [], List<String> epicIssueTypesSelector = [], boolean throwOnMissingLinks = false, Closure issueLinkFilter = null) {
+    Map getIssuesForComponent(String projectKey, String componentName = null, List<String> issueTypesSelector = [], List<String> epicIssueTypesSelector = [], boolean throwOnMissingLinks = false, Closure issueLinkFilter = null) {
         def result = [:]
         if (!this.jira) return result
 
         // Fetch the component's issues and filter by issuetype
         def query = "project = ${projectKey}"
-        query += " AND component = '${componentName}'"
-        if (componentIssueTypesSelector) {
-            query += " AND issuetype in (" + componentIssueTypesSelector.collect{"'${it}'"}.join(", ") +  ")"
+
+        if (componentName) {
+            query += " AND component = '${componentName}'"
+        }
+
+        if (issueTypesSelector) {
+            query += " AND issuetype in (" + issueTypesSelector.collect{"'${it}'"}.join(", ") +  ")"
         }
 
         def linkedIssuesKeys = [] as Set
         def issueTypeEpicKeys = []
         def issuesWithoutLinks = [] as Set
 
-        def issuesInComponent = this.jira.getIssuesForJQLQuery([
+        def issues = this.jira.getIssuesForJQLQuery([
             jql: query,
             expand: ["renderedFields"],
             fields: ["components", "description", "issuelinks", "issuetype", "summary"]
         ])
 
-        issuesInComponent.each { issue ->
+        issues.each { issue ->
             // Construct simple issue link representations and filter issue links if applicable
             issue.fields.issuelinks = issue.fields.issuelinks.collect { toSimpleIssueLink(it) }
             if (issueLinkFilter) {
@@ -214,25 +216,29 @@ class JiraUseCase {
             ]).collectEntries { [ (it.key.toString()): it ] }
         }
 
-        issuesInComponent.each { issue ->
+        issues.each { issue ->
+            // Construct a simple issue representation
+            def simpleIssue = toSimpleIssue(issue)
+
+            simpleIssue.issuelinks = issue.fields.issuelinks.collect { issuelink ->
+                if (linkedIssues[issuelink.issue.key]) {
+                    // Mix-in any issues linked to the current issue
+                    issuelink.issue += toSimpleIssue(linkedIssues[issuelink.issue.key])
+                }
+
+                return issuelink
+            }
+
+            if (issue.fields.issuetype.name == "Epic") {
+                // Mix-in any issues contained in the Epic
+                simpleIssue.issues = issuesInEpics[issue.key] ?: []
+            }
+
+            if (issue.fields.components.isEmpty()) {
+                issue.fields.components << [ name: "undefined" ]
+            }
+
             issue.fields.components.each { component ->
-                // Construct a simple issue representation
-                def simpleIssue = toSimpleIssue(issue)
-
-                simpleIssue.issuelinks = issue.fields.issuelinks.collect { issuelink ->
-                    if (linkedIssues[issuelink.issue.key]) {
-                        // Mix-in any issues linked to the current issue
-                        issuelink.issue += toSimpleIssue(linkedIssues[issuelink.issue.key])
-                    }
-
-                    return issuelink
-                }
-
-                if (issue.fields.issuetype.name == "Epic") {
-                    // Mix-in any issues contained in the Epic
-                    simpleIssue.issues = issuesInEpics[issue.key] ?: []
-                }
-
                 if (!result[component.name]) {
                     result[component.name] = []
                 }
@@ -382,6 +388,10 @@ class JiraUseCase {
             key: issue.key,
             summary: issue.fields.summary
         ]
+
+        if (issue.fields.components) {
+            result.components = issue.fields.components.collect { it.name }
+        }
 
         if (issue.fields.issuetype) {
             result.issuetype = [
