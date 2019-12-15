@@ -157,9 +157,6 @@ def call() {
         levaDoc.createDSD(project)
     }
 
-    // FIXME
-    throw new RuntimeException("END")
-
     return [ project: project, repos: repos ]
 }
 
