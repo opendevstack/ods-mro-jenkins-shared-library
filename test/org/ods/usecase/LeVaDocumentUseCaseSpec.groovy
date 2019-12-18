@@ -537,8 +537,8 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(type)
 
         then:
-        1 * jira.getIssuesForComponent(project.id, "${type}:Configurable Items", ["Configuration Specification Task"], [], false, _) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Interfaces",         ["Configuration Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Configurable Items", ["Configuration Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Interfaces",         ["Configuration Specification Task"], [], false, _) >> [:]
 
         then:
         1 * LeVaDocumentUseCase.createDocument(_, type, project, null, _, [:], _, null)
@@ -749,7 +749,7 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(type)
 
         then:
-        1 * jira.getIssuesForComponent(project.id, null, ["System Design Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, null, ["System Design Specification Task"], [], false, _) >> [:]
 
         then:
         1 * LeVaDocumentUseCase.createDocument(_, type, project, null, _, [:], null, null)
@@ -962,12 +962,12 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(type)
 
         then:
-        1 * jira.getIssuesForComponent(project.id, "${type}:Constraints",             ["Functional Specification Task"], [], false, _) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Data",                    ["Functional Specification Task"], [], false, _) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Function",                ["Functional Specification Task"], [], false, _) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Interfaces",              ["Functional Specification Task"], [], false, _) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Operational Environment", ["Functional Specification Task"], [], false, _) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Roles",                   ["Functional Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Constraints",             ["Functional Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Data",                    ["Functional Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Function",                ["Functional Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Interfaces",              ["Functional Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Operational Environment", ["Functional Specification Task"], [], false, _) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Roles",                   ["Functional Specification Task"], [], false, _) >> [:]
 
         then:
         1 * LeVaDocumentUseCase.createDocument(_, type, project, null, _, [:], _, null)
@@ -1303,13 +1303,13 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(type)
 
         then:
-        1 * jira.getIssuesForComponent(project.id, "${type}:Availability",            ["Epic"], ["Story"]) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Compatibility",           ["Epic"], ["Story"]) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Interfaces",              ["Epic"], ["Story"]) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Operational",             ["Epic"], ["Story"]) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Operational Environment", ["Epic"], ["Story"]) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Performance",             ["Epic"], ["Story"]) >> [:]
-        1 * jira.getIssuesForComponent(project.id, "${type}:Procedural Constraints",  ["Epic"], ["Story"]) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Availability",            ["Epic"]) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Compatibility",           ["Epic"]) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Interfaces",              ["Epic"]) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Operational",             ["Epic"]) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Operational Environment", ["Epic"]) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Performance",             ["Epic"]) >> [:]
+        1 * jira.getIssuesForProject(project.id, "${type}:Procedural Constraints",  ["Epic"]) >> [:]
 
         then:
         1 * LeVaDocumentUseCase.createDocument(_, type, project, null, _, [:], _, null)
