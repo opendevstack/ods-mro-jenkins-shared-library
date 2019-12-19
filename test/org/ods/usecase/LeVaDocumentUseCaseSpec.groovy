@@ -194,7 +194,19 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         result
 
         when:
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.DSD, project)
+
+        then:
+        result
+
+        when:
         result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.FS, project)
+
+        then:
+        result
+
+        when:
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.SDS, project)
 
         then:
         result
@@ -214,7 +226,21 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
 
         when:
         project.services.jira = null
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.DSD, project)
+
+        then:
+        !result // not applicable if Jira is not configured
+
+        when:
+        project.services.jira = null
         result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.FS, project)
+
+        then:
+        !result // not applicable if Jira is not configured
+
+        when:
+        project.services.jira = null
+        result = usecase.appliesToProject(LeVaDocumentUseCase.DocumentTypes.SDS, project)
 
         then:
         !result // not applicable if Jira is not configured
@@ -275,6 +301,12 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         !result
 
         when:
+        result = usecase.appliesToRepo(LeVaDocumentUseCase.DocumentTypes.SDS, repo)
+
+        then:
+        result
+
+        when:
         result = usecase.appliesToRepo(LeVaDocumentUseCase.DocumentTypes.TIP, repo)
 
         then:
@@ -310,6 +342,13 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         when:
         repo.type = MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS
         result = usecase.appliesToRepo(LeVaDocumentUseCase.DocumentTypes.SCR, repo)
+
+        then:
+        result
+
+        when:
+        repo.type = MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS
+        result = usecase.appliesToRepo(LeVaDocumentUseCase.DocumentTypes.SDS, repo)
 
         then:
         result
@@ -1114,6 +1153,46 @@ class LeVaDocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jira.getDocumentChapterData(project.id, type) >> [:]
         1 * levaFiles.getDocumentChapterData(type)
+    }
+
+    // SDS only works with JIRA
+    def "create SDS"() {
+        given:
+        def buildParams = createBuildEnvironment(env)
+
+        def util = Mock(MROPipelineUtil)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def os = Mock(OpenShiftService)
+        def usecase = createUseCase(
+            Spy(util.PipelineSteps),
+            util,
+            Mock(DocGenService),
+            jenkins,
+            jira,
+            levaFiles,
+            Mock(NexusService),
+            os,
+            Mock(PDFUtil)
+        )
+
+        GroovyMock(LeVaDocumentUseCase, global: true)
+
+        def project = createProject()
+        def repo = project.repositories.first()
+
+        def type = LeVaDocumentUseCase.DocumentTypes.SDS
+
+        when:
+        usecase.createSDS(project, repo)
+
+        then:
+        1 * jira.getDocumentChapterData(project.id, type) >> ["sec1": "myContent"]
+        0 * levaFiles.getDocumentChapterData(type)
+
+        then:
+        1 * LeVaDocumentUseCase.createDocument(_, type, project, repo, _, [:], _, null)
     }
 
     def "create TIP"() {

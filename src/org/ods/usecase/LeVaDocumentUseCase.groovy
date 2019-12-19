@@ -28,6 +28,7 @@ class LeVaDocumentUseCase {
         static final String FS = "FS"
         static final String SCP = "SCP"
         static final String SCR = "SCR"
+        static final String SDS = "SDS"
         static final String TIP = "TIP"
         static final String TIR = "TIR"
         static final String URS = "URS"
@@ -44,6 +45,7 @@ class LeVaDocumentUseCase {
         (DocumentTypes.FS): "Functional Specification",
         (DocumentTypes.SCP): "Software Development (Coding and Code Review) Plan",
         (DocumentTypes.SCR): "Software Development (Coding and Code Review) Report",
+        (DocumentTypes.SDS): "Software Design Specification",
         (DocumentTypes.TIP): "Technical Installation Plan",
         (DocumentTypes.TIR): "Technical Installation Report",
         (DocumentTypes.URS): "User Requirements Specification"
@@ -75,6 +77,7 @@ class LeVaDocumentUseCase {
         if (documentType == LeVaDocumentUseCase.DocumentTypes.CS
          || documentType == LeVaDocumentUseCase.DocumentTypes.DSD
          || documentType == LeVaDocumentUseCase.DocumentTypes.FS
+         || documentType == LeVaDocumentUseCase.DocumentTypes.SDS
          || documentType == LeVaDocumentUseCase.DocumentTypes.URS) {
             // approve creation of document iff Jira has been configured
             return project.services?.jira != null
@@ -120,8 +123,9 @@ class LeVaDocumentUseCase {
             return repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS
         } else if (documentType == LeVaDocumentUseCase.DocumentTypes.SCR) {
             return repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS
-        // approve creation of a TIR for all repo types
-        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.TIR) {
+        // approve creation specific documents for all repo types
+        } else if (documentType == LeVaDocumentUseCase.DocumentTypes.SDS
+                || documentType == LeVaDocumentUseCase.DocumentTypes.TIR) {
             return true
         }
 
@@ -794,6 +798,37 @@ class LeVaDocumentUseCase {
 
     String createOverallSCR(Map project) {
         return createOverallDocument(DocumentTypes.OVERALL_COVER, DocumentTypes.SCR, project)
+    }
+
+    String createSDS(Map project, Map repo) {
+        def documentType = DocumentTypes.SDS
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        def data = [
+            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project, repo),
+            data: [
+                repo: repo,
+                sections: sections
+            ]
+        ]
+
+        def modifier = { document ->
+            repo.data.documents[documentType] = document
+            return document
+        }
+
+        return createDocument(
+            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
+            documentType, project, repo, data, [:], modifier, null
+        )
+    }
+
+    String createOverallSDS(Map project) {
+        return createOverallDocument(DocumentTypes.OVERALL_COVER, DocumentTypes.SDS, project)
     }
 
     String createTIP(Map project) {
