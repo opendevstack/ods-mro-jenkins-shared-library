@@ -990,7 +990,8 @@ class MROPipelineUtilSpec extends SpecHelper {
                         documents: [:]
                     ]
                 ]
-            ]
+            ],
+            capabilities: []
         ]
 
         result == expected

@@ -285,6 +285,10 @@ class MROPipelineUtil extends PipelineUtil {
             }
         }
 
+        if (result.capabilities == null) {
+            result.capabilities = []
+        }
+
         return result
     }
 
