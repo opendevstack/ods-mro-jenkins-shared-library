@@ -17,4 +17,20 @@ abstract class AbstractJiraUseCaseSupport {
             return issuelink.type.relation == "is related to" && (issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story")
         }.values().flatten()
     }
+
+    List getUnitTestIssues(String projectId, String componentName = null) {
+        return getAutomatedTestIssues(projectId, componentName, ["UnitTest"])
+    }
+
+    List getIntegrationTestIssues(String projectId, String componentName = null) {
+        return getAutomatedTestIssues(projectId, componentName, ["IntegrationTest"])
+    }
+
+    List getAcceptanceTestIssues(String projectId, String componentName = null) {
+        return getAutomatedTestIssues(projectId, componentName, ["AcceptanceTest"])
+    }
+
+    List getInstallationTestIssues(String projectId, String componentName = null) {
+        return getAutomatedTestIssues(projectId, componentName, ["InstallationTest"])
+    }
 }
