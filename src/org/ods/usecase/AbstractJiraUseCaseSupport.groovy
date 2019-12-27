@@ -33,4 +33,6 @@ abstract class AbstractJiraUseCaseSupport {
     List getInstallationTestIssues(String projectId, String componentName = null) {
         return getAutomatedTestIssues(projectId, componentName, ["InstallationTest"])
     }
+
+    abstract Map addTestInfo(Map issue)
 }

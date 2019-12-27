@@ -211,7 +211,8 @@ class JiraUseCaseSpec extends SpecHelper {
         given:
         def steps = Spy(util.PipelineSteps)
         def jira = Mock(JiraService)
-        def usecase = createUseCase(steps, jira)
+        def support = Mock(JiraUseCaseSupport)
+        def usecase = createUseCase(steps, jira, support)
 
         def epicKeys = ["myEpic-1", "myEpic-2"]
 
@@ -277,7 +278,8 @@ class JiraUseCaseSpec extends SpecHelper {
         given:
         def steps = Spy(util.PipelineSteps)
         def jira = Mock(JiraService)
-        def usecase = createUseCase(steps, jira)
+        def support = Mock(JiraUseCaseSupport)
+        def usecase = createUseCase(steps, jira, support)
 
         def project = createProject()
 
@@ -424,7 +426,8 @@ class JiraUseCaseSpec extends SpecHelper {
         given:
         def steps = Spy(util.PipelineSteps)
         def jira = Mock(JiraService)
-        def usecase = createUseCase(steps, jira)
+        def support = Mock(JiraUseCaseSupport)
+        def usecase = createUseCase(steps, jira, support)
 
         def project = createProject()
         def componentName = "myComponent"
@@ -562,7 +565,8 @@ class JiraUseCaseSpec extends SpecHelper {
         given:
         def steps = Spy(util.PipelineSteps)
         def jira = Mock(JiraService)
-        def usecase = createUseCase(steps, jira)
+        def support = Mock(JiraUseCaseSupport)
+        def usecase = createUseCase(steps, jira, support)
 
         def project = createProject()
         def componentName = "myComponent"
@@ -632,11 +636,92 @@ class JiraUseCaseSpec extends SpecHelper {
         components["myComponentC"] == [ issue1 ]
     }
 
+    def "get issues for project with issueLinkFilter and addTestInfo from support class"() {
+        given:
+        def steps = Spy(util.PipelineSteps)
+        def jira = Mock(JiraService)
+        def usecase = createUseCase(steps, jira, new JiraUseCaseSupport())
+
+        def project = createProject()
+        def componentName = "myComponent"
+        def issueLinkFilter = { issuelink ->
+            return issuelink.type.relation == "relates to"
+        }
+
+        def issues1 = createJiraIssues()
+        issues1[0].fields.issuetype = [
+            name: "Epic"
+        ]
+
+        def epicLinkField = createJiraField("customfield_001", "Epic Link")
+
+        def issues2 = [
+            createJiraIssue("100"),
+            createJiraIssue("101"),
+            createJiraIssue("200")
+        ]
+
+        when:
+        def components = usecase.getIssuesForProject(project.id, componentName, [], [], false, issueLinkFilter)
+
+        then:
+        1 * jira.getIssuesForJQLQuery(_) >> issues1
+        1 * jira.getFields() >> [epicLinkField]
+        1 * jira.getIssuesForJQLQuery(_) >> [] // don't care
+        1 * jira.getIssuesForJQLQuery(_) >> issues2
+
+        then:
+        def issue1 = usecase.toSimpleIssue(createJiraIssue("1"), [
+            components: [
+                "myComponentA",
+                "myComponentB",
+                "myComponentC"
+            ],
+            issuelinks: [
+                usecase.toSimpleIssueLink(createJiraIssueLink("1", createJiraIssue("100"))),
+                usecase.toSimpleIssueLink(createJiraIssueLink("2", createJiraIssue("101")))
+            ],
+            issues: [],
+            issuetype: [
+                name: "Epic"
+            ],
+            test: [
+                description: "1-description"
+            ]
+        ])
+
+        def issue2 = usecase.toSimpleIssue(createJiraIssue("2"), [
+            components: [
+                "myComponentA",
+                "myComponentB"
+            ],
+            issuelinks: [
+                usecase.toSimpleIssueLink(createJiraIssueLink("1", createJiraIssue("200")))
+            ],
+            issuetype: [
+                name: "Story"
+            ],
+            test: [
+                description: "2-description"
+            ]
+        ])
+
+        components["myComponentA"].size == 2
+        components["myComponentA"] == [ issue1, issue2 ]
+
+        components["myComponentB"].size == 2
+        components["myComponentB"] == [ issue1, issue2 ]
+
+        components["myComponentC"].size == 1
+        components["myComponentC"] == [ issue1 ]
+    }
+
     def "get issues for project with throwOnMissingLinks"() {
         given:
         def steps = Spy(util.PipelineSteps)
         def jira = Mock(JiraService)
-        def usecase = createUseCase(steps, jira)
+        def support = Mock(JiraUseCaseSupport)
+        def usecase = createUseCase(steps, jira, support)
 
         def project = createProject()
         def componentName = "myComponent"

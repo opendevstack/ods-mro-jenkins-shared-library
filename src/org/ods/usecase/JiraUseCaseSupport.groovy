@@ -43,4 +43,15 @@ class JiraUseCaseSupport extends AbstractJiraUseCaseSupport {
 
         this.usecase.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, testResults, matchedHandler, unmatchedHandler)
     }
+
+    Map addTestInfo(Map issue) {
+        if(issue?.description) {
+            return [
+                test: [
+                    description: issue.description
+                ]
+            ]
+        }
+        return [:]
+    }
 }
