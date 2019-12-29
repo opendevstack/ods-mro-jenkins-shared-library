@@ -279,6 +279,11 @@ class MROPipelineUtil extends PipelineUtil {
             repo.data = [:]
             repo.data.documents = [:]
 
+            // Set repo type, if not provided
+            if (!repo.type?.trim()) {
+                repo.type = PipelineConfig.REPO_TYPE_ODS_CODE
+            }
+
             // Resolve repo URL, if not provided
             if (!repo.url?.trim()) {
                 this.steps.echo("Could not determine Git URL for repo '${repo.id}' from project meta data. Attempting to resolve automatically...")
