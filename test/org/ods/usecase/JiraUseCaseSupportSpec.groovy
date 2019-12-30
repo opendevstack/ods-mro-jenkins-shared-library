@@ -330,4 +330,38 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         1 * jira.getIssuesForJQLQuery(jqlQuery) >> []
     }
 
+    def "Add test info in a list of issues"() {
+        given:
+        def steps   = Spy(PipelineSteps)
+        def jira    = Mock(JiraService)
+        def usecase = createUseCase(steps, jira)
+        def support = createUseCaseSupport(usecase)
+
+        when:
+        def issues = [[key: "JIRA-123", description: "description-123" ], [key: "JIRA-321", description: "description-321"]]
+
+        then:
+        def result = support.addTestInfo(issues)
+
+        then:
+        def expected = [
+            [
+                key: "JIRA-123",
+                description: "description-123",
+                test: [
+                    description: "description-123"
+                ]
+            ],
+            [
+                key: "JIRA-321",
+                description: "description-321",
+                test: [
+                    description: "description-321"
+                ]
+            ]
+        ]
+
+        result == expected
+    }
+
 }

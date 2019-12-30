@@ -321,7 +321,7 @@ class JiraUseCase {
         }
     }
 
-    Map toSimpleIssue(Map issue, Map mixins = [:]) {
+    static Map toSimpleIssue(Map issue, Map mixins = [:]) {
         def result = [
             id: issue.id,
             key: issue.key,
@@ -348,16 +348,11 @@ class JiraUseCase {
         if (result.description) {
             result.description = result.description.replaceAll("\u00a0", " ")
         }
-
-        def testinfo = this.support.addTestInfo(result)
-        if(testinfo) {
-            result << testinfo
-        }
-        
+              
         return result << mixins
     }
 
-    Map toSimpleIssueLink(Map issuelink, Map mixins = [:]) {
+    static Map toSimpleIssueLink(Map issuelink, Map mixins = [:]) {
         def result = [
             id: issuelink.id,
             type: [

@@ -13,9 +13,9 @@ abstract class AbstractJiraUseCaseSupport {
     List getAutomatedTestIssues(String projectId, String componentName = null, List<String> labelsSelector = []) {
         if (!this.usecase.jira) return []
 
-        return this.usecase.getIssuesForProject(projectId, componentName, ["Test"], labelsSelector << "AutomatedTest", false) { issuelink ->
+        return this.addTestInfo(this.usecase.getIssuesForProject(projectId, componentName, ["Test"], labelsSelector << "AutomatedTest", false) { issuelink ->
             return issuelink.type.relation == "is related to" && (issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story")
-        }.values().flatten()
+        }.values().flatten())
     }
 
     List getUnitTestIssues(String projectId, String componentName = null) {
@@ -34,5 +34,5 @@ abstract class AbstractJiraUseCaseSupport {
         return getAutomatedTestIssues(projectId, componentName, ["InstallationTest"])
     }
 
-    abstract Map addTestInfo(Map issue)
+    abstract List addTestInfo(List issues)
 }
