@@ -9,7 +9,4 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     void applyTestResultsToAutomatedTestIssues(List jiraTestIssues, Map testResults) {
     }
 
-    List addTestInfo(List issues) {
-        return issues
-    }
 }

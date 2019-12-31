@@ -44,13 +44,11 @@ class JiraUseCaseSupport extends AbstractJiraUseCaseSupport {
         this.usecase.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, testResults, matchedHandler, unmatchedHandler)
     }
 
-    List addTestInfo(List issues) {
-        issues.each {
-            issue ->
-                if(issue?.description) {
-                    issue << [ test: [ description: issue.description ] ]
-                }
-        }
-        return issues
-    }
+    List getAutomatedTestIssues(String projectId, String componentName = null, List<String> labelsSelector = []) {
+        return super.getAutomatedTestIssues(projectId, componentName, labelsSelector).each { issue ->
+            issue.test = [
+                description = issue.description
+            ]
+         }
+   }
 }
