@@ -50,5 +50,5 @@ class JiraUseCaseSupport extends AbstractJiraUseCaseSupport {
                 description = issue.description
             ]
          }
-   }
+    }
 }
