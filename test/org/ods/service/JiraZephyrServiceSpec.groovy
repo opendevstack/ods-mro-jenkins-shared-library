@@ -79,8 +79,6 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return result << mixins
     }
 
-
-
     def "get steps from issue"() {
         given:
         def request = getStepsFromIssueRequestData()
@@ -100,4 +98,5 @@ class JiraZephyrServiceSpec extends SpecHelper {
         cleanup:
         stopServer(server)
     }
+
 }
