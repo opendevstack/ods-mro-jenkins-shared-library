@@ -47,7 +47,7 @@ class JiraUseCaseSupport extends AbstractJiraUseCaseSupport {
     List getAutomatedTestIssues(String projectId, String componentName = null, List<String> labelsSelector = []) {
         return super.getAutomatedTestIssues(projectId, componentName, labelsSelector).each { issue ->
             issue.test = [
-                description = issue.description
+                description : issue.description
             ]
          }
     }
