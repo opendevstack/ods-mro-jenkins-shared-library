@@ -42,6 +42,32 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
+    Map getProjectInfo(String projectId) {
+        if (!projectId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get project info from Jira. 'projectId' is undefined.")
+        }
+
+        def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectId}")
+            .routeParam("projectId", projectId)
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .asString()
+
+        response.ifFailure {
+            def message = "Error: unable to get project info. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to get project info. Jira could not be found at: '${this.baseURL}'. ${response.getBody()} "
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody())
+    }
+
+    @NonCPS
     Map createNewExecution(String issueId, String projectId) {
         if (!issueId?.trim()) {
             throw new IllegalArgumentException("Error: unable to create new test execution from Jira issue. 'issueId' is undefined.")
@@ -92,7 +118,7 @@ class JiraZephyrService extends JiraService {
             .header("Content-Type", "application/json")
             .body(JsonOutput.toJson(
                 [
-                      "status": status
+                      status: status
                 ]
             ))
             .asString()

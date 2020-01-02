@@ -31,7 +31,7 @@ class JiraUseCase {
         this.support = support
     }
 
-    private boolean checkJiraIssueMatchesTestCase(Map issue, String testcaseName) {
+    boolean checkJiraIssueMatchesTestCase(Map issue, String testcaseName) {
         def issueKeyClean = issue.key.replaceAll("-", "")
         return testcaseName.startsWith("${issueKeyClean} ") || testcaseName.startsWith("${issueKeyClean}-") || testcaseName.startsWith("${issueKeyClean}_")
     }
