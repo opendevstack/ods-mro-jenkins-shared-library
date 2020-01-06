@@ -36,21 +36,33 @@ def call(Map project, List<Set<Map>> repos) {
         }
         */
 
-        def testReportsPath = "junit/${repo.id}"
+        // FIXME: we are mixing a generic scheduler capability with a data dependency and an explicit repository constraint.
+        // We should turn the last argument 'data' of the scheduler into a closure that return data.
+        if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
+            def testReportsPath = "junit/${repo.id}"
 
-        echo "Collecting JUnit XML Reports for ${repo.id}"
-        def testReportsStashName = "test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
-        def testReportsUnstashPath = "${steps.env.WORKSPACE}/${testReportsPath}"
-        def hasStashedTestReports = jenkins.unstashFilesIntoPath(testReportsStashName, testReportsUnstashPath, "JUnit XML Report")
-        if (!hasStashedTestReports) {
-            throw new RuntimeException("Error: unable to unstash JUnit XML reports for repo '${repo.id}' from stash '${testReportsStashName}'.")
+            echo "Collecting JUnit XML Reports for ${repo.id}"
+            def testReportsStashName = "test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
+            def testReportsUnstashPath = "${steps.env.WORKSPACE}/${testReportsPath}"
+            def hasStashedTestReports = jenkins.unstashFilesIntoPath(testReportsStashName, testReportsUnstashPath, "JUnit XML Report")
+            if (!hasStashedTestReports) {
+                throw new RuntimeException("Error: unable to unstash JUnit XML reports for repo '${repo.id}' from stash '${testReportsStashName}'.")
+            }
+
+            // Load JUnit test report files from path
+            def testReportFiles = junit.loadTestReportsFromPath(testReportsUnstashPath)
+
+            // Parse JUnit test report files into a report
+            def testResults = junit.parseTestReportFiles(testReportFiles)
+
+            levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, [
+                testReportFiles: testReportFiles,
+                testResults: testResults
+            ])
+
+            // Report test results to corresponding test cases in Jira
+            jira.reportTestResultsForComponent(project.id, "Technology_${repo.id}", "UnitTest", testResults)
         }
-
-        // Load JUnit test report files from path
-        def testReportFiles = junit.loadTestReportsFromPath(testReportsUnstashPath)
-
-        // Parse JUnit test report files into a report
-        def testResults = junit.parseTestReportFiles(testReportFiles)
 
         /*
         // Software Development Testing Report
@@ -59,15 +71,6 @@ def call(Map project, List<Set<Map>> repos) {
             levaDoc.createDTR(project, repo, [ testResults: testResults, testReportFiles: testReportFiles ])
         }
         */
-
-        levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, [
-            testReportFiles: testReportFiles,
-            testResults: testResults
-        ])
-
-        // Report test results to corresponding test cases in Jira
-        jira.reportTestResultsForComponent(project.id, "Technology_${repo.id}", testResults)            
-
     }
 
     /*
