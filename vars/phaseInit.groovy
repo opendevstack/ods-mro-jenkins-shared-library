@@ -178,7 +178,7 @@ def call() {
     }
     */
 
-    levaDocScheduler.run(phase, project, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 
     return [ project: project, repos: repos ]
 }

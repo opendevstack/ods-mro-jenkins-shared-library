@@ -82,7 +82,7 @@ def call(Map project, List<Set<Map>> repos) {
     }
     */
 
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START, project, repo)
+    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START, project)
 
     // Execute phase for each repository
     util.prepareExecutePhaseForReposNamedJob(phase, repos, preExecuteRepo, postExecuteRepo)
@@ -102,7 +102,7 @@ def call(Map project, List<Set<Map>> repos) {
     }
     */
 
-    levaDocScheduler.run(phase, project, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+    levaDocScheduler.run(phase, project, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 }
 
 return this

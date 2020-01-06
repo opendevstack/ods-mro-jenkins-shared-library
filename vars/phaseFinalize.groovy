@@ -29,7 +29,7 @@ def call(Map project, List<Set<Map>> repos) {
     }
     */
 
-    levaDocScheduler.run(phase, project, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 }
 
 return this
