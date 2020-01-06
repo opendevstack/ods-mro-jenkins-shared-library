@@ -85,70 +85,55 @@ class JiraUseCaseSpec extends SpecHelper {
         given:
         def steps = Spy(PipelineSteps)
         def jira = Mock(JiraService)
+        def support = Mock(JiraUseCaseSupport)
         def usecase = new JiraUseCase(steps, jira)
+        usecase.setSupport(support)
 
         def project = createProject()
-
-        def jqlQuery = [
-            jql: "project = ${project.id} AND issuetype in ('Test') AND labels in ('AutomatedTest')",
-            expand: [ "renderedFields" ],
-            fields: [ "components", "description", "issuelinks", "issuetype", "summary" ]
-        ]
-
         def issues = createJiraIssues()
 
         when:
         usecase.getAutomatedTestIssues(project.id)
 
         then:
-        1 * jira.getIssuesForJQLQuery(jqlQuery)
-
-        // TODO: test that we expect a specific relation type to an Epic or a Story
+        1 * support.getAutomatedTestIssues(project.id, null, []) >> []
     }
 
     def "get automated test issues with componentName"() {
         given:
         def steps = Spy(PipelineSteps)
         def jira = Mock(JiraService)
+        def support = Mock(JiraUseCaseSupport)
         def usecase = new JiraUseCase(steps, jira)
+        usecase.setSupport(support)
 
         def project = createProject()
         def componentName = "myComponent"
-
-        def jqlQuery = [
-            jql: "project = ${project.id} AND component = '${componentName}' AND issuetype in ('Test') AND labels in ('AutomatedTest')",
-            expand: [ "renderedFields" ],
-            fields: [ "components", "description", "issuelinks", "issuetype", "summary" ]
-        ]
 
         when:
         usecase.getAutomatedTestIssues(project.id, componentName)
 
         then:
-        1 * jira.getIssuesForJQLQuery(jqlQuery)
+        1 * support.getAutomatedTestIssues(project.id, componentName, []) >> []
     }
 
     def "get automated test issues with labelsSelector"() {
         given:
         def steps = Spy(PipelineSteps)
         def jira = Mock(JiraService)
+        def support = Mock(JiraUseCaseSupport)
         def usecase = new JiraUseCase(steps, jira)
+        usecase.setSupport(support)
 
         def project = createProject()
         def componentName = "myComponent"
         def labelsSelector = ["UnitTest"]
 
-        def jqlQuery = [
-            jql: "project = ${project.id} AND component = '${componentName}' AND issuetype in ('Test') AND labels in ('UnitTest', 'AutomatedTest')",
-            expand: [ "renderedFields" ],
-            fields: [ "components", "description", "issuelinks", "issuetype", "summary" ]
-        ]
-
         when:
         usecase.getAutomatedTestIssues(project.id, componentName, labelsSelector)
 
         then:
-        1 * jira.getIssuesForJQLQuery(jqlQuery)
+        1 * support.getAutomatedTestIssues(project.id, componentName, labelsSelector) >> []
     }
 
     def "get document chapter data"() {
@@ -666,44 +651,6 @@ class JiraUseCaseSpec extends SpecHelper {
         e.message == "Error: links are missing for issues: JIRA-3, JIRA-4."
     }
 
-    def "label test issues with test results"() {
-        given:
-        def steps = Spy(PipelineSteps)
-        def jira = Mock(JiraService)
-        def usecase = new JiraUseCase(steps, jira)
-
-        def testIssues = createJiraTestIssues()
-        def testResults = createTestResults()
-
-        when:
-        usecase.labelTestIssuesWithTestResults(testIssues, testResults)
-
-        then:
-        1 * jira.removeLabelsFromIssue("1", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("1", ["Succeeded"])
-        0 * jira.addLabelsToIssue("1", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("2", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("2", ["Error"])
-        0 * jira.addLabelsToIssue("2", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("3", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("3", ["Failed"])
-        0 * jira.addLabelsToIssue("3", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("4", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("4", ["Skipped"])
-        0 * jira.addLabelsToIssue("4", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("5", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("5", ["Missing"])
-        0 * jira.addLabelsToIssue("5", _)
-    }
-
     def "match Jira test issues against test results"() {
         given:
         def steps = Spy(PipelineSteps)
@@ -805,17 +752,14 @@ class JiraUseCaseSpec extends SpecHelper {
         given:
         def steps = Spy(PipelineSteps)
         def jira = Mock(JiraService)
+        def support = Mock(JiraUseCaseSupport)
         def usecase = new JiraUseCase(steps, jira)
+        usecase.setSupport(support)
 
         def project = createProject()
         def componentName = "myComponent"
+        def testType = "myTestType"
         def testResults = createTestResults()
-
-        def jqlQuery = [
-            jql: "project = ${project.id} AND component = '${componentName}' AND issuetype in ('Test') AND labels in ('AutomatedTest')",
-            expand: [ "renderedFields" ],
-            fields: [ "components", "description", "issuelinks", "issuetype", "summary" ]
-        ]
 
         def testIssues = createJiraTestIssues()
         def testIssuesLinkedIssueKeys = testIssues.collect{ it.fields.issuelinks[0].outwardIssue.key }
@@ -825,38 +769,13 @@ class JiraUseCaseSpec extends SpecHelper {
         def failureBug = [ key: "JIRA-BUG-2" ]
 
         when:
-        usecase.reportTestResultsForComponent(project.id, componentName, testResults)
+        usecase.reportTestResultsForComponent(project.id, componentName, testType, testResults)
 
         then:
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> testIssues
+        1 * support.getAutomatedTestIssues(project.id, componentName, [testType]) >> testIssues
 
         then:
-        1 * jira.getIssuesForJQLQuery([ jql: "key in (${testIssuesLinkedIssueKeys.join(', ')})", expand: ["renderedFields"], fields: ["description"] ]) >> testIssues[0..1]
-
-        then:
-        1 * jira.removeLabelsFromIssue("1", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("1", ["Succeeded"])
-        0 * jira.addLabelsToIssue("1", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("2", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("2", ["Error"])
-        0 * jira.addLabelsToIssue("2", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("3", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("3", ["Failed"])
-        0 * jira.addLabelsToIssue("3", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("4", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("4", ["Skipped"])
-        0 * jira.addLabelsToIssue("4", _)
-
-        then:
-        1 * jira.removeLabelsFromIssue("5", { it == JiraUseCase.JIRA_TEST_CASE_LABELS })
-        1 * jira.addLabelsToIssue("5", ["Missing"])
-        0 * jira.addLabelsToIssue("5", _)
+        1 * support.applyTestResultsToAutomatedTestIssues(testIssues, testResults)
 
         // create bug and block impacted test cases for error
         then:
