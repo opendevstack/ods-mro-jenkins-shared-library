@@ -14,7 +14,7 @@ import org.ods.usecase.JUnitTestReportsUseCase
 import org.ods.usecase.JiraUseCase
 import org.ods.usecase.JiraUseCaseSupport
 import org.ods.usecase.JiraUseCaseZephyrSupport
-import org.ods.usecase.LeVaDocumentUseCase
+import org.ods.usecase.LeVADocumentUseCase
 import org.ods.usecase.SonarQubeUseCase
 import org.ods.util.GitUtil
 import org.ods.util.MROPipelineUtil

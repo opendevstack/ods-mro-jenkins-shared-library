@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import org.apache.commons.io.FilenameUtils
 import org.ods.service.DocGenService
 import org.ods.service.JenkinsService
-import org.ods.service.LeVaDocumentChaptersFileService
+import org.ods.service.LeVADocumentChaptersFileService
 import org.ods.service.NexusService
 import org.ods.service.OpenShiftService
 import org.ods.util.IPipelineSteps
@@ -64,11 +64,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     private JenkinsService jenkins
     private JiraUseCase jira
-    private LeVaDocumentChaptersFileService levaFiles
+    private LeVADocumentChaptersFileService levaFiles
     private OpenShiftService os
     private SonarQubeUseCase sq
 
-    LeVADocumentUseCase(IPipelineSteps steps, MROPipelineUtil util, DocGenService docGen, JenkinsService jenkins, JiraUseCase jira, LeVaDocumentChaptersFileService levaFiles, NexusService nexus, OpenShiftService os, PDFUtil pdf, SonarQubeUseCase sq) {
+    LeVADocumentUseCase(IPipelineSteps steps, MROPipelineUtil util, DocGenService docGen, JenkinsService jenkins, JiraUseCase jira, LeVADocumentChaptersFileService levaFiles, NexusService nexus, OpenShiftService os, PDFUtil pdf, SonarQubeUseCase sq) {
         super(steps, util, docGen, nexus, pdf)
         this.jenkins = jenkins
         this.jira = jira

@@ -2,7 +2,7 @@ package org.ods.scheduler
 
 import org.ods.service.DocGenService
 import org.ods.service.JenkinsService
-import org.ods.service.LeVaDocumentChaptersFileService
+import org.ods.service.LeVADocumentChaptersFileService
 import org.ods.service.NexusService
 import org.ods.service.OpenShiftService
 import org.ods.usecase.DocGenUseCase
@@ -7695,7 +7695,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
         def jira = Mock(JiraUseCase)
-        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
@@ -7773,7 +7773,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
         def jira = Mock(JiraUseCase)
-        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
@@ -7825,7 +7825,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
         def jira = Mock(JiraUseCase)
-        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
@@ -7880,7 +7880,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
         def jira = Mock(JiraUseCase)
-        def levaFiles = Mock(LeVaDocumentChaptersFileService)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
