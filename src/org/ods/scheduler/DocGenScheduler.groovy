@@ -29,11 +29,9 @@ abstract class DocGenScheduler {
 
             if (this.isDocumentApplicable(documentType, phase, stage, project, repo)) {
                 def message = "Creating document of type '${documentType}' for project ${project.id}"
-                if (repo) {
-                    message += " and repo '${repo.id}'"
-                }
+                if (repo) message += " and repo '${repo.id}'"
+                this.steps.echo(message)
 
-                this.steps.echo()
                 // Apply args according to the method's parameters length
                 method.doMethodInvoke(this.usecase, args[0..(Math.min(args.size(), params.size()) - 1)] as Object[])
             }
