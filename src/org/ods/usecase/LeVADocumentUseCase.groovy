@@ -2,23 +2,20 @@ package org.ods.usecase
 
 import com.cloudbees.groovy.cps.NonCPS
 
-import groovy.json.JsonOutput
-
-import java.net.URI
 import java.time.LocalDateTime
 
 import org.apache.commons.io.FilenameUtils
 import org.ods.service.DocGenService
 import org.ods.service.JenkinsService
-import org.ods.service.JiraService
 import org.ods.service.LeVaDocumentChaptersFileService
 import org.ods.service.NexusService
 import org.ods.service.OpenShiftService
 import org.ods.util.IPipelineSteps
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PDFUtil
+import org.ods.util.SortUtil
 
-class LeVaDocumentUseCase {
+class LeVADocumentUseCase extends DocGenUseCase {
 
     class DocumentTypes {
         static final String CS = "CS"
@@ -26,6 +23,10 @@ class LeVaDocumentUseCase {
         static final String DTP = "DTP"
         static final String DTR = "DTR"
         static final String FS = "FS"
+        static final String FTP = "FTP"
+        static final String FTR = "FTR"
+        static final String IVP = "IVP"
+        static final String IVR = "IVR"
         static final String SCP = "SCP"
         static final String SCR = "SCR"
         static final String SDS = "SDS"
@@ -33,8 +34,10 @@ class LeVaDocumentUseCase {
         static final String TIR = "TIR"
         static final String URS = "URS"
 
-        static final String OVERALL_COVER = "Overall-Cover"
-        static final String OVERALL_TIR_COVER = "Overall-TIR-Cover"
+        static final String OVERALL_DTR = "OVERALL_DTR"
+        static final String OVERALL_SCR = "OVERALL_SCR"
+        static final String OVERALL_SDS = "OVERALL_SDS"
+        static final String OVERALL_TIR = "OVERALL_TIR"
     }
 
     private static Map DOCUMENT_TYPE_NAMES = [
@@ -43,130 +46,43 @@ class LeVaDocumentUseCase {
         (DocumentTypes.DTP): "Software Development Testing Plan",
         (DocumentTypes.DTR): "Software Development Testing Report",
         (DocumentTypes.FS): "Functional Specification",
+        (DocumentTypes.FTP): "Functional and Requirements Testing Plan",
+        (DocumentTypes.FTR): "Functional and Requirements Testing Report",
+        (DocumentTypes.IVP): "Configuration and Installation Testing Plan",
+        (DocumentTypes.IVR): "Configuration and Installation Testing Report",
         (DocumentTypes.SCP): "Software Development (Coding and Code Review) Plan",
         (DocumentTypes.SCR): "Software Development (Coding and Code Review) Report",
         (DocumentTypes.SDS): "Software Design Specification",
         (DocumentTypes.TIP): "Technical Installation Plan",
         (DocumentTypes.TIR): "Technical Installation Report",
-        (DocumentTypes.URS): "User Requirements Specification"
+        (DocumentTypes.URS): "User Requirements Specification",
+        (DocumentTypes.OVERALL_DTR): "Overall Software Development Testing Report",
+        (DocumentTypes.OVERALL_SCR): "Overall Software Development (Coding and Code Review) Report",
+        (DocumentTypes.OVERALL_SDS): "Overall Software Design Specification",
+        (DocumentTypes.OVERALL_TIR): "Overall Technical Installation Report"
     ]
 
-    private IPipelineSteps steps
-    private MROPipelineUtil util
-    private DocGenService docGen
     private JenkinsService jenkins
     private JiraUseCase jira
     private LeVaDocumentChaptersFileService levaFiles
-    private NexusService nexus
     private OpenShiftService os
-    private PDFUtil pdf
+    private SonarQubeUseCase sq
 
-    LeVaDocumentUseCase(IPipelineSteps steps, MROPipelineUtil util, DocGenService docGen, JenkinsService jenkins, JiraUseCase jira, LeVaDocumentChaptersFileService levaFiles, NexusService nexus, OpenShiftService os, PDFUtil pdf) {
-        this.steps = steps
-        this.util = util
-        this.docGen = docGen
+    LeVADocumentUseCase(IPipelineSteps steps, MROPipelineUtil util, DocGenService docGen, JenkinsService jenkins, JiraUseCase jira, LeVaDocumentChaptersFileService levaFiles, NexusService nexus, OpenShiftService os, PDFUtil pdf, SonarQubeUseCase sq) {
+        super(steps, util, docGen, nexus, pdf)
         this.jenkins = jenkins
         this.jira = jira
         this.levaFiles = levaFiles
-        this.nexus = nexus
         this.os = os
-        this.pdf = pdf
+        this.sq = sq
     }
 
-    static boolean appliesToProject(Map project, String documentType, String phase) {
-        if (phase == MROPipelineUtil.PipelinePhases.INIT) {
-            if (documentType == LeVaDocumentUseCase.DocumentTypes.CS
-             || documentType == LeVaDocumentUseCase.DocumentTypes.DSD
-             || documentType == LeVaDocumentUseCase.DocumentTypes.FS
-             || documentType == LeVaDocumentUseCase.DocumentTypes.URS) {
-                return project.services?.jira != null
-            }
-        }
-
-        if (phase == MROPipelineUtil.PipelinePhases.BUILD) {
-            if (documentType == LeVaDocumentUseCase.DocumentTypes.DTP
-             || documentType == LeVaDocumentUseCase.DocumentTypes.DTR
-             || documentType == LeVaDocumentUseCase.DocumentTypes.SCP
-             || documentType == LeVaDocumentUseCase.DocumentTypes.SDS) {
-                 return true
-            }
-        }
-
-        if (phase == MROPipelineUtil.PipelinePhases.DEPLOY) {
-            if (documentType == LeVaDocumentUseCase.DocumentTypes.TIP) {
-                 return true
-             }
-        }
-
-        if (phase == MROPipelineUtil.PipelinePhases.TEST) {
-            if (documentType == LeVaDocumentUseCase.DocumentTypes.SCR) {
-                 return true
-             }
-        }
-
-        if (phase == MROPipelineUtil.PipelinePhases.FINALIZE) {
-            if (documentType == LeVaDocumentUseCase.DocumentTypes.TIR) {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    static boolean appliesToRepo(Map repo, String documentType, String phase = null) {
-        if (phase == null || phase == MROPipelineUtil.PipelinePhases.BUILD) {
-            if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
-                if (documentType == LeVaDocumentUseCase.DocumentTypes.DTR
-                 || documentType == LeVaDocumentUseCase.DocumentTypes.SCR
-                 || documentType == LeVaDocumentUseCase.DocumentTypes.SDS) {
-                    return true
-                }
-            } else if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
-                if (documentType == LeVaDocumentUseCase.DocumentTypes.SDS) {
-                    return true
-                }
-            }
-        }
-
-        if (phase == null || phase == MROPipelineUtil.PipelinePhases.TEST) {
-            if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
-                if (documentType == LeVaDocumentUseCase.DocumentTypes.SCR) {
-                    return true
-                }
-            }
-        }
-
-        if (phase == null || phase == MROPipelineUtil.PipelinePhases.DEPLOY) {
-            if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
-                if (documentType == LeVaDocumentUseCase.DocumentTypes.TIR) {
-                    return true
-                }
-            } else if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
-                if (documentType == LeVaDocumentUseCase.DocumentTypes.TIR) {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
-    private static String computeDocumentFileBaseName(String type, IPipelineSteps steps, Map buildParams, Map project, Map repo = null) {
-        def result = project.id
-
-        if (repo) {
-            result += "-${repo.id}"
-        }
-
-        return "${type}-${result}-${buildParams.version}-${steps.env.BUILD_ID}"
-    }
-
-    private Map computeDTRDiscrepancies(List jiraTestIssues) {
+    private Map computeTestDiscrepancies(String name, List jiraTestIssues) {
         def result = [
             discrepancies: "No discrepancies found.",
             conclusion: [
                 summary: "Complete success, no discrepancies",
-                statement: "It is determined that all steps of the Development Tests have been successfully executed and signature of this report verifies that the tests have been performed according to the plan. No discrepancies occurred."
+                statement: "It is determined that all steps of the ${name} have been successfully executed and signature of this report verifies that the tests have been performed according to the plan. No discrepancies occurred."
             ]
         ]
 
@@ -242,11 +158,11 @@ class LeVaDocumentUseCase {
 
                 return [
                     name: name,
-                    items: this.sortIssuesByProperties(items, ["ur_key", "key"])
+                    items: SortUtil.sortIssuesByProperties(items, ["ur_key", "key"])
                 ]
             }
 
-            sections."sec3".components = this.sortIssuesByProperties(configurableItemsIssuesList, ["name"])
+            sections."sec3".components = SortUtil.sortIssuesByProperties(configurableItemsIssuesList, ["name"])
         }
 
         // Interfaces
@@ -267,7 +183,7 @@ class LeVaDocumentUseCase {
                 ]
             }
 
-            sections."sec4".items = this.sortIssuesByProperties(interfacesIssuesList, ["ur_key", "key"])
+            sections."sec4".items = SortUtil.sortIssuesByProperties(interfacesIssuesList, ["ur_key", "key"])
         }
 
         def data = [
@@ -277,97 +193,7 @@ class LeVaDocumentUseCase {
             ]
         ]
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, null, data, [:], null, null
-        )
-    }
-
-    private static String createDocument(Map deps, String type, Map project, Map repo, Map data, Map<String, byte[]> files = [:], Closure modifier = null, String typeName = null) {
-        def buildParams = deps.util.getBuildParams()
-
-        // Create a PDF document via the DocGen service
-        def document = deps.docGen.createDocument(type, '0.1', data)
-
-        // Apply any PDF document modifications, if provided
-        if (modifier) {
-            document = modifier(document)
-        }
-
-        if (deps.util.isTriggeredByChangeManagementProcess()) {
-            if (buildParams.targetEnvironment == MROPipelineUtil.PipelineEnvs.DEV) {
-                document = deps.pdf.addWatermarkText(document, "Developer Preview")
-            }
-        }
-
-        def baseName = computeDocumentFileBaseName(typeName ?: type, deps.steps, buildParams, project, repo)
-
-        // Create an archive with the document and raw data
-        def archive = deps.util.createZipArtifact(
-            "${baseName}.zip",
-            [
-                "${baseName}.pdf": document,
-                "raw/${baseName}.json": JsonOutput.toJson(data).getBytes()
-            ] << files.collectEntries { path, contents ->
-                [ path, contents ]
-            }
-        )
-
-        // Store the archive as an artifact in Nexus
-        def uri = deps.nexus.storeArtifact(
-            project.services.nexus.repository.name,
-            "${project.id.toLowerCase()}-${buildParams.version}",
-            "${baseName}.zip",
-            archive,
-            "application/zip"
-        )
-
-        deps.jira.notifyLeVaDocumentTrackingIssue(project.id, typeName ?: type, "A new ${DOCUMENT_TYPE_NAMES[typeName ?: type]} has been generated and is available at: ${uri}.")
-
-        return uri.toString()
-    }
-
-    private String createOverallDocument(String coverType, String documentType, Map project, Closure visitor = null) {
-        def documents = []
-        def sections = []
-
-        project.repositories.each { repo ->
-            def document = repo.data.documents[documentType]
-            if (document) {
-                documents << document
-            }
-
-            sections << [
-                heading: repo.id
-            ]
-        }
-
-        def data = [
-            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project),
-            data: [
-                sections: sections
-            ]
-        ]
-
-        if (visitor) {
-            visitor(data.data)
-        }
-
-        def modifier = { document ->
-            documents.add(0, document)
-            return this.pdf.merge(documents)
-        }
-
-        def result = createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            coverType, project, null, data, [:], modifier, documentType
-        )
-
-        project.repositories.each { repo ->
-            repo.data.documents.remove(documentType)
-        }
-
-        return result
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
     String createDSD(Map project) {
@@ -400,7 +226,7 @@ class LeVaDocumentUseCase {
                 ]
             }
 
-            sections."sec3".specifications = this.sortIssuesByProperties(specificationsIssuesList, ["ur_key", "key"])
+            sections."sec3".specifications = SortUtil.sortIssuesByProperties(specificationsIssuesList, ["ur_key", "key"])
         }
 
         // A mapping of component names starting with Technology_ to issues
@@ -451,7 +277,7 @@ class LeVaDocumentUseCase {
                 return result
             }
 
-            sections."sec5s1".specifications = this.sortIssuesByProperties(specificationsForTechnologyComponentsIssuesList, ["key"])
+            sections."sec5s1".specifications = SortUtil.sortIssuesByProperties(specificationsForTechnologyComponentsIssuesList, ["key"])
         }
 
         // System Components Specification (fully contained in data for System Components List)
@@ -463,10 +289,7 @@ class LeVaDocumentUseCase {
             ]
         ]
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, null, data, [:], null, null
-        )
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
     String createDTP(Map project) {
@@ -478,7 +301,7 @@ class LeVaDocumentUseCase {
         }
 
         def data = [
-            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project),
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
                 project: project,
                 sections: sections,
@@ -495,13 +318,10 @@ class LeVaDocumentUseCase {
             ]
         ]
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, null, data, [:], null, null
-        )
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
-    String createDTR(Map project, Map repo, Map testResults, List<File> testReportFiles) {
+    String createDTR(Map project, Map repo, Map data) {
         def documentType = DocumentTypes.DTR
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
@@ -525,12 +345,12 @@ class LeVaDocumentUseCase {
             }
         }
 
-        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, testResults, matchedHandler, unmatchedHandler)
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data.testResults, matchedHandler, unmatchedHandler)
 
-        def discrepancies = this.computeDTRDiscrepancies(jiraTestIssues)
+        def discrepancies = this.computeTestDiscrepancies("Development Tests", jiraTestIssues)
 
-        def data = [
-            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project, repo),
+        def data_ = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project, repo),
             data: [
                 repo: repo,
                 sections: sections,
@@ -546,10 +366,10 @@ class LeVaDocumentUseCase {
                         ]
                     ]
                 },
-                testfiles: testReportFiles.collect { file ->
+                testfiles: data.testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
                 },
-                testsuites: testResults,
+                testsuites: data.testResults,
                 discrepancies: discrepancies.discrepancies,
                 conclusion: [
                     summary: discrepancies.conclusion.summary,
@@ -558,7 +378,7 @@ class LeVaDocumentUseCase {
             ]
         ]
 
-        def files = testReportFiles.collectEntries { file ->
+        def files = data.testReportFiles.collectEntries { file ->
             [ "raw/${file.getName()}", file.getBytes() ]
         }
 
@@ -567,14 +387,7 @@ class LeVaDocumentUseCase {
             return document
         }
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, repo, data, files, modifier, null
-        )
-    }
-
-    String createOverallDTR(Map project) {
-        return createOverallDocument(DocumentTypes.OVERALL_COVER, DocumentTypes.DTR, project)
+        return this.createDocument(documentType, project, repo, data_, files, modifier, null)
     }
 
     String createFS(Map project) {
@@ -603,7 +416,7 @@ class LeVaDocumentUseCase {
                 ]
             }
 
-            sections."sec8".items = this.sortIssuesByProperties(constraintsIssuesList, ["ur_key", "key"])
+            sections."sec8".items = SortUtil.sortIssuesByProperties(constraintsIssuesList, ["ur_key", "key"])
         }
 
         // Data
@@ -624,7 +437,7 @@ class LeVaDocumentUseCase {
                 ]
             }
 
-            sections."sec5".items = this.sortIssuesByProperties(dataIssuesList, ["ur_key", "key"])
+            sections."sec5".items = SortUtil.sortIssuesByProperties(dataIssuesList, ["ur_key", "key"])
         }
 
         // Function
@@ -648,11 +461,11 @@ class LeVaDocumentUseCase {
 
                 return [
                     name: name,
-                    items: this.sortIssuesByProperties(items, ["ur_key", "key"])
+                    items: SortUtil.sortIssuesByProperties(items, ["ur_key", "key"])
                 ]
             }
 
-            sections."sec3".components = this.sortIssuesByProperties(functionsIssuesList, ["name"])
+            sections."sec3".components = SortUtil.sortIssuesByProperties(functionsIssuesList, ["name"])
         }
 
         // Interfaces
@@ -673,7 +486,7 @@ class LeVaDocumentUseCase {
                 ]
             }
 
-            sections."sec6".items = this.sortIssuesByProperties(interfacesIssuesList, ["ur_key", "key"])
+            sections."sec6".items = SortUtil.sortIssuesByProperties(interfacesIssuesList, ["ur_key", "key"])
         }
 
         // Operational Environment
@@ -694,7 +507,7 @@ class LeVaDocumentUseCase {
                 ]
             }
 
-            sections."sec7".items = this.sortIssuesByProperties(environmentIssuesList, ["ur_key", "key"])
+            sections."sec7".items = SortUtil.sortIssuesByProperties(environmentIssuesList, ["ur_key", "key"])
         }
 
         // Roles
@@ -723,12 +536,12 @@ class LeVaDocumentUseCase {
                 // Reduce the issues to the data points required by the document
                 return issue.subMap(["key"]) << [
                     name: issue.summary,
-                    items: this.sortIssuesByProperties(items, ["ur_key", "key"])
+                    items: SortUtil.sortIssuesByProperties(items, ["ur_key", "key"])
                 ]
             }
 
             def index = 0
-            sections."sec4".roles = this.sortIssuesByProperties(rolesIssuesList, ["name"]).collect { issue ->
+            sections."sec4".roles = SortUtil.sortIssuesByProperties(rolesIssuesList, ["name"]).collect { issue ->
                 // Add a custom heading number
                 issue << [ number: ++index ]
             }
@@ -741,10 +554,23 @@ class LeVaDocumentUseCase {
             ]
         ]
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, null, data_, [:], null, null
-        )
+        return this.createDocument(documentType, project, null, data_, [:], null, null)
+    }
+
+    String createFTP(Map project) {
+        // TODO: not yet implemented
+    }
+
+    String createFTR(Map project, Map repo, Map data) {
+        // TODO: not yet implemented
+    }
+
+    String createIVP(Map project) {
+        // TODO: not yet implemented
+    }
+
+    String createIVR(Map project, Map repo, Map data) {
+        // TODO: not yet implemented
     }
 
     String createSCP(Map project) {
@@ -756,21 +582,33 @@ class LeVaDocumentUseCase {
         }
 
         def data = [
-            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project),
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
                 project: project,
                 sections: sections
             ]
         ]
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, null, data, [:], null, null
-        )
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
-    String createSCR(Map project, Map repo, File sonarQubeWordDoc = null) {
+    String createSCR(Map project, Map repo) {
         def documentType = DocumentTypes.SCR
+
+        def sqReportsPath = "sonarqube/${repo.id}"
+        def sqReportsStashName = "scrr-report-${repo.id}-${this.steps.env.BUILD_ID}"
+
+        // Unstash SonarQube reports into path
+        def hasStashedSonarQubeReports = this.jenkins.unstashFilesIntoPath(sqReportsStashName, "${this.steps.env.WORKSPACE}/${sqReportsPath}", "SonarQube Report")
+        if (!hasStashedSonarQubeReports) {
+            throw new RuntimeException("Error: unable to unstash SonarQube reports for repo '${repo.id}' from stash '${sqReportsStashName}'.")
+        }
+
+        // Load SonarQube report files from path
+        def sqReportFiles = this.sq.loadReportsFromPath("${this.steps.env.WORKSPACE}/${sqReportsPath}")
+        if (sqReportFiles.isEmpty()) {
+            throw new RuntimeException("Error: unable to load SonarQube reports for repo '${repo.id}' from path '${this.steps.env.WORKSPACE}/${sqReportsPath}'.")
+        }
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -778,48 +616,40 @@ class LeVaDocumentUseCase {
         }
 
         def data = [
-            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project, repo),
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project, repo),
             data: [
                 sections: sections
             ]
         ]
 
         def files = [:]
-        if (sonarQubeWordDoc) {
-            /*
-            // TODO: conversion of a SonarQube report results in an ambiguous NPE.
-            // Research did not reveal any meaningful results. Further, Apache POI
-            // depends on Commons Compress, but unfortunately Jenkins puts an older
-            // version onto the classpath which results in an error. Therefore, iff
-            // the NPE can be fixed, this code would need to run outside of Jenkins,
-            // such as the DocGen service.
+        /*
+        // TODO: conversion of a SonarQube report results in an ambiguous NPE.
+        // Research did not reveal any meaningful results. Further, Apache POI
+        // depends on Commons Compress, but unfortunately Jenkins puts an older
+        // version onto the classpath which results in an error. Therefore, iff
+        // the NPE can be fixed, this code would need to run outside of Jenkins,
+        // such as the DocGen service.
 
-            def sonarQubePDFDoc = this.pdf.convertFromWordDoc(sonarQubeWordDoc)
-            modifier = { document ->
-                // Merge the current document with the SonarQube report
-                return this.pdf.merge([ document, sonarQubePDFDoc ])
-            }
-
-            // As our plan B below, we instead add the SonarQube report into the
-            // SCR's .zip archive.
-            */
-            def name = computeDocumentFileBaseName("SCRR", this.steps, this.util.getBuildParams(), project, repo)
-            files << [ "${name}.${FilenameUtils.getExtension(sonarQubeWordDoc.getName())}": sonarQubeWordDoc.getBytes() ]
+        def sonarQubePDFDoc = this.pdf.convertFromWordDoc(sonarQubeWordDoc)
+        modifier = { document ->
+            // Merge the current document with the SonarQube report
+            return this.pdf.merge([ document, sonarQubePDFDoc ])
         }
+
+        // As our plan B below, we instead add the SonarQube report into the
+        // SCR's .zip archive.
+        */
+        def name = this.getDocumentBasename("SCRR", this.util.getBuildParams().version, this.steps.env.BUILD_ID, project, repo)
+        def sqReportFile = sqReportFiles.first()
+        files << [ "${name}.${FilenameUtils.getExtension(sqReportFile.getName())}": sqReportFile.getBytes() ]
 
         def modifier = { document ->
             repo.data.documents[documentType] = document
             return document
         }
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, repo, data, files, modifier, null
-        )
-    }
-
-    String createOverallSCR(Map project) {
-        return createOverallDocument(DocumentTypes.OVERALL_COVER, DocumentTypes.SCR, project)
+        return this.createDocument(documentType, project, repo, data, files, modifier, null)
     }
 
     String createSDS(Map project, Map repo) {
@@ -831,7 +661,7 @@ class LeVaDocumentUseCase {
         }
 
         def data = [
-            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project, repo),
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project, repo),
             data: [
                 repo: repo,
                 sections: sections
@@ -843,14 +673,7 @@ class LeVaDocumentUseCase {
             return document
         }
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, repo, data, [:], modifier, null
-        )
-    }
-
-    String createOverallSDS(Map project) {
-        return createOverallDocument(DocumentTypes.OVERALL_COVER, DocumentTypes.SDS, project)
+        return this.createDocument(documentType, project, repo, data, [:], modifier, null)
     }
 
     String createTIP(Map project) {
@@ -862,7 +685,7 @@ class LeVaDocumentUseCase {
         }
 
         def data = [
-            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project),
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
                 project: project,
                 repos: project.repositories,
@@ -870,10 +693,7 @@ class LeVaDocumentUseCase {
             ]
         ]
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, null, data, [:], null, null
-        )
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
     String createTIR(Map project, Map repo) {
@@ -912,24 +732,7 @@ class LeVaDocumentUseCase {
             return document
         }
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, repo, data, [:], modifier, null
-        )
-    }
-
-    String createOverallTIR(Map project) {
-        return createOverallDocument(DocumentTypes.OVERALL_TIR_COVER, DocumentTypes.TIR, project) { data ->
-            // Append another section for the Jenkins build log
-            data.sections << [
-                heading: "Jenkins Build Log"
-            ]
-
-            // Add Jenkins build log data
-            data.jenkinsData = [
-                log: this.jenkins.getCurrentBuildLogAsText()
-            ]
-        }
+        return this.createDocument(documentType, project, repo, data, [:], modifier, null)
     }
 
     String createURS(Map project) {
@@ -955,11 +758,11 @@ class LeVaDocumentUseCase {
                 }
 
                 return epic.subMap(["key", "description"]) << [
-                    issues: this.sortIssuesByProperties(issues, ["key"])
+                    issues: SortUtil.sortIssuesByProperties(issues, ["key"])
                 ]
             }
 
-            sections."sec3s3s2".requirements = this.sortIssuesByProperties(availabilityIssuesList, ["key"])
+            sections."sec3s3s2".requirements = SortUtil.sortIssuesByProperties(availabilityIssuesList, ["key"])
         }
 
         // Compatibility
@@ -977,11 +780,11 @@ class LeVaDocumentUseCase {
                 }
 
                 return epic.subMap(["key", "description"]) << [
-                    issues: this.sortIssuesByProperties(issues, ["key"])
+                    issues: SortUtil.sortIssuesByProperties(issues, ["key"])
                 ]
             }
 
-            sections."sec4s1".requirements = this.sortIssuesByProperties(compatibilityIssuesList, ["key"])
+            sections."sec4s1".requirements = SortUtil.sortIssuesByProperties(compatibilityIssuesList, ["key"])
         }
 
         // Interfaces
@@ -999,11 +802,11 @@ class LeVaDocumentUseCase {
                 }
 
                 return epic.subMap(["key", "description"]) << [
-                    issues: this.sortIssuesByProperties(issues, ["key"])
+                    issues: SortUtil.sortIssuesByProperties(issues, ["key"])
                 ]
             }
 
-            sections."sec3s4".requirements = this.sortIssuesByProperties(interfacesIssuesList, ["key"])
+            sections."sec3s4".requirements = SortUtil.sortIssuesByProperties(interfacesIssuesList, ["key"])
         }
 
         // Operational
@@ -1029,17 +832,17 @@ class LeVaDocumentUseCase {
                     }
 
                     return epic.subMap(["key", "description"]) << [
-                        issues: this.sortIssuesByProperties(issues, ["key"])
+                        issues: SortUtil.sortIssuesByProperties(issues, ["key"])
                     ]
                 }
 
                 return [
                     name: name,
-                    requirements: this.sortIssuesByProperties(requirements, ["key"])
+                    requirements: SortUtil.sortIssuesByProperties(requirements, ["key"])
                 ]
             }
 
-            sections."sec3s2".components = this.sortIssuesByProperties(operationalIssuesList, ["name"])
+            sections."sec3s2".components = SortUtil.sortIssuesByProperties(operationalIssuesList, ["name"])
         }
 
         // Operational Environment
@@ -1057,11 +860,11 @@ class LeVaDocumentUseCase {
                 }
 
                 return epic.subMap(["key", "description"]) << [
-                    issues: this.sortIssuesByProperties(issues, ["key"])
+                    issues: SortUtil.sortIssuesByProperties(issues, ["key"])
                 ]
             }
 
-            sections."sec3s5".requirements = this.sortIssuesByProperties(environmentIssuesList, ["key"])
+            sections."sec3s5".requirements = SortUtil.sortIssuesByProperties(environmentIssuesList, ["key"])
         }
 
         // Performance
@@ -1079,11 +882,11 @@ class LeVaDocumentUseCase {
                 }
 
                 return epic.subMap(["key", "description"]) << [
-                    issues: this.sortIssuesByProperties(issues, ["key"])
+                    issues: SortUtil.sortIssuesByProperties(issues, ["key"])
                 ]
             }
 
-            sections."sec3s3s1".requirements = this.sortIssuesByProperties(performanceIssuesList, ["key"])
+            sections."sec3s3s1".requirements = SortUtil.sortIssuesByProperties(performanceIssuesList, ["key"])
         }
 
         // Procedural Constraints
@@ -1101,11 +904,11 @@ class LeVaDocumentUseCase {
                 }
 
                 return epic.subMap(["key", "description"]) << [
-                    issues: this.sortIssuesByProperties(issues, ["key"])
+                    issues: SortUtil.sortIssuesByProperties(issues, ["key"])
                 ]
             }
 
-            sections."sec4s2".requirements = this.sortIssuesByProperties(proceduralIssuesList, ["key"])
+            sections."sec4s2".requirements = SortUtil.sortIssuesByProperties(proceduralIssuesList, ["key"])
         }
 
         def data = [
@@ -1115,24 +918,55 @@ class LeVaDocumentUseCase {
             ]
         ]
 
-        return createDocument(
-            [steps: this.steps, docGen: this.docGen, jira: this.jira, nexus: this.nexus, pdf: this.pdf, util: this.util],
-            documentType, project, null, data, [:], null, null
-        )
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
-    private Map getDocumentMetadata(String type, Map project, Map repo = null) {
+    String createOverallDTR(Map project) {
+        def documentType = DocumentTypes.OVERALL_DTR
+        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
+        return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
+    }
+
+    String createOverallSCR(Map project) {
+        def documentType = DocumentTypes.OVERALL_SCR
+        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
+        return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
+    }
+
+    String createOverallSDS(Map project) {
+        def documentType = DocumentTypes.OVERALL_SDS
+        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
+        return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
+    }
+
+    String createOverallTIR(Map project) {
+        def documentType = DocumentTypes.OVERALL_TIR
+        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
+        return this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, project) { data ->
+            // Append another section for the Jenkins build log
+            data.sections << [
+                heading: "Jenkins Build Log"
+            ]
+
+            // Add Jenkins build log data
+            data.jenkinsData = [
+                log: this.jenkins.getCurrentBuildLogAsText()
+            ]
+        }
+    }
+
+    Map getDocumentMetadata(String documentTypeName, Map project, Map repo = null) {
         def name = project.name
         if (repo) {
             name += ": ${repo.id}"
         }
 
         return [
-            id: "N/A",
+            id: null, // unused
             name: name,
             description: project.description,
-            type: type,
-            version: this.steps.env.RELEASE_PARAM_VERSION,
+            type: documentTypeName,
+            version: null, // unused
             date_created: LocalDateTime.now().toString(),
             buildParameter: this.util.getBuildParams(),
             git: repo ? repo.data.git : project.data.git,
@@ -1144,11 +978,18 @@ class LeVaDocumentUseCase {
         ]
     }
 
-    @NonCPS
-    // Sorts a collection of maps in the order of the keys in properties
-    private List<Map> sortIssuesByProperties(Collection<Map> issues, List properties) {
-        return issues.sort { issue ->
-            issue.subMap(properties).values().join("-")
-        }
+    Map<String, MetaMethod> getSupportedDocuments() {
+        return this.metaClass.methods
+            .findAll { method ->
+                return method.isPublic() && (method.getName() ==~ /^create[A-Z]{2,}/ || method.getName() ==~ /^createOverall[A-Z]{2,}/)
+            }
+            .collectEntries { method ->
+                def name = method.getName()
+                    .replaceAll("create", "")
+                    .replaceAll("Overall", "Overall_")
+                    .toUpperCase()
+
+                return [ name, method ]
+            }
     }
 }

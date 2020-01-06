@@ -49,6 +49,13 @@ class MROPipelineUtil extends PipelineUtil {
         static final List ALWAYS_PARALLEL = []
     }
 
+    enum PipelinePhaseLifecycleStage {
+        POST_START,
+        PRE_EXECUTE_REPO,
+        POST_EXECUTE_REPO,
+        PRE_END
+    }
+
     static final String PROJECT_METADATA_FILE_NAME = "metadata.yml"
     static final String REPOS_BASE_DIR = "repositories"
 
@@ -304,6 +311,10 @@ class MROPipelineUtil extends PipelineUtil {
                 this.steps.echo("Could not determine Git branch for repo '${repo.id}' from project meta data. Assuming 'master'.")
                 repo.branch = "master"
             }
+        }
+
+        if (result.capabilities == null) {
+            result.capabilities = []
         }
 
         return result

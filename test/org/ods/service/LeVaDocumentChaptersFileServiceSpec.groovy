@@ -8,14 +8,10 @@ import util.*
 
 class LeVaDocumentChaptersFileServiceSpec extends SpecHelper {
 
-    LeVaDocumentChaptersFileService createService(PipelineSteps steps) {
-        return new LeVaDocumentChaptersFileService(steps)
-    }
-
     def "get document chapter data"() {
         given:
         def steps = Spy(util.PipelineSteps)
-        def service = createService(steps)
+        def service = new LeVaDocumentChaptersFileService(steps)
 
         def type = "myType"
 
@@ -58,7 +54,7 @@ class LeVaDocumentChaptersFileServiceSpec extends SpecHelper {
     def "get document chapter data with invalid documentType"() {
         given:
         def steps = Spy(util.PipelineSteps)
-        def service = createService(steps)
+        def service = new LeVaDocumentChaptersFileService(steps)
 
         when:
         service.getDocumentChapterData(null)
