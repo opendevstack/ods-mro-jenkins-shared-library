@@ -43,19 +43,19 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         REPO_ODS_TEST.type = MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST
 
         PROJECT_GAMP_1 = createProject()
-        PROJECT_GAMP_1.capabilities << [ levaDocs: [ gampCategory: "1" ] ]
+        PROJECT_GAMP_1.capabilities << [ LeVADocs: [ GAMPCategory: "1" ] ]
 
         PROJECT_GAMP_3 = createProject()
-        PROJECT_GAMP_3.capabilities << [ levaDocs: [ gampCategory: "3" ] ]
+        PROJECT_GAMP_3.capabilities << [ LeVADocs: [ GAMPCategory: "3" ] ]
 
         PROJECT_GAMP_4 = createProject()
-        PROJECT_GAMP_4.capabilities << [ levaDocs: [ gampCategory: "4" ] ]
+        PROJECT_GAMP_4.capabilities << [ LeVADocs: [ GAMPCategory: "4" ] ]
 
         PROJECT_GAMP_5 = createProject()
-        PROJECT_GAMP_5.capabilities << [ levaDocs: [ gampCategory: "5" ] ]
+        PROJECT_GAMP_5.capabilities << [ LeVADocs: [ GAMPCategory: "5" ] ]
 
         PROJECT_GAMP_5_WITHOUT_JIRA = createProject()
-        PROJECT_GAMP_5_WITHOUT_JIRA.capabilities << [ levaDocs: [ gampCategory: "5" ] ]
+        PROJECT_GAMP_5_WITHOUT_JIRA.capabilities << [ LeVADocs: [ GAMPCategory: "5" ] ]
         PROJECT_GAMP_5_WITHOUT_JIRA.services.jira = null
     }
 
@@ -7646,7 +7646,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def phase = "myPhase"
         def stage = MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START
         def project = createProject()
-        project.capabilities << [ levaDocs: [ gampCategory: "0" ] ]
+        project.capabilities << [ LeVADocs: [ GAMPCategory: "0" ] ]
         def repo = project.repositories.first()
 
         when:
