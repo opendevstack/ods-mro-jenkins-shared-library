@@ -58,7 +58,7 @@ class JiraZephyrService extends JiraService {
             def message = "Error: unable to get project info. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to get project info. Jira could not be found at: '${this.baseURL}'. ${response.getBody()} "
+                message = "Error: unable to get project info. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
@@ -92,7 +92,7 @@ class JiraZephyrService extends JiraService {
             def message = "Error: unable to create Jira new test execution. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to create Jira new test execution. Jira could not be found at: '${this.baseURL}'. ${response.getBody()} "
+                message = "Error: unable to create Jira new test execution. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
@@ -128,7 +128,7 @@ class JiraZephyrService extends JiraService {
             def message = "Error: unable to update Jira test execution. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to update Jira test execution. Jira could not be found at: '${this.baseURL}'. ${response.getBody()} "
+                message = "Error: unable to update Jira test execution. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
