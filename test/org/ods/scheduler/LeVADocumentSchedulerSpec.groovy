@@ -70,7 +70,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         scheduler.isDocumentApplicable(documentType as String, phase, stage, project, repo) == result
 
         where:
-        documentType                         | project        | repo | phase                                   | stage                                                         || result
+        documentType                        | project        | repo | phase                                   | stage                                                         || result
         // CS: Configuration Specification
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -1964,7 +1964,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         scheduler.isDocumentApplicable(documentType as String, phase, stage, project, repo) == result
 
         where:
-        documentType                         | project        | repo | phase                                   | stage                                                         || result
+        documentType                        | project        | repo | phase                                   | stage                                                         || result
         // CS: Configuration Specification
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -3858,7 +3858,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         scheduler.isDocumentApplicable(documentType as String, phase, stage, project, repo) == result
 
         where:
-        documentType                         | project        | repo | phase                                   | stage                                                         || result
+        documentType                        | project        | repo | phase                                   | stage                                                         || result
         // CS: Configuration Specification
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -5752,7 +5752,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         scheduler.isDocumentApplicable(documentType as String, phase, stage, project, repo) == result
 
         where:
-        documentType                         | project        | repo | phase                                   | stage                                                         || result
+        documentType                        | project        | repo | phase                                   | stage                                                         || result
         // CS: Configuration Specification
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.CS | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
