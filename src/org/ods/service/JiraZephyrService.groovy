@@ -135,22 +135,18 @@ class JiraZephyrService extends JiraService {
         }
     }
 
-    @NonCPS
     void updateExecutionPass(String executionId) {
         this.updateExecution(executionId, "1")
     }
 
-    @NonCPS
     void updateExecutionFail(String executionId) {
         this.updateExecution(executionId, "2")
     }
 
-    @NonCPS
     void updateExecutionWip(String executionId) {
         this.updateExecution(executionId, "3")
     }
 
-    @NonCPS
     void updateExecutionBlocked(String executionId) {
         this.updateExecution(executionId, "4")
     }
