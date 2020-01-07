@@ -556,18 +556,22 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     String createFTP(Map project) {
         // TODO: not yet implemented
+        return "http://nexus"
     }
 
     String createFTR(Map project, Map repo, Map data) {
         // TODO: not yet implemented
+        return "http://nexus"
     }
 
     String createIVP(Map project) {
         // TODO: not yet implemented
+        return "http://nexus"
     }
 
     String createIVR(Map project, Map repo, Map data) {
         // TODO: not yet implemented
+        return "http://nexus"
     }
 
     String createSCP(Map project) {
