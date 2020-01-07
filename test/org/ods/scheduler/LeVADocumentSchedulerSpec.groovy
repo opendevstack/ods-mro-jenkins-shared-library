@@ -6830,8 +6830,8 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
-        LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || true
-        LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || true
         LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.SCR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -8007,7 +8007,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         1 * usecase.invokeMethod("createIVR", [project, REPO_ODS_SERVICE, data] as Object[])
 
         when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO, project, REPO_ODS_TEST)
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, REPO_ODS_TEST)
 
         then:
         1 * usecase.invokeMethod("createSCR", [project, REPO_ODS_TEST] as Object[])
