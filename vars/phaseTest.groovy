@@ -13,7 +13,7 @@ def call(Map project, List<Set<Map>> repos) {
     def preExecuteRepo = { steps, repo ->
         /*
         // Software Development (Coding and Code Review) Report
-        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentTypes.SCR, phase)) {
+        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentType.SCR, phase)) {
             echo "Creating and archiving a Software Development (Coding and Code Review) Report for repo '${repo.id}'"
             levaDoc.createSCR(project, repo)
         }
@@ -35,7 +35,7 @@ def call(Map project, List<Set<Map>> repos) {
         }
 
     /*
-    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentTypes.SCR, phase)) {
+    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentType.SCR, phase)) {
         echo "Creating and archiving an overall Software Development (Coding and Code Review) Report for project '${project.id}'"
         levaDoc.createOverallSCR(project)
     }

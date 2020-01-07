@@ -157,22 +157,22 @@ def call() {
     repos = util.computeRepoGroups(repos)
 
     /*
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentTypes.URS, phase)) {
+    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.URS, phase)) {
         echo "Creating and archiving a User Requirements Specification for project '${project.id}'"
         levaDoc.createURS(project)
     }
 
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentTypes.FS, phase)) {
+    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.FS, phase)) {
         echo "Creating and archiving a Functional Specification for project '${project.id}'"
         levaDoc.createFS(project)
     }
 
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentTypes.CS, phase)) {
+    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.CS, phase)) {
         echo "Creating and archiving a Configuration Specification for project '${project.id}'"
         levaDoc.createCS(project)
     }
 
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentTypes.DSD, phase)) {
+    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.DSD, phase)) {
         echo "Creating and archiving a System Design Specification for project '${project.id}'"
         levaDoc.createDSD(project)
     }

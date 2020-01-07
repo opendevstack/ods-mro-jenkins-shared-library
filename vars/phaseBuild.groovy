@@ -18,7 +18,7 @@ def call(Map project, List<Set<Map>> repos) {
 
     def preExecuteRepo = { steps, repo ->
         /*
-        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentTypes.SDS, phase)) {
+        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentType.SDS, phase)) {
             echo "Creating and archiving a Software Design Specification for repo '${repo.id}'"
             levaDoc.createSDS(project, repo)
         }
@@ -30,7 +30,7 @@ def call(Map project, List<Set<Map>> repos) {
     def postExecuteRepo = { steps, repo ->
         /*
         // Software Development (Coding and Code Review) Report
-        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentTypes.SCR, phase)) {
+        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentType.SCR, phase)) {
             echo "Creating and archiving a Software Development (Coding and Code Review) Report for repo '${repo.id}'"
             levaDoc.createSCR(project, repo)
         }
@@ -66,7 +66,7 @@ def call(Map project, List<Set<Map>> repos) {
 
         /*
         // Software Development Testing Report
-        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentTypes.DTR, phase)) {
+        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentType.DTR, phase)) {
             echo "Creating and archiving a Software Development Testing Report for repo '${repo.id}'"
             levaDoc.createDTR(project, repo, [ testResults: testResults, testReportFiles: testReportFiles ])
         }
@@ -74,12 +74,12 @@ def call(Map project, List<Set<Map>> repos) {
     }
 
     /*
-    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentTypes.SCP, phase)) {
+    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentType.SCP, phase)) {
         echo "Creating and archiving a Software Development (Coding and Code Review) Plan for project '${project.id}'"
         levaDoc.createSCP(project)
     }
 
-    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentTypes.DTP, phase)) {
+    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentType.DTP, phase)) {
         echo "Creating and archiving a Software Development Testing Plan for project '${project.id}'"
         levaDoc.createDTP(project)
     }
@@ -94,12 +94,12 @@ def call(Map project, List<Set<Map>> repos) {
         }
 
     /*
-    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentTypes.DTR, phase)) {
+    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentType.DTR, phase)) {
         echo "Creating and archiving an overall Software Development Testing Report for project '${project.id}'"
         levaDoc.createOverallDTR(project)
     }
 
-    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentTypes.SDS, phase)) {
+    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentType.SDS, phase)) {
         echo "Creating and archiving an overall Software Design Specification for project '${project.id}'"
         levaDoc.createOverallSDS(project)
     }

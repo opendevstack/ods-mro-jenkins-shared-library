@@ -22,7 +22,7 @@ class DocGenUseCaseSpec extends SpecHelper {
             super(steps, util, docGen, nexus, pdf)
         }
 
-        Map<String, MetaMethod> getSupportedDocuments() {}
+        List<String> getSupportedDocuments() {}
     }
 
     def "create document"() {

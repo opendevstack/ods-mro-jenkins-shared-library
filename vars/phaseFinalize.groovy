@@ -23,7 +23,7 @@ def call(Map project, List<Set<Map>> repos) {
     echo "Project ${project}"
 
     /*
-    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentTypes.TIR, phase)) {
+    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentType.TIR, phase)) {
         echo "Creating and archiving an overall Technical Installation Report for project '${project.id}'"
         levaDoc.createOverallTIR(project)
     }

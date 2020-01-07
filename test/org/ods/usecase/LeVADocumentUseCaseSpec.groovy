@@ -114,7 +114,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.CS
+        def documentType = LeVADocumentUseCase.DocumentType.CS as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -155,7 +155,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.DSD
+        def documentType = LeVADocumentUseCase.DocumentType.DSD as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -194,7 +194,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.DTP
+        def documentType = LeVADocumentUseCase.DocumentType.DTP as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -233,7 +233,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         project.services.jira = null
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.DTP
+        def documentType = LeVADocumentUseCase.DocumentType.DTP as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -282,7 +282,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         ]
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.DTR
+        def documentType = LeVADocumentUseCase.DocumentType.DTR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
 
         // Stubbed Method Responses
@@ -339,7 +339,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         ]
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.DTR
+        def documentType = LeVADocumentUseCase.DocumentType.DTR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
 
         // Stubbed Method Responses
@@ -381,7 +381,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.FS
+        def documentType = LeVADocumentUseCase.DocumentType.FS as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -426,7 +426,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.SCP
+        def documentType = LeVADocumentUseCase.DocumentType.SCP as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -463,7 +463,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         project.services.jira = null
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.SCP
+        def documentType = LeVADocumentUseCase.DocumentType.SCP as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -505,7 +505,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def repo = project.repositories.first()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.SCR
+        def documentType = LeVADocumentUseCase.DocumentType.SCR as String
         def sqReportsPath = "sonarqube/${repo.id}"
         def sqReportsStashName = "scrr-report-${repo.id}-${steps.env.BUILD_ID}"
         def files = [ "${usecase.getDocumentBasename("SCRR", buildParams.version, steps.env.BUILD_ID, project, repo)}.docx": getResource("Test.docx").bytes ]
@@ -555,7 +555,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def repo = project.repositories.first()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.SCR
+        def documentType = LeVADocumentUseCase.DocumentType.SCR as String
         def sqReportsPath = "sonarqube/${repo.id}"
         def sqReportsStashName = "scrr-report-${repo.id}-${steps.env.BUILD_ID}"
         def files = [ "${usecase.getDocumentBasename("SCRR", buildParams.version, steps.env.BUILD_ID, project, repo)}.docx": getResource("Test.docx").bytes ]
@@ -599,7 +599,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def repo = project.repositories.first()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.SDS
+        def documentType = LeVADocumentUseCase.DocumentType.SDS as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -635,7 +635,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.TIP
+        def documentType = LeVADocumentUseCase.DocumentType.TIP as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -672,7 +672,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         project.services.jira = null
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.TIP
+        def documentType = LeVADocumentUseCase.DocumentType.TIP as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -709,7 +709,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def repo = project.repositories.first()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.TIR
+        def documentType = LeVADocumentUseCase.DocumentType.TIR as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -750,7 +750,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def repo = project.repositories.first()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.TIR
+        def documentType = LeVADocumentUseCase.DocumentType.TIR as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -789,7 +789,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.URS
+        def documentType = LeVADocumentUseCase.DocumentType.URS as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -835,7 +835,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.OVERALL_DTR
+        def documentType = LeVADocumentUseCase.DocumentType.OVERALL_DTR as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -866,7 +866,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.OVERALL_SCR
+        def documentType = LeVADocumentUseCase.DocumentType.OVERALL_SCR as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -897,7 +897,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.OVERALL_SDS
+        def documentType = LeVADocumentUseCase.DocumentType.OVERALL_SDS as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -928,7 +928,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentTypes.OVERALL_TIR
+        def documentType = LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -962,79 +962,24 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.size() == 19
 
         then:
-        result.containsKey("CS")
-        result["CS"].toString().contains("LeVADocumentUseCase.createCS")
-
-        then:
-        result.containsKey("DSD")
-        result["DSD"].toString().contains("LeVADocumentUseCase.createDSD")
-
-        then:
-        result.containsKey("DTP")
-        result["DTP"].toString().contains("LeVADocumentUseCase.createDTP")
-
-        then:
-        result.containsKey("DTR")
-        result["DTR"].toString().contains("LeVADocumentUseCase.createDTR")
-
-        then:
-        result.containsKey("FS")
-        result["FS"].toString().contains("LeVADocumentUseCase.createFS")
-
-        then:
-        result.containsKey("FTP")
-        result["FTP"].toString().contains("LeVADocumentUseCase.createFTP")
-
-        then:
-        result.containsKey("FTR")
-        result["FTR"].toString().contains("LeVADocumentUseCase.createFTR")
-
-        then:
-        result.containsKey("IVP")
-        result["IVP"].toString().contains("LeVADocumentUseCase.createIVP")
-
-        then:
-        result.containsKey("IVR")
-        result["IVR"].toString().contains("LeVADocumentUseCase.createIVR")
-
-        then:
-        result.containsKey("SCP")
-        result["SCP"].toString().contains("LeVADocumentUseCase.createSCP")
-
-        then:
-        result.containsKey("SCR")
-        result["SCR"].toString().contains("LeVADocumentUseCase.createSCR")
-
-        then:
-        result.containsKey("SDS")
-        result["SDS"].toString().contains("LeVADocumentUseCase.createSDS")
-
-        then:
-        result.containsKey("TIP")
-        result["TIP"].toString().contains("LeVADocumentUseCase.createTIP")
-
-        then:
-        result.containsKey("TIR")
-        result["TIR"].toString().contains("LeVADocumentUseCase.createTIR")
-
-        then:
-        result.containsKey("URS")
-        result["URS"].toString().contains("LeVADocumentUseCase.createURS")
-
-        then:
-        result.containsKey("OVERALL_DTR")
-        result["OVERALL_DTR"].toString().contains("LeVADocumentUseCase.createOverallDTR")
-
-        then:
-        result.containsKey("OVERALL_SCR")
-        result["OVERALL_SCR"].toString().contains("LeVADocumentUseCase.createOverallSCR")
-
-        then:
-        result.containsKey("OVERALL_SDS")
-        result["OVERALL_SDS"].toString().contains("LeVADocumentUseCase.createOverallSDS")
-
-        then:
-        result.containsKey("OVERALL_TIR")
-        result["OVERALL_TIR"].toString().contains("LeVADocumentUseCase.createOverallTIR")
+        result.contains("CS")
+        result.contains("DSD")
+        result.contains("DTP")
+        result.contains("DTR")
+        result.contains("FS")
+        result.contains("FTP")
+        result.contains("FTR")
+        result.contains("IVP")
+        result.contains("IVR")
+        result.contains("SCP")
+        result.contains("SCR")
+        result.contains("SDS")
+        result.contains("TIP")
+        result.contains("TIR")
+        result.contains("URS")
+        result.contains("OVERALL_DTR")
+        result.contains("OVERALL_SCR")
+        result.contains("OVERALL_SDS")
+        result.contains("OVERALL_TIR")
     }
 }

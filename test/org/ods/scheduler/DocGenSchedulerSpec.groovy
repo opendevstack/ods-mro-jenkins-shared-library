@@ -19,19 +19,12 @@ class DocGenSchedulerSpec extends SpecHelper {
             super(steps, util, docGen, nexus, pdf)
         }
 
-        void createDocumentTypeA(Map project) {}
-        void createDocumentTypeB(Map project, Map repo) {}
-        void createDocumentTypeC(Map project, Map repo, Map data) {}
+        void createA(Map project) {}
+        void createB(Map project, Map repo) {}
+        void createC(Map project, Map repo, Map data) {}
 
-        Map<String, MetaMethod> getSupportedDocuments() {
-            return this.metaClass.methods
-                .findAll { method ->
-                    return method.getName() ==~ /^createDocumentType[A-Z]/
-                }
-                .collectEntries { method ->
-                    def name = method.getName().replaceAll("createDocumentType", "")
-                    return [ name, method ]
-                }
+        List<String> getSupportedDocuments() {
+            return ["A", "B", "C"]
         }
     }
 
@@ -65,15 +58,15 @@ class DocGenSchedulerSpec extends SpecHelper {
 
         then:
         1 * scheduler.isDocumentApplicable("A", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, null)
-        1 * usecase.createDocumentTypeA(project)
+        1 * usecase.createA(project)
 
         then:
         1 * scheduler.isDocumentApplicable("B", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, null)
-        1 * usecase.createDocumentTypeB(project, null)
+        1 * usecase.createB(project, null)
 
         then:
         1 * scheduler.isDocumentApplicable("C", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, null)
-        1 * usecase.createDocumentTypeC(project, null,  null)
+        1 * usecase.createC(project, null,  null)
 
         when:
         scheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo)
@@ -83,15 +76,15 @@ class DocGenSchedulerSpec extends SpecHelper {
 
         then:
         0 * scheduler.isDocumentApplicable("A", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo)
-        0 * usecase.createDocumentTypeA(project)
+        0 * usecase.createA(project)
 
         then:
         1 * scheduler.isDocumentApplicable("B", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo)
-        1 * usecase.createDocumentTypeB(project, repo)
+        1 * usecase.createB(project, repo)
 
         then:
         1 * scheduler.isDocumentApplicable("C", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo)
-        1 * usecase.createDocumentTypeC(project, repo,  null)
+        1 * usecase.createC(project, repo,  null)
 
         when:
         scheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo, data)
@@ -101,14 +94,14 @@ class DocGenSchedulerSpec extends SpecHelper {
 
         then:
         0 * scheduler.isDocumentApplicable("A", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo)
-        0 * usecase.createDocumentTypeA(project)
+        0 * usecase.createA(project)
 
         then:
         0 * scheduler.isDocumentApplicable("B", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo)
-        0 * usecase.createDocumentTypeB(project, repo)
+        0 * usecase.createB(project, repo)
 
         then:
         1 * scheduler.isDocumentApplicable("C", phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, repo)
-        1 * usecase.createDocumentTypeC(project, repo,  data)
+        1 * usecase.createC(project, repo,  data)
     }
 }

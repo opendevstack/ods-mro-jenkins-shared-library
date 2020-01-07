@@ -1,7 +1,5 @@
 package org.ods.usecase
 
-import com.cloudbees.groovy.cps.NonCPS
-
 import java.time.LocalDateTime
 
 import org.apache.commons.io.FilenameUtils
@@ -17,49 +15,48 @@ import org.ods.util.SortUtil
 
 class LeVADocumentUseCase extends DocGenUseCase {
 
-    class DocumentTypes {
-        static final String CS = "CS"
-        static final String DSD = "DSD"
-        static final String DTP = "DTP"
-        static final String DTR = "DTR"
-        static final String FS = "FS"
-        static final String FTP = "FTP"
-        static final String FTR = "FTR"
-        static final String IVP = "IVP"
-        static final String IVR = "IVR"
-        static final String SCP = "SCP"
-        static final String SCR = "SCR"
-        static final String SDS = "SDS"
-        static final String TIP = "TIP"
-        static final String TIR = "TIR"
-        static final String URS = "URS"
-
-        static final String OVERALL_DTR = "OVERALL_DTR"
-        static final String OVERALL_SCR = "OVERALL_SCR"
-        static final String OVERALL_SDS = "OVERALL_SDS"
-        static final String OVERALL_TIR = "OVERALL_TIR"
+    enum DocumentType {
+        CS,
+        DSD,
+        DTP,
+        DTR,
+        FS,
+        FTP,
+        FTR,
+        IVP,
+        IVR,
+        SCP,
+        SCR,
+        SDS,
+        TIP,
+        TIR,
+        URS,
+        OVERALL_DTR,
+        OVERALL_SCR,
+        OVERALL_SDS,
+        OVERALL_TIR
     }
 
     private static Map DOCUMENT_TYPE_NAMES = [
-        (DocumentTypes.CS): "Configuration Specification",
-        (DocumentTypes.DSD): "System Design Specification",
-        (DocumentTypes.DTP): "Software Development Testing Plan",
-        (DocumentTypes.DTR): "Software Development Testing Report",
-        (DocumentTypes.FS): "Functional Specification",
-        (DocumentTypes.FTP): "Functional and Requirements Testing Plan",
-        (DocumentTypes.FTR): "Functional and Requirements Testing Report",
-        (DocumentTypes.IVP): "Configuration and Installation Testing Plan",
-        (DocumentTypes.IVR): "Configuration and Installation Testing Report",
-        (DocumentTypes.SCP): "Software Development (Coding and Code Review) Plan",
-        (DocumentTypes.SCR): "Software Development (Coding and Code Review) Report",
-        (DocumentTypes.SDS): "Software Design Specification",
-        (DocumentTypes.TIP): "Technical Installation Plan",
-        (DocumentTypes.TIR): "Technical Installation Report",
-        (DocumentTypes.URS): "User Requirements Specification",
-        (DocumentTypes.OVERALL_DTR): "Overall Software Development Testing Report",
-        (DocumentTypes.OVERALL_SCR): "Overall Software Development (Coding and Code Review) Report",
-        (DocumentTypes.OVERALL_SDS): "Overall Software Design Specification",
-        (DocumentTypes.OVERALL_TIR): "Overall Technical Installation Report"
+        (DocumentType.CS as String): "Configuration Specification",
+        (DocumentType.DSD as String): "System Design Specification",
+        (DocumentType.DTP as String): "Software Development Testing Plan",
+        (DocumentType.DTR as String): "Software Development Testing Report",
+        (DocumentType.FS as String): "Functional Specification",
+        (DocumentType.FTP as String): "Functional and Requirements Testing Plan",
+        (DocumentType.FTR as String): "Functional and Requirements Testing Report",
+        (DocumentType.IVP as String): "Configuration and Installation Testing Plan",
+        (DocumentType.IVR as String): "Configuration and Installation Testing Report",
+        (DocumentType.SCP as String): "Software Development (Coding and Code Review) Plan",
+        (DocumentType.SCR as String): "Software Development (Coding and Code Review) Report",
+        (DocumentType.SDS as String): "Software Design Specification",
+        (DocumentType.TIP as String): "Technical Installation Plan",
+        (DocumentType.TIR as String): "Technical Installation Report",
+        (DocumentType.URS as String): "User Requirements Specification",
+        (DocumentType.OVERALL_DTR as String): "Overall Software Development Testing Report",
+        (DocumentType.OVERALL_SCR as String): "Overall Software Development (Coding and Code Review) Report",
+        (DocumentType.OVERALL_SDS as String): "Overall Software Design Specification",
+        (DocumentType.OVERALL_TIR as String): "Overall Technical Installation Report"
     ]
 
     private JenkinsService jenkins
@@ -124,7 +121,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createCS(Map project) {
-        def documentType = DocumentTypes.CS
+        def documentType = DocumentType.CS as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -197,7 +194,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createDSD(Map project) {
-        def documentType = DocumentTypes.DSD
+        def documentType = DocumentType.DSD as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -293,7 +290,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createDTP(Map project) {
-        def documentType = DocumentTypes.DTP
+        def documentType = DocumentType.DTP as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -322,7 +319,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createDTR(Map project, Map repo, Map data) {
-        def documentType = DocumentTypes.DTR
+        def documentType = DocumentType.DTR as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -391,7 +388,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createFS(Map project) {
-        def documentType = DocumentTypes.FS
+        def documentType = DocumentType.FS as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -574,7 +571,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createSCP(Map project) {
-        def documentType = DocumentTypes.SCP
+        def documentType = DocumentType.SCP as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -593,7 +590,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createSCR(Map project, Map repo) {
-        def documentType = DocumentTypes.SCR
+        def documentType = DocumentType.SCR as String
 
         def sqReportsPath = "sonarqube/${repo.id}"
         def sqReportsStashName = "scrr-report-${repo.id}-${this.steps.env.BUILD_ID}"
@@ -653,7 +650,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createSDS(Map project, Map repo) {
-        def documentType = DocumentTypes.SDS
+        def documentType = DocumentType.SDS as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -677,7 +674,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createTIP(Map project) {
-        def documentType = DocumentTypes.TIP
+        def documentType = DocumentType.TIP as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -697,7 +694,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createTIR(Map project, Map repo) {
-        def documentType = DocumentTypes.TIR
+        def documentType = DocumentType.TIR as String
 
         def pods = this.os.getPodDataForComponent(repo.id)
 
@@ -736,7 +733,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createURS(Map project) {
-        def documentType = DocumentTypes.URS
+        def documentType = DocumentType.URS as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -922,25 +919,25 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createOverallDTR(Map project) {
-        def documentType = DocumentTypes.OVERALL_DTR
+        def documentType = DocumentType.OVERALL_DTR as String
         def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
         return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
     }
 
     String createOverallSCR(Map project) {
-        def documentType = DocumentTypes.OVERALL_SCR
+        def documentType = DocumentType.OVERALL_SCR as String
         def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
         return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
     }
 
     String createOverallSDS(Map project) {
-        def documentType = DocumentTypes.OVERALL_SDS
+        def documentType = DocumentType.OVERALL_SDS as String
         def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
         return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
     }
 
     String createOverallTIR(Map project) {
-        def documentType = DocumentTypes.OVERALL_TIR
+        def documentType = DocumentType.OVERALL_TIR as String
         def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
         return this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, project) { data ->
             // Append another section for the Jenkins build log
@@ -978,18 +975,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
     }
 
-    Map<String, MetaMethod> getSupportedDocuments() {
-        return this.metaClass.methods
-            .findAll { method ->
-                return method.isPublic() && (method.getName() ==~ /^create[A-Z]{2,}/ || method.getName() ==~ /^createOverall[A-Z]{2,}/)
-            }
-            .collectEntries { method ->
-                def name = method.getName()
-                    .replaceAll("create", "")
-                    .replaceAll("Overall", "Overall_")
-                    .toUpperCase()
-
-                return [ name, method ]
-            }
+    List<String> getSupportedDocuments() {
+        return DocumentType.values().collect { it as String }
     }
 }

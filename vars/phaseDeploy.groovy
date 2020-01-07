@@ -16,7 +16,7 @@ def call(Map project, List<Set<Map>> repos) {
 
     def postExecuteRepo = { steps, repo ->
         /*
-        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentTypes.TIR, phase)) {
+        if (LeVaDocumentUseCase.appliesToRepo(repo, LeVaDocumentUseCase.DocumentType.TIR, phase)) {
             echo "Creating and archiving a Technical Installation Report for repo '${repo.id}'"
             levaDoc.createTIR(project, repo)
         }
@@ -26,7 +26,7 @@ def call(Map project, List<Set<Map>> repos) {
     }
 
     /*
-    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentTypes.TIP, phase)) {
+    if (LeVaDocumentUseCase.appliesToProject(project, LeVaDocumentUseCase.DocumentType.TIP, phase)) {
         echo "Creating and archiving a Technical Installation Plan for project '${project.id}'"
         levaDoc.createTIP(project)
     }

@@ -9,113 +9,113 @@ class LeVADocumentScheduler extends DocGenScheduler {
     // Document types per GAMP category
     private static Map GAMP_CATEGORIES = [
         "1": [
-            LeVADocumentUseCase.DocumentTypes.DSD,
-            LeVADocumentUseCase.DocumentTypes.FS,
-            LeVADocumentUseCase.DocumentTypes.FTP,
-            LeVADocumentUseCase.DocumentTypes.FTR,
-            LeVADocumentUseCase.DocumentTypes.IVP,
-            LeVADocumentUseCase.DocumentTypes.IVR,
-            LeVADocumentUseCase.DocumentTypes.TIP,
-            LeVADocumentUseCase.DocumentTypes.TIR,
-            LeVADocumentUseCase.DocumentTypes.OVERALL_TIR
+            LeVADocumentUseCase.DocumentType.DSD as String,
+            LeVADocumentUseCase.DocumentType.FS as String,
+            LeVADocumentUseCase.DocumentType.FTP as String,
+            LeVADocumentUseCase.DocumentType.FTR as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
         ],
         "3": [
-            LeVADocumentUseCase.DocumentTypes.DSD,
-            LeVADocumentUseCase.DocumentTypes.IVP,
-            LeVADocumentUseCase.DocumentTypes.IVR,
-            LeVADocumentUseCase.DocumentTypes.URS,
-            LeVADocumentUseCase.DocumentTypes.TIP,
-            LeVADocumentUseCase.DocumentTypes.TIR,
-            LeVADocumentUseCase.DocumentTypes.OVERALL_TIR
+            LeVADocumentUseCase.DocumentType.DSD as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.URS as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
         ],
         "4": [
-            LeVADocumentUseCase.DocumentTypes.CS,
-            LeVADocumentUseCase.DocumentTypes.DSD,
-            LeVADocumentUseCase.DocumentTypes.FTP,
-            LeVADocumentUseCase.DocumentTypes.FTR,
-            LeVADocumentUseCase.DocumentTypes.IVP,
-            LeVADocumentUseCase.DocumentTypes.IVR,
-            LeVADocumentUseCase.DocumentTypes.URS,
-            LeVADocumentUseCase.DocumentTypes.TIP,
-            LeVADocumentUseCase.DocumentTypes.TIR,
-            LeVADocumentUseCase.DocumentTypes.OVERALL_TIR
+            LeVADocumentUseCase.DocumentType.CS as String,
+            LeVADocumentUseCase.DocumentType.DSD as String,
+            LeVADocumentUseCase.DocumentType.FTP as String,
+            LeVADocumentUseCase.DocumentType.FTR as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.URS as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
         ],
         "5": [
-            LeVADocumentUseCase.DocumentTypes.CS,
-            LeVADocumentUseCase.DocumentTypes.DSD,
-            LeVADocumentUseCase.DocumentTypes.DTP,
-            LeVADocumentUseCase.DocumentTypes.DTR,
-            LeVADocumentUseCase.DocumentTypes.OVERALL_DTR,
-            LeVADocumentUseCase.DocumentTypes.FS,
-            LeVADocumentUseCase.DocumentTypes.FTP,
-            LeVADocumentUseCase.DocumentTypes.FTR,
-            LeVADocumentUseCase.DocumentTypes.IVP,
-            LeVADocumentUseCase.DocumentTypes.IVR,
-            LeVADocumentUseCase.DocumentTypes.SCP,
-            LeVADocumentUseCase.DocumentTypes.SCR,
-            LeVADocumentUseCase.DocumentTypes.OVERALL_SCR,
-            LeVADocumentUseCase.DocumentTypes.SDS,
-            LeVADocumentUseCase.DocumentTypes.OVERALL_SDS,
-            LeVADocumentUseCase.DocumentTypes.URS,
-            LeVADocumentUseCase.DocumentTypes.TIP,
-            LeVADocumentUseCase.DocumentTypes.TIR,
-            LeVADocumentUseCase.DocumentTypes.OVERALL_TIR
+            LeVADocumentUseCase.DocumentType.CS as String,
+            LeVADocumentUseCase.DocumentType.DSD as String,
+            LeVADocumentUseCase.DocumentType.DTP as String,
+            LeVADocumentUseCase.DocumentType.DTR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_DTR as String,
+            LeVADocumentUseCase.DocumentType.FS as String,
+            LeVADocumentUseCase.DocumentType.FTP as String,
+            LeVADocumentUseCase.DocumentType.FTR as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.SCP as String,
+            LeVADocumentUseCase.DocumentType.SCR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_SCR as String,
+            LeVADocumentUseCase.DocumentType.SDS as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_SDS as String,
+            LeVADocumentUseCase.DocumentType.URS as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
         ]
     ]
 
     // Document types per pipeline phase with an optional lifecycle constraint
     private static Map PIPELINE_PHASES = [
         (MROPipelineUtil.PipelinePhases.INIT): [
-            (LeVADocumentUseCase.DocumentTypes.CS): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
-            (LeVADocumentUseCase.DocumentTypes.DSD): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
-            (LeVADocumentUseCase.DocumentTypes.FS): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
-            (LeVADocumentUseCase.DocumentTypes.URS): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
+            (LeVADocumentUseCase.DocumentType.CS as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.DSD as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.FS as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.URS as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
         ],
         (MROPipelineUtil.PipelinePhases.BUILD): [
-            (LeVADocumentUseCase.DocumentTypes.DTP): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
-            (LeVADocumentUseCase.DocumentTypes.DTR): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
-            (LeVADocumentUseCase.DocumentTypes.SCP): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
-            (LeVADocumentUseCase.DocumentTypes.SCR): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
-            (LeVADocumentUseCase.DocumentTypes.SDS): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO,
-            (LeVADocumentUseCase.DocumentTypes.OVERALL_DTR): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
-            (LeVADocumentUseCase.DocumentTypes.OVERALL_SDS): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
+            (LeVADocumentUseCase.DocumentType.DTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
+            (LeVADocumentUseCase.DocumentType.DTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
+            (LeVADocumentUseCase.DocumentType.SCP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
+            (LeVADocumentUseCase.DocumentType.SCR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
+            (LeVADocumentUseCase.DocumentType.SDS as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO,
+            (LeVADocumentUseCase.DocumentType.OVERALL_DTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.OVERALL_SDS as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
         ],
         (MROPipelineUtil.PipelinePhases.DEPLOY): [
-            (LeVADocumentUseCase.DocumentTypes.TIP): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
-            (LeVADocumentUseCase.DocumentTypes.TIR): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO
+            (LeVADocumentUseCase.DocumentType.TIP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
+            (LeVADocumentUseCase.DocumentType.TIR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO
         ],
         (MROPipelineUtil.PipelinePhases.TEST): [
-            (LeVADocumentUseCase.DocumentTypes.IVP): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
-            (LeVADocumentUseCase.DocumentTypes.IVR): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
-            (LeVADocumentUseCase.DocumentTypes.FTP): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
-            (LeVADocumentUseCase.DocumentTypes.FTR): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
-            (LeVADocumentUseCase.DocumentTypes.SCR): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO,
-            (LeVADocumentUseCase.DocumentTypes.OVERALL_SCR): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
+            (LeVADocumentUseCase.DocumentType.IVP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
+            (LeVADocumentUseCase.DocumentType.IVR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
+            (LeVADocumentUseCase.DocumentType.FTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
+            (LeVADocumentUseCase.DocumentType.FTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
+            (LeVADocumentUseCase.DocumentType.SCR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO,
+            (LeVADocumentUseCase.DocumentType.OVERALL_SCR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
         ],
         (MROPipelineUtil.PipelinePhases.RELEASE): [
         ],
         (MROPipelineUtil.PipelinePhases.FINALIZE): [
-            (LeVADocumentUseCase.DocumentTypes.OVERALL_TIR): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
+            (LeVADocumentUseCase.DocumentType.OVERALL_TIR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
         ]
     ]
 
     // Document types per repository type with an optional phase constraint
     private static Map REPSITORY_TYPES = [
         (MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE): [
-            (LeVADocumentUseCase.DocumentTypes.DTR): null,
-            (LeVADocumentUseCase.DocumentTypes.FTR): null,
-            (LeVADocumentUseCase.DocumentTypes.IVR): null,
-            (LeVADocumentUseCase.DocumentTypes.SCR): MROPipelineUtil.PipelinePhases.BUILD,
-            (LeVADocumentUseCase.DocumentTypes.SDS): null,
-            (LeVADocumentUseCase.DocumentTypes.TIR): null
+            (LeVADocumentUseCase.DocumentType.DTR as String): null,
+            (LeVADocumentUseCase.DocumentType.FTR as String): null,
+            (LeVADocumentUseCase.DocumentType.IVR as String): null,
+            (LeVADocumentUseCase.DocumentType.SCR as String): MROPipelineUtil.PipelinePhases.BUILD,
+            (LeVADocumentUseCase.DocumentType.SDS as String): null,
+            (LeVADocumentUseCase.DocumentType.TIR as String): null
         ],
         (MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE): [
-            (LeVADocumentUseCase.DocumentTypes.IVR): null,
-            (LeVADocumentUseCase.DocumentTypes.TIR): null
+            (LeVADocumentUseCase.DocumentType.IVR as String): null,
+            (LeVADocumentUseCase.DocumentType.TIR as String): null
         ],
         (MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST): [
-            (LeVADocumentUseCase.DocumentTypes.SCR): MROPipelineUtil.PipelinePhases.TEST,
-            (LeVADocumentUseCase.DocumentTypes.SDS): null
+            (LeVADocumentUseCase.DocumentType.SCR as String): MROPipelineUtil.PipelinePhases.TEST,
+            (LeVADocumentUseCase.DocumentType.SDS as String): null
         ]
     ]
 
@@ -144,41 +144,21 @@ class LeVADocumentScheduler extends DocGenScheduler {
         return result
     }
 
-    private boolean isDocumentApplicableForProject(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project) {
-        def levaDocsCapability = project.capabilities.find { it instanceof Map && it.containsKey("LeVADocs") }?.LeVADocs
-        if (!levaDocsCapability) {
-            return false
-        }
-
-        def gampCategory = levaDocsCapability.GAMPCategory.toString()
-        if (!gampCategory) {
-            return false
-        }
-
+    private boolean isDocumentApplicableForProject(String documentType, String gampCategory, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project) {
         if (!this.GAMP_CATEGORIES.keySet().contains(gampCategory)) {
             throw new IllegalArgumentException("Error: unable to assert applicability of document type '${documentType}' for project '${project.id}' in phase '${phase}'. The GAMP category '${gampCategory}' is not supported.")
         }
 
-        def result = isDocumentApplicableForGampCategory(documentType, gampCategory) && isDocumentApplicableForPipelinePhaseAndLifecycleStage(documentType, phase, stage) && isRepositoryLevelDocument(documentType)
+        def result = isDocumentApplicableForGampCategory(documentType, gampCategory) && isDocumentApplicableForPipelinePhaseAndLifecycleStage(documentType, phase, stage) && !isRepositoryLevelDocument(documentType)
         // Applicable for certain document types only if the Jira service is configured in the release manager configuration
-        if ([LeVADocumentUseCase.DocumentTypes.CS, LeVADocumentUseCase.DocumentTypes.DSD, LeVADocumentUseCase.DocumentTypes.FS, LeVADocumentUseCase.DocumentTypes.URS].contains(documentType)) {
+        if ([LeVADocumentUseCase.DocumentType.CS, LeVADocumentUseCase.DocumentType.DSD, LeVADocumentUseCase.DocumentType.FS, LeVADocumentUseCase.DocumentType.URS].contains(documentType as LeVADocumentUseCase.DocumentType)) {
             result = result && project.services?.jira != null
         }
 
         return result
     }
 
-    private boolean isDocumentApplicableForRepo(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo) {
-        def levaDocsCapability = project.capabilities.find { it instanceof Map && it.containsKey("LeVADocs") }?.LeVADocs
-        if (!levaDocsCapability) {
-            return false
-        }
-
-        def gampCategory = levaDocsCapability.GAMPCategory.toString()
-        if (!gampCategory) {
-            return false
-        }
-
+    private boolean isDocumentApplicableForRepo(String documentType, String gampCategory, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo) {
         if (!this.GAMP_CATEGORIES.keySet().contains(gampCategory)) {
             throw new IllegalArgumentException("Error: unable to assert applicability of document type '${documentType}' for project '${project.id}' and repo '${repo.id}' in phase '${phase}'. The GAMP category '${gampCategory}' is not supported.")
         }
@@ -204,12 +184,22 @@ class LeVADocumentScheduler extends DocGenScheduler {
     }
 
     private boolean isRepositoryLevelDocument(String documentType) {
-        return !this.REPSITORY_TYPES.values().collect { it.keySet() }.flatten().contains(documentType)
+        return this.REPSITORY_TYPES.values().collect { it.keySet() }.flatten().contains(documentType)
     }
 
     protected boolean isDocumentApplicable(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo = null) {
+        def levaDocsCapability = project.capabilities.find { it instanceof Map && it.containsKey("LeVADocs") }?.LeVADocs
+        if (!levaDocsCapability) {
+            return false
+        }
+
+        def gampCategory = levaDocsCapability.GAMPCategory.toString()
+        if (!gampCategory) {
+            return false
+        }
+
         return !repo
-          ? isDocumentApplicableForProject(documentType, phase, stage, project)
-          : isDocumentApplicableForRepo(documentType, phase, stage, project, repo)
+          ? isDocumentApplicableForProject(documentType, gampCategory, phase, stage, project)
+          : isDocumentApplicableForRepo(documentType, gampCategory, phase, stage, project, repo)
     }
 }

@@ -112,5 +112,5 @@ abstract class DocGenUseCase {
         return "${documentType}-${result}-${version}-${build}".toString()
     }
 
-    abstract Map<String, MetaMethod> getSupportedDocuments()
+    abstract List<String> getSupportedDocuments()
 }
