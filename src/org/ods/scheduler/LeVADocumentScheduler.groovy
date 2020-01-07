@@ -145,12 +145,12 @@ class LeVADocumentScheduler extends DocGenScheduler {
     }
 
     private boolean isDocumentApplicableForProject(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project) {
-        def levaDocsCapability = project.capabilities.find { it instanceof Map && it.containsKey("LeVADocs") }?.levaDocs
+        def levaDocsCapability = project.capabilities.find { it instanceof Map && it.containsKey("LeVADocs") }?.LeVADocs
         if (!levaDocsCapability) {
             return false
         }
 
-        def gampCategory = levaDocsCapability.GampCategory
+        def gampCategory = levaDocsCapability.GAMPCategory.toString()
         if (!gampCategory) {
             return false
         }
@@ -169,12 +169,12 @@ class LeVADocumentScheduler extends DocGenScheduler {
     }
 
     private boolean isDocumentApplicableForRepo(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo) {
-        def levaDocsCapability = project.capabilities.find { it instanceof Map && it.containsKey("LeVADocs") }?.levaDocs
+        def levaDocsCapability = project.capabilities.find { it instanceof Map && it.containsKey("LeVADocs") }?.LeVADocs
         if (!levaDocsCapability) {
             return false
         }
 
-        def gampCategory = levaDocsCapability.GampCategory
+        def gampCategory = levaDocsCapability.GAMPCategory.toString()
         if (!gampCategory) {
             return false
         }
@@ -208,7 +208,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
     }
 
     protected boolean isDocumentApplicable(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo = null) {
-        return repo == null
+        return !repo
           ? isDocumentApplicableForProject(documentType, phase, stage, project)
           : isDocumentApplicableForRepo(documentType, phase, stage, project, repo)
     }
