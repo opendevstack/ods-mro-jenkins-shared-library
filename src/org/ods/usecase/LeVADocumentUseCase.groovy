@@ -967,7 +967,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             name: name,
             description: project.description,
             type: documentTypeName,
-            version: null, // unused
+            version: this.steps.env.RELEASE_PARAM_VERSION,
             date_created: LocalDateTime.now().toString(),
             buildParameter: this.util.getBuildParams(),
             git: repo ? repo.data.git : project.data.git,
