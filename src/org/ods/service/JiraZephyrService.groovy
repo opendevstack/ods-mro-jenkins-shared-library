@@ -49,13 +49,13 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map getProject(String projectId) {
-        if (!projectId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to get project from Jira. 'projectId' is undefined.")
+    Map getProject(String projectKey) {
+        if (!projectKey?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get project from Jira. 'projectKey' is undefined.")
         }
 
-        def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectId}")
-            .routeParam("projectId", projectId)
+        def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectKey}")
+            .routeParam("projectKey", projectKey)
             .basicAuth(this.username, this.password)
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")

@@ -190,7 +190,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return result << mixins
     }
 
-    def "get project with invalid project id (key)"() {
+    def "get project with invalid project key"() {
         given:
         def request = getProjectRequestData()
         def response = getProjectResponseData()
@@ -203,7 +203,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
         then:
         def e = thrown(IllegalArgumentException)
-        e.message == "Error: unable to get project from Jira. 'projectId' is undefined."
+        e.message == "Error: unable to get project from Jira. 'projectKey' is undefined."
 
         cleanup:
         stopServer(server)
