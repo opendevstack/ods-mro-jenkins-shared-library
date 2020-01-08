@@ -139,9 +139,6 @@ def call() {
         )
     )
 
-    // def levaDoc = registry.get(LeVADocumentUseCase.class.name)
-    def levaDocScheduler = registry.get(LeVADocumentScheduler.class.name)
-
     def phase = MROPipelineUtil.PipelinePhases.INIT
 
     // Checkout repositories into the workspace
@@ -156,29 +153,7 @@ def call() {
     // Compute groups of repository configs for convenient parallelization
     repos = util.computeRepoGroups(repos)
 
-    /*
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.URS, phase)) {
-        echo "Creating and archiving a User Requirements Specification for project '${project.id}'"
-        levaDoc.createURS(project)
-    }
-
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.FS, phase)) {
-        echo "Creating and archiving a Functional Specification for project '${project.id}'"
-        levaDoc.createFS(project)
-    }
-
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.CS, phase)) {
-        echo "Creating and archiving a Configuration Specification for project '${project.id}'"
-        levaDoc.createCS(project)
-    }
-
-    if (LeVADocumentUseCase.appliesToProject(project, LeVADocumentUseCase.DocumentType.DSD, phase)) {
-        echo "Creating and archiving a System Design Specification for project '${project.id}'"
-        levaDoc.createDSD(project)
-    }
-    */
-
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
+    registry.get(LeVADocumentScheduler.class.name).run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 
     return [ project: project, repos: repos ]
 }
