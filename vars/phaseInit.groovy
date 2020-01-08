@@ -83,7 +83,6 @@ def call() {
         }
     }
 
-
     registry.add(NexusService.class.name,
         new NexusService(
             env.NEXUS_URL,
