@@ -64,7 +64,7 @@ class JiraZephyrService extends JiraService {
         }
 
         def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectKey}")
-            .routeParam("projectKey", projectKey)
+            .routeParam("projectKey", projectKey.toUpperCase())
             .basicAuth(this.username, this.password)
             .header("Accept", "application/json")
             .asString()
