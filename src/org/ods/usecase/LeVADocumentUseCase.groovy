@@ -297,6 +297,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             sections = this.levaFiles.getDocumentChapterData(documentType)
         }
 
+        // TODO: get automated test issues of type InstallationTest
         def data = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
@@ -565,8 +566,33 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createIVP(Map project) {
-        // TODO: not yet implemented
-        return "http://nexus"
+        def documentType = DocumentType.IVP as String
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        // TODO: get automated test issues of type InstallationTest
+        def data = [
+            metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project),
+            data: [
+                project: project,
+                sections: sections,
+                tests: this.jira.getAutomatedTestIssues(project.id).collectEntries { issue ->
+                    [
+                        issue.key,
+                        [
+                            key: issue.key,
+                            description: issue.description ?: "",
+                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A"
+                        ]
+                    ]
+                }
+            ]
+        ]
+
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
     String createIVR(Map project, Map repo, Map data) {

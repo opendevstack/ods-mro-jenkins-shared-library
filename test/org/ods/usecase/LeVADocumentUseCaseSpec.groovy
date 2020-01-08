@@ -409,6 +409,44 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         _ * util.getBuildParams() >> buildParams
     }
 
+    def "create IVP"() {
+        given:
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        // Test Parameters
+        def project = createProject()
+
+        // Argument Constraints
+        def documentType = LeVADocumentUseCase.DocumentType.IVP as String
+
+        // Stubbed Method Responses
+        def buildParams = createBuildEnvironment(env)
+        def chapterData = ["sec1": "myContent"]
+        def testIssues = createJiraTestIssues()
+
+        when:
+        usecase.createIVP(project)
+
+        then:
+        1 * jira.getDocumentChapterData(project.id, documentType) >> chapterData
+        0 * levaFiles.getDocumentChapterData(documentType)
+
+        then:
+        1 * jira.getAutomatedTestIssues(project.id) >> testIssues
+        1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        _ * util.getBuildParams() >> buildParams
+    }
+
     def "create SCP"() {
         given:
         def util = Mock(MROPipelineUtil)
