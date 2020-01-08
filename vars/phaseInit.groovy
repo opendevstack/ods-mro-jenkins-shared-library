@@ -5,6 +5,7 @@ import kong.unirest.Unirest
 import org.ods.service.DocGenService
 import org.ods.service.JenkinsService
 import org.ods.service.JiraService
+import org.ods.service.JiraZephyrService
 import org.ods.service.LeVaDocumentChaptersFileService
 import org.ods.service.NexusService
 import org.ods.service.OpenShiftService
@@ -70,6 +71,19 @@ def call() {
         }
     }
 
+    if (project.capabilities.contains("zephyr")) {
+        withCredentials([ usernamePassword(credentialsId: project.services.jira.credentials.id, usernameVariable: "JIRA_USERNAME", passwordVariable: "JIRA_PASSWORD") ]) {
+            registry.add(JiraZephyrService.class.name,
+                new JiraZephyrService(
+                    env.JIRA_URL,
+                    env.JIRA_USERNAME,
+                    env.JIRA_PASSWORD
+                )
+            )
+        }
+    }
+
+
     registry.add(NexusService.class.name,
         new NexusService(
             env.NEXUS_URL,
@@ -97,7 +111,7 @@ def call() {
 
     jiraUseCase.setSupport(
         project.capabilities.contains("zephyr")
-            ? new JiraUseCaseZephyrSupport(jiraUseCase)
+            ? new JiraUseCaseZephyrSupport(jiraUseCase, registry.get(JiraZephyrService.class.name))
             : new JiraUseCaseSupport(jiraUseCase)
     )
 
