@@ -30,15 +30,15 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         
         def issuesList = [
             [id: '1', key: 'JIRA-1', projectid: '1234']
-          ]
+        ]
         def Map execution1 = ['123':[]]
 
         when:
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createNewExecution('1', '1234') >> execution1
-        1 * zephyr.updateExecutionPass('123')
+        1 * zephyr.createExecutionForIssue('1', '1234') >> execution1
+        1 * zephyr.updateExecutionForIssuePass('123')
     }
 
     def "apply test results to Jira issues - test case Error"() {
@@ -51,15 +51,15 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
 
         def issuesList = [
             [id: '2', key: 'JIRA-2', projectid: '1234']
-          ]
+        ]
         def Map execution1 = ['123':[]]
 
         when:
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createNewExecution('2', '1234') >> execution1
-        1 * zephyr.updateExecutionFail('123')
+        1 * zephyr.createExecutionForIssue('2', '1234') >> execution1
+        1 * zephyr.updateExecutionForIssueFail('123')
     }
 
     def "apply test results to Jira issues - test case Failed"() {
@@ -72,15 +72,15 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
 
         def issuesList = [
             [id: '3', key: 'JIRA-3', projectid: '1234']
-          ]
+        ]
         def Map execution1 = ['123':[]]
 
         when:
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createNewExecution('3', '1234') >> execution1
-        1 * zephyr.updateExecutionFail('123')
+        1 * zephyr.createExecutionForIssue('3', '1234') >> execution1
+        1 * zephyr.updateExecutionForIssueFail('123')
     }
 
     def "apply test results to Jira issues - test case Missing"() {
@@ -93,16 +93,16 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
 
         def issuesList = [
             [id: '4', key: 'JIRA-4', projectid: '1234']
-          ]
+        ]
         def Map execution1 = ['123':[]]
 
         when:
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createNewExecution('4', '1234') >> execution1
-        0 * zephyr.updateExecutionFail('123')
-        0 * zephyr.updateExecutionPass('123')
+        1 * zephyr.createExecutionForIssue('4', '1234') >> execution1
+        0 * zephyr.updateExecutionForIssueFail('123')
+        0 * zephyr.updateExecutionForIssuePass('123')
     }
 
     def "get automated test issues for project - no results"() {
@@ -123,7 +123,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.getAutomatedTestIssues("PROJECT1")
 
         then:
-        1 * zephyr.getProjectInfo("PROJECT1")
+        1 * zephyr.getProject("PROJECT1")
         1 * jira.getIssuesForJQLQuery(jqlQuery)
     }
 }

@@ -14,14 +14,14 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     void applyTestResultsToAutomatedTestIssues(List jiraTestIssues, Map testResults) {
         jiraTestIssues.each { issue ->
             // Create a new execution (status UNEXECUTED)
-            def execution = this.zephyr.createNewExecution(issue.id, issue.projectid)
+            def execution = this.zephyr.createExecutionForIssue(issue.id, issue.projectid)
             testResults.testsuites.each { testSuite ->
                 testSuite.testcases.each { testCase ->
                     if(this.usecase.checkJiraIssueMatchesTestCase(issue, testCase.name)) {
                         if("Succeeded".equalsIgnoreCase(testCase.status)) {
-                            this.zephyr.updateExecutionPass(execution.keySet().toArray()[0])
+                            this.zephyr.updateExecutionForIssuePass(execution.keySet().toArray()[0])
                         } else if ("Error".equalsIgnoreCase(testCase.status) || "Failed".equalsIgnoreCase(testCase.status)) {
-                            this.zephyr.updateExecutionFail(execution.keySet().toArray()[0])
+                            this.zephyr.updateExecutionForIssueFail(execution.keySet().toArray()[0])
                         }
                     }
                 }
@@ -30,9 +30,9 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     }
 
     List getAutomatedTestIssues(String projectId, String componentName = null, List<String> labelsSelector = []) {
-        def info = this.zephyr.getProjectInfo(projectId)
+        def info = this.zephyr.getProject(projectId)
         return super.getAutomatedTestIssues(projectId, componentName, labelsSelector).each { issue ->
-            def steps = this.zephyr.getStepsFromIssue(issue.id)
+            def steps = this.zephyr.getStepsForIssue(issue.id)
             if(steps.stepBeanCollection){
                 issue.test = 
                     steps.stepBeanCollection.collect { stepBean ->

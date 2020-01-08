@@ -248,6 +248,7 @@ class JiraUseCase {
                 }
             }
         }
+
         return result
     }
 

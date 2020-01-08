@@ -11,14 +11,21 @@ import kong.unirest.Unirest
 
 class JiraZephyrService extends JiraService {
 
+    class ExecutionStatus {
+        static final String PASS = "1"
+        static final String FAIL = "2"
+        static final String WIP = "3"
+        static final String BLOCKED = "4"
+    }
+
     JiraZephyrService(String baseURL, String username, String password) {
         super(baseURL, username, password)
     }
 
     @NonCPS
-    Map getStepsFromIssue(String issueId) {
+    Map getStepsForIssue(String issueId) {
         if (!issueId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to get steps from Jira issue. 'issueId' is undefined.")
+            throw new IllegalArgumentException("Error: unable to get steps for Jira issue. 'issueId' is undefined.")
         }
 
         def response = Unirest.get("${this.baseURL}/rest/zapi/latest/teststep/{issueId}")
@@ -29,10 +36,10 @@ class JiraZephyrService extends JiraService {
             .asString()
         
         response.ifFailure {
-            def message = "Error: unable to get steps from Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+            def message = "Error: unable to get steps for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to get steps from Jira issue. Jira could not be found at: '${this.baseURL}'."
+                message = "Error: unable to get steps for Jira issue. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
@@ -42,9 +49,9 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map getProjectInfo(String projectId) {
+    Map getProject(String projectId) {
         if (!projectId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to get project info from Jira. 'projectId' is undefined.")
+            throw new IllegalArgumentException("Error: unable to get project from Jira. 'projectId' is undefined.")
         }
 
         def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectId}")
@@ -55,10 +62,10 @@ class JiraZephyrService extends JiraService {
             .asString()
 
         response.ifFailure {
-            def message = "Error: unable to get project info. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+            def message = "Error: unable to get project. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to get project info. Jira could not be found at: '${this.baseURL}'."
+                message = "Error: unable to get project. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
@@ -68,12 +75,13 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map createNewExecution(String issueId, String projectId) {
+    Map createExecutionForIssue(String issueId, String projectId) {
         if (!issueId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to create new test execution from Jira issue. 'issueId' is undefined.")
+            throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'issueId' is undefined.")
         }
+
         if (!projectId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to create new test execution from Jira issue. 'projectId' is undefined.")
+            throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'projectId' is undefined.")
         }
 
         def response = Unirest.post("${this.baseURL}/rest/zapi/latest/execution/")
@@ -89,10 +97,10 @@ class JiraZephyrService extends JiraService {
             .asString()
 
         response.ifFailure {
-            def message = "Error: unable to create Jira new test execution. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+            def message = "Error: unable to create test execution for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to create Jira new test execution. Jira could not be found at: '${this.baseURL}'."
+                message = "Error: unable to create test execution for Jira issue. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
@@ -102,12 +110,12 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    void updateExecution(String executionId, String status) {
+    void updateExecutionForIssue(String executionId, String status) {
         if (!executionId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to update test execution from Jira issue. 'executionId' is undefined.")
+            throw new IllegalArgumentException("Error: unable to update test execution for Jira issue. 'executionId' is undefined.")
         }
         if (!status?.trim()) {
-            throw new IllegalArgumentException("Error: unable to update test execution from Jira issue. 'status' is undefined.")
+            throw new IllegalArgumentException("Error: unable to update test execution for Jira issue. 'status' is undefined.")
         }
 
 
@@ -125,30 +133,29 @@ class JiraZephyrService extends JiraService {
 
 
         response.ifFailure {
-            def message = "Error: unable to update Jira test execution. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+            def message = "Error: unable to update test execution for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to update Jira test execution. Jira could not be found at: '${this.baseURL}'."
+                message = "Error: unable to update test execution for Jira issue. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
         }
     }
 
-    void updateExecutionPass(String executionId) {
-        this.updateExecution(executionId, "1")
+    void updateExecutionForIssuePass(String executionId) {
+        this.updateExecutionForIssue(executionId, ExecutionStatus.PASS)
     }
 
-    void updateExecutionFail(String executionId) {
-        this.updateExecution(executionId, "2")
+    void updateExecutionForIssueFail(String executionId) {
+        this.updateExecutionForIssue(executionId, ExecutionStatus.FAIL)
     }
 
-    void updateExecutionWip(String executionId) {
-        this.updateExecution(executionId, "3")
+    void updateExecutionForIssueWip(String executionId) {
+        this.updateExecutionForIssue(executionId, ExecutionStatus.WIP)
     }
 
-    void updateExecutionBlocked(String executionId) {
-        this.updateExecution(executionId, "4")
+    void updateExecutionForIssueBlocked(String executionId) {
+        this.updateExecutionForIssue(executionId, ExecutionStatus.BLOCKED)
     }
-
 }
