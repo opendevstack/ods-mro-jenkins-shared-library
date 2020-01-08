@@ -2,7 +2,6 @@ package org.ods.usecase
 
 import org.ods.parser.JUnitParser
 import org.ods.service.JiraService
-import org.ods.service.JiraZephyrService
 import org.ods.util.IPipelineSteps
 
 class JiraUseCase {
@@ -20,19 +19,12 @@ class JiraUseCase {
     static final List JIRA_TEST_CASE_LABELS = [ "Error", "Failed", "Missing", "Skipped", "Succeeded" ]
 
     private JiraService jira
-    private JiraZephyrService zephyr
     private IPipelineSteps steps
     private AbstractJiraUseCaseSupport support
 
     JiraUseCase(IPipelineSteps steps, JiraService jira) {
         this.steps = steps
         this.jira = jira
-    }
-
-    JiraUseCase(IPipelineSteps steps, JiraService jira, JiraZephyrService zephyr) {
-        this.steps = steps
-        this.jira = jira
-        this.zephyr = zephyr
     }
 
     void setSupport(AbstractJiraUseCaseSupport support) {

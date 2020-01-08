@@ -1,22 +1,27 @@
 package org.ods.usecase
 
+import org.ods.service.JiraZephyrService
+
 class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
-    JiraUseCaseZephyrSupport(JiraUseCase usecase) {
+    private JiraZephyrService zephyr
+
+    JiraUseCaseZephyrSupport(JiraUseCase usecase, JiraZephyrService zephyr) {
         super(usecase)
+        this.zephyr = zephyr
     }
 
     void applyTestResultsToAutomatedTestIssues(List jiraTestIssues, Map testResults) {
         jiraTestIssues.each { issue ->
             // Create a new execution (status UNEXECUTED)
-            def execution = this.usecase.zephyr.createNewExecution(issue.id, issue.projectid)
+            def execution = this.zephyr.createNewExecution(issue.id, issue.projectid)
             testResults.testsuites.each { testSuite ->
                 testSuite.testcases.each { testCase ->
                     if(this.usecase.checkJiraIssueMatchesTestCase(issue, testCase.name)) {
                         if("Succeeded".equalsIgnoreCase(testCase.status)) {
-                            this.usecase.zephyr.updateExecutionPass(execution.keySet().toArray()[0])
+                            this.zephyr.updateExecutionPass(execution.keySet().toArray()[0])
                         } else if ("Error".equalsIgnoreCase(testCase.status) || "Failed".equalsIgnoreCase(testCase.status)) {
-                            this.usecase.zephyr.updateExecutionFail(execution.keySet().toArray()[0])
+                            this.zephyr.updateExecutionFail(execution.keySet().toArray()[0])
                         }
                     }
                 }
@@ -25,9 +30,9 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     }
 
     List getAutomatedTestIssues(String projectId, String componentName = null, List<String> labelsSelector = []) {
-        def info = this.usecase.zephyr.getProjectInfo(projectId)
+        def info = this.zephyr.getProjectInfo(projectId)
         return super.getAutomatedTestIssues(projectId, componentName, labelsSelector).each { issue ->
-            def steps = this.usecase.zephyr.getStepsFromIssue(issue.id)
+            def steps = this.zephyr.getStepsFromIssue(issue.id)
             if(steps.stepBeanCollection){
                 issue.test = 
                     steps.stepBeanCollection.collect { stepBean ->
