@@ -23,58 +23,6 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map getStepsForIssue(String issueId) {
-        if (!issueId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to get steps for Jira issue. 'issueId' is undefined.")
-        }
-
-        def response = Unirest.get("${this.baseURL}/rest/zapi/latest/teststep/{issueId}")
-            .routeParam("issueId", issueId)
-            .basicAuth(this.username, this.password)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .asString()
-        
-        response.ifFailure {
-            def message = "Error: unable to get steps for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
-
-            if (response.getStatus() == 404) {
-                message = "Error: unable to get steps for Jira issue. Jira could not be found at: '${this.baseURL}'."
-            }
-
-            throw new RuntimeException(message)
-        }
-
-        return new JsonSlurperClassic().parseText(response.getBody())
-    }
-
-    @NonCPS
-    Map getProject(String projectKey) {
-        if (!projectKey?.trim()) {
-            throw new IllegalArgumentException("Error: unable to get project from Jira. 'projectKey' is undefined.")
-        }
-
-        def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectKey}")
-            .routeParam("projectKey", projectKey)
-            .basicAuth(this.username, this.password)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .asString()
-
-        response.ifFailure {
-            def message = "Error: unable to get project. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
-
-            if (response.getStatus() == 404) {
-                message = "Error: unable to get project. Jira could not be found at: '${this.baseURL}'."
-            }
-
-            throw new RuntimeException(message)
-        }
-
-        return new JsonSlurperClassic().parseText(response.getBody())
-    }
-
-    @NonCPS
     Map createExecutionForIssue(String issueId, String projectId) {
         if (!issueId?.trim()) {
             throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'issueId' is undefined.")
@@ -101,6 +49,56 @@ class JiraZephyrService extends JiraService {
 
             if (response.getStatus() == 404) {
                 message = "Error: unable to create test execution for Jira issue. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody())
+    }
+
+    @NonCPS
+    Map getProject(String projectKey) {
+        if (!projectKey?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get project from Jira. 'projectKey' is undefined.")
+        }
+
+        def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectKey}")
+            .routeParam("projectKey", projectKey)
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .asString()
+
+        response.ifFailure {
+            def message = "Error: unable to get project. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to get project. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody())
+    }
+
+    @NonCPS
+    Map getStepsForIssue(String issueId) {
+        if (!issueId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get steps for Jira issue. 'issueId' is undefined.")
+        }
+
+        def response = Unirest.get("${this.baseURL}/rest/zapi/latest/teststep/{issueId}")
+            .routeParam("issueId", issueId)
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .asString()
+        
+        response.ifFailure {
+            def message = "Error: unable to get steps for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to get steps for Jira issue. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)

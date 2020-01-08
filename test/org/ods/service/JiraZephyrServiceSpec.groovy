@@ -18,260 +18,6 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return new JiraZephyrService("http://localhost:${port}", username, password)
     }
 
-    Map getStepsForIssueRequestData(Map mixins = [:]) {
-        def result = [
-            data: [
-                issueId: "25140"
-            ],
-            headers: [
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            ],
-            password: "password",
-            username: "username"
-        ]
-
-        result.path = "/rest/zapi/latest/teststep/${result.data.issueId}"
-
-        return result << mixins
-    }
-
-    Map getStepsForIssueResponseData(Map mixins = [:]) {
-        def result = [
-            body: JsonOutput.toJson([
-                stepBeanCollection: [
-                    [
-                        data: 'Data1',
-                        htmlResult: '<p>Result1</p>',
-                        orderId:1,
-                        customFields:[:],
-                        attachmentsMap:[],
-                        htmlData: '<p>Data1</p>',
-                        result : 'Result1',
-                        customFieldValuesMap:[:],
-                        htmlStep: '<p>Step1</p>',
-                        createdBy: 'user1@mail.com',
-                        step: 'Step1',
-                        modifiedBy: 'user1@mail.com',
-                        id: 201,
-                        totalStepCount:2
-                    ],
-                    [
-                        data: 'Data2',
-                        htmlResult: '<p>Result2</p>',
-                        orderId:2,
-                        customFields:[:],
-                        attachmentsMap:[],
-                        htmlData: '<p>Data2</p>',
-                        result : 'Result2',
-                        customFieldValuesMap:[:],
-                        htmlStep: '<p>Step2</p>',
-                        createdBy: 'user2@mail.com',
-                        step: 'Step2',
-                        modifiedBy: 'user2@mail.com',
-                        id: 202,
-                        totalStepCount:2
-                    ]
-                ]
-            ])
-        ]
-
-        return result << mixins
-    }
-
-    def "get steps for issue with invalid issue id"() {
-        given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData()
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getStepsForIssue(null)
-
-        then:
-        def e = thrown(IllegalArgumentException)
-        e.message == "Error: unable to get steps for Jira issue. 'issueId' is undefined."
-
-        cleanup:
-        stopServer(server)
-    }
-
-    def "get steps for issue"() {
-        given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData()
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getStepsForIssue("25140")
-
-        then:
-        def expect = getStepsForIssueResponseData()
-
-        noExceptionThrown()
-
-        cleanup:
-        stopServer(server)
-    }
-
-    def "get steps for issue with HTTP 404 failure"() {
-        given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData([
-            status: 404
-        ])
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getStepsForIssue("25140")
-
-        then:
-        def e = thrown(RuntimeException)
-        e.message == "Error: unable to get steps for Jira issue. Jira could not be found at: 'http://localhost:${server.port()}'."
-
-        cleanup:
-        stopServer(server)
-    }
-
-    def "get steps for issue with HTTP 500 failure"() {
-        given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData([
-            status: 500,
-            body: "Sorry, doesn't work!"
-        ])
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getStepsForIssue("25140")
-
-        then:
-        def e = thrown(RuntimeException)
-        e.message == "Error: unable to get steps for Jira issue. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
-
-        cleanup:
-        stopServer(server)
-    }
-
-    Map getProjectRequestData(Map mixins = [:]) {
-        def result = [
-            data: [
-                projectKey: "DEMO"
-            ],
-            headers: [
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            ],
-            password: "password",
-            username: "username"
-        ]
-
-        result.path = "/rest/api/2/project/${result.data.projectKey}"
-
-        return result << mixins
-    }
-
-    Map getProjectResponseData(Map mixins = [:]) {
-        def result = [
-            body: JsonOutput.toJson([
-                id: '12005',
-                key: 'DEMO'
-            ])
-        ]
-
-        return result << mixins
-    }
-
-    def "get project with invalid project key"() {
-        given:
-        def request = getProjectRequestData()
-        def response = getProjectResponseData()
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getProject()
-
-        then:
-        def e = thrown(IllegalArgumentException)
-        e.message == "Error: unable to get project from Jira. 'projectKey' is undefined."
-
-        cleanup:
-        stopServer(server)
-    }
-
-    def "get project"() {
-        given:
-        def request = getProjectRequestData()
-        def response = getProjectResponseData()
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getProject("DEMO")
-
-        then:
-        def expect = getProjectResponseData()
-
-        noExceptionThrown()
-
-        cleanup:
-        stopServer(server)
-    }
-
-    def "get project with HTTP 404 failure"() {
-        given:
-        def request = getProjectRequestData()
-        def response = getProjectResponseData([
-            status: 404
-        ])
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getProject("DEMO")
-
-        then:
-        def e = thrown(RuntimeException)
-        e.message == "Error: unable to get project. Jira could not be found at: 'http://localhost:${server.port()}'."
-
-        cleanup:
-        stopServer(server)
-    }
-
-    def "get project with HTTP 500 failure"() {
-        given:
-        def request = getProjectRequestData()
-        def response = getProjectResponseData([
-            status: 500,
-            body: "Sorry, doesn't work!"
-        ])
-
-        def server = createServer(WireMock.&get, request, response)
-        def service = createService(server.port(), request.username, request.password)
-
-        when:
-        def result = service.getProject("DEMO")
-
-        then:
-        def e = thrown(RuntimeException)
-        e.message == "Error: unable to get project. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
-
-        cleanup:
-        stopServer(server)
-    }
-
     Map createExecutionForIssueRequestData(Map mixins = [:]) {
         def result = [
             data: [
@@ -428,6 +174,258 @@ class JiraZephyrServiceSpec extends SpecHelper {
         then:
         def e = thrown(RuntimeException)
         e.message == "Error: unable to create test execution for Jira issue. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    Map getProjectRequestData(Map mixins = [:]) {
+        def result = [
+            data: [
+                projectKey: "DEMO"
+            ],
+            headers: [
+                "Accept": "application/json"
+            ],
+            password: "password",
+            username: "username"
+        ]
+
+        result.path = "/rest/api/2/project/${result.data.projectKey}"
+
+        return result << mixins
+    }
+
+    Map getProjectResponseData(Map mixins = [:]) {
+        def result = [
+            body: JsonOutput.toJson([
+                id: '12005',
+                key: 'DEMO'
+            ])
+        ]
+
+        return result << mixins
+    }
+
+    def "get project with invalid project key"() {
+        given:
+        def request = getProjectRequestData()
+        def response = getProjectResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProject()
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to get project from Jira. 'projectKey' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project"() {
+        given:
+        def request = getProjectRequestData()
+        def response = getProjectResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProject("DEMO")
+
+        then:
+        def expect = getProjectResponseData()
+
+        noExceptionThrown()
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project with HTTP 404 failure"() {
+        given:
+        def request = getProjectRequestData()
+        def response = getProjectResponseData([
+            status: 404
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProject("DEMO")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get project. Jira could not be found at: 'http://localhost:${server.port()}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project with HTTP 500 failure"() {
+        given:
+        def request = getProjectRequestData()
+        def response = getProjectResponseData([
+            status: 500,
+            body: "Sorry, doesn't work!"
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProject("DEMO")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get project. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    Map getStepsForIssueRequestData(Map mixins = [:]) {
+        def result = [
+            data: [
+                issueId: "25140"
+            ],
+            headers: [
+                "Accept": "application/json"
+            ],
+            password: "password",
+            username: "username"
+        ]
+
+        result.path = "/rest/zapi/latest/teststep/${result.data.issueId}"
+
+        return result << mixins
+    }
+
+    Map getStepsForIssueResponseData(Map mixins = [:]) {
+        def result = [
+            body: JsonOutput.toJson([
+                stepBeanCollection: [
+                    [
+                        data: 'Data1',
+                        htmlResult: '<p>Result1</p>',
+                        orderId:1,
+                        customFields:[:],
+                        attachmentsMap:[],
+                        htmlData: '<p>Data1</p>',
+                        result : 'Result1',
+                        customFieldValuesMap:[:],
+                        htmlStep: '<p>Step1</p>',
+                        createdBy: 'user1@mail.com',
+                        step: 'Step1',
+                        modifiedBy: 'user1@mail.com',
+                        id: 201,
+                        totalStepCount:2
+                    ],
+                    [
+                        data: 'Data2',
+                        htmlResult: '<p>Result2</p>',
+                        orderId:2,
+                        customFields:[:],
+                        attachmentsMap:[],
+                        htmlData: '<p>Data2</p>',
+                        result : 'Result2',
+                        customFieldValuesMap:[:],
+                        htmlStep: '<p>Step2</p>',
+                        createdBy: 'user2@mail.com',
+                        step: 'Step2',
+                        modifiedBy: 'user2@mail.com',
+                        id: 202,
+                        totalStepCount:2
+                    ]
+                ]
+            ])
+        ]
+
+        return result << mixins
+    }
+
+    def "get steps for issue with invalid issue id"() {
+        given:
+        def request = getStepsForIssueRequestData()
+        def response = getStepsForIssueResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getStepsForIssue(null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to get steps for Jira issue. 'issueId' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get steps for issue"() {
+        given:
+        def request = getStepsForIssueRequestData()
+        def response = getStepsForIssueResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getStepsForIssue("25140")
+
+        then:
+        def expect = getStepsForIssueResponseData()
+
+        noExceptionThrown()
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get steps for issue with HTTP 404 failure"() {
+        given:
+        def request = getStepsForIssueRequestData()
+        def response = getStepsForIssueResponseData([
+            status: 404
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getStepsForIssue("25140")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get steps for Jira issue. Jira could not be found at: 'http://localhost:${server.port()}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get steps for issue with HTTP 500 failure"() {
+        given:
+        def request = getStepsForIssueRequestData()
+        def response = getStepsForIssueResponseData([
+            status: 500,
+            body: "Sorry, doesn't work!"
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getStepsForIssue("25140")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get steps for Jira issue. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
 
         cleanup:
         stopServer(server)
