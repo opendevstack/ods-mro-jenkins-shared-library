@@ -68,18 +68,16 @@ def call() {
                     env.JIRA_PASSWORD
                 )
             )
-        }
-    }
 
-    if (project.capabilities.contains("zephyr")) {
-        withCredentials([ usernamePassword(credentialsId: project.services.jira.credentials.id, usernameVariable: "JIRA_USERNAME", passwordVariable: "JIRA_PASSWORD") ]) {
-            registry.add(JiraZephyrService.class.name,
-                new JiraZephyrService(
-                    env.JIRA_URL,
-                    env.JIRA_USERNAME,
-                    env.JIRA_PASSWORD
+            if (project.capabilities.contains("zephyr")) {
+                registry.add(JiraZephyrService.class.name,
+                    new JiraZephyrService(
+                        env.JIRA_URL,
+                        env.JIRA_USERNAME,
+                        env.JIRA_PASSWORD
+                    )
                 )
-            )
+            }
         }
     }
 

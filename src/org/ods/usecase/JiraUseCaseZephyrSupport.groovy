@@ -12,6 +12,8 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     }
 
     void applyTestResultsToAutomatedTestIssues(List jiraTestIssues, Map testResults) {
+        if (!this.zephyr) return
+
         jiraTestIssues.each { issue ->
             // Create a new execution (status UNEXECUTED)
             def execution = this.zephyr.createExecutionForIssue(issue.id, issue.projectid)
@@ -30,6 +32,8 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     }
 
     List getAutomatedTestIssues(String projectId, String componentName = null, List<String> labelsSelector = []) {
+        if (!this.zephyr) return []
+
         def info = this.zephyr.getProject(projectId)
         return super.getAutomatedTestIssues(projectId, componentName, labelsSelector).each { issue ->
             def steps = this.zephyr.getStepsForIssue(issue.id)
