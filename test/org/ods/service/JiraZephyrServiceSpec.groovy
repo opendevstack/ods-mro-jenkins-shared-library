@@ -78,7 +78,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return result << mixins
     }
 
-    def "create execution for issue with invalid issue id"() {
+    def "create test execution for issue with invalid issue id"() {
         given:
         def request = createTestExecutionForIssueRequestData()
         def response = createTestExecutionForIssueResponseData()
@@ -97,7 +97,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         stopServer(server)
     }
 
-    def "create execution for issue with invalid project id"() {
+    def "create test execution for issue with invalid project id"() {
         given:
         def request = createTestExecutionForIssueRequestData()
         def response = createTestExecutionForIssueResponseData()
@@ -116,7 +116,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         stopServer(server)
     }
 
-    def "create execution for issue "() {
+    def "create test execution for issue "() {
         given:
         def request = createTestExecutionForIssueRequestData()
         def response = createTestExecutionForIssueResponseData()
@@ -136,7 +136,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         stopServer(server)
     }
 
-    def "create execution for issue with HTTP 404 failure"() {
+    def "create test execution for issue with HTTP 404 failure"() {
         given:
         def request = createTestExecutionForIssueRequestData()
         def response = createTestExecutionForIssueResponseData([
@@ -157,7 +157,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         stopServer(server)
     }
 
-    def "create execution for issue with HTTP 500 failure"() {
+    def "create test execution for issue with HTTP 500 failure"() {
         given:
         def request = createTestExecutionForIssueRequestData()
         def response = createTestExecutionForIssueResponseData([

@@ -2,10 +2,9 @@ package org.ods.usecase
 
 import com.cloudbees.groovy.cps.NonCPS
 
-import groovy.json.JsonOutput
-
 import org.ods.service.JiraZephyrService
 import org.ods.util.IPipelineSteps
+import org.ods.util.SortUtil
 
 class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
@@ -61,19 +60,10 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
                 return testDetails.subMap(["step", "data", "result"])
             }
 
-            issue.test.details = this.sortIssuesByProperties(testDetails, ["orderId"])
+            issue.test.details = SortUtil.sortIssuesByProperties(testDetails, ["orderId"])
 
             // The project ID (not key) is mandatory to generate new executions
             issue.projectId = project.id
-        }
-    }
-
-    @NonCPS
-    // TODO: remove
-    // Sorts a collection of maps in the order of the keys in properties
-    private List<Map> sortIssuesByProperties(Collection<Map> issues, List properties) {
-        return issues.sort { issue ->
-            issue.subMap(properties).values().join("-")
         }
     }
 }
