@@ -289,7 +289,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         stopServer(server)
     }
 
-    Map getStepsForIssueRequestData(Map mixins = [:]) {
+    Map getTestDetailsForIssueRequestData(Map mixins = [:]) {
         def result = [
             data: [
                 issueId: "25140"
@@ -306,7 +306,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return result << mixins
     }
 
-    Map getStepsForIssueResponseData(Map mixins = [:]) {
+    Map getTestDetailsForIssueResponseData(Map mixins = [:]) {
         def result = [
             body: JsonOutput.toJson([
                 stepBeanCollection: [
@@ -349,38 +349,38 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return result << mixins
     }
 
-    def "get steps for issue with invalid issue id"() {
+    def "get test details for issue with invalid issue id"() {
         given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData()
+        def request = getTestDetailsForIssueRequestData()
+        def response = getTestDetailsForIssueResponseData()
 
         def server = createServer(WireMock.&get, request, response)
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.getStepsForIssue(null)
+        def result = service.getTestDetailsForIssue(null)
 
         then:
         def e = thrown(IllegalArgumentException)
-        e.message == "Error: unable to get steps for Jira issue. 'issueId' is undefined."
+        e.message == "Error: unable to get test details for Jira issue. 'issueId' is undefined."
 
         cleanup:
         stopServer(server)
     }
 
-    def "get steps for issue"() {
+    def "get test details for issue"() {
         given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData()
+        def request = getTestDetailsForIssueRequestData()
+        def response = getTestDetailsForIssueResponseData()
 
         def server = createServer(WireMock.&get, request, response)
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.getStepsForIssue("25140")
+        def result = service.getTestDetailsForIssue("25140")
 
         then:
-        def expect = getStepsForIssueResponseData()
+        def expect = getTestDetailsForIssueResponseData()
 
         noExceptionThrown()
 
@@ -388,10 +388,10 @@ class JiraZephyrServiceSpec extends SpecHelper {
         stopServer(server)
     }
 
-    def "get steps for issue with HTTP 404 failure"() {
+    def "get test details for issue with HTTP 404 failure"() {
         given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData([
+        def request = getTestDetailsForIssueRequestData()
+        def response = getTestDetailsForIssueResponseData([
             status: 404
         ])
 
@@ -399,20 +399,20 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.getStepsForIssue("25140")
+        def result = service.getTestDetailsForIssue("25140")
 
         then:
         def e = thrown(RuntimeException)
-        e.message == "Error: unable to get steps for Jira issue. Jira could not be found at: 'http://localhost:${server.port()}'."
+        e.message == "Error: unable to get test details for Jira issue. Jira could not be found at: 'http://localhost:${server.port()}'."
 
         cleanup:
         stopServer(server)
     }
 
-    def "get steps for issue with HTTP 500 failure"() {
+    def "get test details for issue with HTTP 500 failure"() {
         given:
-        def request = getStepsForIssueRequestData()
-        def response = getStepsForIssueResponseData([
+        def request = getTestDetailsForIssueRequestData()
+        def response = getTestDetailsForIssueResponseData([
             status: 500,
             body: "Sorry, doesn't work!"
         ])
@@ -421,11 +421,11 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.getStepsForIssue("25140")
+        def result = service.getTestDetailsForIssue("25140")
 
         then:
         def e = thrown(RuntimeException)
-        e.message == "Error: unable to get steps for Jira issue. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
+        e.message == "Error: unable to get test details for Jira issue. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
 
         cleanup:
         stopServer(server)

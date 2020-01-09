@@ -83,9 +83,9 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map getStepsForIssue(String issueId) {
+    List getTestDetailsForIssue(String issueId) {
         if (!issueId?.trim()) {
-            throw new IllegalArgumentException("Error: unable to get steps for Jira issue. 'issueId' is undefined.")
+            throw new IllegalArgumentException("Error: unable to get test details for Jira issue. 'issueId' is undefined.")
         }
 
         def response = Unirest.get("${this.baseURL}/rest/zapi/latest/teststep/{issueId}")
@@ -95,16 +95,16 @@ class JiraZephyrService extends JiraService {
             .asString()
         
         response.ifFailure {
-            def message = "Error: unable to get steps for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+            def message = "Error: unable to get test details for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
 
             if (response.getStatus() == 404) {
-                message = "Error: unable to get steps for Jira issue. Jira could not be found at: '${this.baseURL}'."
+                message = "Error: unable to get test details for Jira issue. Jira could not be found at: '${this.baseURL}'."
             }
 
             throw new RuntimeException(message)
         }
 
-        return new JsonSlurperClassic().parseText(response.getBody())
+        return new JsonSlurperClassic().parseText(response.getBody()).stepBeanCollection ?: []
     }
 
     @NonCPS

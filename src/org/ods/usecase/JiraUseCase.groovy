@@ -198,7 +198,7 @@ class JiraUseCase {
         // Fetch the Epics' issues if applicable
         def issuesInEpics = [:]
         if (!issueTypeEpicKeys.isEmpty()) {
-            issuesInEpics = getIssuesForEpics(issueTypeEpicKeys, ["Story"])
+            issuesInEpics = this.getIssuesForEpics(issueTypeEpicKeys, ["Story"])
         }
 
         // Fetch the linked issues if applicable

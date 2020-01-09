@@ -1,29 +1,37 @@
 package org.ods.usecase
 
+import groovy.json.JsonOutput
+
 import org.ods.service.JiraZephyrService
+import org.ods.util.IPipelineSteps
 
 class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
     private JiraZephyrService zephyr
 
-    JiraUseCaseZephyrSupport(JiraUseCase usecase, JiraZephyrService zephyr) {
-        super(usecase)
+    JiraUseCaseZephyrSupport(IPipelineSteps steps, JiraUseCase usecase, JiraZephyrService zephyr) {
+        super(steps, usecase)
         this.zephyr = zephyr
     }
 
     void applyTestResultsToAutomatedTestIssues(List jiraTestIssues, Map testResults) {
+        if (!this.usecase.jira) return
         if (!this.zephyr) return
 
         jiraTestIssues.each { issue ->
-            // Create a new execution (status UNEXECUTED)
-            def execution = this.zephyr.createExecutionForIssue(issue.id, issue.projectid)
-            testResults.testsuites.each { testSuite ->
-                testSuite.testcases.each { testCase ->
-                    if(this.usecase.checkJiraIssueMatchesTestCase(issue, testCase.name)) {
-                        if("Succeeded".equalsIgnoreCase(testCase.status)) {
-                            this.zephyr.updateExecutionForIssuePass(execution.keySet().toArray()[0])
-                        } else if ("Error".equalsIgnoreCase(testCase.status) || "Failed".equalsIgnoreCase(testCase.status)) {
-                            this.zephyr.updateExecutionForIssueFail(execution.keySet().toArray()[0])
+            // Create a new execution with status UNEXECUTED
+            def execution = this.zephyr.createExecutionForIssue(issue.id, issue.projectId).keySet().first()
+
+            testResults.testsuites.each { testsuite ->
+                testsuite.testcases.each { testcase ->
+                    if (this.usecase.checkJiraIssueMatchesTestCase(issue, testcase.name)) {
+                        def succeeded = !(testcase.error || testcase.failure || testcase.skipped)
+                        def failed = testcase.error || testcase.failure
+
+                        if (succeeded) {
+                            this.zephyr.updateExecutionForIssuePass(execution)
+                        } else if (failed) {
+                            this.zephyr.updateExecutionForIssueFail(execution)
                         }
                     }
                 }
@@ -32,19 +40,38 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     }
 
     List getAutomatedTestIssues(String projectId, String componentName = null, List<String> labelsSelector = []) {
+        if (!this.usecase.jira) return []
         if (!this.zephyr) return []
 
-        def info = this.zephyr.getProject(projectId)
-        return super.getAutomatedTestIssues(projectId, componentName, labelsSelector).each { issue ->
-            def steps = this.zephyr.getStepsForIssue(issue.id)
-            if(steps.stepBeanCollection){
-                issue.test = 
-                    steps.stepBeanCollection.collect { stepBean ->
-                        return [step: stepBean.step, data: stepBean.data, result: stepBean.result]
-                }
+        def project = this.zephyr.getProject(projectId)
+
+        def issues = this.usecase.getIssuesForProject(projectId, componentName, ["Test"], labelsSelector << "AutomatedTest", false) { issuelink ->
+            return issuelink.type.relation == "is related to" && (issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story")
+        }.values().flatten()
+
+        return issues.each { issue ->
+            issue.test = [
+                description: issue.description,
+                details: []
+            ]
+
+            def testDetails = this.zephyr.getTestDetailsForIssue(issue.id).collect { testDetails ->
+                return testDetails.subMap(["step", "data", "result"])
             }
-           // The project id (not key) is mandatory to generate new executions
-           issue.projectid = info.id
+
+            issue.test.details = this.sortIssuesByProperties(testDetails, ["orderId"])
+
+            // The project ID (not key) is mandatory to generate new executions
+            issue.projectId = project.id
+        }
+    }
+
+    @NonCPS
+    // TODO: remove
+    // Sorts a collection of maps in the order of the keys in properties
+    private List<Map> sortIssuesByProperties(Collection<Map> issues, List properties) {
+        return issues.sort { issue ->
+            issue.subMap(properties).values().join("-")
         }
     }
 }

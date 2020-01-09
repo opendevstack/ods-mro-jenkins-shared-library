@@ -16,8 +16,8 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         return new JiraUseCase(steps, jira)
     }
 
-    JiraUseCaseZephyrSupport createUseCaseZephyrSupport(JiraUseCase usecase, JiraZephyrService zephyr) {
-        return new JiraUseCaseZephyrSupport(usecase, zephyr)
+    JiraUseCaseZephyrSupport createUseCaseZephyrSupport(PipelineSteps steps, JiraUseCase usecase, JiraZephyrService zephyr) {
+        return new JiraUseCaseZephyrSupport(steps, usecase, zephyr)
     }
 
     def "apply test results to Jira issues - test case Passed"() {
@@ -26,10 +26,10 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def zephyr = Mock(JiraZephyrService)
         def usecase = createUseCase(steps, jira)
-        def support = createUseCaseZephyrSupport(usecase, zephyr)
+        def support = createUseCaseZephyrSupport(steps, usecase, zephyr)
         
         def issuesList = [
-            [id: '1', key: 'JIRA-1', projectid: '1234']
+            [id: '1', key: 'JIRA-1', projectId: '1234']
         ]
         def Map execution1 = ['123':[]]
 
@@ -47,10 +47,10 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def zephyr = Mock(JiraZephyrService)
         def usecase = createUseCase(steps, jira)
-        def support = createUseCaseZephyrSupport(usecase, zephyr)
+        def support = createUseCaseZephyrSupport(steps, usecase, zephyr)
 
         def issuesList = [
-            [id: '2', key: 'JIRA-2', projectid: '1234']
+            [id: '2', key: 'JIRA-2', projectId: '1234']
         ]
         def Map execution1 = ['123':[]]
 
@@ -68,10 +68,10 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def zephyr = Mock(JiraZephyrService)
         def usecase = createUseCase(steps, jira)
-        def support = createUseCaseZephyrSupport(usecase, zephyr)
+        def support = createUseCaseZephyrSupport(steps, usecase, zephyr)
 
         def issuesList = [
-            [id: '3', key: 'JIRA-3', projectid: '1234']
+            [id: '3', key: 'JIRA-3', projectId: '1234']
         ]
         def Map execution1 = ['123':[]]
 
@@ -89,10 +89,10 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def zephyr = Mock(JiraZephyrService)
         def usecase = createUseCase(steps, jira)
-        def support = createUseCaseZephyrSupport(usecase, zephyr)
+        def support = createUseCaseZephyrSupport(steps, usecase, zephyr)
 
         def issuesList = [
-            [id: '4', key: 'JIRA-4', projectid: '1234']
+            [id: '4', key: 'JIRA-4', projectId: '1234']
         ]
         def Map execution1 = ['123':[]]
 
@@ -111,7 +111,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def zephyr = Mock(JiraZephyrService)
         def usecase = createUseCase(steps, jira)
-        def support = createUseCaseZephyrSupport(usecase, zephyr)
+        def support = createUseCaseZephyrSupport(steps, usecase, zephyr)
 
         def jqlQuery = [
             jql: "project = PROJECT1 AND issuetype in ('Test') AND labels in ('AutomatedTest')",

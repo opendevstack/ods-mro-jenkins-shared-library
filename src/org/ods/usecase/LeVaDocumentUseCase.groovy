@@ -313,7 +313,11 @@ class LeVaDocumentUseCase {
         def sections = []
 
         project.repositories.each { repo ->
-            documents << repo.data.documents[documentType]
+            def document = repo.data.documents[documentType]
+            if (document) {
+                documents << document
+            }
+
             sections << [
                 heading: repo.id
             ]
@@ -460,7 +464,6 @@ class LeVaDocumentUseCase {
                 project: project,
                 sections: sections,
                 tests: this.jira.getAutomatedTestIssues(project.id).collectEntries { issue ->
-                    this.steps.echo("??? issue: ${issue}")
                     [
                         issue.key,
                         [
@@ -491,15 +494,15 @@ class LeVaDocumentUseCase {
 
         def matchedHandler = { result ->
             result.each { issue, testcase ->
-                issue.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
-                issue.isMissing = false
+                issue.test.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
+                issue.test.isMissing = false
             }
         }
 
         def unmatchedHandler = { result ->
             result.each { issue ->
-                issue.isSuccess = false
-                issue.isMissing = true
+                issue.test.isSuccess = false
+                issue.test.isMissing = true
             }
         }
 
@@ -517,10 +520,10 @@ class LeVaDocumentUseCase {
                         issue.key,
                         [
                             key: issue.key,
-                            description: issue.description ?: "",
+                            description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
-                            success: issue.isSuccess ? "Y" : "N",
-                            remarks: issue.isMissing ? "not executed" : ""
+                            success: issue.test.isSuccess ? "Y" : "N",
+                            remarks: issue.test.isMissing ? "not executed" : ""
                         ]
                     ]
                 },

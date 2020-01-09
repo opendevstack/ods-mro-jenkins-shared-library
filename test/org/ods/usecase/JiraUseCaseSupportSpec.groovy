@@ -14,8 +14,8 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         return new JiraUseCase(steps, jira)
     }
 
-    JiraUseCaseSupport createUseCaseSupport(JiraUseCase usecase) {
-        return new JiraUseCaseSupport(usecase)
+    JiraUseCaseSupport createUseCaseSupport(PipelineSteps steps, JiraUseCase usecase) {
+        return new JiraUseCaseSupport(steps, usecase)
     }
 
     def "apply test results to automated test issues"() {
@@ -24,7 +24,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def testIssues = createJiraTestIssues()
@@ -65,7 +65,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -89,7 +89,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -114,7 +114,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -140,7 +140,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -164,7 +164,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -189,7 +189,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -213,7 +213,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -238,7 +238,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -262,7 +262,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -287,7 +287,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -311,7 +311,7 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         def jira = Mock(JiraService)
         def usecase = createUseCase(steps, jira)
 
-        def support = createUseCaseSupport(usecase)
+        def support = createUseCaseSupport(steps, usecase)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -329,5 +329,4 @@ class JiraUseCaseSupportSpec extends SpecHelper {
         then:
         1 * jira.getIssuesForJQLQuery(jqlQuery) >> []
     }
-
 }
