@@ -18,7 +18,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return new JiraZephyrService("http://localhost:${port}", username, password)
     }
 
-    Map createExecutionForIssueRequestData(Map mixins = [:]) {
+    Map createTestExecutionForIssueRequestData(Map mixins = [:]) {
         def result = [
             data: [
                 issueId: '1234',
@@ -42,7 +42,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         return result << mixins
     }
 
-    Map createExecutionForIssueResponseData(Map mixins = [:]) {
+    Map createTestExecutionForIssueResponseData(Map mixins = [:]) {
         def result = [
             status: 200,
             body: JsonOutput.toJson([
@@ -80,14 +80,14 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
     def "create execution for issue with invalid issue id"() {
         given:
-        def request = createExecutionForIssueRequestData()
-        def response = createExecutionForIssueResponseData()
+        def request = createTestExecutionForIssueRequestData()
+        def response = createTestExecutionForIssueResponseData()
 
         def server = createServer(WireMock.&post, request, response)
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createExecutionForIssue(null, "2345")
+        def result = service.createTestExecutionForIssue(null, "2345")
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -99,14 +99,14 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
     def "create execution for issue with invalid project id"() {
         given:
-        def request = createExecutionForIssueRequestData()
-        def response = createExecutionForIssueResponseData()
+        def request = createTestExecutionForIssueRequestData()
+        def response = createTestExecutionForIssueResponseData()
 
         def server = createServer(WireMock.&post, request, response)
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createExecutionForIssue("1234", null)
+        def result = service.createTestExecutionForIssue("1234", null)
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -118,17 +118,17 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
     def "create execution for issue "() {
         given:
-        def request = createExecutionForIssueRequestData()
-        def response = createExecutionForIssueResponseData()
+        def request = createTestExecutionForIssueRequestData()
+        def response = createTestExecutionForIssueResponseData()
 
         def server = createServer(WireMock.&post, request, response)
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createExecutionForIssue("1234", "2345")
+        def result = service.createTestExecutionForIssue("1234", "2345")
 
         then:
-        def expect = createExecutionForIssueResponseData()
+        def expect = createTestExecutionForIssueResponseData()
 
         noExceptionThrown()
 
@@ -138,8 +138,8 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
     def "create execution for issue with HTTP 404 failure"() {
         given:
-        def request = createExecutionForIssueRequestData()
-        def response = createExecutionForIssueResponseData([
+        def request = createTestExecutionForIssueRequestData()
+        def response = createTestExecutionForIssueResponseData([
             status: 404
         ])
 
@@ -147,7 +147,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createExecutionForIssue("1234", "2345")
+        def result = service.createTestExecutionForIssue("1234", "2345")
 
         then:
         def e = thrown(RuntimeException)
@@ -159,8 +159,8 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
     def "create execution for issue with HTTP 500 failure"() {
         given:
-        def request = createExecutionForIssueRequestData()
-        def response = createExecutionForIssueResponseData([
+        def request = createTestExecutionForIssueRequestData()
+        def response = createTestExecutionForIssueResponseData([
             status: 500,
             body: "Sorry, doesn't work!",
         ])
@@ -169,7 +169,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createExecutionForIssue("1234", "2345")
+        def result = service.createTestExecutionForIssue("1234", "2345")
 
         then:
         def e = thrown(RuntimeException)

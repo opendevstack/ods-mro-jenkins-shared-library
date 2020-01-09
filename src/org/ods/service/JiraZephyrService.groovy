@@ -23,7 +23,7 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map createExecutionForIssue(String issueId, String projectId) {
+    Map createTestExecutionForIssue(String issueId, String projectId) {
         if (!issueId?.trim()) {
             throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'issueId' is undefined.")
         }

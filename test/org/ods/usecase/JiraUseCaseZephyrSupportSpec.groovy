@@ -37,7 +37,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createExecutionForIssue('1', '1234') >> execution1
+        1 * zephyr.createTestExecutionForIssue('1', '1234') >> execution1
         1 * zephyr.updateExecutionForIssuePass('123')
     }
 
@@ -58,7 +58,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createExecutionForIssue('2', '1234') >> execution1
+        1 * zephyr.createTestExecutionForIssue('2', '1234') >> execution1
         1 * zephyr.updateExecutionForIssueFail('123')
     }
 
@@ -79,7 +79,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createExecutionForIssue('3', '1234') >> execution1
+        1 * zephyr.createTestExecutionForIssue('3', '1234') >> execution1
         1 * zephyr.updateExecutionForIssueFail('123')
     }
 
@@ -100,7 +100,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.applyTestResultsToAutomatedTestIssues(issuesList, createTestResults())
 
         then:
-        1 * zephyr.createExecutionForIssue('4', '1234') >> execution1
+        1 * zephyr.createTestExecutionForIssue('4', '1234') >> execution1
         0 * zephyr.updateExecutionForIssueFail('123')
         0 * zephyr.updateExecutionForIssuePass('123')
     }

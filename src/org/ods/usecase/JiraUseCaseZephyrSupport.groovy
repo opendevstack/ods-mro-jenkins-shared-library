@@ -1,5 +1,7 @@
 package org.ods.usecase
 
+import com.cloudbees.groovy.cps.NonCPS
+
 import groovy.json.JsonOutput
 
 import org.ods.service.JiraZephyrService
@@ -20,7 +22,7 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
         jiraTestIssues.each { issue ->
             // Create a new execution with status UNEXECUTED
-            def execution = this.zephyr.createExecutionForIssue(issue.id, issue.projectId).keySet().first()
+            def execution = this.zephyr.createTestExecutionForIssue(issue.id, issue.projectId).keySet().first()
 
             testResults.testsuites.each { testsuite ->
                 testsuite.testcases.each { testcase ->
