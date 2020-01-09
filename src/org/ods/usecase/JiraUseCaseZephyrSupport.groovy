@@ -28,11 +28,19 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
                     if (this.usecase.checkJiraIssueMatchesTestCase(issue, testcase.name)) {
                         def succeeded = !(testcase.error || testcase.failure || testcase.skipped)
                         def failed = testcase.error || testcase.failure
+                        def skipped = testcase.skipped
+
+                        // TODO: an unexecuted test currently doesn't get a stage assigned
+                        // Unfortunately, in Zephyr, a test with status UNEXECUTED shows
+                        // the last concrete state in the Test Cycle overview.
+                        // Example: a serveral times UNEXECUTED test can show PASSED
 
                         if (succeeded) {
                             this.zephyr.updateExecutionForIssuePass(execution)
                         } else if (failed) {
                             this.zephyr.updateExecutionForIssueFail(execution)
+                        } else if (skipped) {
+                            this.zephyr.updateExecutionForIssueBlocked(execution)
                         }
                     }
                 }

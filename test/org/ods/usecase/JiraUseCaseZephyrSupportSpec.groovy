@@ -83,7 +83,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         1 * zephyr.updateExecutionForIssueFail('123')
     }
 
-    def "apply test results to Jira issues - test case Missing"() {
+    def "apply test results to Jira issues - test case Skipped"() {
         given:
         def steps = Spy(util.PipelineSteps)
         def jira = Mock(JiraService)
