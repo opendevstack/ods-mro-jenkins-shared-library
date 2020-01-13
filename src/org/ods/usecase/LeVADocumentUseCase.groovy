@@ -305,7 +305,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data: [
                 project: project,
                 sections: sections,
-                tests: this.jira.getAutomatedTestIssues(project.id).collectEntries { issue ->
+                tests: this.jira.getAutomatedTestIssues(project.id, null, ["UnitTest"]).collectEntries { issue ->
                     [
                         issue.key,
                         [
@@ -329,7 +329,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             sections = this.levaFiles.getDocumentChapterData(documentType)
         }
 
-        def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}")
+        def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}", ["UnitTest"])
 
         def matchedHandler = { result ->
             result.each { issue, testcase ->
