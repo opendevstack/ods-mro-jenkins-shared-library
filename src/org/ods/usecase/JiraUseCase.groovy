@@ -202,6 +202,8 @@ class JiraUseCase {
             fields: ["components", "description", "issuelinks", "issuetype", "summary"]
         ])
 
+        this.steps.echo("!!! query: ${query}")
+
         issues.each { issue ->
             // Construct simple issue link representations and filter issue links if applicable
             issue.fields.issuelinks = issue.fields.issuelinks.collect { toSimpleIssueLink(it) }

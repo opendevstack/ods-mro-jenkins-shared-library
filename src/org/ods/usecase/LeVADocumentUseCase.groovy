@@ -575,7 +575,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         }
 
-        // TODO: get automated test issues of type InstallationTest
         def data = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
