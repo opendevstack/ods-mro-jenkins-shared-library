@@ -139,8 +139,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         if (!configurableItems.isEmpty()) {
             def configurableItemsIssuesList = configurableItems.collect { name, issues ->
-                // Remove the Technology_ prefix for ODS components
-                def matcher = name =~ /^Technology_/
+                // Remove the Technology- prefix for ODS components
+                def matcher = name =~ /^Technology-/
                 if (matcher.find()) {
                     name = matcher.replaceAll("")
                 }
@@ -226,12 +226,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
             sections."sec3".specifications = SortUtil.sortIssuesByProperties(specificationsIssuesList, ["ur_key", "key"])
         }
 
-        // A mapping of component names starting with Technology_ to issues
-        def specificationsForTechnologyComponents = specifications.findAll { it.key.startsWith("Technology_") }
+        // A mapping of component names starting with Technology- to issues
+        def specificationsForTechnologyComponents = specifications.findAll { it.key.startsWith("Technology-") }
 
         // A mapping of component names to corresponding repository metadata
         def componentsMetadata = specificationsForTechnologyComponents.collectEntries { componentName, issues ->
-            def normalizedComponentName = componentName.replaceAll("Technology_", "")
+            def normalizedComponentName = componentName.replaceAll("Technology-", "")
 
             def repo = project.repositories.find { [it.id, it.name].contains(normalizedComponentName) }
             if (!repo) {
@@ -260,7 +260,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         if (!specificationsForTechnologyComponents.isEmpty()) {
-            // Create a collection of disjoint issues across all components starting with Technology_
+            // Create a collection of disjoint issues across all components starting with Technology-
             def specificationsForTechnologyComponentsIssuesList = specificationsForTechnologyComponents.values().flatten().toSet()
 
             specificationsForTechnologyComponentsIssuesList = specificationsForTechnologyComponentsIssuesList.collect { issue ->
@@ -327,19 +327,19 @@ class LeVADocumentUseCase extends DocGenUseCase {
             sections = this.levaFiles.getDocumentChapterData(documentType)
         }
 
-        def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, "Technology_${repo.id}")
+        def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}")
 
         def matchedHandler = { result ->
             result.each { issue, testcase ->
-                issue.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
-                issue.isMissing = false
+                issue.test.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
+                issue.test.isMissing = false
             }
         }
 
         def unmatchedHandler = { result ->
             result.each { issue ->
-                issue.isSuccess = false
-                issue.isMissing = true
+                issue.test.isSuccess = false
+                issue.test.isMissing = true
             }
         }
 
@@ -357,10 +357,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         issue.key,
                         [
                             key: issue.key,
-                            description: issue.description ?: "",
+                            description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
-                            success: issue.isSuccess ? "Y" : "N",
-                            remarks: issue.isMissing ? "not executed" : ""
+                            success: issue.test.isSuccess ? "Y" : "N",
+                            remarks: issue.test.isMissing ? "not executed" : ""
                         ]
                     ]
                 },
@@ -846,8 +846,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         if (!operational.isEmpty()) {
             def operationalIssuesList = operational.collect { name, epics ->
-                // Remove the Technology_ prefix for ODS components
-                def matcher = name =~ /^Technology_/
+                // Remove the Technology- prefix for ODS components
+                def matcher = name =~ /^Technology-/
                 if (matcher.find()) {
                     name = matcher.replaceAll("")
                 }
