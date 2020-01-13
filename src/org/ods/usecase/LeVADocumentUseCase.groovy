@@ -13,6 +13,8 @@ import org.ods.util.MROPipelineUtil
 import org.ods.util.PDFUtil
 import org.ods.util.SortUtil
 
+import groovy.json.JsonOutput
+
 class LeVADocumentUseCase extends DocGenUseCase {
 
     enum DocumentType {
@@ -579,13 +581,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data: [
                 project: project,
                 sections: sections,
-                tests: this.jira.getAutomatedTestIssues(project.id).collectEntries { issue ->
+                tests: this.jira.getAutomatedTestIssues(project.id, null, ["InstallationTest"]).collectEntries { issue ->
                     [
                         issue.key,
                         [
                             key: issue.key,
-                            description: issue.description ?: "",
-                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A"
+                            summary: issue.summary,
+                            test: issue.test
                         ]
                     ]
                 }
