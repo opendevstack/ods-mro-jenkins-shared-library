@@ -2,6 +2,7 @@ import org.ods.scheduler.LeVADocumentScheduler
 import org.ods.service.JenkinsService
 import org.ods.service.ServiceRegistry
 import org.ods.usecase.JUnitTestReportsUseCase
+import org.ods.usecase.JiraUseCase
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PipelineUtil
 
