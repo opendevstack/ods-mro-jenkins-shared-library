@@ -345,7 +345,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             }
         }
 
-        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data.testResults, matchedHandler, unmatchedHandler)
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
         def discrepancies = this.computeTestDiscrepancies("Development Tests", jiraTestIssues)
 
@@ -620,7 +620,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             }
         }
 
-        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data.testResults, matchedHandler, unmatchedHandler)
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
         def discrepancies = this.computeTestDiscrepancies("Installation and Configuration Tests", jiraTestIssues)
 
