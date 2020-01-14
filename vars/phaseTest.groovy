@@ -37,7 +37,7 @@ def call(Map project, List<Set<Map>> repos) {
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 }
 
-private Map getInstallationTestData(def steps, Map repo, String type) {
+private Map getInstallationTestData(def steps, Map repo) {
     return getTestData(steps, repo, "installation")
 }
 
