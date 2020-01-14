@@ -20,13 +20,17 @@ def call(Map project, List<Set<Map>> repos) {
     def postExecuteRepo = { steps, repo ->
         // FIXME: we are mixing a generic scheduler capability with a data dependency and an explicit repository constraint.
         // We should turn the last argument 'data' of the scheduler into a closure that return data.
-        if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE || repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
-            def data = getInstallationTestData(steps, repo)
+        if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
+            def data = getInstallationTestResults(steps, repo)
+
+            project.repositories.each { repo_ ->
+                if (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE || repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
+                    // Report test results to corresponding test cases in Jira
+                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", "InstallationTest", data.testResults)
+                }
+            }
 
             levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data)
-
-            // Report test results to corresponding test cases in Jira
-            jira.reportTestResultsForComponent(project.id, "Technology-${repo.id}", "InstallationTest", data.testResults)
         }
     }
 
@@ -41,18 +45,18 @@ def call(Map project, List<Set<Map>> repos) {
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 }
 
-private Map getInstallationTestData(def steps, Map repo) {
-    this.getTestData(steps, repo, "installation")
+private Map getInstallationTestResults(def steps, Map repo) {
+    this.getTestResults(steps, repo, "installation")
 }
 
-private Map getTestData(def steps, Map repo, String type) {
+private Map getTestResults(def steps, Map repo, String type) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService.class.name)
     def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
 
     def testReportsPath = "junit/${repo.id}"
 
     echo "Collecting JUnit XML Reports for ${repo.id}"
-    def testReportsStashName = "test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
+    def testReportsStashName = "${type}-test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
     def testReportsUnstashPath = "${steps.env.WORKSPACE}/${testReportsPath}"
     def hasStashedTestReports = jenkins.unstashFilesIntoPath(testReportsStashName, testReportsUnstashPath, "JUnit XML Report")
     if (!hasStashedTestReports) {
