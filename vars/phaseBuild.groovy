@@ -7,6 +7,11 @@ import org.ods.util.MROPipelineUtil
 import org.ods.util.PipelineUtil
 
 def call(Map project, List<Set<Map>> repos) {
+
+}
+
+/*
+def call(Map project, List<Set<Map>> repos) {
     def jira             = ServiceRegistry.instance.get(JiraUseCase.class.name)
     def util             = ServiceRegistry.instance.get(PipelineUtil.class.name)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler.class.name)
@@ -64,5 +69,6 @@ private Map getTestData(def steps, Map repo) {
         testResults: junit.parseTestReportFiles(testReportFiles)
     ]
 }
+*/
 
 return this

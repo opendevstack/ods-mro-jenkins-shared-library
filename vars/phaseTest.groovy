@@ -17,7 +17,7 @@ def call(Map project, List<Set<Map>> repos) {
         // FIXME: we are mixing a generic scheduler capability with a data dependency and an explicit repository constraint.
         // We should turn the last argument 'data' of the scheduler into a closure that return data.
         if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
-            def data = getInstallationTestData(steps, repo)
+            def data = getTestData(steps, repo, "installation")
 
             levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data)
 
@@ -35,10 +35,6 @@ def call(Map project, List<Set<Map>> repos) {
         }
 
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
-}
-
-private Map getInstallationTestData(def steps, Map repo) {
-    return getTestData(steps, repo, "installation")
 }
 
 private Map getTestData(def steps, Map repo, String type) {
