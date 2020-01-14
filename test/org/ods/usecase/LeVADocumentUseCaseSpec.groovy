@@ -943,6 +943,37 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         _ * util.getBuildParams() >> buildParams
     }
 
+    def "create overall IVR"() {
+        given:
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        // Test Parameters
+        def project = createProject()
+
+        // Argument Constraints
+        def documentType = LeVADocumentUseCase.DocumentType.OVERALL_IVR as String
+
+        // Stubbed Method Responses
+        def buildParams = createBuildEnvironment(env)
+
+        when:
+        usecase.createOverallIVR(project)
+
+        then:
+        1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project)
+        _ * util.getBuildParams() >> buildParams
+    }
+
     def "create overall SCR"() {
         given:
         def util = Mock(MROPipelineUtil)
@@ -1053,7 +1084,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def result = usecase.getSupportedDocuments()
 
         then:
-        result.size() == 19
+        result.size() == 20
 
         then:
         result.contains("CS")
@@ -1072,6 +1103,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.contains("TIR")
         result.contains("URS")
         result.contains("OVERALL_DTR")
+        result.contains("OVERALL_IVR")
         result.contains("OVERALL_SCR")
         result.contains("OVERALL_SDS")
         result.contains("OVERALL_TIR")

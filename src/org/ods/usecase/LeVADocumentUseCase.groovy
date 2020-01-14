@@ -34,6 +34,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         TIR,
         URS,
         OVERALL_DTR,
+        OVERALL_IVR,
         OVERALL_SCR,
         OVERALL_SDS,
         OVERALL_TIR
@@ -56,6 +57,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.TIR as String): "Technical Installation Report",
         (DocumentType.URS as String): "User Requirements Specification",
         (DocumentType.OVERALL_DTR as String): "Overall Software Development Testing Report",
+        (DocumentType.OVERALL_IVR as String): "Overall Configuration and Installation Testing Report",
         (DocumentType.OVERALL_SCR as String): "Overall Software Development (Coding and Code Review) Report",
         (DocumentType.OVERALL_SDS as String): "Overall Software Design Specification",
         (DocumentType.OVERALL_TIR as String): "Overall Technical Installation Report"
@@ -1016,6 +1018,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     String createOverallDTR(Map project) {
         def documentType = DocumentType.OVERALL_DTR as String
+        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
+        return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
+    }
+
+    String createOverallIVR(Map project) {
+        def documentType = DocumentType.OVERALL_IVR as String
         def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType], project)
         return this.createOverallDocument("Overall-Cover", documentType, metadata, project)
     }

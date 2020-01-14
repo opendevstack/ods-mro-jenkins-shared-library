@@ -1655,6 +1655,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
+        // OVERALL_IVR: Overall Configuration and Installation Testing Report
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_1 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
         // OVERALL_SCR: Overall Software Development (Coding and Code Review) Report
         LeVADocumentUseCase.DocumentType.OVERALL_SCR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.OVERALL_SCR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -3548,6 +3647,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        // OVERALL_IVR: Overall Configuration and Installation Testing Report
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_3 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
         // OVERALL_SCR: Overall Software Development (Coding and Code Review) Report
         LeVADocumentUseCase.DocumentType.OVERALL_SCR | PROJECT_GAMP_3 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
@@ -5443,6 +5641,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
+        // OVERALL_IVR: Overall Configuration and Installation Testing Report
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_4 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
         // OVERALL_SCR: Overall Software Development (Coding and Code Review) Report
         LeVADocumentUseCase.DocumentType.OVERALL_SCR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.OVERALL_SCR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -7337,6 +7634,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.OVERALL_DTR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
+        // OVERALL_IVR: Overall Configuration and Installation Testing Report
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.OVERALL_IVR | PROJECT_GAMP_5 | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
         // OVERALL_SCR: Overall Software Development (Coding and Code Review) Report
         LeVADocumentUseCase.DocumentType.OVERALL_SCR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.OVERALL_SCR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -7764,6 +8160,12 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         1 * usecase.invokeMethod("createIVR", [project, REPO_ODS_SERVICE, data] as Object[])
 
         when:
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
+
+        then:
+        1 * usecase.invokeMethod("createOverallIVR", [project] as Object[])
+
+        when:
         scheduler.run(MROPipelineUtil.PipelinePhases.FINALIZE, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 
         then:
@@ -7824,6 +8226,12 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVR", [project, REPO_ODS_SERVICE, data] as Object[])
+
+        when:
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
+
+        then:
+        1 * usecase.invokeMethod("createOverallIVR", [project] as Object[])
     }
 
     def "run for GAMP category 4"() {
@@ -7883,6 +8291,12 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVR", [project, REPO_ODS_SERVICE, data] as Object[])
+
+        when:
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
+
+        then:
+        1 * usecase.invokeMethod("createOverallIVR", [project] as Object[])
     }
 
     def "run for GAMP category 5"() {
@@ -8017,5 +8431,11 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createOverallTIR", [project] as Object[])
+
+        when:
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
+
+        then:
+        1 * usecase.invokeMethod("createOverallIVR", [project] as Object[])
     }
 }
