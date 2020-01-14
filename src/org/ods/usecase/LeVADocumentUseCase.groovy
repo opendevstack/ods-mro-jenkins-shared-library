@@ -669,6 +669,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
     // }
 
     String createIVR(Map project, Map repo, Map data) {
+        this.steps.echo("!!! repo: ${repo}")
+        this.steps.echo("!!! data: ${data}")
+
         def documentType = DocumentType.IVR as String
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)

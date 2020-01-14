@@ -7,6 +7,7 @@ import org.ods.util.MROPipelineUtil
 import org.ods.util.PipelineUtil
 
 def call(Map project, List<Set<Map>> repos) {
+    /*
     def jira             = ServiceRegistry.instance.get(JiraUseCase.class.name)
     def util             = ServiceRegistry.instance.get(PipelineUtil.class.name)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler.class.name)
@@ -39,6 +40,7 @@ def call(Map project, List<Set<Map>> repos) {
         }
 
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
+    */
 }
 
 private Map getTestResults(def steps, Map repo) {

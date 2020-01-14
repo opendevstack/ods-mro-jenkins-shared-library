@@ -43,7 +43,7 @@ def call(Map project, List<Set<Map>> repos) {
                 }
             }
 
-            levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data)
+            levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data.testResults.installation)
         }
     }
 
