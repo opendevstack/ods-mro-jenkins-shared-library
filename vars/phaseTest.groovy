@@ -30,7 +30,7 @@ def call(Map project, List<Set<Map>> repos) {
         if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
             // Add installation test results to a global data structure
             def installationTestResults = getInstallationTestResults(steps, repo)
-            data.tests.installation.testReportFiles.addAll(installationTestResults.testReportFiles)
+            data.tests.installation.testReportFiles.addAll(installationTestResults)
 
             project.repositories.each { repo_ ->
                 if (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE || repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
