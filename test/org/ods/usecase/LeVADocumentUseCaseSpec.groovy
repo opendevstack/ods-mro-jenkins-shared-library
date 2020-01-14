@@ -209,7 +209,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-        1 * jira.getAutomatedTestIssues(project.id) >> testIssues
+        1 * jira.getAutomatedTestIssues(project.id, null, ["UnitTest"]) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
         _ * util.getBuildParams() >> buildParams
@@ -248,7 +248,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * levaFiles.getDocumentChapterData(documentType) >> chapterData
 
         then:
-        1 * jira.getAutomatedTestIssues(project.id) >> testIssues
+        1 * jira.getAutomatedTestIssues(project.id, null, ["UnitTest"]) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
         _ * util.getBuildParams() >> buildParams
@@ -299,7 +299,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-        1 * jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}") >> testIssues
+        1 * jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}", ["UnitTest"]) >> testIssues
         1 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         //1 * usecase.computeTestDiscrepancies("Development Tests", testIssues)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
@@ -356,7 +356,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * levaFiles.getDocumentChapterData(documentType) >> chapterData
 
         then:
-        1 * jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}") >> testIssues
+        1 * jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}", ["UnitTest"]) >> testIssues
         1 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         //1 * usecase.computeTestDiscrepancies("Development Tests", testIssues)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
@@ -441,7 +441,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-        1 * jira.getAutomatedTestIssues(project.id) >> testIssues
+        1 * jira.getAutomatedTestIssues(project.id, null, ["InstallationTest"]) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
         _ * util.getBuildParams() >> buildParams
