@@ -447,6 +447,62 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         _ * util.getBuildParams() >> buildParams
     }
 
+    def "create IVR"() {
+        given:
+        def steps = Spy(PipelineSteps)
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        // Test Parameters
+        def xmlFile = Files.createTempFile("junit", ".xml").toFile()
+        xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
+
+        def project = createProject()
+        def repo = project.repositories.first()
+        def testReportFiles = [xmlFile]
+        def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
+        def data = [
+            testReportFiles: testReportFiles,
+            testResults: testResults
+        ]
+
+        // Argument Constraints
+        def documentType = LeVADocumentUseCase.DocumentType.IVR as String
+        def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
+
+        // Stubbed Method Responses
+        def buildParams = createBuildEnvironment(env)
+        def chapterData = ["sec1": "myContent"]
+        def document = "myDocument".bytes
+        def testIssues = createJiraTestIssues()
+
+        when:
+        usecase.createIVR(project, repo, data)
+
+        then:
+        1 * jira.getDocumentChapterData(project.id, documentType) >> chapterData
+        0 * levaFiles.getDocumentChapterData(documentType)
+
+        then:
+        1 * jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}", ["InstallationTest"]) >> testIssues
+        1 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
+        //1 * usecase.computeTestDiscrepancies("Development Tests", testIssues)
+        1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null) >> document
+        _ * util.getBuildParams() >> buildParams
+
+        cleanup:
+        xmlFile.delete()
+    }
+
     def "create SCP"() {
         given:
         def util = Mock(MROPipelineUtil)

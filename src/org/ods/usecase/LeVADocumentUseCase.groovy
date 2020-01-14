@@ -597,8 +597,73 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createIVR(Map project, Map repo, Map data) {
-        // TODO: not yet implemented
-        return "http://nexus"
+        def documentType = DocumentType.IVR as String
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            sections = this.levaFiles.getDocumentChapterData(documentType)
+        }
+
+        def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}", ["InstallationTest"])
+
+        def matchedHandler = { result ->
+            result.each { issue, testcase ->
+                issue.test.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
+                issue.test.isMissing = false
+            }
+        }
+
+        def unmatchedHandler = { result ->
+            result.each { issue ->
+                issue.test.isSuccess = false
+                issue.test.isMissing = true
+            }
+        }
+
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data.testResults, matchedHandler, unmatchedHandler)
+
+        def discrepancies = this.computeTestDiscrepancies("Installation and Configuration Tests", jiraTestIssues)
+
+        def data_ = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project, repo),
+            data: [
+                repo: repo,
+                sections: sections,
+                tests: jiraTestIssues.collectEntries { issue ->
+                    [
+                        issue.key,
+                        [
+                            key: issue.key,
+                            description: issue.test.description ?: "",
+                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
+                            summary: issue.summary,
+                            success: issue.test.isSuccess ? "Y" : "N",
+                            remarks: issue.test.isMissing ? "not executed" : ""
+                        ]
+                    ]
+                },
+                testfiles: data.testReportFiles.collect { file ->
+                    [ name: file.getName(), path: file.getPath() ]
+                },
+                testsuites: data.testResults,
+                discrepancies: discrepancies.discrepancies,
+                conclusion: [
+                    summary: discrepancies.conclusion.summary,
+                    statement : discrepancies.conclusion.statement
+                ]
+            ]
+        ]
+
+        def files = data.testReportFiles.collectEntries { file ->
+            [ "raw/${file.getName()}", file.getBytes() ]
+        }
+
+        def modifier = { document ->
+            repo.data.documents[documentType] = document
+            return document
+        }
+
+        return this.createDocument(documentType, project, repo, data_, files, modifier, null)
     }
 
     String createSCP(Map project) {
