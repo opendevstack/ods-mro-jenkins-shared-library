@@ -55,7 +55,7 @@ def call(Map project, List<Set<Map>> repos) {
             parallel(group)
         }
 
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data.testResults.installation)
+    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data.testResults)
 }
 
 private Map getInstallationTestResults(def steps, Map repo) {
