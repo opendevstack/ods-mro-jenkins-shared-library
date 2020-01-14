@@ -734,7 +734,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             [ "raw/${file.getName()}", file.getBytes() ]
         }
 
-        return this.createDocument(documentType, project, null, data_, files, modifier, null)
+        return this.createDocument(documentType, project, null, data_, files, null, null)
     }
 
     String createSCP(Map project) {
