@@ -38,12 +38,12 @@ def call(Map project, List<Set<Map>> repos) {
             project.repositories.each { repo_ ->
                 if (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE || repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
                     // Report test results to corresponding test cases in Jira
-                    echo("??? reporting back test results for repo ${repo.id}")
-                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", "InstallationTest", data.testResults)
+                    echo("??? reporting back test results for repo ${repo_.id}")
+                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", "InstallationTest", data.testResults.installation)
                 }
             }
 
-            levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data.testResults.installation)
+            levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo)
         }
     }
 
@@ -55,7 +55,7 @@ def call(Map project, List<Set<Map>> repos) {
             parallel(group)
         }
 
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
+    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data.testResults.installation)
 }
 
 private Map getInstallationTestResults(def steps, Map repo) {
