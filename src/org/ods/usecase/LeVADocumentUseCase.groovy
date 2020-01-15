@@ -600,7 +600,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         }
 
+        this.steps.echo("!!! data: ${JsonOutput.toJson(data)}")
         def jiraTestIssues = this.jira.getAutomatedFunctionalTestIssues(project.id)
+        this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
 
         def matchedHandler = { result ->
             result.each { issue, testcase ->
