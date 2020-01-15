@@ -593,14 +593,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createFTR(Map project, Map repo, Map data) {
         def documentType = DocumentType.FTR as String
 
+        this.steps.echo("!!! in createFTR")
+
         data = data.tests.functional
+        this.steps.echo("!!! data: ${JsonOutput.toJson(data)}")
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         }
 
-        this.steps.echo("!!! data: ${JsonOutput.toJson(data)}")
         def jiraTestIssues = this.jira.getAutomatedFunctionalTestIssues(project.id)
         this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
 
