@@ -21,7 +21,8 @@ def call(Map project, List<Set<Map>> repos) {
                 testResults: [:]
             ],
             functional: [
-
+                testReportFiles: [],
+                testResults: [:]
             ]
         ]
     ]
