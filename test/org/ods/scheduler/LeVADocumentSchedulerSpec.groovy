@@ -681,7 +681,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
@@ -705,7 +705,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || true
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_1 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -4469,7 +4469,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
@@ -4493,7 +4493,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || true
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_4 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -6363,7 +6363,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
@@ -6387,7 +6387,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || true
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5 | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -7751,10 +7751,10 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         1 * usecase.invokeMethod("createIVP", [project] as Object[])
 
         when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, REPO_ODS_CODE, data)
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
 
         then:
-        1 * usecase.invokeMethod("createFTR", [project, REPO_ODS_CODE, data] as Object[])
+        1 * usecase.invokeMethod("createFTR", [project, [:], data] as Object[])
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
@@ -7865,10 +7865,10 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         1 * usecase.invokeMethod("createIVP", [project] as Object[])
 
         when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, REPO_ODS_CODE, data)
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
 
         then:
-        1 * usecase.invokeMethod("createFTR", [project, REPO_ODS_CODE, data] as Object[])
+        1 * usecase.invokeMethod("createFTR", [project, [:], data] as Object[])
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
@@ -7980,22 +7980,22 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         1 * usecase.invokeMethod("createIVP", [project] as Object[])
 
         when:
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, REPO_ODS_TEST)
+
+        then:
+        1 * usecase.invokeMethod("createSCR", [project, REPO_ODS_TEST] as Object[])
+
+        when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
 
         then:
         1 * usecase.invokeMethod("createOverallSCR", [project] as Object[])
 
         when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, REPO_ODS_CODE, data)
+        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
 
         then:
-        1 * usecase.invokeMethod("createFTR", [project, REPO_ODS_CODE, data] as Object[])
-
-        when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, REPO_ODS_TEST)
-
-        then:
-        1 * usecase.invokeMethod("createSCR", [project, REPO_ODS_TEST] as Object[])
+        1 * usecase.invokeMethod("createFTR", [project, [:], data] as Object[])
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
