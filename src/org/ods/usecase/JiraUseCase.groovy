@@ -197,6 +197,8 @@ class JiraUseCase {
     }
 
     Map getIssuesForProject(String projectKey, String componentName = null, List<String> issueTypesSelector = [], List<String> labelsSelector = [], boolean throwOnMissingLinks = false, Closure issueLinkFilter = null) {
+        this.steps.echo("!!! in JiraUseCase::reportTestResultsForComponent")
+
         def result = [:]
         if (!this.jira) return result
 
@@ -214,6 +216,8 @@ class JiraUseCase {
         labelsSelector.each {
             query += " AND labels = '${it}'"
         }
+
+        this.steps.echo("!!! query: ${query}")
 
         def linkedIssuesKeys = [] as Set
         def issueTypeEpicKeys = []
