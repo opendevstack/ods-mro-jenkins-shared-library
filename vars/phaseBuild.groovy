@@ -22,21 +22,15 @@ def call(Map project, List<Set<Map>> repos) {
         // FIXME: we are mixing a generic scheduler capability with a data dependency and an explicit repository constraint.
         // We should turn the last argument 'data' of the scheduler into a closure that return data.
         if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
-            def unitTestResults = getTestResults(steps, repo)
-
             def data = [
                 tests: [
-                    unit: [
-                        testReportFiles: unitTestResults,
-                        // Parse JUnit test report files into a report
-                        testResults: junit.parseTestReportFiles(unitTestResults)
-                    ]
+                    unit: getTestResults(steps, repo)
                 ]
             ]
 
             levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data)
 
-            // Report test results to corresponding test cases in Jira
+            // Report unit test results to corresponding test cases in Jira
             jira.reportTestResultsForComponent(project.id, "Technology-${repo.id}", "UnitTest", data.tests.unit.testResults)
         }
     }
@@ -66,8 +60,14 @@ private List getTestResults(def steps, Map repo) {
         throw new RuntimeException("Error: unable to unstash JUnit XML reports for repo '${repo.id}' from stash '${testReportsStashName}'.")
     }
 
-    // Load JUnit test report files from path
-    return junit.loadTestReportsFromPath(testReportsUnstashPath)
+    def testReportFiles = junit.loadTestReportsFromPath(testReportsUnstashPath)
+
+    return [
+        // Load JUnit test report files from path
+        testReportFiles: testReportFiles,
+        // Parse JUnit test report files into a report
+        testResults: junit.parseTestReportFiles(testReportFiles)
+    ]
 }
 
 return this
