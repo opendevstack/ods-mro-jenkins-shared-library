@@ -4,15 +4,18 @@ import com.cloudbees.groovy.cps.NonCPS
 
 import org.ods.service.JiraZephyrService
 import org.ods.util.IPipelineSteps
+import org.ods.util.MROPipelineUtil
 import org.ods.util.SortUtil
 
 class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
     private JiraZephyrService zephyr
+    private MROPipelineUtil util
 
-    JiraUseCaseZephyrSupport(IPipelineSteps steps, JiraUseCase usecase, JiraZephyrService zephyr) {
+    JiraUseCaseZephyrSupport(IPipelineSteps steps, JiraUseCase usecase, JiraZephyrService zephyr, MROPipelineUtil util) {
         super(steps, usecase)
         this.zephyr = zephyr
+        this.util = util
     }
 
     void applyTestResultsAsTestExecutionStatii(List jiraTestIssues, Map testResults) {
@@ -73,5 +76,14 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
             // The project ID (not key) is mandatory to generate new executions
             issue.projectId = project.id
         }
+    }
+
+    String getVersionId(String projectId) {
+        String jenkinsVersion = this.util.getBuildParams()?.version
+        
+        List versions = this.zephyr.getProjectVersions(projectId)
+        def versionId = versions.find { version -> jenkinsVersion.equalsIgnoreCase(version.name) }
+
+        return versionId?.id ?: "-1" // UNSCHEDULED
     }
 }

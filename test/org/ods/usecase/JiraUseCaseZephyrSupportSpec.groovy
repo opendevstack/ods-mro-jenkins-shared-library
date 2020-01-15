@@ -4,6 +4,8 @@ import org.ods.service.*
 
 import org.ods.parser.JUnitParser
 
+import org.ods.util.MROPipelineUtil
+
 import spock.lang.*
 
 import static util.FixtureHelper.*
@@ -19,7 +21,8 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def usecase = new JiraUseCase(steps, jira)
 
         def zephyr = Mock(JiraZephyrService)
-        def support = new JiraUseCaseZephyrSupport(steps, usecase, zephyr)
+        def util = Mock(MROPipelineUtil)
+        def support = new JiraUseCaseZephyrSupport(steps, usecase, zephyr, util)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -61,7 +64,8 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def usecase = Mock(JiraUseCase)
 
         def zephyr = Mock(JiraZephyrService)
-        def support = Spy(new JiraUseCaseZephyrSupport(steps, usecase, zephyr))
+        def util = Mock(MROPipelineUtil)
+        def support = Spy(new JiraUseCaseZephyrSupport(steps, usecase, zephyr, util))
         usecase.setSupport(support)
 
         def testIssues = createJiraTestIssues()
@@ -83,7 +87,8 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         def usecase = new JiraUseCase(steps, jira)
 
         def zephyr = Mock(JiraZephyrService)
-        def support = new JiraUseCaseZephyrSupport(steps, usecase, zephyr)
+        def util = Mock(MROPipelineUtil)
+        def support = new JiraUseCaseZephyrSupport(steps, usecase, zephyr, util)
         usecase.setSupport(support)
 
         def project = createProject()
@@ -100,5 +105,61 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         then:
         1 * zephyr.getProject(project.id)
         1 * jira.getIssuesForJQLQuery(jqlQuery)
+    }
+
+    def "get versions for project - version not found in Jira"() {
+        given:
+        def steps = Spy(PipelineSteps)
+        def jira = Mock(JiraService)
+        def usecase = new JiraUseCase(steps, jira)
+
+        def zephyr = Mock(JiraZephyrService)
+        def util = Mock(MROPipelineUtil)
+        def support = new JiraUseCaseZephyrSupport(steps, usecase, zephyr, util)
+        usecase.setSupport(support)
+
+        def project = createProject()
+
+        def jqlQuery = [
+            jql: "project = ${project.id} AND issuetype in ('Test') AND labels in ('AutomatedTest')",
+            expand: [ "renderedFields" ],
+            fields: [ "components", "description", "issuelinks", "issuetype", "summary" ]
+        ]
+
+        when:
+        def result = support.getVersionId(project.id)
+
+        then:
+        1 * util.getBuildParams() >> [version: "WIP"]
+        1 * zephyr.getProjectVersions(project.id) >> [[name: "0.1", id: "1234"]]
+        result == "-1"
+    }
+
+    def "get versions for project - version found in Jira"() {
+        given:
+        def steps = Spy(PipelineSteps)
+        def jira = Mock(JiraService)
+        def usecase = new JiraUseCase(steps, jira)
+
+        def zephyr = Mock(JiraZephyrService)
+        def util = Mock(MROPipelineUtil)
+        def support = new JiraUseCaseZephyrSupport(steps, usecase, zephyr, util)
+        usecase.setSupport(support)
+
+        def project = createProject()
+
+        def jqlQuery = [
+            jql: "project = ${project.id} AND issuetype in ('Test') AND labels in ('AutomatedTest')",
+            expand: [ "renderedFields" ],
+            fields: [ "components", "description", "issuelinks", "issuetype", "summary" ]
+        ]
+
+        when:
+        def result = support.getVersionId(project.id)
+
+        then:
+        1 * util.getBuildParams() >> [version: "0.1"]
+        1 * zephyr.getProjectVersions(project.id) >> [[name: "0.1", id: "1234"]]
+        result == "1234"
     }
 }
