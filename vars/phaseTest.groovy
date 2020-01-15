@@ -19,6 +19,9 @@ def call(Map project, List<Set<Map>> repos) {
             installation: [
                 testReportFiles: [],
                 testResults: [:]
+            ],
+            functional: [
+
             ]
         ]
     ]
@@ -33,10 +36,17 @@ def call(Map project, List<Set<Map>> repos) {
             def installationTestResults = getInstallationTestResults(steps, repo)
             data.tests.installation.testReportFiles.addAll(installationTestResults.testReportFiles)
 
+            // Add functional test report files to a global data structure
+            def functionalTestResults = getFunctionalTestResults(steps, repo)
+            data.tests.functional.testReportFiles.addAll(functionalTestResults.testReportFiles)
+
             project.repositories.each { repo_ ->
-                if (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE || repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
+                if (repo_.type?.toLowerCase() != MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
                     echo "Reporting installation test results to corresponding test cases in Jira for ${repo_.id}"
-                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", "InstallationTest", installationTestResults.testResults)
+                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", ["InstallationTest"], installationTestResults.testResults)
+
+                    echo "Reporting functional test results to corresponding test cases in Jira for ${repo_.id}"
+                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", ["AcceptanceTest", "IntegrationTest"], functionalTestResults.testResults)
                 }
             }
 
@@ -52,10 +62,15 @@ def call(Map project, List<Set<Map>> repos) {
             parallel(group)
         }
 
-    // Parse all installation test report files into a single data structure
+    // Parse all test report files into a single data structure
+    data.tests.functional.testResults = junit.parseTestReportFiles(data.tests.functional.testReportFiles)
     data.tests.installation.testResults = junit.parseTestReportFiles(data.tests.installation.testReportFiles)
 
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
+}
+
+private List getFunctionalTestResults(def steps, Map repo) {
+    return this.getTestResults(steps, repo, "installation")
 }
 
 private List getInstallationTestResults(def steps, Map repo) {

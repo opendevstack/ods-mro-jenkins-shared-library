@@ -372,6 +372,44 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         _ * util.getBuildParams() >> buildParams
     }
 
+    def "create FTP"() {
+        given:
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        // Test Parameters
+        def project = createProject()
+
+        // Argument Constraints
+        def documentType = LeVADocumentUseCase.DocumentType.FTP as String
+
+        // Stubbed Method Responses
+        def buildParams = createBuildEnvironment(env)
+        def chapterData = ["sec1": "myContent"]
+        def testIssues = createJiraTestIssues()
+
+        when:
+        usecase.createFTP(project)
+
+        then:
+        1 * jira.getDocumentChapterData(project.id, documentType) >> chapterData
+        0 * levaFiles.getDocumentChapterData(documentType)
+
+        then:
+        1 * jira.getAutomatedFunctionalTestIssues(project.id) >> testIssues
+        1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        _ * util.getBuildParams() >> buildParams
+    }
+
     def "create FS"() {
         given:
         def util = Mock(MROPipelineUtil)

@@ -562,13 +562,97 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createFTP(Map project) {
-        // TODO: not yet implemented
-        return "http://nexus"
+        def documentType = DocumentType.FTP as String
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        def data = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
+            data: [
+                project: project,
+                sections: sections,
+                tests: this.jira.getAutomatedFunctionalTestIssues(project.id).collectEntries { issue ->
+                    [
+                        issue.key,
+                        [
+                            key: issue.key,
+                            description: issue.description ?: "",
+                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A"
+                        ]
+                    ]
+                }
+            ]
+        ]
+
+        return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
     String createFTR(Map project, Map repo, Map data) {
-        // TODO: not yet implemented
-        return "http://nexus"
+        def documentType = DocumentType.FTR as String
+
+        data = data.tests.functional
+
+        def sections = this.jira.getDocumentChapterData(project.id, documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        def jiraTestIssues = this.jira.getAutomatedFunctionalTestIssues(project.id)
+
+        def matchedHandler = { result ->
+            result.each { issue, testcase ->
+                issue.test.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
+                issue.test.isMissing = false
+            }
+        }
+
+        def unmatchedHandler = { result ->
+            result.each { issue ->
+                issue.test.isSuccess = false
+                issue.test.isMissing = true
+            }
+        }
+
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
+
+        def discrepancies = this.computeTestDiscrepancies("Functional and Requirements Tests", jiraTestIssues)
+
+        def data_ = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
+            data: [
+                project: project,
+                sections: sections,
+                tests: jiraTestIssues.collectEntries { issue ->
+                    [
+                        issue.key,
+                        [
+                            key: issue.key,
+                            description: issue.test.description ?: "",
+                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
+                            remarks: issue.test.isMissing ? "not executed" : "",
+                            success: issue.test.isSuccess ? "Y" : "N"
+                        ]
+                    ]
+                },
+                testfiles: data.testReportFiles.collect { file ->
+                    [ name: file.getName(), path: file.getPath() ]
+                },
+                discrepancies: discrepancies.discrepancies,
+                conclusion: [
+                    summary: discrepancies.conclusion.summary,
+                    statement : discrepancies.conclusion.statement
+                ]
+            ]
+        ]
+
+        def files = data.testReportFiles.collectEntries { file ->
+            [ "raw/${file.getName()}", file.getBytes() ]
+        }
+
+        return this.createDocument(documentType, project, null, data_, files, null, null)
     }
 
     String createIVP(Map project) {
@@ -652,7 +736,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 testfiles: data.testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
                 },
-                testsuites: data.testResults,
                 discrepancies: discrepancies.discrepancies,
                 conclusion: [
                     summary: discrepancies.conclusion.summary,
