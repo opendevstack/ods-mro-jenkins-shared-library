@@ -98,7 +98,7 @@ private List getTestResults(def steps, Map repo, String type) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService.class.name)
     def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
 
-    echo("!!! in getTestResults")
+    echo("!!! in getTestResults type: ${type}")
 
     def testReportsPath = "junit/${repo.id}/${type}"
 
@@ -113,12 +113,15 @@ private List getTestResults(def steps, Map repo, String type) {
     def testReportFiles = junit.loadTestReportsFromPath(testReportsUnstashPath)
     echo("!!! testReportFiles: ${testReportFiles.collect { it.canonicalPath }}")
 
-    return [
+    def result = [
         // Load JUnit test report files from path
         testReportFiles: testReportFiles,
         // Parse JUnit test report files into a report
         testResults: junit.parseTestReportFiles(testReportFiles)
     ]
+
+    echo("!!! result: ${result}")
+    return result
 }
 
 return this

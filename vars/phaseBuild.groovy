@@ -50,7 +50,7 @@ private List getTestResults(def steps, Map repo) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService.class.name)
     def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
 
-    def testReportsPath = "junit/${repo.id}"
+    def testReportsPath = "junit/${repo.id}/unit"
 
     echo "Collecting JUnit XML Reports for ${repo.id}"
     def testReportsStashName = "test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
