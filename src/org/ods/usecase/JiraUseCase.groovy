@@ -354,6 +354,7 @@ class JiraUseCase {
 
     void reportTestResultsForComponent(String projectId, String componentName, String testType, Map testResults) {
         this.steps.echo("!!! in JiraUseCase::reportTestResultsForComponent")
+        this.steps.echo("!!! jira: ${jira}")
 
         if (!this.jira) return
 
