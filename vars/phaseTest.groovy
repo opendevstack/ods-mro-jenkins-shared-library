@@ -98,7 +98,7 @@ private List getTestResults(def steps, Map repo, String type) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService.class.name)
     def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
 
-    def testReportsPath = "junit/${repo.id}"
+    def testReportsPath = "junit/${repo.id}/${type}"
 
     echo "Collecting JUnit XML Reports for ${repo.id}"
     def testReportsStashName = "${type}-test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
@@ -109,6 +109,7 @@ private List getTestResults(def steps, Map repo, String type) {
     }
 
     def testReportFiles = junit.loadTestReportsFromPath(testReportsUnstashPath)
+    echo("!!! testReportFiles: ${testReportFiles.collect { it.canonicalPath }}")
 
     return [
         // Load JUnit test report files from path
