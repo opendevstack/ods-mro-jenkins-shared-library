@@ -4,6 +4,9 @@ import org.ods.parser.JUnitParser
 import org.ods.service.JiraService
 import org.ods.util.IPipelineSteps
 
+// TODO
+import groovy.json.JsonOutput
+
 class JiraUseCase {
 
     class IssueTypes {
@@ -33,6 +36,10 @@ class JiraUseCase {
 
     void applyTestResultsAsTestIssueLabels(List jiraTestIssues, Map testResults) {
         if (!this.jira) return
+
+        this.steps.echo("!!! in JiraUseCase::applyTestResultsAsTestIssueLabels")
+        this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
+        this.steps.echo("!!! testResults: ${JsonOutput.toJson(testResults)}")
 
         // Handle Jira issues for which a corresponding test exists in testResults
         def matchedHandler = { result ->
@@ -348,8 +355,11 @@ class JiraUseCase {
     void reportTestResultsForComponent(String projectId, String componentName, String testType, Map testResults) {
         if (!this.jira) return
 
+        this.steps.echo("!!! in JiraUseCase::reportTestResultsForComponent")
+
         // Get automated test case definitions from Jira
         def jiraTestIssues = this.getAutomatedTestIssues(projectId, componentName, [testType])
+        this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
 
         // Apply test results to the test case definitions in Jira
         this.support.applyTestResultsToTestIssues(jiraTestIssues, testResults)

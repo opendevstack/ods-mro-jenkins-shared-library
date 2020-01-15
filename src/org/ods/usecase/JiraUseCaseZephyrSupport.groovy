@@ -6,6 +6,9 @@ import org.ods.service.JiraZephyrService
 import org.ods.util.IPipelineSteps
 import org.ods.util.SortUtil
 
+// TODO
+import groovy.json.JsonOutput
+
 class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
     private JiraZephyrService zephyr
@@ -18,6 +21,10 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     void applyTestResultsAsTestExecutionStatii(List jiraTestIssues, Map testResults) {
         if (!this.usecase.jira) return
         if (!this.zephyr) return
+
+        this.steps.echo("!!! in ZephyrSupport::applyTestResultsAsTestExecutionStatii")
+        this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
+        this.steps.echo("!!! testResults: ${JsonOutput.toJson(testResults)}")
 
         jiraTestIssues.each { issue ->
             // Create a new execution with status UNEXECUTED
@@ -44,6 +51,8 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
     }
 
     void applyTestResultsToTestIssues(List jiraTestIssues, Map testResults) {
+        this.steps.echo("!!! in ZephyrSupport::applyTestResultsToTestIssues")
+
         this.usecase.applyTestResultsAsTestIssueLabels(jiraTestIssues, testResults)
         this.applyTestResultsAsTestExecutionStatii(jiraTestIssues, testResults)
     }
