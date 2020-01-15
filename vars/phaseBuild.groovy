@@ -30,6 +30,8 @@ def call(Map project, List<Set<Map>> repos) {
 
             levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data)
 
+
+            echo("!!! about to execute JiraUseCase.reportTestResultsForComponent")
             // Report unit test results to corresponding test cases in Jira
             jira.reportTestResultsForComponent(project.id, "Technology-${repo.id}", "UnitTest", data.tests.unit.testResults)
         }

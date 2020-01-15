@@ -353,9 +353,9 @@ class JiraUseCase {
     }
 
     void reportTestResultsForComponent(String projectId, String componentName, String testType, Map testResults) {
-        if (!this.jira) return
-
         this.steps.echo("!!! in JiraUseCase::reportTestResultsForComponent")
+
+        if (!this.jira) return
 
         // Get automated test case definitions from Jira
         def jiraTestIssues = this.getAutomatedTestIssues(projectId, componentName, [testType])
