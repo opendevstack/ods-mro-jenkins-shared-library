@@ -197,6 +197,8 @@ class JiraUseCase {
         def result = [:]
         if (!this.jira) return result
 
+        this.steps.echo("!!! in getIssuesForProject")
+
         // Fetch the component's issues and filter by issuetype
         def query = "project = ${projectKey}"
 
@@ -211,6 +213,8 @@ class JiraUseCase {
         labelsSelector.each {
             query += " AND labels = '${it}'"
         }
+
+        this.steps.echo("!!! query: ${query}")
 
         def linkedIssuesKeys = [] as Set
         def issueTypeEpicKeys = []

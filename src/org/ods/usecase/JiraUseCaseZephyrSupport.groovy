@@ -58,6 +58,10 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
             return issuelink.type.relation == "is related to" && (issuelink.issue.issuetype.name == "Epic" || issuelink.issue.issuetype.name == "Story")
         }.values().flatten()
 
+        this.steps.echo("!!! in ZephyrSupport::getAutomatedTestIssues")
+        this.steps.echo("!!!: labelsSelector: ${labelsSelector}")
+        this.steps.echo("!!!: issues: ${issues}")
+
         return issues.each { issue ->
             issue.test = [
                 description: issue.description,
