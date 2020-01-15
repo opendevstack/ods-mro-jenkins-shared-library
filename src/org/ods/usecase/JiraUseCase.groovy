@@ -4,9 +4,6 @@ import org.ods.parser.JUnitParser
 import org.ods.service.JiraService
 import org.ods.util.IPipelineSteps
 
-// TODO
-import groovy.json.JsonOutput
-
 class JiraUseCase {
 
     class IssueTypes {
@@ -36,10 +33,6 @@ class JiraUseCase {
 
     void applyTestResultsAsTestIssueLabels(List jiraTestIssues, Map testResults) {
         if (!this.jira) return
-
-        this.steps.echo("!!! in JiraUseCase::applyTestResultsAsTestIssueLabels")
-        this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
-        this.steps.echo("!!! testResults: ${JsonOutput.toJson(testResults)}")
 
         // Handle Jira issues for which a corresponding test exists in testResults
         def matchedHandler = { result ->
@@ -197,8 +190,6 @@ class JiraUseCase {
     }
 
     Map getIssuesForProject(String projectKey, String componentName = null, List<String> issueTypesSelector = [], List<String> labelsSelector = [], boolean throwOnMissingLinks = false, Closure issueLinkFilter = null) {
-        this.steps.echo("!!! in JiraUseCase::reportTestResultsForComponent")
-
         def result = [:]
         if (!this.jira) return result
 
@@ -216,8 +207,6 @@ class JiraUseCase {
         labelsSelector.each {
             query += " AND labels = '${it}'"
         }
-
-        this.steps.echo("!!! query: ${query}")
 
         def linkedIssuesKeys = [] as Set
         def issueTypeEpicKeys = []
@@ -357,14 +346,10 @@ class JiraUseCase {
     }
 
     void reportTestResultsForComponent(String projectId, String componentName, String testType, Map testResults) {
-        this.steps.echo("!!! in JiraUseCase::reportTestResultsForComponent")
-        this.steps.echo("!!! jira: ${jira}")
-
         if (!this.jira) return
 
         // Get automated test case definitions from Jira
         def jiraTestIssues = this.getAutomatedTestIssues(projectId, componentName, [testType])
-        this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
 
         // Apply test results to the test case definitions in Jira
         this.support.applyTestResultsToTestIssues(jiraTestIssues, testResults)

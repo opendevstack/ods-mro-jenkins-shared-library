@@ -35,7 +35,7 @@ def call(Map project, List<Set<Map>> repos) {
 
             project.repositories.each { repo_ ->
                 if (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE || repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
-                    // Report installation test results to corresponding test cases in Jira
+                    echo "Reporting installation test results to corresponding test cases in Jira for ${repo_.id}"
                     jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", "InstallationTest", installationTestResults.testResults)
                 }
             }
