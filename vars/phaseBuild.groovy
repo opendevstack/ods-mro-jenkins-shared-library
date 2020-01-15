@@ -7,7 +7,6 @@ import org.ods.util.MROPipelineUtil
 import org.ods.util.PipelineUtil
 
 def call(Map project, List<Set<Map>> repos) {
-    /*
     def jira             = ServiceRegistry.instance.get(JiraUseCase.class.name)
     def util             = ServiceRegistry.instance.get(PipelineUtil.class.name)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler.class.name)
@@ -22,12 +21,22 @@ def call(Map project, List<Set<Map>> repos) {
         // FIXME: we are mixing a generic scheduler capability with a data dependency and an explicit repository constraint.
         // We should turn the last argument 'data' of the scheduler into a closure that return data.
         if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
-            def data = getTestResults(steps, repo)
+            def unitTestResults = getTestResults(steps, repo)
+
+            def data = [
+                tests: [
+                    unit: [
+                        testReportFiles: unitTestResults,
+                        // Parse JUnit test report files into a report
+                        testResults: junit.parseTestReportFiles(unitTestResults)
+                    ]
+                ]
+            ]
 
             levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, project, repo, data)
 
             // Report test results to corresponding test cases in Jira
-            jira.reportTestResultsForComponent(project.id, "Technology-${repo.id}", "UnitTest", data.testResults)
+            jira.reportTestResultsForComponent(project.id, "Technology-${repo.id}", "UnitTest", data.tests.unit.testResults)
         }
     }
 
@@ -40,31 +49,24 @@ def call(Map project, List<Set<Map>> repos) {
         }
 
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project)
-    */
 }
 
-private Map getTestResults(def steps, Map repo) {
+private List getTestResults(def steps, Map repo, String type) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService.class.name)
     def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
 
     def testReportsPath = "junit/${repo.id}"
 
     echo "Collecting JUnit XML Reports for ${repo.id}"
-    def testReportsStashName = "test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
+    def testReportsStashName = "${type}-test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
     def testReportsUnstashPath = "${steps.env.WORKSPACE}/${testReportsPath}"
     def hasStashedTestReports = jenkins.unstashFilesIntoPath(testReportsStashName, testReportsUnstashPath, "JUnit XML Report")
     if (!hasStashedTestReports) {
         throw new RuntimeException("Error: unable to unstash JUnit XML reports for repo '${repo.id}' from stash '${testReportsStashName}'.")
     }
 
-    def testReportFiles = junit.loadTestReportsFromPath(testReportsUnstashPath)
-
-    return [
-        // Load JUnit test report files from path
-        testReportFiles: testReportFiles,
-        // Parse JUnit test report files into a report
-        testResults: junit.parseTestReportFiles(testReportFiles)
-    ]
+    // Load JUnit test report files from path
+    return junit.loadTestReportsFromPath(testReportsUnstashPath)
 }
 
 return this

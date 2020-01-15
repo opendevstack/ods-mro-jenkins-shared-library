@@ -277,8 +277,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def testReportFiles = [xmlFile]
         def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
         def data = [
-            testReportFiles: testReportFiles,
-            testResults: testResults
+            tests: [
+                unit: [
+                    testReportFiles: testReportFiles,
+                    testResults: testResults
+                ]
+            ]
         ]
 
         // Argument Constraints
@@ -334,8 +338,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def testReportFiles = [xmlFile]
         def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
         def data = [
-            testReportFiles: testReportFiles,
-            testResults: testResults
+            tests: [
+                unit: [
+                    testReportFiles: testReportFiles,
+                    testResults: testResults
+                ]
+            ]
         ]
 
         // Argument Constraints
@@ -470,9 +478,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def testReportFiles = [xmlFile]
         def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
         def data = [
-            installation: [
-                testReportFiles: testReportFiles,
-                testResults: testResults
+            tests: [
+                installation: [
+                    testReportFiles: testReportFiles,
+                    testResults: testResults
+                ]
             ]
         ]
 

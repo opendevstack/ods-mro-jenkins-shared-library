@@ -326,6 +326,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createDTR(Map project, Map repo, Map data) {
         def documentType = DocumentType.DTR as String
 
+        data = data.tests.unit
+
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
             sections = this.levaFiles.getDocumentChapterData(documentType)
@@ -601,7 +603,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createIVR(Map project, Map repo, Map data) {
         def documentType = DocumentType.IVR as String
 
-        data = data.installation
+        data = data.tests.installation
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {

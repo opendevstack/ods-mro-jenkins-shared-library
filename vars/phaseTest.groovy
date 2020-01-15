@@ -36,7 +36,7 @@ def call(Map project, List<Set<Map>> repos) {
             project.repositories.each { repo_ ->
                 if (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE || repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE) {
                     // Report test results to corresponding test cases in Jira
-                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", "InstallationTest", data.tests.installation)
+                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", "InstallationTest", data.tests.installation.testResults)
                 }
             }
 
@@ -55,7 +55,7 @@ def call(Map project, List<Set<Map>> repos) {
     // Parse JUnit test report files into a report
     data.tests.installation.testResults = junit.parseTestReportFiles(data.tests.installation.testReportFiles)
 
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data.tests)
+    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
 }
 
 private List getInstallationTestResults(def steps, Map repo) {
