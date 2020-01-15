@@ -570,7 +570,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def request = updateExecutionForIssueRequestData("-1")
         def response = updateExecutionForIssueResponseData("-1", [
             status: 500,
-            body: "Sorry, doesn't work!",
+            body: "Sorry, doesn't work!"
         ])
 
         def server = createServer(WireMock.&put, request, response)
@@ -655,6 +655,163 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
         then:
         noExceptionThrown()
+
+        cleanup:
+        stopServer(server)
+    }
+
+    Map createTestCycleRequestData(Map mixins = [:]) {
+        def result = [
+            data: [
+                projectId: "123456",
+                versionId: "2234",
+                name: "Test"
+            ],
+            headers: [
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            ],
+            password: "password",
+            username: "username"
+        ]
+
+        result.body = JsonOutput.toJson([
+            projectId: "${result.data.projectId}",
+            versionId: "${result.data.versionId}",
+            name: "${result.data.name}"
+        ])
+
+        result.path = "/rest/zapi/latest/cycle/"
+
+        return result << mixins
+    }
+
+   Map createTestCycleResponseData(Map mixins = [:]) {
+        def result = [
+            status: 200,
+            body: JsonOutput.toJson([
+                id: "5",
+                responseMessage: "Cycle Test created successfully."
+            ])
+        ]
+
+        return result << mixins
+    }
+
+    def "create test cycle with invalid issue id"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData()
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle(null, "-1", "Test")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to create test cycle for Jira issues. 'projectId' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "create test cycle with invalid version Id"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData()
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle("123456", null, "Test")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to create test cycle for Jira issues. 'versionId' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "create test cycle with invalid name"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData()
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle("123456", "2234", null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to create test cycle for Jira issues. 'name' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "create test cycle"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData()
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle("123456", "2234", "Test")
+
+        then:
+        noExceptionThrown()
+
+        cleanup:
+        stopServer(server)
+    }
+
+
+    def "create test cycle with HTTP 404 failure"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData([
+            status: 404
+        ])
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle("123456", "2234", "Test")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to create test cycle for Jira issues. Jira could not be found at: 'http://localhost:${server.port()}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "create test cycle with HTTP 500 failure"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData([
+            status: 500,
+            body: "Sorry, doesn't work!"
+        ])
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle("123456", "2234", "Test")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to create test cycle for Jira issues. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
 
         cleanup:
         stopServer(server)

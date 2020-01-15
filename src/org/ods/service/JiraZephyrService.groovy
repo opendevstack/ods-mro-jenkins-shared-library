@@ -156,4 +156,44 @@ class JiraZephyrService extends JiraService {
     void updateExecutionForIssueWip(String executionId) {
         this.updateExecutionForIssue(executionId, ExecutionStatus.WIP)
     }
+
+    @NonCPS
+    Map createTestCycle(String projectId, String versionId, String name) {
+        if (!projectId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to create test cycle for Jira issues. 'projectId' is undefined.")
+        }
+
+        if (!versionId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to create test cycle for Jira issues. 'versionId' is undefined.")
+        }
+
+        if (!name?.trim()) {
+            throw new IllegalArgumentException("Error: unable to create test cycle for Jira issues. 'name' is undefined.")
+        }
+
+        def response = Unirest.post("${this.baseURL}/rest/zapi/latest/cycle/")
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .body(JsonOutput.toJson(
+                [
+                    projectId: projectId,
+                    versionId: versionId,
+                    name: name
+                ]
+            ))
+            .asString()
+
+        response.ifFailure {
+            def message = "Error: unable to create test cycle for Jira issues. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to create test cycle for Jira issues. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody())
+    }
 }
