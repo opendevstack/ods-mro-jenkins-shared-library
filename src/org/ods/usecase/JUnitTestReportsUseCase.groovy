@@ -3,6 +3,8 @@ package org.ods.usecase
 import org.ods.parser.JUnitParser
 import org.ods.util.IPipelineSteps
 
+import groovy.json.JsonOutput
+
 class JUnitTestReportsUseCase {
 
     private IPipelineSteps steps
@@ -27,7 +29,9 @@ class JUnitTestReportsUseCase {
         def result = [ testsuites: [] ]
 
         files.inject(result) { sum, current ->
+            this.steps.echo("!!!: current.text: ${current.text}")
             def testResult = JUnitParser.parseJUnitXML(current.text)
+            this.steps.echo("!!!: testResult: ${JsonOutput.toJson(testResult)}")
             sum.testsuites.addAll(testResult.testsuites)
         }
 
