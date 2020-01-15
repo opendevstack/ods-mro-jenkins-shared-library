@@ -606,6 +606,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             result.each { issue, testcase ->
                 issue.test.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
                 issue.test.isMissing = false
+                issue.test.time = testcase.time
             }
         }
 
@@ -633,7 +634,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
-                            success: issue.test.isSuccess ? "Y" : "N"
+                            success: issue.test.isSuccess ? "Y" : "N",
+                            time: issue.test.time
                         ]
                     ]
                 },
