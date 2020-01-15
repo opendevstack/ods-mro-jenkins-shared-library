@@ -219,6 +219,6 @@ class JiraZephyrService extends JiraService {
             throw new RuntimeException(message)
         }
 
-        return new JsonSlurperClassic().parseText(response.getBody()).stepBeanCollection ?: []
+        return new JsonSlurperClassic().parseText(response.getBody()) ?: []
     }
 }
