@@ -307,7 +307,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data: [
                 project: project,
                 sections: sections,
-                tests: this.jira.getAutomatedTestIssues(project.id, null, ["UnitTest"]).collectEntries { issue ->
+                tests: this.jira.getAutomatedUnitTestIssues(project.id).collectEntries { issue ->
                     [
                         issue.key,
                         [
@@ -331,7 +331,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             sections = this.levaFiles.getDocumentChapterData(documentType)
         }
 
-        def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}", ["UnitTest"])
+        def jiraTestIssues = this.jira.getAutomatedUnitTestIssues(project.id, "Technology-${repo.id}")
 
         def matchedHandler = { result ->
             result.each { issue, testcase ->
@@ -582,7 +582,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data: [
                 project: project,
                 sections: sections,
-                tests: this.jira.getAutomatedTestIssues(project.id, null, ["InstallationTest"]).collectEntries { issue ->
+                tests: this.jira.getAutomatedInstallationTestIssues(project.id).collectEntries { issue ->
                     [
                         issue.key,
                         [
@@ -598,89 +598,17 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return this.createDocument(documentType, project, null, data, [:], null, null)
     }
 
-    // String createIVR(Map project, Map repo, Map data) {
-    //     def documentType = DocumentType.IVR as String
-
-    //     def sections = this.jira.getDocumentChapterData(project.id, documentType)
-    //     if (!sections) {
-    //         sections = this.levaFiles.getDocumentChapterData(documentType)
-    //     }
-
-    //     def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, "Technology-${repo.id}", ["InstallationTest"])
-
-    //     def matchedHandler = { result ->
-    //         result.each { issue, testcase ->
-    //             issue.test.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
-    //             issue.test.isMissing = false
-    //         }
-    //     }
-
-    //     def unmatchedHandler = { result ->
-    //         result.each { issue ->
-    //             issue.test.isSuccess = false
-    //             issue.test.isMissing = true
-    //         }
-    //     }
-
-    //     this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
-
-    //     def discrepancies = this.computeTestDiscrepancies("Installation and Configuration Tests", jiraTestIssues)
-
-    //     def data_ = [
-    //         metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project, repo),
-    //         data: [
-    //             repo: repo,
-    //             sections: sections,
-    //             tests: jiraTestIssues.collectEntries { issue ->
-    //                 [
-    //                     issue.key,
-    //                     [
-    //                         key: issue.key,
-    //                         description: issue.test.description ?: "",
-    //                         isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
-    //                         summary: issue.summary,
-    //                         success: issue.test.isSuccess ? "Y" : "N",
-    //                         remarks: issue.test.isMissing ? "not executed" : ""
-    //                     ]
-    //                 ]
-    //             },
-    //             testfiles: data.testReportFiles.collect { file ->
-    //                 [ name: file.getName(), path: file.getPath() ]
-    //             },
-    //             testsuites: data.testResults,
-    //             discrepancies: discrepancies.discrepancies,
-    //             conclusion: [
-    //                 summary: discrepancies.conclusion.summary,
-    //                 statement : discrepancies.conclusion.statement
-    //             ]
-    //         ]
-    //     ]
-
-    //     def files = data.testReportFiles.collectEntries { file ->
-    //         [ "raw/${file.getName()}", file.getBytes() ]
-    //     }
-
-    //     def modifier = { document ->
-    //         repo.data.documents[documentType] = document
-    //         return document
-    //     }
-
-    //     return this.createDocument(documentType, project, repo, data_, files, modifier, null)
-    // }
-
     String createIVR(Map project, Map repo, Map data) {
         def documentType = DocumentType.IVR as String
 
         data = data.installation
-        this.steps.echo("!!! repo: ${repo}")
-        this.steps.echo("!!! data: ${data}")
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
             sections = this.levaFiles.getDocumentChapterData(documentType)
         }
 
-        def jiraTestIssues = this.jira.getAutomatedTestIssues(project.id, null, ["InstallationTest"])
+        def jiraTestIssues = this.jira.getAutomatedInstallationTestIssues(project.id)
 
         def matchedHandler = { result ->
             result.each { issue, testcase ->
@@ -712,9 +640,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             key: issue.key,
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
+                            remarks: issue.test.isMissing ? "not executed" : "",
                             summary: issue.summary,
                             success: issue.test.isSuccess ? "Y" : "N",
-                            remarks: issue.test.isMissing ? "not executed" : ""
+                            test: issue.test
                         ]
                     ]
                 },

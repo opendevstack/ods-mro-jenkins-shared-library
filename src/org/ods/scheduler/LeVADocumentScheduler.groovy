@@ -15,7 +15,6 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.FTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
-            //LeVADocumentUseCase.DocumentType.OVERALL_IVR as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
             LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
@@ -24,7 +23,6 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.DSD as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
-            //LeVADocumentUseCase.DocumentType.OVERALL_IVR as String,
             LeVADocumentUseCase.DocumentType.URS as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
@@ -37,7 +35,6 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.FTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
-            //LeVADocumentUseCase.DocumentType.OVERALL_IVR as String,
             LeVADocumentUseCase.DocumentType.URS as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
@@ -54,7 +51,6 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.FTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
-            //LeVADocumentUseCase.DocumentType.OVERALL_IVR as String,
             LeVADocumentUseCase.DocumentType.SCP as String,
             LeVADocumentUseCase.DocumentType.SCR as String,
             LeVADocumentUseCase.DocumentType.OVERALL_SCR as String,
@@ -91,8 +87,6 @@ class LeVADocumentScheduler extends DocGenScheduler {
         (MROPipelineUtil.PipelinePhases.TEST): [
             (LeVADocumentUseCase.DocumentType.IVP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
             (LeVADocumentUseCase.DocumentType.IVR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
-            //(LeVADocumentUseCase.DocumentType.IVR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
-            //(LeVADocumentUseCase.DocumentType.OVERALL_IVR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
             (LeVADocumentUseCase.DocumentType.FTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
             (LeVADocumentUseCase.DocumentType.FTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
             (LeVADocumentUseCase.DocumentType.SCR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO,
@@ -110,13 +104,11 @@ class LeVADocumentScheduler extends DocGenScheduler {
         (MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE): [
             (LeVADocumentUseCase.DocumentType.DTR as String): null,
             (LeVADocumentUseCase.DocumentType.FTR as String): null,
-            //(LeVADocumentUseCase.DocumentType.IVR as String): null,
             (LeVADocumentUseCase.DocumentType.SCR as String): MROPipelineUtil.PipelinePhases.BUILD,
             (LeVADocumentUseCase.DocumentType.SDS as String): null,
             (LeVADocumentUseCase.DocumentType.TIR as String): null
         ],
         (MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE): [
-            //(LeVADocumentUseCase.DocumentType.IVR as String): null,
             (LeVADocumentUseCase.DocumentType.TIR as String): null
         ],
         (MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST): [
