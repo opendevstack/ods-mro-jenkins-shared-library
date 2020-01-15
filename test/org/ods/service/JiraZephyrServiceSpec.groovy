@@ -816,4 +816,129 @@ class JiraZephyrServiceSpec extends SpecHelper {
         cleanup:
         stopServer(server)
     }
+
+    Map getProjectVersionsRequestData(Map mixins = [:]) {
+        def result = [
+            data: [
+                projectKey: "DEMO"
+            ],
+            headers: [
+                "Accept": "application/json"
+            ],
+            password: "password",
+            username: "username"
+        ]
+
+        result.path = "/rest/api/2/project/${result.data.projectKey}/versions"
+
+        return result << mixins
+    }
+
+    Map getProjectVersionsResponseData(Map mixins = [:]) {
+        def result = [
+            body: JsonOutput.toJson([
+                [
+                    archived: "false", 
+                    name: "0.1", 
+                    self: "https://localhost/rest/api/2/version/10937", 
+                    description: "Initial", 
+                    id: "10937", 
+                    projectId: "12005", 
+                    released: "false"
+                ], 
+                [
+                    archived: "false", 
+                    name: "1.0", 
+                    self: "https://localhost/rest/api/2/version/10938", 
+                    id: "10938", 
+                    projectId: "12005", 
+                    released: "false"
+                ]
+            ])
+        ]
+
+        return result << mixins
+    }
+
+    def "get project versions with invalid project key"() {
+        given:
+        def request = getProjectVersionsRequestData()
+        def response = getProjectVersionsResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectVersions(null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to get project versions from Jira. 'projectKey' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project versions"() {
+        given:
+        def request = getProjectVersionsRequestData()
+        def response = getProjectVersionsResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectVersions("DEMO")
+
+        then:
+        def expect = getProjectVersionsResponseData()
+
+        noExceptionThrown()
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project versions with HTTP 404 failure"() {
+        given:
+        def request = getProjectVersionsRequestData()
+        def response = getProjectVersionsResponseData([
+            status: 404
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectVersions("DEMO")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get project versions. Jira could not be found at: 'http://localhost:${server.port()}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project versions with HTTP 500 failure"() {
+        given:
+        def request = getProjectVersionsRequestData()
+        def response = getProjectVersionsResponseData([
+            status: 500,
+            body: "Sorry, doesn't work!"
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectVersions("DEMO")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get project versions. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
+
+        cleanup:
+        stopServer(server)
+    }
 }

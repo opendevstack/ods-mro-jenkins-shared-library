@@ -196,4 +196,29 @@ class JiraZephyrService extends JiraService {
 
         return new JsonSlurperClassic().parseText(response.getBody())
     }
+
+    @NonCPS
+    List getProjectVersions(String projectKey) {
+        if (!projectKey?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get project versions from Jira. 'projectKey' is undefined.")
+        }
+
+        def response = Unirest.get("${this.baseURL}/rest/api/2/project/{projectKey}/versions")
+            .routeParam("projectKey", projectKey.toUpperCase())
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .asString()
+
+        response.ifFailure {
+            def message = "Error: unable to get project versions. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to get project versions. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody()).stepBeanCollection ?: []
+    }
 }
