@@ -6,6 +6,8 @@ import org.ods.usecase.JiraUseCase
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PipelineUtil
 
+import groovy.json.JsonOutput
+
 def call(Map project, List<Set<Map>> repos) {
     def jira             = ServiceRegistry.instance.get(JiraUseCase.class.name)
     def junit            = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
@@ -74,7 +76,9 @@ private List getFunctionalTestResults(def steps, Map repo) {
     def junit = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
 
     def acceptanceTestResults = this.getTestResults(steps, repo, "acceptance")
+    echo("!!! acceptanceTestResults: ${JsonOutput.toJson(acceptanceTestResults)}")
     def integrationTestResults = this.getTestResults(steps, repo, "integration")
+    echo("!!! integrationTestResults: ${JsonOutput.toJson(integrationTestResults)}")
 
     def testReportFiles = []
     testReportFiles.addAll(acceptanceTestResults.testReportFiles)
