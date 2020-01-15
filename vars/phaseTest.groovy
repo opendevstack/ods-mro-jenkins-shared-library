@@ -71,7 +71,17 @@ def call(Map project, List<Set<Map>> repos) {
 }
 
 private List getFunctionalTestResults(def steps, Map repo) {
-    return this.getTestResults(steps, repo, "installation")
+    def junit = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
+
+    def acceptanceTestResults = this.getTestResults(steps, repo, "acceptance")
+    def integrationTestResults = this.getTestResults(steps, repo, "integration")
+
+    def testReportFiles = acceptanceTestResults.testReportFiles.addAll(integrationTestResults.testReportFiles)
+
+    return [
+        testReportFiles: testReportFiles,
+        testResults: junit.parseTestReportFiles(testReportFiles)
+    ]
 }
 
 private List getInstallationTestResults(def steps, Map repo) {
