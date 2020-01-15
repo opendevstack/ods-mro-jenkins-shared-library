@@ -76,7 +76,9 @@ private List getFunctionalTestResults(def steps, Map repo) {
     def acceptanceTestResults = this.getTestResults(steps, repo, "acceptance")
     def integrationTestResults = this.getTestResults(steps, repo, "integration")
 
-    def testReportFiles = acceptanceTestResults.testReportFiles.addAll(integrationTestResults.testReportFiles)
+    def testReportFiles = []
+    testReportFiles.addAll(acceptanceTestResults.testReportFiles)
+    testReportFiles.addAll(integrationTestResults.testReportFiles)
 
     return [
         testReportFiles: testReportFiles,
