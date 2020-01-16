@@ -405,7 +405,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * jira.getAutomatedAcceptanceTestIssues(project.id) >> testIssues
-        1 * jira.getAutomatedIntegrationestIssues(project.id) >> testIssues
+        1 * jira.getAutomatedIntegrationTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
         _ * util.getBuildParams() >> buildParams
@@ -447,7 +447,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         ]
 
         // Argument Constraints
-        def documentType = LeVADocumentUseCase.DocumentType.IVR as String
+        def documentType = LeVADocumentUseCase.DocumentType.FTR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
 
         // Stubbed Method Responses

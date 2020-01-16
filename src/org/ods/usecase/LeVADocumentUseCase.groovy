@@ -613,7 +613,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             result.each { issue, testcase ->
                 issue.test.isSuccess = !(testcase.error || testcase.failure || testcase.skipped)
                 issue.test.isMissing = false
-                issue.test.time = testcase.time
+                issue.test.timestamp = testcase.timestamp
             }
         }
 
@@ -647,7 +647,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
                             success: issue.test.isSuccess ? "Y" : "N",
-                            datetime: Date.parse("yyyy-MM-dd'T'HH:mm:ss", issue.test.timestamp).format("yyyy/MM/dd HH:mm")
+                            datetime: "N/A" // Date.parse("yyyy-MM-dd'T'HH:mm:ss", issue.test.timestamp).format("yyyy/MM/dd HH:mm")
                         ]
                     ]
                 },
@@ -657,7 +657,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def files = data.testReportFiles.collectEntries { file ->
+        def files = (acceptanceTestData + integrationTestData).testReportFiles.collectEntries { file ->
             [ "raw/${file.getName()}", file.getBytes() ]
         }
 
