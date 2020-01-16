@@ -18,11 +18,15 @@ def call(Map project, List<Set<Map>> repos) {
 
     def data = [
         tests: [
+            acceptance: [
+                testReportFiles: [],
+                testResults: [:]
+            ],
             installation: [
                 testReportFiles: [],
                 testResults: [:]
             ],
-            functional: [
+            integration: [
                 testReportFiles: [],
                 testResults: [:]
             ]
@@ -39,17 +43,24 @@ def call(Map project, List<Set<Map>> repos) {
             def installationTestResults = getInstallationTestResults(steps, repo)
             data.tests.installation.testReportFiles.addAll(installationTestResults.testReportFiles)
 
-            // Add functional test report files to a global data structure
-            def functionalTestResults = getFunctionalTestResults(steps, repo)
-            data.tests.functional.testReportFiles.addAll(functionalTestResults.testReportFiles)
+            // Add integration test report files to a global data structure
+            def integrationTestResults = getIntegrationTestResults(steps, repo)
+            data.tests.integration.testReportFiles.addAll(integrationTestResults.testReportFiles)
+
+            // Add acceptance test report files to a global data structure
+            def acceptanceTestResults = getAcceptanceTestResults(steps, repo)
+            data.tests.acceptance.testReportFiles.addAll(acceptanceTestResults.testReportFiles)
 
             project.repositories.each { repo_ ->
                 if (repo_.type?.toLowerCase() != MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
                     echo "Reporting installation test results to corresponding test cases in Jira for ${repo_.id}"
                     jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", ["InstallationTest"], installationTestResults.testResults)
 
-                    echo "Reporting functional test results to corresponding test cases in Jira for ${repo_.id}"
-                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", ["AcceptanceTest", "IntegrationTest"], functionalTestResults.testResults)
+                    echo "Reporting integration test results to corresponding test cases in Jira for ${repo_.id}"
+                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", ["IntegrationTest"], integrationTestResults.testResults)
+
+                    echo "Reporting acceptance test results to corresponding test cases in Jira for ${repo_.id}"
+                    jira.reportTestResultsForComponent(project.id, "Technology-${repo_.id}", ["AcceptanceTest"], acceptanceTestResults.testResults)
                 }
             }
 
@@ -66,32 +77,23 @@ def call(Map project, List<Set<Map>> repos) {
         }
 
     // Parse all test report files into a single data structure
-    data.tests.functional.testResults = junit.parseTestReportFiles(data.tests.functional.testReportFiles)
+    data.tests.acceptance.testResults = junit.parseTestReportFiles(data.tests.acceptance.testReportFiles)
     data.tests.installation.testResults = junit.parseTestReportFiles(data.tests.installation.testReportFiles)
+    data.tests.integration.testResults = junit.parseTestReportFiles(data.tests.integration.testReportFiles)
 
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
 }
 
-private List getFunctionalTestResults(def steps, Map repo) {
-    def junit = ServiceRegistry.instance.get(JUnitTestReportsUseCase.class.name)
-
-    def acceptanceTestResults = this.getTestResults(steps, repo, "acceptance")
-    echo("!!! acceptanceTestResults: ${JsonOutput.toJson(acceptanceTestResults)}")
-    def integrationTestResults = this.getTestResults(steps, repo, "integration")
-    echo("!!! integrationTestResults: ${JsonOutput.toJson(integrationTestResults)}")
-
-    def testReportFiles = []
-    testReportFiles.addAll(acceptanceTestResults.testReportFiles)
-    testReportFiles.addAll(integrationTestResults.testReportFiles)
-
-    return [
-        testReportFiles: testReportFiles,
-        testResults: junit.parseTestReportFiles(testReportFiles)
-    ]
+private List getAcceptanceTestResults(def steps, Map repo) {
+    return this.getTestResults(steps, repo, "acceptance")
 }
 
 private List getInstallationTestResults(def steps, Map repo) {
     return this.getTestResults(steps, repo, "installation")
+}
+
+private List getIntegrationTestResults(def steps, Map repo) {
+    return this.getTestResults(steps, repo, "integration")
 }
 
 private List getTestResults(def steps, Map repo, String type) {

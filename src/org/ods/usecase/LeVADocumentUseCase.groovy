@@ -569,12 +569,15 @@ class LeVADocumentUseCase extends DocGenUseCase {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         }
 
+        def jiraAcceptanceTestIssues = this.jira.getAutomatedAcceptanceTestIssues(project.id)
+        def jiraIntegrationTestIssues = this.jira.getAutomatedIntegrationTestIssues(project.id)
+
         def data = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
                 project: project,
                 sections: sections,
-                tests: this.jira.getAutomatedFunctionalTestIssues(project.id).collectEntries { issue ->
+                tests: (jiraAcceptanceTestIssues + jiraIntegrationTestIssues).collectEntries { issue ->
                     [
                         issue.key,
                         [
@@ -595,16 +598,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         this.steps.echo("!!! in createFTR")
 
-        data = data.tests.functional
-        this.steps.echo("!!! data: ${JsonOutput.toJson(data)}")
+        def acceptanceTestData = data.tests.acceptance
+        def integrationTestData = data.tests.integration
+
+        this.steps.echo("!!! acceptanceTestData: ${JsonOutput.toJson(acceptanceTestData)}")
+        this.steps.echo("!!! integrationTestData: ${JsonOutput.toJson(integrationTestData)}")
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         }
-
-        def jiraTestIssues = this.jira.getAutomatedFunctionalTestIssues(project.id)
-        this.steps.echo("!!! jiraTestIssues: ${JsonOutput.toJson(jiraTestIssues)}")
 
         def matchedHandler = { result ->
             result.each { issue, testcase ->
@@ -621,16 +624,21 @@ class LeVADocumentUseCase extends DocGenUseCase {
             }
         }
 
-        this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        def jiraAcceptanceTestIssues = this.jira.getAutomatedAcceptanceTestIssues(project.id)
+        this.steps.echo("!!! jiraAcceptanceTestIssues: ${JsonOutput.toJson(jiraAcceptanceTestIssues)}")
 
-        def discrepancies = this.computeTestDiscrepancies("Functional and Requirements Tests", jiraTestIssues)
+        def jiraIntegrationTestIssues = this.jira.getAutomatedIntegrationTestIssues(project.id)
+        this.steps.echo("!!! jiraIntegrationTestIssues: ${JsonOutput.toJson(jiraIntegrationTestIssues)}")
+
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraAcceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraIntegrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
                 project: project,
                 sections: sections,
-                tests: jiraTestIssues.collectEntries { issue ->
+                tests: (jiraAcceptanceTestIssues + jiraIntegrationTestIssues).collectEntries { issue ->
                     [
                         issue.key,
                         [
@@ -639,18 +647,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
                             success: issue.test.isSuccess ? "Y" : "N",
-                            time: issue.test.time
+                            datetime: Date.parse("yyyy-MM-dd'T'HH:mm:ss", issue.test.timestamp).format("yyyy/MM/dd HH:mm")
                         ]
                     ]
                 },
                 testfiles: data.testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
-                },
-                discrepancies: discrepancies.discrepancies,
-                conclusion: [
-                    summary: discrepancies.conclusion.summary,
-                    statement : discrepancies.conclusion.statement
-                ]
+                }
             ]
         ]
 
@@ -718,8 +721,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         this.jira.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
-        def discrepancies = this.computeTestDiscrepancies("Installation and Configuration Tests", jiraTestIssues)
-
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
@@ -741,12 +742,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 },
                 testfiles: data.testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
-                },
-                discrepancies: discrepancies.discrepancies,
-                conclusion: [
-                    summary: discrepancies.conclusion.summary,
-                    statement : discrepancies.conclusion.statement
-                ]
+                }
             ]
         ]
 
