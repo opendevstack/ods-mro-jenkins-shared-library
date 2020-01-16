@@ -109,10 +109,6 @@ class JiraUseCase {
         return this.support.getAutomatedAcceptanceTestIssues(projectId, componentName)
     }
 
-    List getAutomatedFunctionalTestIssues(String projectId, String componentName = null) {
-        return this.support.getAutomatedTestIssues(projectId, componentName, ["AcceptanceTest", "IntegrationTest"])
-    }
-
     List getAutomatedInstallationTestIssues(String projectId, String componentName = null) {
         return this.support.getAutomatedInstallationTestIssues(projectId, componentName)
     }

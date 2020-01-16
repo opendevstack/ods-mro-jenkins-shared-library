@@ -638,7 +638,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data: [
                 project: project,
                 sections: sections,
-                tests: (jiraAcceptanceTestIssues + jiraIntegrationTestIssues).collectEntries { issue ->
+                acceptanceTests: jiraAcceptanceTestIssues.collectEntries { issue ->
                     [
                         issue.key,
                         [
@@ -651,7 +651,20 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         ]
                     ]
                 },
-                testfiles: data.testReportFiles.collect { file ->
+                integrationTests: jiraIntegrationTestIssues.collectEntries { issue ->
+                    [
+                        issue.key,
+                        [
+                            key: issue.key,
+                            description: issue.test.description ?: "",
+                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
+                            remarks: issue.test.isMissing ? "not executed" : "",
+                            success: issue.test.isSuccess ? "Y" : "N",
+                            datetime: "N/A" // Date.parse("yyyy-MM-dd'T'HH:mm:ss", issue.test.timestamp).format("yyyy/MM/dd HH:mm")
+                        ]
+                    ]
+                },
+                testfiles: (acceptanceTestData + integrationTestData).testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
                 }
             ]
