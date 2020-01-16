@@ -596,13 +596,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createFTR(Map project, Map repo, Map data) {
         def documentType = DocumentType.FTR as String
 
-        this.steps.echo("!!! in createFTR")
-
         def acceptanceTestData = data.tests.acceptance
         def integrationTestData = data.tests.integration
-
-        this.steps.echo("!!! acceptanceTestData: ${JsonOutput.toJson(acceptanceTestData)}")
-        this.steps.echo("!!! integrationTestData: ${JsonOutput.toJson(integrationTestData)}")
 
         def sections = this.jira.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -625,12 +620,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def jiraAcceptanceTestIssues = this.jira.getAutomatedAcceptanceTestIssues(project.id)
-        this.steps.echo("!!! jiraAcceptanceTestIssues: ${JsonOutput.toJson(jiraAcceptanceTestIssues)}")
+        this.jira.matchJiraTestIssuesAgainstTestResults(jiraAcceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
         def jiraIntegrationTestIssues = this.jira.getAutomatedIntegrationTestIssues(project.id)
-        this.steps.echo("!!! jiraIntegrationTestIssues: ${JsonOutput.toJson(jiraIntegrationTestIssues)}")
-
-        this.jira.matchJiraTestIssuesAgainstTestResults(jiraAcceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
         this.jira.matchJiraTestIssuesAgainstTestResults(jiraIntegrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
         def data_ = [
