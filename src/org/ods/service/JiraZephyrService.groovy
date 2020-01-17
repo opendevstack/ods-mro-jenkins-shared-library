@@ -23,13 +23,15 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map createTestExecutionForIssue(String issueId, String projectId) {
+    Map createTestExecutionForIssue(String issueId, String projectId, String cycleId) {
         if (!issueId?.trim()) {
             throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'issueId' is undefined.")
         }
-
         if (!projectId?.trim()) {
             throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'projectId' is undefined.")
+        }
+        if (!cycleId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'cycleId' is undefined.")
         }
 
         def response = Unirest.post("${this.baseURL}/rest/zapi/latest/execution/")
@@ -39,7 +41,8 @@ class JiraZephyrService extends JiraService {
             .body(JsonOutput.toJson(
                 [
                     issueId: issueId,
-                    projectId: projectId
+                    projectId: projectId,
+                    cycleId: cycleId
                 ]
             ))
             .asString()

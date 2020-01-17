@@ -33,29 +33,56 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.applyTestResultsAsTestExecutionStatii(testIssues, testResults)
 
         then:
-        1 * zephyr.createTestExecutionForIssue("1", project.id) >> ["11": []]
+        1 * zephyr.getProjectVersions(project.id) >> []
+        1 * zephyr.createTestCycle(project.id, "-1", null) >> [id: "111"]
+
+        then:
+        1 * zephyr.createTestExecutionForIssue("1", project.id, "111") >> ["11": []]
         1 * zephyr.updateExecutionForIssuePass("11")
         0 * zephyr./^updateExecutionForIssue.*/("11")
 
         then:
-        1 * zephyr.createTestExecutionForIssue("2", project.id) >> ["12": []]
+        1 * zephyr.createTestExecutionForIssue("2", project.id, "111") >> ["12": []]
         1 * zephyr.updateExecutionForIssueFail("12")
         0 * zephyr./^updateExecutionForIssue.*/("12")
 
         then:
-        1 * zephyr.createTestExecutionForIssue("3", project.id) >> ["13": []]
+        1 * zephyr.createTestExecutionForIssue("3", project.id, "111") >> ["13": []]
         1 * zephyr.updateExecutionForIssueFail("13")
         0 * zephyr./^updateExecutionForIssue.*/("13")
 
         then:
-        1 * zephyr.createTestExecutionForIssue("4", project.id) >> ["14": []]
+        1 * zephyr.createTestExecutionForIssue("4", project.id, "111") >> ["14": []]
         1 * zephyr.updateExecutionForIssueBlocked("14")
         0 * zephyr./^updateExecutionForIssue.*/("14")
 
         then:
         // Leave test execution at initial status UNEXECUTED otherwise
-        1 * zephyr.createTestExecutionForIssue("5", project.id) >> ["15": []]
+        1 * zephyr.createTestExecutionForIssue("5", project.id, "111") >> ["15": []]
         0 * zephyr./^updateExecutionForIssue.*/("15")
+    }
+
+    def "apply test results as test execution statii without test issues"() {
+        given:
+        def steps = Spy(PipelineSteps)
+        def jira = Mock(JiraService)
+        def usecase = new JiraUseCase(steps, jira)
+
+        def zephyr = Mock(JiraZephyrService)
+        def util = Mock(MROPipelineUtil)
+        def support = new JiraUseCaseZephyrSupport(steps, usecase, zephyr, util)
+        usecase.setSupport(support)
+
+        def project = createProject()
+        def testIssues = []
+        def testResults = [:]
+
+        when:
+        support.applyTestResultsAsTestExecutionStatii(testIssues, testResults)
+
+        then:
+        0 * zephyr.getProjectVersions(project.id)
+        0 * zephyr.createTestCycle(project.id, "-1", null)
     }
 
     def "apply test results to test issues"() {

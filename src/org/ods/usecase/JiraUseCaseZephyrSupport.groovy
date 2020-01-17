@@ -22,9 +22,15 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
         if (!this.usecase.jira) return
         if (!this.zephyr) return
 
+        def testCycleId = "-1"
+        if(!jiraTestIssues?.isEmpty()) {
+            def projectId = jiraTestIssues.first()?.projectId ?: ""
+            testCycleId = this.zephyr.createTestCycle(projectId, this.getVersionId(projectId), this.util.getBuildParams()?.targetEnvironmentToken).id
+        }
+
         jiraTestIssues.each { issue ->
             // Create a new execution with status UNEXECUTED
-            def execution = this.zephyr.createTestExecutionForIssue(issue.id, issue.projectId).keySet().first()
+            def execution = this.zephyr.createTestExecutionForIssue(issue.id, issue.projectId, testCycleId).keySet().first()
 
             testResults.testsuites.each { testsuite ->
                 testsuite.testcases.each { testcase ->

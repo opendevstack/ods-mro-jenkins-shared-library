@@ -22,7 +22,8 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def result = [
             data: [
                 issueId: '1234',
-                projectId: '2345'
+                projectId: '2345',
+                cycleId: '889'
             ],
             headers: [
                 "Accept": "application/json",
@@ -34,7 +35,8 @@ class JiraZephyrServiceSpec extends SpecHelper {
 
         result.body = JsonOutput.toJson([
             issueId: "${result.data.issueId}",
-            projectId: "${result.data.projectId}"
+            projectId: "${result.data.projectId}",
+            cycleId: "${result.data.cycleId}",
         ])
 
         result.path = "/rest/zapi/latest/execution/"
@@ -52,7 +54,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
                     executionStatus: "-1",
                     comment: "",
                     htmlComment: "",
-                    cycleId: -1,
+                    cycleId: "889",
                     cycleName: "Ad hoc",
                     versionId: 10001,
                     versionName: "Version2",
@@ -87,7 +89,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestExecutionForIssue(null, "2345")
+        def result = service.createTestExecutionForIssue(null, "2345", "889")
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -106,11 +108,30 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestExecutionForIssue("1234", null)
+        def result = service.createTestExecutionForIssue("1234", null, "889")
 
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "Error: unable to create test execution for Jira issue. 'projectId' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "create test execution for issue with invalid cycle id"() {
+        given:
+        def request = createTestExecutionForIssueRequestData()
+        def response = createTestExecutionForIssueResponseData()
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestExecutionForIssue("1234", "2345", null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to create test execution for Jira issue. 'cycleId' is undefined."
 
         cleanup:
         stopServer(server)
@@ -125,7 +146,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestExecutionForIssue("1234", "2345")
+        def result = service.createTestExecutionForIssue("1234", "2345", "889")
 
         then:
         def expect = createTestExecutionForIssueResponseData()
@@ -147,7 +168,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestExecutionForIssue("1234", "2345")
+        def result = service.createTestExecutionForIssue("1234", "2345", "889")
 
         then:
         def e = thrown(RuntimeException)
@@ -169,7 +190,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestExecutionForIssue("1234", "2345")
+        def result = service.createTestExecutionForIssue("1234", "2345", "889")
 
         then:
         def e = thrown(RuntimeException)
