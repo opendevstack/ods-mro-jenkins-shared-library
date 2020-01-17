@@ -34,6 +34,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
 
         then:
         1 * zephyr.getProjectVersions(project.id) >> []
+        1 * zephyr.getProjectCycles(project.id, "-1") 
         1 * zephyr.createTestCycle(project.id, "-1", null) >> [id: "111"]
 
         then:

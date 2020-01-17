@@ -25,7 +25,15 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
         def testCycleId = "-1"
         if(!jiraTestIssues?.isEmpty()) {
             def projectId = jiraTestIssues.first()?.projectId ?: ""
-            testCycleId = this.zephyr.createTestCycle(projectId, this.getVersionId(projectId), this.util.getBuildParams()?.targetEnvironmentToken).id
+            def versionId = this.getVersionId(projectId)
+            def cycleName = this.util.getBuildParams()?.targetEnvironmentToken
+            
+            def cycles = this.zephyr.getProjectCycles(projectId, versionId)
+            testCycleId = cycles.find { it.value instanceof Map && it.value.name == cycleName }?.key
+
+            if(!testCycleId) {
+                testCycleId = this.zephyr.createTestCycle(projectId, versionId, cycleName).id
+            }
         }
 
         jiraTestIssues.each { issue ->
