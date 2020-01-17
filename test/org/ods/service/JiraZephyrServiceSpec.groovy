@@ -962,4 +962,145 @@ class JiraZephyrServiceSpec extends SpecHelper {
         cleanup:
         stopServer(server)
     }
+
+    Map getProjectCyclesRequestData(Map mixins = [:]) {
+        def result = [
+            headers: [
+                "Accept": "application/json"
+            ],
+            password: "password",
+            username: "username",
+            queryParameters : [
+                projectId : "123",
+                versionId : "456"
+            ]
+        ]
+
+        result.path = "/rest/zapi/latest/cycle"
+
+        return result << mixins
+    }
+
+    Map getProjectCyclesResponseData(Map mixins = [:]) {
+        def result = [
+           body: JsonOutput.toJson([
+                recordsCount: "2",
+                "-1": [
+                        versionName: "0.1", 
+                        projectKey: "DEMO", 
+                        versionId:"456", 
+                        name: "Ad hoc"
+                    ], 
+                "7": [
+                        versionName: "0.1", 
+                        projectKey: "DEMO", 
+                        versionId: "456", 
+                        name: "Cycle name"
+                    ]
+            ])
+        ]
+
+        return result << mixins
+    }
+
+    def "get project cycles with invalid project id"() {
+        given:
+        def request = getProjectCyclesRequestData()
+        def response = getProjectCyclesResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectCycles(null, "456")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to get project cycles from Jira. 'projectId' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project cycles with invalid version id"() {
+        given:
+        def request = getProjectCyclesRequestData()
+        def response = getProjectCyclesResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectCycles("123", null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to get project cycles from Jira. 'versionId' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project cycles"() {
+        given:
+        def request = getProjectCyclesRequestData()
+        def response = getProjectCyclesResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectCycles("123", "456")
+
+        then:
+        def expect = getProjectVersionsResponseData()
+
+        noExceptionThrown()
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project cycles with HTTP 404 failure"() {
+        given:
+        def request = getProjectCyclesRequestData()
+        def response = getProjectCyclesResponseData([
+            status: 404
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectCycles("123", "456")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get project cycles. Jira could not be found at: 'http://localhost:${server.port()}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get project cycles with HTTP 500 failure"() {
+        given:
+        def request = getProjectCyclesRequestData()
+        def response = getProjectCyclesResponseData([
+            status: 500,
+            body: "Sorry, doesn't work!"
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getProjectCycles("123", "456")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get project cycles. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
+
+        cleanup:
+        stopServer(server)
+    }
 }

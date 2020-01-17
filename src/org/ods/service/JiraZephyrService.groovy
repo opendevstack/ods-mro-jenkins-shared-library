@@ -224,4 +224,33 @@ class JiraZephyrService extends JiraService {
 
         return new JsonSlurperClassic().parseText(response.getBody()) ?: []
     }
+
+    @NonCPS
+    Map getProjectCycles(String projectId, String versionId) {
+        if (!projectId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get project cycles from Jira. 'projectId' is undefined.")
+        }
+        if (!versionId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get project cycles from Jira. 'versionId' is undefined.")
+        }
+
+        def response = Unirest.get("${this.baseURL}/rest/zapi/latest/cycle")
+            .queryString("projectId", projectId)
+            .queryString("versionId", versionId)
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .asString()
+
+        response.ifFailure {
+            def message = "Error: unable to get project cycles. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to get project cycles. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody())
+    }
 }
