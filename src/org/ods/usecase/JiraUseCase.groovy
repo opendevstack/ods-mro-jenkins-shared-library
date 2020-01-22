@@ -348,8 +348,15 @@ class JiraUseCase {
     void reportTestResultsForComponent(String projectId, String componentName, List<String> testTypes, Map testResults) {
         if (!this.jira) return
 
+        this.steps.echo("??? in reportTestResultsForComponent")
+        this.steps.echo("??? projectId: ${projectId}, componentName: ${componentName}, testTypes: ${testTypes}")
+
+        this.steps.echo("??? testResults: ${testResults}")
+
         // Get automated test case definitions from Jira
         def jiraTestIssues = this.getAutomatedTestIssues(projectId, componentName, testTypes)
+
+        this.steps.echo("??? jiraTestIssues: ${jiraTestIssues}")
 
         // Apply test results to the test case definitions in Jira
         this.support.applyTestResultsToTestIssues(jiraTestIssues, testResults)
