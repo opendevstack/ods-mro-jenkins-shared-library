@@ -78,6 +78,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
         this.sq = sq
     }
 
+    String createDocument(String documentType, Map project, Map repo, Map data, Map<String, byte[]> files = [:], Closure modifier = null, String documentTypeEmbedded = null) {
+        def uri = super.createDocument(documentType, project, repo, data, files, modifier, documentTypeEmbedded)
+        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        return uri
+    }
+
     private Map computeTestDiscrepancies(String name, List jiraTestIssues) {
         def result = [
             discrepancies: "No discrepancies found.",
