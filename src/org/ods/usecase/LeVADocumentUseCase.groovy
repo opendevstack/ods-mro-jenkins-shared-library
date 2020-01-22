@@ -649,7 +649,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         issue.key,
                         [
                             key: issue.key,
-                            datetime: issue.test.timestamp ? issue.test.timestamp.replaceAll("T", "") : "N/A",
+                            datetime: issue.test.timestamp ? issue.test.timestamp.replaceAll("T", "</br>") : "N/A",
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
@@ -664,7 +664,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         issue.key,
                         [
                             key: issue.key,
-                            datetime: issue.test.timestamp ? issue.test.timestamp.replaceAll("T", "") : "N/A",
+                            datetime: issue.test.timestamp ? issue.test.timestamp.replaceAll("T", "</br>") : "N/A",
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
