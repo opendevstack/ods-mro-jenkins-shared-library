@@ -637,6 +637,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def jiraIntegrationTestIssues = this.jira.getAutomatedIntegrationTestIssues(project.id)
         this.jira.matchJiraTestIssuesAgainstTestResults(jiraIntegrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
+        def discrepancies = this.computeTestDiscrepancies("Functional and Requirements Tests", (jiraAcceptanceTestIssues + jiraIntegrationTestIssues))
+
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
@@ -647,7 +649,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         issue.key,
                         [
                             key: issue.key,
-                            datetime: issue.test.timestamp ?: "N/A",
+                            datetime: issue.test.timestamp ? issue.test.timestamp.replaceAll("T", "") : "N/A",
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
@@ -662,7 +664,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         issue.key,
                         [
                             key: issue.key,
-                            datetime: issue.test.timestamp ?: "N/A",
+                            datetime: issue.test.timestamp ? issue.test.timestamp.replaceAll("T", "") : "N/A",
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
@@ -674,7 +676,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 },
                 testfiles: (acceptanceTestData + integrationTestData).testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
-                }
+                },
+                conclusion: [
+                    summary: discrepancies.conclusion.summary,
+                    statement : discrepancies.conclusion.statement
+                ]
             ]
         ]
 
