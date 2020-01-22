@@ -120,8 +120,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
     private static List REQUIRING_REPOSITORIES = [
         LeVADocumentUseCase.DocumentType.OVERALL_DTR as String,
         LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
-        // TODO
-        //LeVADocumentUseCase.DocumentType.FTR as String,
+        LeVADocumentUseCase.DocumentType.FTR as String,
         LeVADocumentUseCase.DocumentType.IVR as String
     ]
 

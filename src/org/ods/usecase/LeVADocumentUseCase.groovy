@@ -577,13 +577,25 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data: [
                 project: project,
                 sections: sections,
-                tests: (jiraAcceptanceTestIssues + jiraIntegrationTestIssues).collectEntries { issue ->
+                acceptanceTests: jiraAcceptanceTestIssues.collectEntries { issue ->
                     [
                         issue.key,
                         [
                             key: issue.key,
                             description: issue.description ?: "",
-                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A"
+                            ur_key: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
+                            risk_key: "TODO" // TODO: implement once a test case can reference the risk
+                        ]
+                    ]
+                },
+                integrationTests: jiraIntegrationTestIssues.collectEntries { issue ->
+                    [
+                        issue.key,
+                        [
+                            key: issue.key,
+                            description: issue.description ?: "",
+                            ur_key: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
+                            risk_key: "TODO"
                         ]
                     ]
                 }
@@ -635,11 +647,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         issue.key,
                         [
                             key: issue.key,
+                            datetime: issue.test.timestamp ?: "N/A",
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
+                            risk_key: "TODO", // TODO: implement once a test case can reference the risk
                             success: issue.test.isSuccess ? "Y" : "N",
-                            datetime: "N/A" // Date.parse("yyyy-MM-dd'T'HH:mm:ss", issue.test.timestamp).format("yyyy/MM/dd HH:mm")
+                            ur_key: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A"
                         ]
                     ]
                 },
@@ -648,11 +662,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         issue.key,
                         [
                             key: issue.key,
+                            datetime: issue.test.timestamp ?: "N/A",
                             description: issue.test.description ?: "",
                             isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             remarks: issue.test.isMissing ? "not executed" : "",
+                            risk_key: "TODO", // TODO: implement once a test case can reference the risk
                             success: issue.test.isSuccess ? "Y" : "N",
-                            datetime: "N/A" // Date.parse("yyyy-MM-dd'T'HH:mm:ss", issue.test.timestamp).format("yyyy/MM/dd HH:mm")
+                            ur_key: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A"
                         ]
                     ]
                 },
@@ -688,6 +704,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         [
                             key: issue.key,
                             summary: issue.summary,
+                            isRelatedTo: issue.issuelinks ? issue.issuelinks.first().issue.key : "N/A",
                             test: issue.test
                         ]
                     ]

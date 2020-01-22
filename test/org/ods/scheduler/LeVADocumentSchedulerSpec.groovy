@@ -7710,11 +7710,8 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.OVERALL_TIR | PROJECT_GAMP_5               | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || true
         LeVADocumentUseCase.DocumentType.OVERALL_TIR | PROJECT_GAMP_5_WITHOUT_REPOS | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || false
 
-        // TODO
-        /*
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5               | REPO_ODS_CODE | MROPipelineUtil.PipelinePhases.TEST | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || true
-        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5_WITHOUT_REPOS | REPO_ODS_CODE | MROPipelineUtil.PipelinePhases.TEST | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
-        */
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5               | null | MROPipelineUtil.PipelinePhases.TEST | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || true
+        LeVADocumentUseCase.DocumentType.FTR | PROJECT_GAMP_5_WITHOUT_REPOS | null | MROPipelineUtil.PipelinePhases.TEST | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || false
 
         LeVADocumentUseCase.DocumentType.IVR | PROJECT_GAMP_5               | null | MROPipelineUtil.PipelinePhases.TEST | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || true
         LeVADocumentUseCase.DocumentType.IVR | PROJECT_GAMP_5_WITHOUT_REPOS | null | MROPipelineUtil.PipelinePhases.TEST | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || false
