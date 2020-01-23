@@ -129,14 +129,20 @@ class JiraUseCase {
             expand: ["names", "renderedFields"]
         ]
 
+        this.steps.echo("in getDocumentChapterData(${projectId}, ${documentType})")
         def result = this.jira.searchByJQLQuery(jqlQuery)
+        this.steps.echo("???: result: ${result}")
+
         if (!result) return [:]
 
         def numberKey = result.names.find { it.value == CustomIssueFields.HEADING_NUMBER }.key
+        this.steps.echo("???: numberKey: ${result}")
         def contentFieldKey = result.names.find { it.value == CustomIssueFields.CONTENT }.key
+        this.steps.echo("???: contentFieldKey: ${result}")
 
         return result.issues.collectEntries { issue ->
             def number = issue.fields[numberKey]?.trim()
+            this.steps.echo("???: number: ${number}")
 
             def content = issue.renderedFields[contentFieldKey]
             if (content.contains("<img")) {
