@@ -819,7 +819,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createSCR(Map project, Map repo) {
-        this.steps.echo("creating SCR for ${repo.id}")
         def documentType = DocumentType.SCR as String
 
         def sqReportsPath = "sonarqube/${repo.id}"
