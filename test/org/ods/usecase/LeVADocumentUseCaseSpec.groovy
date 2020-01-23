@@ -119,6 +119,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createCS(project)
@@ -134,7 +135,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -160,6 +162,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createDSD(project)
@@ -173,7 +176,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -200,6 +204,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createDTP(project)
@@ -211,7 +216,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jira.getAutomatedUnitTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -239,6 +245,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createDTP(project)
@@ -250,7 +257,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jira.getAutomatedUnitTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -292,8 +300,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
-        def document = "myDocument".bytes
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createDTR(project, repo, data)
@@ -307,7 +315,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         //1 * usecase.computeTestDiscrepancies("Development Tests", testIssues)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null) >> document
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -353,8 +362,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
-        def document = "myDocument".bytes
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createDTR(project, repo, data)
@@ -368,7 +377,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         //1 * usecase.computeTestDiscrepancies("Development Tests", testIssues)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null) >> document
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -395,6 +405,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createFTP(project)
@@ -407,7 +418,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.getAutomatedAcceptanceTestIssues(project.id) >> testIssues
         1 * jira.getAutomatedIntegrationTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -453,8 +465,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
-        def document = "myDocument".bytes
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createFTR(project, null, data)
@@ -468,7 +480,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.getAutomatedIntegrationTestIssues(project.id) >> testIssues
         2 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> document
+        1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -497,6 +510,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createFS(project)
@@ -516,7 +530,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -543,6 +558,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createIVP(project)
@@ -554,7 +570,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jira.getAutomatedInstallationTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -596,8 +613,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
-        def document = "myDocument".bytes
         def testIssues = createJiraTestIssues()
+        def uri = "http://nexus"
 
         when:
         usecase.createIVR(project, null, data)
@@ -610,7 +627,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.getAutomatedInstallationTestIssues(project.id) >> testIssues
         1 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> document
+        1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -639,6 +657,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createSCP(project)
@@ -649,7 +668,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -676,6 +696,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createSCP(project)
@@ -686,7 +707,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -721,6 +743,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
         def sqReportFiles = [ getResource("Test.docx") ]
+        def uri = "http://nexus"
 
         when:
         usecase.createSCR(project, repo)
@@ -735,7 +758,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -771,6 +795,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
         def sqReportFiles = [ getResource("Test.docx") ]
+        def uri = "http://nexus"
 
         when:
         usecase.createSCR(project, repo)
@@ -785,7 +810,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -812,6 +838,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createSDS(project, repo)
@@ -822,7 +849,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -848,6 +876,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createTIP(project)
@@ -858,7 +887,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -885,6 +915,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createTIP(project)
@@ -895,7 +926,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -922,6 +954,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createTIR(project, repo)
@@ -935,7 +968,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -963,6 +997,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createTIR(project, repo)
@@ -976,7 +1011,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1002,6 +1038,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
 
         when:
         usecase.createURS(project)
@@ -1022,7 +1059,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1047,13 +1085,15 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
+        def uri = "http://nexus"
 
         when:
         usecase.createOverallDTR(project)
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project)
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1078,13 +1118,15 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
+        def uri = "http://nexus"
 
         when:
         usecase.createOverallSCR(project)
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project)
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1109,13 +1151,15 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
+        def uri = "http://nexus"
 
         when:
         usecase.createOverallSDS(project)
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project)
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1140,13 +1184,15 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
+        def uri = "http://nexus"
 
         when:
         usecase.createOverallTIR(project)
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createOverallDocument("Overall-TIR-Cover", documentType, _, project, _)
+        1 * usecase.createOverallDocument("Overall-TIR-Cover", documentType, _, project, _) >> uri
+        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         _ * util.getBuildParams() >> buildParams
     }
 
