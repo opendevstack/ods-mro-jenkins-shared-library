@@ -397,9 +397,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             return document
         }
 
-        def uri = this.createDocument(documentType, project, repo, data_, files, modifier, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        return uri
+        return this.createDocument(documentType, project, repo, data_, files, modifier, null)
     }
 
     String createFS(Map project) {
@@ -821,6 +819,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createSCR(Map project, Map repo) {
+        this.steps.echo("creating SCR for ${repo.id}")
         def documentType = DocumentType.SCR as String
 
         def sqReportsPath = "sonarqube/${repo.id}"
@@ -877,9 +876,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             return document
         }
 
-        def uri = this.createDocument(documentType, project, repo, data, files, modifier, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        return uri
+        return this.createDocument(documentType, project, repo, data, files, modifier, null)
     }
 
     String createSDS(Map project, Map repo) {
@@ -903,9 +900,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             return document
         }
 
-        def uri = this.createDocument(documentType, project, repo, data, [:], modifier, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        return uri
+        return this.createDocument(documentType, project, repo, data, [:], modifier, null)
     }
 
     String createTIP(Map project) {
@@ -966,9 +961,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             return document
         }
 
-        def uri = this.createDocument(documentType, project, repo, data, [:], modifier, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        return uri
+        return this.createDocument(documentType, project, repo, data, [:], modifier, null)
     }
 
     String createURS(Map project) {
@@ -1160,43 +1153,38 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createOverallDTR(Map project) {
-        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_DTR as String], project)
+        def documentTypeName = DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_DTR as String]
+        def metadata = this.getDocumentMetadata(documentTypeName, project)
 
         def documentType = DocumentType.DTR as String
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, project)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[DocumentType.DTR]} has been generated and is available at: ${uri}.")
-        return uri
-    }
-
-    String createOverallIVR(Map project) {
-        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_IVR as String], project)
-
-        def documentType = DocumentType.IVR as String
-        def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, project)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
     String createOverallSCR(Map project) {
-        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_SCR as String], project)
+        def documentTypeName = DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_SCR as String]
+        def metadata = this.getDocumentMetadata(documentTypeName, project)
 
         def documentType = DocumentType.SCR as String
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, project)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
     String createOverallSDS(Map project) {
-        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_SDS as String], project)
+        def documentTypeName = DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_SDS as String]
+        def metadata = this.getDocumentMetadata(documentTypeName, project)
 
         def documentType = DocumentType.SDS as String
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, project)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
     String createOverallTIR(Map project) {
-        def metadata = this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_TIR as String], project)
+        def documentTypeName = DOCUMENT_TYPE_NAMES[DocumentType.OVERALL_TIR as String]
+        def metadata = this.getDocumentMetadata(documentTypeName, project)
 
         def documentType = DocumentType.TIR as String
         def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, project) { data ->
@@ -1211,7 +1199,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         }
 
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
