@@ -109,7 +109,7 @@ def call() {
 
     jiraUseCase.setSupport(
         project.capabilities.contains("Zephyr")
-            ? new JiraUseCaseZephyrSupport(steps, jiraUseCase, registry.get(JiraZephyrService.class.name))
+            ? new JiraUseCaseZephyrSupport(steps, jiraUseCase, registry.get(JiraZephyrService.class.name), registry.get(PipelineUtil.class.name))
             : new JiraUseCaseSupport(steps, jiraUseCase)
     )
 
