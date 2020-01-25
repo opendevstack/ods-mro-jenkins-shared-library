@@ -34,6 +34,10 @@ class JiraZephyrService extends JiraService {
             throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'cycleId' is undefined.")
         }
 
+        if (!cycleId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to create test execution for Jira issue. 'cycleId' is undefined.")
+        }
+
         def response = Unirest.post("${this.baseURL}/rest/zapi/latest/execution/")
             .basicAuth(this.username, this.password)
             .header("Accept", "application/json")
@@ -115,10 +119,10 @@ class JiraZephyrService extends JiraService {
         if (!executionId?.trim()) {
             throw new IllegalArgumentException("Error: unable to update test execution for Jira issue. 'executionId' is undefined.")
         }
+
         if (!status?.trim()) {
             throw new IllegalArgumentException("Error: unable to update test execution for Jira issue. 'status' is undefined.")
         }
-
 
         def response = Unirest.put("${this.baseURL}/rest/zapi/latest/execution/{executionId}/execute")
             .routeParam("executionId", executionId)
@@ -131,7 +135,6 @@ class JiraZephyrService extends JiraService {
                 ]
             ))
             .asString()
-
 
         response.ifFailure {
             def message = "Error: unable to update test execution for Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
@@ -161,7 +164,7 @@ class JiraZephyrService extends JiraService {
     }
 
     @NonCPS
-    Map createTestCycle(String projectId, String versionId, String name) {
+    Map createTestCycle(String projectId, String versionId, String name, String build, String environment) {
         if (!projectId?.trim()) {
             throw new IllegalArgumentException("Error: unable to create test cycle for Jira issues. 'projectId' is undefined.")
         }
@@ -174,6 +177,14 @@ class JiraZephyrService extends JiraService {
             throw new IllegalArgumentException("Error: unable to create test cycle for Jira issues. 'name' is undefined.")
         }
 
+        if (!build?.trim()) {
+            throw new IllegalArgumentException("Error: unable to create test cycle for Jira issues. 'build' is undefined.")
+        }
+
+        if (!environment?.trim()) {
+            throw new IllegalArgumentException("Error: unable to create test cycle for Jira issues. 'environment' is undefined.")
+        }
+
         def response = Unirest.post("${this.baseURL}/rest/zapi/latest/cycle/")
             .basicAuth(this.username, this.password)
             .header("Accept", "application/json")
@@ -182,7 +193,9 @@ class JiraZephyrService extends JiraService {
                 [
                     projectId: projectId,
                     versionId: versionId,
-                    name: name
+                    name: name,
+                    build: build,
+                    environment: environment
                 ]
             ))
             .asString()

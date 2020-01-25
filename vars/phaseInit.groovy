@@ -25,8 +25,8 @@ import org.ods.util.PipelineUtil
 
 def call() {
     Unirest.config()
-        .socketTimeout(600000)
-        .connectTimeout(60000)
+        .socketTimeout(1200000)
+        .connectTimeout(120000)
 
     def steps = new PipelineSteps(this)
     def git = new GitUtil(steps)

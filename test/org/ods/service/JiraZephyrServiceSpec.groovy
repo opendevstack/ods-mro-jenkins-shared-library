@@ -686,7 +686,9 @@ class JiraZephyrServiceSpec extends SpecHelper {
             data: [
                 projectId: "123456",
                 versionId: "2234",
-                name: "Test"
+                name: "Test",
+                build: "myBuild",
+                environment: "myEnv",
             ],
             headers: [
                 "Accept": "application/json",
@@ -699,7 +701,9 @@ class JiraZephyrServiceSpec extends SpecHelper {
         result.body = JsonOutput.toJson([
             projectId: "${result.data.projectId}",
             versionId: "${result.data.versionId}",
-            name: "${result.data.name}"
+            name: "${result.data.name}",
+            build: "${result.data.build}",
+            environment: "${result.data.environment}"
         ])
 
         result.path = "/rest/zapi/latest/cycle/"
@@ -728,7 +732,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestCycle(null, "-1", "Test")
+        def result = service.createTestCycle(null, "-1", "Test", "myBuild", "myEnv")
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -747,7 +751,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestCycle("123456", null, "Test")
+        def result = service.createTestCycle("123456", null, "Test", "myBuild", "myEnv")
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -766,11 +770,49 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestCycle("123456", "2234", null)
+        def result = service.createTestCycle("123456", "2234", null, "myBuild", "myEnv")
 
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "Error: unable to create test cycle for Jira issues. 'name' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "create test cycle with invalid build"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData()
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle("123456", "2234", "Test", null, "myEnv")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to create test cycle for Jira issues. 'build' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "create test cycle with invalid environment"() {
+        given:
+        def request = createTestCycleRequestData()
+        def response = createTestCycleResponseData()
+
+        def server = createServer(WireMock.&post, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.createTestCycle("123456", "2234", "Test", "myBuild", null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to create test cycle for Jira issues. 'environment' is undefined."
 
         cleanup:
         stopServer(server)
@@ -785,7 +827,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestCycle("123456", "2234", "Test")
+        def result = service.createTestCycle("123456", "2234", "Test", "myBuild", "myEnv")
 
         then:
         noExceptionThrown()
@@ -793,7 +835,6 @@ class JiraZephyrServiceSpec extends SpecHelper {
         cleanup:
         stopServer(server)
     }
-
 
     def "create test cycle with HTTP 404 failure"() {
         given:
@@ -806,7 +847,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestCycle("123456", "2234", "Test")
+        def result = service.createTestCycle("123456", "2234", "Test", "myBuild", "myEnv")
 
         then:
         def e = thrown(RuntimeException)
@@ -828,7 +869,7 @@ class JiraZephyrServiceSpec extends SpecHelper {
         def service = createService(server.port(), request.username, request.password)
 
         when:
-        def result = service.createTestCycle("123456", "2234", "Test")
+        def result = service.createTestCycle("123456", "2234", "Test", "myBuild", "myEnv")
 
         then:
         def e = thrown(RuntimeException)

@@ -22,17 +22,21 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
         if (!this.usecase.jira) return
         if (!this.zephyr) return
 
+        def buildParams = this.util.getBuildParams()
+
         def testCycleId = "-1"
-        if(!jiraTestIssues?.isEmpty()) {
+        if (!jiraTestIssues?.isEmpty()) {
             def projectId = jiraTestIssues.first()?.projectId ?: ""
             def versionId = this.getVersionId(projectId)
-            def cycleName = this.util.getBuildParams()?.targetEnvironmentToken
-            
             def cycles = this.zephyr.getProjectCycles(projectId, versionId)
-            testCycleId = cycles.find { it.value instanceof Map && it.value.name == cycleName }?.key
 
-            if(!testCycleId) {
-                testCycleId = this.zephyr.createTestCycle(projectId, versionId, cycleName).id
+            def name = buildParams.targetEnvironmentToken + ": Build " + this.steps.env.BUILD_ID
+            def build = this.steps.env.BUILD_URL
+            def environment = buildParams.targetEnvironment
+
+            testCycleId = cycles.find { it.value instanceof Map && it.value.name == name && it.value.build == build && it.value.environment == environment }?.key
+            if (!testCycleId) {
+                testCycleId = this.zephyr.createTestCycle(projectId, versionId, name, build, environment).id
             }
         }
 

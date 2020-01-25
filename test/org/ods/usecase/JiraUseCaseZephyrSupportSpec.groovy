@@ -16,6 +16,8 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
 
     def "apply test results as test execution statii"() {
         given:
+        def buildParams = createBuildParams()
+
         def steps = Spy(PipelineSteps)
         def jira = Mock(JiraService)
         def usecase = new JiraUseCase(steps, jira)
@@ -33,9 +35,12 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.applyTestResultsAsTestExecutionStatii(testIssues, testResults)
 
         then:
+        _ * util.getBuildParams() >> buildParams
+
+        then:
         1 * zephyr.getProjectVersions(project.id) >> []
         1 * zephyr.getProjectCycles(project.id, "-1") 
-        1 * zephyr.createTestCycle(project.id, "-1", null) >> [id: "111"]
+        1 * zephyr.createTestCycle(project.id, "-1", buildParams.targetEnvironmentToken + ": " + steps.env.BUILD_ID, steps.env.BUILD_URL, buildParams.targetEnvironment) >> [id: "111"]
 
         then:
         1 * zephyr.createTestExecutionForIssue("1", project.id, "111") >> ["11": []]
@@ -65,6 +70,8 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
 
     def "apply test results as test execution statii without test issues"() {
         given:
+        def buildParams = createBuildParams()
+
         def steps = Spy(PipelineSteps)
         def jira = Mock(JiraService)
         def usecase = new JiraUseCase(steps, jira)
@@ -82,8 +89,9 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         support.applyTestResultsAsTestExecutionStatii(testIssues, testResults)
 
         then:
+        _ * util.getBuildParams() >> buildParams
         0 * zephyr.getProjectVersions(project.id)
-        0 * zephyr.createTestCycle(project.id, "-1", null)
+        0 * zephyr.createTestCycle(project.id, "-1", null, steps.env.BUILD_URL, buildParams.targetEnvironment)
     }
 
     def "apply test results to test issues"() {
