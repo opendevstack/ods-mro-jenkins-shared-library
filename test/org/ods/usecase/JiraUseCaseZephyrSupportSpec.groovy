@@ -40,7 +40,7 @@ class JiraUseCaseZephyrSupportSpec extends SpecHelper {
         then:
         1 * zephyr.getProjectVersions(project.id) >> []
         1 * zephyr.getProjectCycles(project.id, "-1") 
-        1 * zephyr.createTestCycle(project.id, "-1", buildParams.targetEnvironmentToken + ": " + steps.env.BUILD_ID, steps.env.BUILD_URL, buildParams.targetEnvironment) >> [id: "111"]
+        1 * zephyr.createTestCycle(project.id, "-1", buildParams.targetEnvironmentToken + ": Build " + steps.env.BUILD_ID, steps.env.BUILD_URL, buildParams.targetEnvironment) >> [id: "111"]
 
         then:
         1 * zephyr.createTestExecutionForIssue("1", project.id, "111") >> ["11": []]
