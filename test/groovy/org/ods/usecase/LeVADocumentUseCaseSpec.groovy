@@ -734,11 +734,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.SCR as String
         def sqReportsPath = "sonarqube/${repo.id}"
         def sqReportsStashName = "scrr-report-${repo.id}-${steps.env.BUILD_ID}"
-        def files = [ "${usecase.getDocumentBasename("SCRR", buildParams.version, steps.env.BUILD_ID, project, repo)}.docx": getResource("/Test.docx").bytes ]
+        def files = [ "${usecase.getDocumentBasename("SCRR", buildParams.version, steps.env.BUILD_ID, project, repo)}.docx": getResource("Test.docx").bytes ]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
-        def sqReportFiles = [ getResource("/Test.docx") ]
+        def sqReportFiles = [ getResource("Test.docx") ]
 
         when:
         usecase.createSCR(project, repo)
@@ -784,11 +784,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.SCR as String
         def sqReportsPath = "sonarqube/${repo.id}"
         def sqReportsStashName = "scrr-report-${repo.id}-${steps.env.BUILD_ID}"
-        def files = [ "${usecase.getDocumentBasename("SCRR", buildParams.version, steps.env.BUILD_ID, project, repo)}.docx": getResource("/Test.docx").bytes ]
+        def files = [ "${usecase.getDocumentBasename("SCRR", buildParams.version, steps.env.BUILD_ID, project, repo)}.docx": getResource("Test.docx").bytes ]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
-        def sqReportFiles = [ getResource("/Test.docx") ]
+        def sqReportFiles = [ getResource("Test.docx") ]
 
         when:
         usecase.createSCR(project, repo)
