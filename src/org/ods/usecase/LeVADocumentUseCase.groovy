@@ -1,5 +1,7 @@
 package org.ods.usecase
 
+import groovy.json.JsonOutput
+
 import java.time.LocalDateTime
 
 import org.apache.commons.io.FilenameUtils
@@ -12,8 +14,6 @@ import org.ods.util.IPipelineSteps
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PDFUtil
 import org.ods.util.SortUtil
-
-import groovy.json.JsonOutput
 
 class LeVADocumentUseCase extends DocGenUseCase {
 
