@@ -1208,7 +1208,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             name += ": ${repo.id}"
         }
 
-        return [
+        def metadata = [
             id: null, // unused
             name: name,
             description: project.description,
@@ -1223,6 +1223,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 jobName: this.steps.env.JOB_NAME
             ]
         ]
+
+        metadata.header = ["${documentTypeName}, Config Item: ${metadata.buildParameter.configItem}", "Doc ID/Version: see auto-generated cover page"]
+
+        return metadata
     }
 
     List<String> getSupportedDocuments() {
