@@ -16,6 +16,10 @@ import org.ods.util.SortUtil
 import groovy.json.JsonOutput
 
 class LeVADocumentUseCase extends DocGenUseCase {
+    
+    class IssueTypes {
+        static final String LEVA_DOCUMENTATION = "LeVA Documentation"
+    }
 
     enum DocumentType {
         CS,
@@ -195,7 +199,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -293,7 +297,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -325,7 +329,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -565,7 +569,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data__, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -611,7 +615,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -699,7 +703,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def uri = this.createDocument(documentType, project, null, data_, files, null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -731,7 +735,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -793,7 +797,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def uri = this.createDocument(documentType, project, null, data_, files, null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -814,7 +818,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -920,7 +924,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1147,7 +1151,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, project, null, data_, [:], null, null)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1157,7 +1161,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.DTR as String
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, project)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1167,7 +1171,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.SCR as String
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, project)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1177,7 +1181,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.SDS as String
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, project)
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1198,7 +1202,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         }
 
-        this.jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        this.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1227,5 +1231,20 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     List<String> getSupportedDocuments() {
         return DocumentType.values().collect { it as String }
+    }
+
+    void notifyLeVaDocumentTrackingIssue(String projectId, String documentType, String message) {
+        if (!this.jira) return
+
+        def jqlQuery = [ jql: "project = ${projectId} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels = LeVA_Doc:${documentType}" ]
+
+        // Search for the Jira issue associated with the document
+        def jiraIssues = this.jira.getIssuesForJQLQuery(jqlQuery)
+        if (jiraIssues.size() != 1) {
+            throw new RuntimeException("Error: Jira query returned ${jiraIssues.size()} issues: '${jqlQuery}'.")
+        }
+
+        // Add a comment to the Jira issue with a link to the report
+        this.jira.appendCommentToIssue(jiraIssues.first().key, message)
     }
 }

@@ -10,7 +10,6 @@ class JiraUseCase {
 
     class IssueTypes {
         static final String DOCUMENT_CHAPTER = "Documentation Chapter"
-        static final String LEVA_DOCUMENTATION = "LeVA Documentation"
     }
 
     class CustomIssueFields {
@@ -99,7 +98,7 @@ class JiraUseCase {
                 if (isMatch) this.jira.createIssueLinkTypeBlocks(bug, issue)
             }
 
-            this.jira.appendCommentToIssue(bug.key, comment)
+            this.appendCommentToIssue(bug.key, comment)
         }
     }
 
@@ -175,7 +174,7 @@ class JiraUseCase {
             fields: [epicLinkField.id, "description", "summary"]
         ]
 
-        def issues = this.jira.getIssuesForJQLQuery(jqlQuery)
+        def issues = this.getIssuesForJQLQuery(jqlQuery)
         issues.each { issue ->
             // Derive the epicKey through the Epic Link field's id
             def epicKey = issue.fields[epicLinkField.id]
@@ -213,7 +212,7 @@ class JiraUseCase {
         def issueTypeEpicKeys = []
         def issuesWithoutLinks = [] as Set
 
-        def issues = this.jira.getIssuesForJQLQuery([
+        def issues = this.getIssuesForJQLQuery([
             jql: query,
             expand: ["renderedFields"],
             fields: ["components", "description", "issuelinks", "issuetype", "summary"]
@@ -259,7 +258,7 @@ class JiraUseCase {
         // Fetch the linked issues if applicable
         def linkedIssues = [:]
         if (!linkedIssuesKeys.isEmpty()) {
-            linkedIssues = this.jira.getIssuesForJQLQuery([
+            linkedIssues = this.getIssuesForJQLQuery([
                 jql: "key in (" + linkedIssuesKeys.join(", ") + ")",
                 expand: ["renderedFields"],
                 fields: ["description"]
@@ -329,21 +328,6 @@ class JiraUseCase {
 
         matchedHandler(result.matched)
         unmatchedHandler(result.mismatched)
-    }
-
-    void notifyLeVaDocumentTrackingIssue(String projectId, String documentType, String message) {
-        if (!this.jira) return
-
-        def jqlQuery = [ jql: "project = ${projectId} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels = LeVA_Doc:${documentType}" ]
-
-        // Search for the Jira issue associated with the document
-        def jiraIssues = this.jira.getIssuesForJQLQuery(jqlQuery)
-        if (jiraIssues.size() != 1) {
-            throw new RuntimeException("Error: Jira query returned ${jiraIssues.size()} issues: '${jqlQuery}'.")
-        }
-
-        // Add a comment to the Jira issue with a link to the report
-        this.jira.appendCommentToIssue(jiraIssues.first().key, message)
     }
 
     void reportTestResultsForComponent(String projectId, String componentName, List<String> testTypes, Map testResults) {
@@ -428,5 +412,17 @@ class JiraUseCase {
         }
 
         return result << mixins
+    }
+
+    List getIssuesForJQLQuery(Map query) {
+        if (!this.jira) return
+
+        this.jira.getIssuesForJQLQuery(query)
+    }
+
+    void appendCommentToIssue(String issueIdOrKey, String comment) {
+        if (!this.jira) return
+
+        this.jira.appendCommentToIssue(issueIdOrKey, comment)
     }
 }

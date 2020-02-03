@@ -115,11 +115,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.CS as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createCS(project)
@@ -136,7 +138,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -158,11 +161,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DSD as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createDSD(project)
@@ -177,7 +182,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -199,12 +205,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DTP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createDTP(project)
@@ -217,7 +225,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.getAutomatedUnitTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -240,12 +249,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DTP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createDTP(project)
@@ -258,7 +269,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.getAutomatedUnitTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -396,12 +408,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.FTP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createFTP(project)
@@ -415,7 +429,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.getAutomatedIntegrationTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -457,12 +472,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.FTR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createFTR(project, null, data)
@@ -477,7 +494,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         2 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -502,11 +520,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.FS as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createFS(project)
@@ -527,7 +547,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -549,12 +570,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.IVP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createIVP(project)
@@ -567,7 +590,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.getAutomatedInstallationTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -605,12 +629,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.IVR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createIVR(project, null, data)
@@ -624,7 +650,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -649,11 +676,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.SCP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createSCP(project)
@@ -665,7 +694,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -688,11 +718,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.SCP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createSCP(project)
@@ -704,7 +736,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -862,11 +895,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createTIP(project)
@@ -878,7 +913,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -901,11 +937,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createTIP(project)
@@ -917,7 +955,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1020,11 +1059,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.URS as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createURS(project)
@@ -1046,7 +1087,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1069,10 +1111,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DTR as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_DTR as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createOverallDTR(project)
@@ -1080,7 +1124,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1103,10 +1148,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.SCR as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_SCR as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createOverallSCR(project)
@@ -1114,7 +1161,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1137,10 +1185,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.SDS as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_SDS as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createOverallSDS(project)
@@ -1148,7 +1198,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1171,10 +1222,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIR as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createOverallTIR(project)
@@ -1182,7 +1235,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-TIR-Cover", documentType, _, project, _) >> uri
-        1 * jira.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1226,5 +1280,76 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.contains("OVERALL_SCR")
         result.contains("OVERALL_SDS")
         result.contains("OVERALL_TIR")
+    }
+
+    def "notify LeVA document issue"() {
+        given:
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        def project = createProject()
+        def documentType = "myType"
+        def message = "myMessage"
+
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def documentIssue = createJiraDocumentIssues().first()
+
+        when:
+        usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
+
+        then:
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+
+        then:
+        1 * jira.appendCommentToIssue(documentIssue.key, message)
+    }
+
+    def "notify LeVA document issue with query returning != 1 issue"() {
+        given:
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        def project = createProject()
+        def documentType = "myType"
+        def message = "myMessage"
+
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def documentIssues = createJiraDocumentIssues()
+
+        when:
+        usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
+
+        then:
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [] // don't care
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: Jira query returned 0 issues: '${jqlQuery}'."
+
+        when:
+        usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
+
+        then:
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> documentIssues
+
+        then:
+        e = thrown(RuntimeException)
+        e.message == "Error: Jira query returned 3 issues: '${jqlQuery}'."
     }
 }
