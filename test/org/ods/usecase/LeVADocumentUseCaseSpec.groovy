@@ -1282,7 +1282,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.contains("OVERALL_TIR")
     }
 
-    def "notify LeVA document issue"() {
+    def "notify LeVA document issue in dev"() {
         given:
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
@@ -1306,6 +1306,69 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
+        _ * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+
+        then:
+        1 * jira.appendCommentToIssue(documentIssue.key, message)
+    }
+
+    def "notify LeVA document issue in qa"() {
+        given:
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        def project = createProject()
+        def documentType = "myType"
+        def message = "myMessage"
+
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
+        def documentIssue = createJiraDocumentIssues().first()
+
+        when:
+        usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
+
+        then:
+        _ * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
+        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+
+        then:
+        1 * jira.appendCommentToIssue(documentIssue.key, message)
+    }
+
+    def "notify LeVA document issue in prod"() {
+        given:
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jira = Mock(JiraUseCase)
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq))
+
+        def project = createProject()
+        def documentType = "myType"
+        def message = "myMessage"
+
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_P" ]
+        def documentIssue = createJiraDocumentIssues().first()
+
+        when:
+        usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
+
+        then:
+        _ * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
         1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
 
         then:
@@ -1336,6 +1399,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
+        _ * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
         1 * jira.getIssuesForJQLQuery(jqlQuery) >> [] // don't care
 
         then:
@@ -1346,6 +1410,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
+        _ * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
         1 * jira.getIssuesForJQLQuery(jqlQuery) >> documentIssues
 
         then:

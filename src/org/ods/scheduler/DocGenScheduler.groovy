@@ -10,10 +10,12 @@ abstract class DocGenScheduler {
 
     protected IPipelineSteps steps
     protected DocGenUseCase usecase
+    protected MROPipelineUtil util
 
-    DocGenScheduler(IPipelineSteps steps, DocGenUseCase usecase) {
+    DocGenScheduler(IPipelineSteps steps, DocGenUseCase usecase, MROPipelineUtil util) {
         this.steps = steps
         this.usecase = usecase
+        this.util = util
     }
 
     @NonCPS

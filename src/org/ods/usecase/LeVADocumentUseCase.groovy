@@ -1235,6 +1235,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     void notifyLeVaDocumentTrackingIssue(String projectId, String documentType, String message) {
         if (!this.jira) return
+        
+        documentType = this.getDocumentTypeWithEnviroment(documentType)
 
         def jqlQuery = [ jql: "project = ${projectId} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels = LeVA_Doc:${documentType}" ]
 
@@ -1246,5 +1248,15 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         // Add a comment to the Jira issue with a link to the report
         this.jira.appendCommentToIssue(jiraIssues.first().key, message)
+    }
+
+    private String getDocumentTypeWithEnviroment(String documentType) {
+        def environment = this.util.getBuildParams().targetEnvironmentToken
+        
+        if(['Q', 'P'].contains(environment)) {
+            return "${documentType}_${environment}"
+        }
+        
+        return documentType
     }
 }
