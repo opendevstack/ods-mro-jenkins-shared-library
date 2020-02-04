@@ -251,7 +251,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
     void run(String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo = null, Map data = null) {
         def documents = this.usecase.getSupportedDocuments()
         documents.each { documentType ->
-            def environment = this.util.getBuildParams().targetEnvironmentToken
+            def environment = "Q" //this.util.getBuildParams().targetEnvironmentToken
             def args = [project, repo, data]
 
             if (this.isDocumentApplicable(documentType, phase, stage, project, repo) && this.isDocumentApplicableForEnvironment(documentType, environment)) {
