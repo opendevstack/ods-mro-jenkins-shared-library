@@ -1251,7 +1251,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     private String getDocumentTypeWithEnviroment(String documentType) {
-        def environment = "Q" //this.util.getBuildParams().targetEnvironmentToken
+        def environment = this.util.getBuildParams().targetEnvironmentToken
         
         if(['Q', 'P'].contains(environment)) {
             return "${documentType}_${environment}"

@@ -124,9 +124,9 @@ class LeVADocumentScheduler extends DocGenScheduler {
         LeVADocumentUseCase.DocumentType.IVR as String
     ]
 
-    // Document types per enviroment token (MROPipelineUtil.getBuildParams().targetEnvironmentToken)
+    // Document types per environment token (MROPipelineUtil.getBuildParams().targetEnvironmentToken)
     // Only Q and P, in D all types are generated
-    private static Map ENVIROMENT_TYPE = [
+    private static Map ENVIRONMENT_TYPE = [
         "Q": [
             LeVADocumentUseCase.DocumentType.IVP as String, 
             LeVADocumentUseCase.DocumentType.IVR as String,
@@ -245,13 +245,13 @@ class LeVADocumentScheduler extends DocGenScheduler {
             return true
         }
         
-        return this.ENVIROMENT_TYPE[environment].contains(documentType)
+        return this.ENVIRONMENT_TYPE[environment].contains(documentType)
     }
 
     void run(String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo = null, Map data = null) {
         def documents = this.usecase.getSupportedDocuments()
         documents.each { documentType ->
-            def environment = "Q" //this.util.getBuildParams().targetEnvironmentToken
+            def environment = this.util.getBuildParams().targetEnvironmentToken
             def args = [project, repo, data]
 
             if (this.isDocumentApplicable(documentType, phase, stage, project, repo) && this.isDocumentApplicableForEnvironment(documentType, environment)) {
