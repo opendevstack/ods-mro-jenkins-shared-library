@@ -6,6 +6,7 @@ import java.nio.file.Files
 
 import org.ods.service.DocGenService
 import org.ods.service.JenkinsService
+import org.ods.service.JiraService
 import org.ods.service.LeVADocumentChaptersFileService
 import org.ods.service.NexusService
 import org.ods.service.OpenShiftService
@@ -102,7 +103,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -139,7 +140,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -148,7 +149,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -183,7 +184,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -192,7 +193,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -226,7 +227,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -235,7 +236,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -270,7 +271,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -395,7 +396,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -430,7 +431,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -440,7 +441,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -495,7 +496,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -507,7 +508,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -548,7 +549,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -557,7 +558,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -591,7 +592,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -601,7 +602,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -651,7 +652,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -663,7 +664,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -695,7 +696,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -704,7 +705,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -737,7 +738,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -882,7 +883,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -914,7 +915,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -923,7 +924,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -956,7 +957,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1046,7 +1047,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1088,7 +1089,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1097,7 +1098,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1125,7 +1126,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1134,7 +1135,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1162,7 +1163,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1171,7 +1172,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1199,7 +1200,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1208,7 +1209,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1236,7 +1237,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
         1 * usecase.createOverallDocument("Overall-TIR-Cover", documentType, _, project, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1287,7 +1288,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1306,11 +1307,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
-        _ * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
-
-        then:
-        1 * jira.appendCommentToIssue(documentIssue.key, message)
+        1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.appendCommentToIssue(documentIssue.key, message)
     }
 
     def "notify LeVA document issue in QA"() {
@@ -1318,7 +1317,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1337,11 +1336,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
-        _ * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
-
-        then:
-        1 * jira.appendCommentToIssue(documentIssue.key, message)
+        1 * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.appendCommentToIssue(documentIssue.key, message)
     }
 
     def "notify LeVA document issue in PROD"() {
@@ -1349,7 +1346,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1368,11 +1365,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
-        _ * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
-
-        then:
-        1 * jira.appendCommentToIssue(documentIssue.key, message)
+        1 * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jira.jira.appendCommentToIssue(documentIssue.key, message)
     }
 
     def "notify LeVA document issue with query returning != 1 issue"() {
@@ -1380,7 +1375,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jira = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -1399,8 +1394,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
-        _ * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> [] // don't care
+        1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> [] // don't care
 
         then:
         def e = thrown(RuntimeException)
@@ -1410,8 +1405,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
 
         then:
-        _ * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * jira.getIssuesForJQLQuery(jqlQuery) >> documentIssues
+        1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
+        1 * jira.jira.getIssuesForJQLQuery(jqlQuery) >> documentIssues
 
         then:
         e = thrown(RuntimeException)

@@ -101,7 +101,7 @@ class JiraUseCase {
                 if (isMatch) this.jira.createIssueLinkTypeBlocks(bug, issue)
             }
 
-            this.appendCommentToIssue(bug.key, comment)
+            this.jira.appendCommentToIssue(bug.key, comment)
         }
     }
 
@@ -177,7 +177,7 @@ class JiraUseCase {
             fields: [epicLinkField.id, "description", "summary"]
         ]
 
-        def issues = this.getIssuesForJQLQuery(jqlQuery)
+        def issues = this.jira.getIssuesForJQLQuery(jqlQuery)
         issues.each { issue ->
             // Derive the epicKey through the Epic Link field's id
             def epicKey = issue.fields[epicLinkField.id]
@@ -215,7 +215,7 @@ class JiraUseCase {
         def issueTypeEpicKeys = []
         def issuesWithoutLinks = [] as Set
 
-        def issues = this.getIssuesForJQLQuery([
+        def issues = this.jira.getIssuesForJQLQuery([
             jql: query,
             expand: ["renderedFields"],
             fields: ["components", "description", "issuelinks", "issuetype", "summary"]
@@ -261,7 +261,7 @@ class JiraUseCase {
         // Fetch the linked issues if applicable
         def linkedIssues = [:]
         if (!linkedIssuesKeys.isEmpty()) {
-            linkedIssues = this.getIssuesForJQLQuery([
+            linkedIssues = this.jira.getIssuesForJQLQuery([
                 jql: "key in (" + linkedIssuesKeys.join(", ") + ")",
                 expand: ["renderedFields"],
                 fields: ["description"]
@@ -419,15 +419,4 @@ class JiraUseCase {
         return result << mixins
     }
 
-    List getIssuesForJQLQuery(Map query) {
-        if (!this.jira) return
-
-        this.jira.getIssuesForJQLQuery(query)
-    }
-
-    void appendCommentToIssue(String issueIdOrKey, String comment) {
-        if (!this.jira) return
-
-        this.jira.appendCommentToIssue(issueIdOrKey, comment)
-    }
 }

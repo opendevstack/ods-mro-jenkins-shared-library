@@ -1245,13 +1245,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def jqlQuery = [ jql: "project = ${projectId} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels = LeVA_Doc:${documentType}" ]
 
         // Search for the Jira issue associated with the document
-        def jiraIssues = this.jira.getIssuesForJQLQuery(jqlQuery)
+        def jiraIssues = this.jira.jira.getIssuesForJQLQuery(jqlQuery)
         if (jiraIssues.size() != 1) {
             throw new RuntimeException("Error: Jira query returned ${jiraIssues.size()} issues: '${jqlQuery}'.")
         }
 
         // Add a comment to the Jira issue with a link to the report
-        this.jira.appendCommentToIssue(jiraIssues.first().key, message)
+        this.jira.jira.appendCommentToIssue(jiraIssues.first().key, message)
     }
 
     private String getDocumentTypeWithEnviroment(String documentType) {
