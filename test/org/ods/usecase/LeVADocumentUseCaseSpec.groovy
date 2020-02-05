@@ -1282,7 +1282,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.contains("OVERALL_TIR")
     }
 
-    def "notify LeVA document issue in dev"() {
+    def "notify LeVA document issue in DEV"() {
         given:
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
@@ -1313,7 +1313,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.appendCommentToIssue(documentIssue.key, message)
     }
 
-    def "notify LeVA document issue in qa"() {
+    def "notify LeVA document issue in QA"() {
         given:
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
@@ -1344,7 +1344,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jira.appendCommentToIssue(documentIssue.key, message)
     }
 
-    def "notify LeVA document issue in prod"() {
+    def "notify LeVA document issue in PROD"() {
         given:
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
