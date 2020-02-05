@@ -250,17 +250,20 @@ class LeVADocumentScheduler extends DocGenScheduler {
 
     void run(String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo = null, Map data = null) {
         def documents = this.usecase.getSupportedDocuments()
+        def environment = this.util.getBuildParams().targetEnvironmentToken
+
         documents.each { documentType ->
-            def environment = this.util.getBuildParams().targetEnvironmentToken
-            def args = [project, repo, data]
+            if (this.isDocumentApplicableForEnvironment(documentType, environment)) {
+                def args = [project, repo, data]
 
-            if (this.isDocumentApplicable(documentType, phase, stage, project, repo) && this.isDocumentApplicableForEnvironment(documentType, environment)) {
-                def message = "Creating document of type '${documentType}' for project '${project.id}' in environment '${environment}'"
-                if (repo) message += " and repo '${repo.id}'"
-                this.steps.echo(message)
+                if (this.isDocumentApplicable(documentType, phase, stage, project, repo)) {
+                    def message = "Creating document of type '${documentType}' for project '${project.id}' in environment '${environment}'"
+                    if (repo) message += " and repo '${repo.id}'"
+                    this.steps.echo(message)
 
-                // Apply args according to the method's parameters length
-                this.usecase.invokeMethod(this.getMethodNameForDocumentType(documentType), args as Object[])
+                    // Apply args according to the method's parameters length
+                    this.usecase.invokeMethod(this.getMethodNameForDocumentType(documentType), args as Object[])
+                }
             }
         }
     }
