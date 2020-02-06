@@ -7730,14 +7730,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -7819,14 +7819,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -7872,14 +7872,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -7934,14 +7934,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8083,14 +8083,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8150,14 +8150,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8195,14 +8195,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8241,14 +8241,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8307,14 +8307,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8374,14 +8374,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8419,14 +8419,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8465,14 +8465,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8531,14 +8531,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8571,14 +8571,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
@@ -8619,14 +8619,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraUseCase)
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
 
-        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jira, levaFiles, nexus, os, pdf, sq)
+        def usecaseObj = new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq)
         def usecase = Mock(LeVADocumentUseCase) {
             getMetaClass() >> {
                 return usecaseObj.getMetaClass()
