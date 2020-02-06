@@ -353,7 +353,7 @@ class JiraUseCase {
         }
     }
 
-    private void walkJiraTestIssuesAndTestResults(List jiraTestIssues, Map testResults, Closure visitor) {
+    public void walkJiraTestIssuesAndTestResults(List jiraTestIssues, Map testResults, Closure visitor) {
         testResults.testsuites.each { testsuite ->
             testsuite.testcases.each { testcase ->
                 def issue = jiraTestIssues.find { issue ->
