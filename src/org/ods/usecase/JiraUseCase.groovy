@@ -73,7 +73,7 @@ class JiraUseCase {
         this.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, testResults, matchedHandler, unmatchedHandler)
     }
 
-    public boolean checkJiraIssueMatchesTestCase(Map issue, String testcaseName) {
+    boolean checkJiraIssueMatchesTestCase(Map issue, String testcaseName) {
         def issueKeyClean = issue.key.replaceAll("-", "")
         return testcaseName.startsWith("${issueKeyClean} ") || testcaseName.startsWith("${issueKeyClean}-") || testcaseName.startsWith("${issueKeyClean}_")
     }
@@ -353,7 +353,7 @@ class JiraUseCase {
         }
     }
 
-    public void walkJiraTestIssuesAndTestResults(List jiraTestIssues, Map testResults, Closure visitor) {
+    private void walkJiraTestIssuesAndTestResults(List jiraTestIssues, Map testResults, Closure visitor) {
         testResults.testsuites.each { testsuite ->
             testsuite.testcases.each { testcase ->
                 def issue = jiraTestIssues.find { issue ->
