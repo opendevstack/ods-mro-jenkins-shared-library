@@ -443,12 +443,23 @@ def "create FTR"() {
         def jenkins = Mock(JenkinsService)
         def jira = Mock(JiraService)
         // def jiraUseCase = Spy(new JiraUseCase(steps, util, jira))
-        def jiraUseCase = Spy(JiraUseCase, constructorArgs: [steps, util, jira])
+        //def jiraUseCase = Spy(JiraUseCase, constructorArgs: [steps, util, jira])
+        def jiraUseCase = Mock(JiraUseCase)
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
+
+        /*
+        def jiraUseCaseObj = new new JiraUseCase(steps, util, jira)
+        def jiraUseCase = Mock(JiraUseCase) {
+            executeBlockWithFailFast(_) >> { block ->
+                utilObj.executeBlockWithFailFast(block)
+            }
+        }
+        */
+
         def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
@@ -498,7 +509,7 @@ def "create FTR"() {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        //1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
