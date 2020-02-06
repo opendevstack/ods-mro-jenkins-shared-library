@@ -100,16 +100,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
     def "create CS"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -146,16 +147,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
     def "create DSD"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -190,16 +192,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
     def "create DTP"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -233,16 +236,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
     def "create DTP without Jira"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -393,16 +397,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
     def "create FTP"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -441,26 +446,12 @@ def "create FTR"() {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jira = Mock(JiraService)
-        // def jiraUseCase = Spy(new JiraUseCase(steps, util, jira))
-        def jiraUseCase = Spy(JiraUseCase, constructorArgs: [steps, util, jira])
-        //def jiraUseCase = Mock(JiraUseCase)
-        //def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-
-        /*
-        def jiraUseCaseObj = new new JiraUseCase(steps, util, jira)
-        def jiraUseCase = Mock(JiraUseCase) {
-            executeBlockWithFailFast(_) >> { block ->
-                utilObj.executeBlockWithFailFast(block)
-            }
-        }
-        */
-
         def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
@@ -510,7 +501,7 @@ def "create FTR"() {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-        //1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -519,16 +510,17 @@ def "create FTR"() {
 
     def "create FS"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -569,16 +561,17 @@ def "create FTR"() {
 
     def "create IVP"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -616,7 +609,7 @@ def "create FTR"() {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Mock(JiraUseCase)
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -644,12 +637,14 @@ def "create FTR"() {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.IVR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createIVR(project, null, data)
@@ -660,10 +655,11 @@ def "create FTR"() {
 
         then:
         1 * jiraUseCase.getAutomatedInstallationTestIssues(project.id) >> testIssues
-        1 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _) >> null
+        1 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
-        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.") >> null
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -672,16 +668,17 @@ def "create FTR"() {
 
     def "create SCP"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -713,16 +710,17 @@ def "create FTR"() {
 
     def "create SCP without Jira"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -891,16 +889,17 @@ def "create FTR"() {
 
     def "create TIP"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -932,16 +931,17 @@ def "create FTR"() {
 
     def "create TIP without Jira"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -1055,16 +1055,17 @@ def "create FTR"() {
 
     def "create URS"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -1106,16 +1107,17 @@ def "create FTR"() {
 
     def "create overall DTR"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -1143,16 +1145,17 @@ def "create FTR"() {
 
     def "create overall SCR"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -1180,16 +1183,17 @@ def "create FTR"() {
 
     def "create overall SDS"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -1217,16 +1221,17 @@ def "create FTR"() {
 
     def "create overall TIR"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Test Parameters
         def project = createProject()
@@ -1296,16 +1301,17 @@ def "create FTR"() {
 
     def "notify LeVA document issue in DEV"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         def project = createProject()
         def documentType = "myType"
@@ -1325,16 +1331,17 @@ def "create FTR"() {
 
     def "notify LeVA document issue in QA"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         def project = createProject()
         def documentType = "myType"
@@ -1354,16 +1361,17 @@ def "create FTR"() {
 
     def "notify LeVA document issue in PROD"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         def project = createProject()
         def documentType = "myType"
@@ -1383,16 +1391,17 @@ def "create FTR"() {
 
     def "notify LeVA document issue with query returning != 1 issue"() {
         given:
+        def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
         def pdf = Mock(PDFUtil)
         def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(Spy(PipelineSteps), util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         def project = createProject()
         def documentType = "myType"
