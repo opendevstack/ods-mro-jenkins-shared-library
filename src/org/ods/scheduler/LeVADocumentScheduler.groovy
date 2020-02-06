@@ -124,7 +124,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
         LeVADocumentUseCase.DocumentType.IVR as String
     ]
 
-    // Document types per environment token (MROPipelineUtil.getBuildParams().targetEnvironmentToken)
+    // Document types per environment type token (MROPipelineUtil.getBuildParams().targetEnvironmentToken)
     // Only Q and P, in D all types are generated
     private static Map ENVIRONMENT_TYPE = [
         "Q": [
@@ -143,8 +143,8 @@ class LeVADocumentScheduler extends DocGenScheduler {
         ]
     ]
 
-    LeVADocumentScheduler(IPipelineSteps steps, LeVADocumentUseCase usecase, MROPipelineUtil util) {
-        super(steps, usecase, util)
+    LeVADocumentScheduler(IPipelineSteps steps, MROPipelineUtil util, LeVADocumentUseCase usecase) {
+        super(steps, util, usecase)
     }
 
     private boolean isDocumentApplicableForGampCategory(String documentType, String gampCategory) {
@@ -257,12 +257,20 @@ class LeVADocumentScheduler extends DocGenScheduler {
                 def args = [project, repo, data]
 
                 if (this.isDocumentApplicable(documentType, phase, stage, project, repo)) {
-                    def message = "Creating document of type '${documentType}' for project '${project.id}' in environment '${environment}'"
+                    def message = "Creating document of type '${documentType}' for project '${project.id}'"
                     if (repo) message += " and repo '${repo.id}'"
+                    message += " in phase '${phase}' and stage '${stage}'"
                     this.steps.echo(message)
 
-                    // Apply args according to the method's parameters length
-                    this.usecase.invokeMethod(this.getMethodNameForDocumentType(documentType), args as Object[])
+                    this.util.executeBlockWithFailFast {
+                        try {
+                            // Apply args according to the method's parameters length
+                            def method = this.getMethodNameForDocumentType(documentType)
+                            this.usecase.invokeMethod(method, args as Object[])
+                        } catch (e) {
+                            throw new IllegalStateException("Error: ${message} has failed: ${e.message}.")
+                        }
+                    }
                 }
             }
         }

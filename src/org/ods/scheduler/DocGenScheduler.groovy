@@ -9,13 +9,13 @@ import org.ods.util.MROPipelineUtil
 abstract class DocGenScheduler {
 
     protected IPipelineSteps steps
-    protected DocGenUseCase usecase
     protected MROPipelineUtil util
+    protected DocGenUseCase usecase
 
-    DocGenScheduler(IPipelineSteps steps, DocGenUseCase usecase, MROPipelineUtil util) {
+    DocGenScheduler(IPipelineSteps steps, MROPipelineUtil util, DocGenUseCase usecase) {
         this.steps = steps
-        this.usecase = usecase
         this.util = util
+        this.usecase = usecase
     }
 
     @NonCPS

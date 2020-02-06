@@ -296,7 +296,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def project = createProject()
         def repo = project.repositories.first()
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(steps, util).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 unit: [
@@ -356,7 +356,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         project.services.jira = null
         def repo = project.repositories.first()
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(steps, util).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 unit: [
@@ -457,7 +457,7 @@ def "create FTR"() {
         def project = createProject()
         def repo = project.repositories.first()
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(steps, util).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 acceptance: [
@@ -618,7 +618,7 @@ def "create FTR"() {
         def project = createProject()
         def repo = project.repositories.first()
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(steps).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(steps, util).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 installation: [

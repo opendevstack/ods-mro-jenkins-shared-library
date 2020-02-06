@@ -118,7 +118,8 @@ def call() {
 
     registry.add(JUnitTestReportsUseCase.class.name,
         new JUnitTestReportsUseCase(
-            registry.get(PipelineSteps.class.name)
+            registry.get(PipelineSteps.class.name),
+            registry.get(PipelineUtil.class.name)
         )
     )
 
@@ -147,8 +148,8 @@ def call() {
     registry.add(LeVADocumentScheduler.class.name,
         new LeVADocumentScheduler(
             registry.get(PipelineSteps.class.name),
-            registry.get(LeVADocumentUseCase.class.name),
-            registry.get(PipelineUtil.class.name)
+            registry.get(PipelineUtil.class.name),
+            registry.get(LeVADocumentUseCase.class.name)
         )
     )
 
