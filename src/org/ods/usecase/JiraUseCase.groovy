@@ -418,5 +418,4 @@ class JiraUseCase {
 
         return result << mixins
     }
-
 }
