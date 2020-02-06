@@ -1239,6 +1239,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     void notifyLeVaDocumentTrackingIssue(String projectId, String documentType, String message) {
         if (!this.jiraUseCase) return
+        if (!this.jiraUseCase.jira) return
         
         documentType = this.getDocumentTypeWithEnviroment(documentType)
 
