@@ -72,7 +72,7 @@ dependencies {
     implementation "org.apache.ivy:ivy:2.2.0"
     implementation "org.apache.pdfbox:pdfbox:2.0.17"
     implementation "org.apache.poi:poi:4.0.1"
-    implementation "org.codehaus.groovy:groovy-all:2.5.7"
+    implementation "org.codehaus.groovy:groovy-all:2.5.9"
     implementation "org.yaml:snakeyaml:1.24"
     implementation "org.jenkins-ci.main:jenkins-core:2.46.3"
     implementation group: 'org.jenkins-ci.plugins.workflow', name: 'workflow-api', version: '2.36', ext: 'jar'
