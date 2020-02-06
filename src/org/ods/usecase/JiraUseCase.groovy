@@ -73,7 +73,7 @@ class JiraUseCase {
         this.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, testResults, matchedHandler, unmatchedHandler)
     }
 
-    boolean checkJiraIssueMatchesTestCase(Map issue, String testcaseName) {
+    public boolean checkJiraIssueMatchesTestCase(Map issue, String testcaseName) {
         def issueKeyClean = issue.key.replaceAll("-", "")
         return testcaseName.startsWith("${issueKeyClean} ") || testcaseName.startsWith("${issueKeyClean}-") || testcaseName.startsWith("${issueKeyClean}_")
     }
