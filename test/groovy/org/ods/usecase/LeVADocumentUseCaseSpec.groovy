@@ -441,7 +441,7 @@ def "create FTR"() {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
