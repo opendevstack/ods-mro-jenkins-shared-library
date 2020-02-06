@@ -441,7 +441,7 @@ def "create FTR"() {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Mock(JiraUseCase)
+        def jiraUseCase = Spy(new JiraUseCase(Spy(PipelineSteps), util, Mock(JiraService)))
         def levaFiles = Mock(LeVADocumentChaptersFileService)
         def nexus = Mock(NexusService)
         def os = Mock(OpenShiftService)
@@ -473,12 +473,14 @@ def "create FTR"() {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.FTR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]		
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
         def chapterData = ["sec1": "myContent"]
         def testIssues = createJiraTestIssues()
         def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
         when:
         usecase.createFTR(project, null, data)
@@ -490,10 +492,11 @@ def "create FTR"() {
         then:
         1 * jiraUseCase.getAutomatedAcceptanceTestIssues(project.id) >> testIssues
         1 * jiraUseCase.getAutomatedIntegrationTestIssues(project.id) >> testIssues
-        2 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _) >> null
+        2 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
         1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
-        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.") >> null
+        1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
