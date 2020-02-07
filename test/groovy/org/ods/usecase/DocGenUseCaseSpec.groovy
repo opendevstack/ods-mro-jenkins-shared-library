@@ -302,7 +302,7 @@ class DocGenUseCaseSpec extends SpecHelper {
         usecase.createOverallDocument(coverType, documentType, metadata, project)
 
         then:
-        1 * usecase.createDocument(coverType, project, null, _, [:], _, documentType)
+        1 * usecase.createDocument(coverType, project, null, _, [:], _, documentType, null)
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -332,7 +332,7 @@ class DocGenUseCaseSpec extends SpecHelper {
         usecase.createOverallDocument(coverType, documentType, metadata, project)
 
         then:
-        1 * usecase.createDocument(coverType, project, null, _, [:], _, documentType)
+        1 * usecase.createDocument(coverType, project, null, _, [:], _, documentType, null)
         _ * util.getBuildParams() >> buildParams
 
         then:

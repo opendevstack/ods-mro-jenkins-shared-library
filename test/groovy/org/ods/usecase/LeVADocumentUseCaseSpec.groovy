@@ -139,7 +139,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -184,7 +184,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -228,7 +228,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getAutomatedUnitTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -273,7 +273,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getAutomatedUnitTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -331,7 +331,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         //1 * usecase.computeTestDiscrepancies("Development Tests", testIssues)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null, _)
         _ * util.getBuildParams() >> buildParams
 
         cleanup:
@@ -391,7 +391,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         //1 * usecase.computeTestDiscrepancies("Development Tests", testIssues)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null, _)
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -434,7 +434,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jiraUseCase.getAutomatedAcceptanceTestIssues(project.id) >> testIssues
         1 * jiraUseCase.getAutomatedIntegrationTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -499,7 +499,7 @@ def "create FTR"() {
         1 * jiraUseCase.getAutomatedIntegrationTestIssues(project.id) >> testIssues
         2 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, files, null, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -553,7 +553,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -597,7 +597,7 @@ def "create FTR"() {
         then:
         1 * jiraUseCase.getAutomatedInstallationTestIssues(project.id) >> testIssues
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -657,7 +657,7 @@ def "create FTR"() {
         1 * jiraUseCase.getAutomatedInstallationTestIssues(project.id) >> testIssues
         1 * jiraUseCase.matchJiraTestIssuesAgainstTestResults(testIssues, testResults, _, _)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, files, null, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, files, null, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -702,7 +702,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -745,7 +745,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -796,7 +796,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null, _)
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -846,7 +846,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, files, _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, files, _, null, _)
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -883,7 +883,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null, _)
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -923,7 +923,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -966,7 +966,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -1008,7 +1008,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null, _)
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1049,7 +1049,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project, repo)
-        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null)
+        1 * usecase.createDocument(documentType, project, repo, _, [:], _, null, _)
         _ * util.getBuildParams() >> buildParams
     }
 
@@ -1099,7 +1099,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], project)
-        1 * usecase.createDocument(documentType, project, null, _, [:], _, null) >> uri
+        1 * usecase.createDocument(documentType, project, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -1137,7 +1137,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
-        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -1175,7 +1175,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
-        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -1213,7 +1213,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
-        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project) >> uri
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, project, null, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
@@ -1251,7 +1251,7 @@ def "create FTR"() {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName], project)
-        1 * usecase.createOverallDocument("Overall-TIR-Cover", documentType, _, project, _) >> uri
+        1 * usecase.createOverallDocument("Overall-TIR-Cover", documentType, _, project, _, _) >> uri
         1 * usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         _ * util.getBuildParams() >> buildParams
