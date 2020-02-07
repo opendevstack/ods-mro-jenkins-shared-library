@@ -130,8 +130,8 @@ class LeVADocumentScheduler extends DocGenScheduler {
         "D": [
             (LeVADocumentUseCase.DocumentType.CS as String): true, 
             (LeVADocumentUseCase.DocumentType.DSD as String): true,
-            (LeVADocumentUseCase.DocumentType.DTP as String): true,
-            (LeVADocumentUseCase.DocumentType.DTR as String): true,
+            (LeVADocumentUseCase.DocumentType.DTP as String): false,
+            (LeVADocumentUseCase.DocumentType.DTR as String): false,
             (LeVADocumentUseCase.DocumentType.FS as String): true,
             (LeVADocumentUseCase.DocumentType.FTP as String): true,
             (LeVADocumentUseCase.DocumentType.FTR as String): true,
