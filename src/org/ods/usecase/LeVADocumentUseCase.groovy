@@ -68,6 +68,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.OVERALL_TIR as String): "Overall Technical Installation Report"
     ]
 
+    private static String WATERMARK_MESSAGE = "Developer Preview"
+
     private JenkinsService jenkins
     private JiraUseCase jiraUseCase
     private LeVADocumentChaptersFileService levaFiles
@@ -1351,10 +1353,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def environment = this.util.getBuildParams().targetEnvironmentToken
 
         if (LeVADocumentScheduler.ENVIRONMENT_TYPE[environment].get(documentType)){
-            println "si tiene marca ${documentType} en ${environment}"
-            return this.pdf.addWatermarkText(file, "Developer Preview")
+            return this.pdf.addWatermarkText(file, WATERMARK_MESSAGE)
         }
-println "no tiene marca ${documentType} en ${environment}"
+
         return file
     }
 }
