@@ -125,7 +125,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
     ]
 
     // Document types per environment type token (MROPipelineUtil.getBuildParams().targetEnvironmentToken)
-    // Te value (true/false) shows if watermark is needed
+    // The value (true/false) shows if watermark is needed
     public  static Map ENVIRONMENT_TYPE = [
         "D": [
             (LeVADocumentUseCase.DocumentType.CS as String): true, 
