@@ -220,6 +220,65 @@ class DocGenUseCaseSpec extends SpecHelper {
         1 * nexus.storeArtifact(*_) >> nexusUri
     }
 
+    def "create document with watermark"() {
+        def buildParams = createBuildParams()
+
+        def steps = Spy(PipelineSteps)
+        steps.env.BUILD_ID = "0815"
+
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def nexus = Mock(NexusService)
+        def usecase = Spy(new DocGenUseCaseImpl(
+            steps,
+            util,
+            docGen,
+            nexus,
+            Mock(PDFUtil)
+        ))
+
+        // Test Parameters
+        def documentType = "myDocumentType"
+        def version = buildParams.version
+        def project = createProject()
+        def repo = project.repositories.first()
+        def data = [ a: 1, b: 2, c: 3 ]
+        def watermark = { document ->
+            return (new String(document) + "-with-watermark").bytes
+        }
+
+        // Argument Constraints
+        def basename = "${documentType}-${project.id}-${repo.id}-${version}-${steps.env.BUILD_ID}"
+
+        // Stubbed Method Responses
+        def document = "PDF".bytes
+        def nexusUri = new URI("http://nexus")
+
+        when:
+        def result = usecase.createDocument(documentType, project, repo, data, [:], null, null, watermark)
+
+        then:
+        1 * util.getBuildParams() >> buildParams
+
+        then:
+        1 * docGen.createDocument(*_) >> document
+
+        then:
+        1 * usecase.getDocumentBasename(documentType, buildParams.version, steps.env.BUILD_ID, project, repo)
+
+        then:
+        1 * util.createZipArtifact(
+            "${basename}.zip",
+            [
+                "${basename}.pdf": "PDF-with-watermark".bytes,
+                "raw/${basename}.json": JsonOutput.toJson(data).bytes
+            ]
+        ) >> new byte[0]
+
+        then:
+        1 * nexus.storeArtifact(*_) >> nexusUri
+    }
+
     def "create document with documentTypeEmbedded"() {
         def buildParams = createBuildParams()
 
