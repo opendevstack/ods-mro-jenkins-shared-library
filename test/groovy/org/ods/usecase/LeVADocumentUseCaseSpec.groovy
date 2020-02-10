@@ -1433,7 +1433,7 @@ def "create FTR"() {
         e.message == "Error: Jira query returned 3 issues: '${jqlQuery}'."
     }
 
-        def "Docs with watermark text in DEV"() {
+    def "Docs with watermark text in DEV"() {
         given:
         def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
@@ -1588,6 +1588,23 @@ def "create FTR"() {
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
         1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+    }
+
+    def "Docs with watermark text in QA"() {
+        given:
+        def steps = Spy(PipelineSteps)
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+
+        def pdfFile = getResource("Test-1.pdf")
 
         when:
         usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVP as String)
@@ -1616,6 +1633,23 @@ def "create FTR"() {
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
         0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+    }
+
+    def "Docs with watermark text in PROD"() {
+        given:
+        def steps = Spy(PipelineSteps)
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def jenkins = Mock(JenkinsService)
+        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
+        def levaFiles = Mock(LeVADocumentChaptersFileService)
+        def nexus = Mock(NexusService)
+        def os = Mock(OpenShiftService)
+        def pdf = Mock(PDFUtil)
+        def sq = Mock(SonarQubeUseCase)
+        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+
+        def pdfFile = getResource("Test-1.pdf")
 
         when:
         usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVP as String)
