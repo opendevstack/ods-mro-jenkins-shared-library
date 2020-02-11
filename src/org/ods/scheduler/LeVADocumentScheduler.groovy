@@ -125,42 +125,24 @@ class LeVADocumentScheduler extends DocGenScheduler {
     ]
 
     // Document types per environment type token (MROPipelineUtil.getBuildParams().targetEnvironmentToken)
-    // The value (true/false) shows if watermark is needed
-    public  static Map ENVIRONMENT_TYPE = [
+    // Only Q and P, in D all types are generated
+    public static Map ENVIRONMENT_TYPE = [
         "D": [
-            (LeVADocumentUseCase.DocumentType.CS as String): true, 
-            (LeVADocumentUseCase.DocumentType.DSD as String): true,
-            (LeVADocumentUseCase.DocumentType.DTP as String): false,
-            (LeVADocumentUseCase.DocumentType.DTR as String): false,
-            (LeVADocumentUseCase.DocumentType.FS as String): true,
-            (LeVADocumentUseCase.DocumentType.FTP as String): true,
-            (LeVADocumentUseCase.DocumentType.FTR as String): true,
-            (LeVADocumentUseCase.DocumentType.IVP as String): true,
-            (LeVADocumentUseCase.DocumentType.IVR as String): true,
-            (LeVADocumentUseCase.DocumentType.SCP as String): true,
-            (LeVADocumentUseCase.DocumentType.SCR as String): true,
-            (LeVADocumentUseCase.DocumentType.SDS as String): true,
-            (LeVADocumentUseCase.DocumentType.TIP as String): true,
-            (LeVADocumentUseCase.DocumentType.TIR as String): true,
-            (LeVADocumentUseCase.DocumentType.URS as String): true,
-            (LeVADocumentUseCase.DocumentType.OVERALL_DTR as String): true,
-            (LeVADocumentUseCase.DocumentType.OVERALL_IVR as String): true,
-            (LeVADocumentUseCase.DocumentType.OVERALL_SCR as String): true,
-            (LeVADocumentUseCase.DocumentType.OVERALL_SDS as String): true,
-            (LeVADocumentUseCase.DocumentType.OVERALL_TIR as String): true
+            LeVADocumentUseCase.DocumentType.DTP as String,
+            LeVADocumentUseCase.DocumentType.DTR as String
         ],
         "Q": [
-            (LeVADocumentUseCase.DocumentType.IVP as String): false,
-            (LeVADocumentUseCase.DocumentType.IVR as String): false,
-            (LeVADocumentUseCase.DocumentType.TIP as String): false,
-            (LeVADocumentUseCase.DocumentType.TIR as String): false
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String
             /* LeVADocumentUseCase.DocumentType.DIL as String */
         ],
         "P": [
-            (LeVADocumentUseCase.DocumentType.IVP as String): false,
-            (LeVADocumentUseCase.DocumentType.IVR as String): false,
-            (LeVADocumentUseCase.DocumentType.TIP as String): false,
-            (LeVADocumentUseCase.DocumentType.TIR as String): false
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String
             /* LeVADocumentUseCase.DocumentType.DIL as String, */
         ]
     ]
@@ -267,7 +249,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
             return true
         }
         
-        return this.ENVIRONMENT_TYPE[environment].containsKey(documentType)
+        return this.ENVIRONMENT_TYPE[environment].contains(documentType)
     }
 
     void run(String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map project, Map repo = null, Map data = null) {

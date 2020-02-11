@@ -1447,147 +1447,145 @@ def "create FTR"() {
         def sq = Mock(SonarQubeUseCase)
         def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
-        def pdfFile = getResource("Test-1.pdf")
-
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.CS as String)
+        def result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.CS as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.DSD as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.DSD as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.DTP as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.DTP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.DTR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.DTR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.FS as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.FS as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.FTP as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.FTP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.FTR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.FTR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVP as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.IVP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.IVR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.SCP as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.SCP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.SCR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.SCR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.SDS as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.SDS as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.TIP as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.TIR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.URS as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.URS as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.OVERALL_DTR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.OVERALL_DTR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.OVERALL_IVR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.OVERALL_IVR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.OVERALL_SCR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.OVERALL_SCR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.OVERALL_SDS as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.OVERALL_SDS as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.OVERALL_TIR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.OVERALL_TIR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == "Developer Preview"
     }
 
     def "Docs with watermark text in QA"() {
@@ -1604,35 +1602,33 @@ def "create FTR"() {
         def sq = Mock(SonarQubeUseCase)
         def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
-        def pdfFile = getResource("Test-1.pdf")
-
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVP as String)
+        def result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.IVP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.IVR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.TIP as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.TIR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
     }
 
     def "Docs with watermark text in PROD"() {
@@ -1649,34 +1645,32 @@ def "create FTR"() {
         def sq = Mock(SonarQubeUseCase)
         def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
-        def pdfFile = getResource("Test-1.pdf")
-
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVP as String)
+        def result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.IVP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.IVR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.IVR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.TIP as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIP as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
 
         when:
-        usecase.addWatermarkText(pdfFile.bytes, LeVADocumentUseCase.DocumentType.TIR as String)
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIR as String)
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
-        0 * pdf.addWatermarkText(pdfFile.bytes, "Developer Preview")
+        result == null
     }
 }

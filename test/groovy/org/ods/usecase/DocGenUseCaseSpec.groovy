@@ -229,13 +229,16 @@ class DocGenUseCaseSpec extends SpecHelper {
         def util = Mock(MROPipelineUtil)
         def docGen = Mock(DocGenService)
         def nexus = Mock(NexusService)
+        def pdf = Spy(new PDFUtil())
         def usecase = Spy(new DocGenUseCaseImpl(
             steps,
             util,
             docGen,
             nexus,
-            Mock(PDFUtil)
+            pdf
         ))
+
+        def pdfUtil = new PDFUtil()
 
         // Test Parameters
         def documentType = "myDocumentType"
@@ -243,39 +246,31 @@ class DocGenUseCaseSpec extends SpecHelper {
         def project = createProject()
         def repo = project.repositories.first()
         def data = [ a: 1, b: 2, c: 3 ]
-        def watermark = { document ->
-            return (new String(document) + "-with-watermark").bytes
-        }
+        def watermarkText = "Watermark"
 
         // Argument Constraints
         def basename = "${documentType}-${project.id}-${repo.id}-${version}-${steps.env.BUILD_ID}"
 
         // Stubbed Method Responses
-        def document = "PDF".bytes
+        def document = getResource("Test-1.pdf").bytes
         def nexusUri = new URI("http://nexus")
+        def documentWithWatermark = pdfUtil.addWatermarkText(document, watermarkText)
 
         when:
-        def result = usecase.createDocument(documentType, project, repo, data, [:], null, null, watermark)
-
-        then:
-        1 * util.getBuildParams() >> buildParams
+        usecase.createDocument(documentType, project, repo, data, [:], null, null, watermarkText)
 
         then:
         1 * docGen.createDocument(*_) >> document
-
-        then:
+        1 * pdf.addWatermarkText(document, watermarkText)
+        1 * util.getBuildParams() >> buildParams
         1 * usecase.getDocumentBasename(documentType, buildParams.version, steps.env.BUILD_ID, project, repo)
-
-        then:
         1 * util.createZipArtifact(
             "${basename}.zip",
             [
-                "${basename}.pdf": "PDF-with-watermark".bytes,
+                "${basename}.pdf": documentWithWatermark,
                 "raw/${basename}.json": JsonOutput.toJson(data).bytes
             ]
         ) >> new byte[0]
-
-        then:
         1 * nexus.storeArtifact(*_) >> nexusUri
     }
 
