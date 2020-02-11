@@ -103,20 +103,20 @@ class PipelineUtil {
         try {
             block()
         } catch (e) {
-            this.steps.currentBuild.result = "FAILURE"
-            this.steps.echo(e.message)
+            this.failBuild(e.message)
             hudson.Functions.printThrowable(e)
             throw e
         }
     }
 
-    void executeBlockAndWarnBuild(Closure block) {
-        try {
-            block()
-        } catch (e) {
-            this.steps.currentBuild.result = "UNSTABLE"
-            this.steps.echo(e.message)
-        }
+    void failBuild(String message) {
+        this.steps.currentBuild.result = "FAILURE"
+        this.steps.echo(message)
+    }
+
+    void warnBuild(String message) {
+        this.steps.currentBuild.result = "UNSTABLE"
+        this.steps.echo(message)
     }
 
     URI getGitURL(String path = this.steps.env.WORKSPACE, String remote = "origin") {

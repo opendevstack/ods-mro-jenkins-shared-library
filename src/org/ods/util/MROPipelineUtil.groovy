@@ -265,6 +265,7 @@ class MROPipelineUtil extends PipelineUtil {
         }
 
         result.data = [:]
+        result.data.build = [:]
         result.data.documents = [:]
 
         result.data.git = [

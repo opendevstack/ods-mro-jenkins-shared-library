@@ -24,10 +24,14 @@ class JUnitTestReportsUseCaseSpec extends SpecHelper {
         def xmlFile = Files.createTempFile(xmlFiles, "junit", ".xml").toFile()
         xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
 
+        def project = createProject()
         def testResults = usecase.parseTestReportFiles([xmlFile])
 
         when:
-        usecase.warnBuildIfTestResultsContainFailure(testResults)
+        usecase.warnBuildIfTestResultsContainFailure(project, testResults)
+
+        then:
+        project.data.build.hasFailingTests == true
 
         then:
         steps.currentBuild.result == "UNSTABLE"
