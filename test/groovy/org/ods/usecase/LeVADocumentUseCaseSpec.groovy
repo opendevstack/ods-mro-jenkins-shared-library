@@ -49,6 +49,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def result = usecase.computeTestDiscrepancies(name, testIssues)
 
         then:
+        3 == 4
         result.discrepancies == "No discrepancies found."
         result.conclusion.summary == "Complete success, no discrepancies"
         result.conclusion.statement == "It is determined that all steps of the ${name} have been successfully executed and signature of this report verifies that the tests have been performed according to the plan. No discrepancies occurred."
@@ -478,7 +479,7 @@ def "create FTR"() {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.FTR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
-        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]		
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
