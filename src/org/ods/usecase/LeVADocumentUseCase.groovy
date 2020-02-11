@@ -363,6 +363,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def discrepancies = this.computeTestDiscrepancies("Development Tests", jiraTestIssues)
 
+        this.steps.echo("DATA: ${data}")
+        this.steps.echo("TEST_RESULTS: ${data.testResults}")
+
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project, repo),
             data: [
