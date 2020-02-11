@@ -365,7 +365,7 @@ class MROPipelineUtil extends PipelineUtil {
         return [
             repo.id,
             {
-                this.executeBlockWithFailFast {
+                this.executeBlockAndFailBuild {
                     def baseDir = "${this.steps.env.WORKSPACE}/${REPOS_BASE_DIR}/${repo.id}"
 
                     if (preExecute) {

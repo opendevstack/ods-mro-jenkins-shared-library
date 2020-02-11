@@ -99,7 +99,7 @@ class PipelineUtil {
         return new File(path).getBytes()
     }
 
-    void executeBlockWithFailFast(Closure block) {
+    void executeBlockAndFailBuild(Closure block) {
         try {
             block()
         } catch (e) {
@@ -107,6 +107,15 @@ class PipelineUtil {
             this.steps.echo(e.message)
             hudson.Functions.printThrowable(e)
             throw e
+        }
+    }
+
+    void executeBlockAndWarnBuild(Closure block) {
+        try {
+            block()
+        } catch (e) {
+            this.steps.currentBuild.result = "UNSTABLE"
+            this.steps.echo(e.message)
         }
     }
 

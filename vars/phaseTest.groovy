@@ -83,10 +83,10 @@ def call(Map project, List<Set<Map>> repos) {
 
     levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, project, [:], data)
 
-    // Fail the pipeline in case of failing tests
-    junit.failIfTestResultsContainFailure(data.tests.installation.testResults)
-    junit.failIfTestResultsContainFailure(data.tests.integration.testResults)
-    junit.failIfTestResultsContainFailure(data.tests.acceptance.testResults)
+    // Warn the pipeline in case of failing tests
+    junit.warnBuildIfTestResultsContainFailure(data.tests.installation.testResults)
+    junit.warnBuildIfTestResultsContainFailure(data.tests.integration.testResults)
+    junit.warnBuildIfTestResultsContainFailure(data.tests.acceptance.testResults)
 }
 
 private List getAcceptanceTestResults(def steps, Map repo) {

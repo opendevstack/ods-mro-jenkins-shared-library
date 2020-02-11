@@ -16,10 +16,10 @@ class JUnitTestReportsUseCase {
         this.util = util
     }
 
-    void failIfTestResultsContainFailure(Map testResults) {
-        this.util.executeBlockWithFailFast {
+    void warnBuildIfTestResultsContainFailure(Map testResults) {
+        this.util.executeBlockAndWarnBuild {
             if (testResults.testsuites.find { (it.errors && it.errors.toInteger() > 0) || (it.failures && it.failures.toInteger() > 0) }) {
-                throw new IllegalStateException("Error: found failing tests in test reports.")
+                throw new RuntimeException("Warning: found failing tests in test reports.")
             }
         }
     }
