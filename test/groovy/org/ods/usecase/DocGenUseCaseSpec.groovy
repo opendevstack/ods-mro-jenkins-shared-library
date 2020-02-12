@@ -360,6 +360,36 @@ class DocGenUseCaseSpec extends SpecHelper {
         _ * util.getBuildParams() >> buildParams
     }
 
+    def "create overall document with watermark"() {
+        def buildParams = createBuildParams()
+
+        def steps = Spy(PipelineSteps)
+        def util = Mock(MROPipelineUtil)
+        def docGen = Mock(DocGenService)
+        def nexus = Mock(NexusService)
+        def usecase = Spy(new DocGenUseCaseImpl(
+            steps,
+            util,
+            docGen,
+            nexus,
+            Mock(PDFUtil)
+        ))
+
+        // Test Parameters
+        def coverType = "myCoverType"
+        def documentType = "myDocumentType"
+        def metadata = [:]
+        def project = createProject()
+        def watermarkText = "Watermark"
+
+        when:
+        usecase.createOverallDocument(coverType, documentType, metadata, project, null, watermarkText)
+
+        then:
+        1 * usecase.createDocument(coverType, project, null, _, [:], _, documentType, watermarkText)
+        _ * util.getBuildParams() >> buildParams
+    }
+
     def "create overall document removes previously stored repository-level documents"() {
         def buildParams = createBuildParams()
 
