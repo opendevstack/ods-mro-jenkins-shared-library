@@ -42,22 +42,21 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         when:
         def testIssues = createJiraTestIssues().each {
-            it.isMissing = false
-            it.isSuccess = true
+            it.test.isMissing = false
+            it.test.isSuccess = true
         }
 
         def result = usecase.computeTestDiscrepancies(name, testIssues)
 
         then:
-        3 == 4
         result.discrepancies == "No discrepancies found."
         result.conclusion.summary == "Complete success, no discrepancies"
         result.conclusion.statement == "It is determined that all steps of the ${name} have been successfully executed and signature of this report verifies that the tests have been performed according to the plan. No discrepancies occurred."
 
         when:
         testIssues = createJiraTestIssues().each {
-            it.isMissing = true
-            it.isSuccess = false
+            it.test.isMissing = true
+            it.test.isSuccess = false
         }
 
         result = usecase.computeTestDiscrepancies(name, testIssues)
@@ -69,8 +68,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         when:
         testIssues = createJiraTestIssues().each {
-            it.isMissing = false
-            it.isSuccess = false
+            it.test.isMissing = false
+            it.test.isSuccess = false
         }
 
         result = usecase.computeTestDiscrepancies(name, testIssues)
@@ -83,12 +82,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         when:
         testIssues = createJiraTestIssues()
         testIssues[0..1].each {
-            it.isMissing = true
-            it.isSuccess = false
+            it.test.isMissing = true
+            it.test.isSuccess = false
         }
         testIssues[2..4].each {
-            it.isMissing = false
-            it.isSuccess = false
+            it.test.isMissing = false
+            it.test.isSuccess = false
         }
 
         result = usecase.computeTestDiscrepancies(name, testIssues)
