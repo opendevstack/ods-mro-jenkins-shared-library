@@ -68,7 +68,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.OVERALL_TIR as String): "Overall Technical Installation Report"
     ]
 
-    private static String WATERMARK_MESSAGE = "Developer Preview"
+    private static String DEVELOPER_PREVIEW_WATERMARK = "Developer Preview"
 
     private JenkinsService jenkins
     private JiraUseCase jiraUseCase
@@ -1276,8 +1276,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
     private String getWatermarkText(String documentType) {
         def environment = this.util.getBuildParams().targetEnvironmentToken
 
-        if (!LeVADocumentScheduler.ENVIRONMENT_TYPE[environment].contains(documentType)){
-            return WATERMARK_MESSAGE
+        // The watermark only applies in DEV environment
+        if (environment.equals('D') && !LeVADocumentScheduler.ENVIRONMENT_TYPE['D'].contains(documentType)){
+            return DEVELOPER_PREVIEW_WATERMARK
         }
 
         return null
