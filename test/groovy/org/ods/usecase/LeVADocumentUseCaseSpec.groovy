@@ -1433,7 +1433,7 @@ def "create FTR"() {
         e.message == "Error: Jira query returned 3 issues: '${jqlQuery}'."
     }
 
-    def "Docs with watermark text in DEV"() {
+    def "docs with watermark text in DEV"() {
         given:
         def steps = Spy(PipelineSteps)
         def util = Mock(MROPipelineUtil)
@@ -1473,7 +1473,7 @@ def "create FTR"() {
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        result == null
+        result == "Developer Preview"
 
         when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.FS as String)
@@ -1487,7 +1487,7 @@ def "create FTR"() {
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        result == "Developer Preview"
+        result == null
 
         when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.FTR as String)
@@ -1501,7 +1501,7 @@ def "create FTR"() {
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        result == "Developer Preview"
+        result == null
 
         when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.IVR as String)
@@ -1536,7 +1536,7 @@ def "create FTR"() {
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        result == "Developer Preview"
+        result == null
 
         when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIR as String)

@@ -128,8 +128,10 @@ class LeVADocumentScheduler extends DocGenScheduler {
     // Only Q and P, in D all types are generated
     public static Map ENVIRONMENT_TYPE = [
         "D": [
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.DTP as String,
-            LeVADocumentUseCase.DocumentType.DTR as String
+            LeVADocumentUseCase.DocumentType.FTP as String            
         ],
         "Q": [
             LeVADocumentUseCase.DocumentType.IVP as String,
