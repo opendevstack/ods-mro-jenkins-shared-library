@@ -1241,17 +1241,39 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return metadata
     }
 
+    private String getJiraLabelForDocumentType(String documentType) {
+        def environment = this.util.getBuildParams().targetEnvironmentToken
+
+        def label = LeVADocumentScheduler.ENVIRONMENT_TYPE[environment].get(documentType)
+        if (!label && environment.equals('D')) {
+            label = documentType
+        }
+
+        return "LeVA_Doc:${label}"
+    }
+
     List<String> getSupportedDocuments() {
         return DocumentType.values().collect { it as String }
+    }
+
+    private String getWatermarkText(String documentType) {
+        def environment = this.util.getBuildParams().targetEnvironmentToken
+
+        // The watermark only applies in DEV environment (for documents not to be delivered from that environment)
+        if (environment.equals('D') && !LeVADocumentScheduler.ENVIRONMENT_TYPE['D'].containsKey(documentType)){
+            return this.DEVELOPER_PREVIEW_WATERMARK
+        }
+
+        return null
     }
 
     void notifyLeVaDocumentTrackingIssue(String projectId, String documentType, String message) {
         if (!this.jiraUseCase) return
         if (!this.jiraUseCase.jira) return
 
-        documentType = this.getDocumentTypeWithEnviroment(documentType)
+        def jiraDocumentLabel = this.getJiraLabelForDocumentType(documentType)
 
-        def jqlQuery = [ jql: "project = ${projectId} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${projectId} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels = ${jiraDocumentLabel}" ]
 
         // Search for the Jira issue associated with the document
         def jiraIssues = this.jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery)
@@ -1261,29 +1283,5 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         // Add a comment to the Jira issue with a link to the report
         this.jiraUseCase.jira.appendCommentToIssue(jiraIssues.first().key, message)
-    }
-
-    private String getDocumentTypeWithEnviroment(String documentType) {
-        def environment = this.util.getBuildParams().targetEnvironmentToken
-        
-        def label = LeVADocumentScheduler.ENVIRONMENT_TYPE[environment].get(documentType)
-        
-        // If no specific label found --> document preview in D
-        if(!label && environment.equals('D')) {
-            return documentType
-        }
-        
-        return label
-    }
-
-    private String getWatermarkText(String documentType) {
-        def environment = this.util.getBuildParams().targetEnvironmentToken
-
-        // The watermark only applies in DEV environment (for documents not definitives in that environment)
-        if (environment.equals('D') && !LeVADocumentScheduler.ENVIRONMENT_TYPE['D'].containsKey(documentType)){
-            return DEVELOPER_PREVIEW_WATERMARK
-        }
-
-        return null
     }
 }
