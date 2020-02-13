@@ -127,19 +127,19 @@ class LeVADocumentScheduler extends DocGenScheduler {
     // Document types per environment token (MROPipelineUtil.getBuildParams().targetEnvironmentToken) and label to track with Jira
     public static Map ENVIRONMENT_TYPE = [
         "D": [
-            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.TIP}_Q",
-            (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_Q",
             (LeVADocumentUseCase.DocumentType.DTP as String): "${LeVADocumentUseCase.DocumentType.DTP}",
-            (LeVADocumentUseCase.DocumentType.FTP as String): "${LeVADocumentUseCase.DocumentType.FTP}"           
+            (LeVADocumentUseCase.DocumentType.FTP as String): "${LeVADocumentUseCase.DocumentType.FTP}",
+            (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_Q",
+            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.TIP}_Q"
         ],
         "Q": [
             (LeVADocumentUseCase.DocumentType.DTR as String): "${LeVADocumentUseCase.DocumentType.DTR}",
             (LeVADocumentUseCase.DocumentType.FTR as String): "${LeVADocumentUseCase.DocumentType.FTR}",
-            (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_P",
+            (LeVADocumentUseCase.DocumentType.SCR as String): "${LeVADocumentUseCase.DocumentType.SCR}",
             (LeVADocumentUseCase.DocumentType.IVR as String): "${LeVADocumentUseCase.DocumentType.IVR}_Q",
-            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.IVR}_P",
             (LeVADocumentUseCase.DocumentType.TIR as String): "${LeVADocumentUseCase.DocumentType.TIR}_Q",
-            (LeVADocumentUseCase.DocumentType.SCR as String): "${LeVADocumentUseCase.DocumentType.SCR}"
+            (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_P",
+            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.IVR}_P"
         ],
         "P": [
             (LeVADocumentUseCase.DocumentType.IVR as String): "${LeVADocumentUseCase.DocumentType.IVR}_P",
