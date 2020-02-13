@@ -83,9 +83,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     private Map computeTestDiscrepancies(String name, List jiraTestIssues) {
-
-        // echo "nifl::name: ${name}; jiraTestIsues: ${jiraTestIssues.join(",")}"
-
         def result = [
             discrepancies: "No discrepancies found.",
             conclusion: [
@@ -337,9 +334,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createDTR(Map project, Map repo, Map data) {
-
-        // echo "nifl::createDTR being executed with: project: ${project.toMapString()}; repo: ${repo.toMapString()}; data: ${data.toMapString()}"
-
         def documentType = DocumentType.DTR as String
 
         data = data.tests.unit
