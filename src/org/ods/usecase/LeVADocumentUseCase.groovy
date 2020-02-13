@@ -1266,18 +1266,21 @@ class LeVADocumentUseCase extends DocGenUseCase {
     private String getDocumentTypeWithEnviroment(String documentType) {
         def environment = this.util.getBuildParams().targetEnvironmentToken
         
-        if(['Q', 'P'].contains(environment)) {
-            return "${documentType}_${environment}"
+        def label = LeVADocumentScheduler.ENVIRONMENT_TYPE[environment].get(documentType)
+        
+        // If no specific label found --> document preview in D
+        if(!label && environment.equals('D')) {
+            return documentType
         }
         
-        return documentType
+        return label
     }
 
     private String getWatermarkText(String documentType) {
         def environment = this.util.getBuildParams().targetEnvironmentToken
 
-        // The watermark only applies in DEV environment
-        if (environment.equals('D') && !LeVADocumentScheduler.ENVIRONMENT_TYPE['D'].contains(documentType)){
+        // The watermark only applies in DEV environment (for documents not definitives in that environment)
+        if (environment.equals('D') && !LeVADocumentScheduler.ENVIRONMENT_TYPE['D'].containsKey(documentType)){
             return DEVELOPER_PREVIEW_WATERMARK
         }
 

@@ -578,7 +578,7 @@ def "create FTR"() {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.IVP as String
-        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -906,7 +906,7 @@ def "create FTR"() {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
-        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -949,7 +949,7 @@ def "create FTR"() {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
-        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
 
         // Stubbed Method Responses
         def buildParams = createBuildEnvironment(env)
@@ -1325,66 +1325,6 @@ def "create FTR"() {
 
         then:
         1 * util.getBuildParams() >> [targetEnvironment: "dev", targetEnvironmentToken: "D"]
-        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
-        1 * jiraUseCase.jira.appendCommentToIssue(documentIssue.key, message)
-    }
-
-    def "notify LeVA document issue in QA"() {
-        given:
-        def steps = Spy(PipelineSteps)
-        def util = Mock(MROPipelineUtil)
-        def docGen = Mock(DocGenService)
-        def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
-        def levaFiles = Mock(LeVADocumentChaptersFileService)
-        def nexus = Mock(NexusService)
-        def os = Mock(OpenShiftService)
-        def pdf = Mock(PDFUtil)
-        def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
-
-        def project = createProject()
-        def documentType = "myType"
-        def message = "myMessage"
-
-        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
-        def documentIssue = createJiraDocumentIssues().first()
-
-        when:
-        usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
-
-        then:
-        1 * util.getBuildParams() >> [targetEnvironment: "qa", targetEnvironmentToken: "Q"]
-        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
-        1 * jiraUseCase.jira.appendCommentToIssue(documentIssue.key, message)
-    }
-
-    def "notify LeVA document issue in PROD"() {
-        given:
-        def steps = Spy(PipelineSteps)
-        def util = Mock(MROPipelineUtil)
-        def docGen = Mock(DocGenService)
-        def jenkins = Mock(JenkinsService)
-        def jiraUseCase = Spy(new JiraUseCase(steps, util, Mock(JiraService)))
-        def levaFiles = Mock(LeVADocumentChaptersFileService)
-        def nexus = Mock(NexusService)
-        def os = Mock(OpenShiftService)
-        def pdf = Mock(PDFUtil)
-        def sq = Mock(SonarQubeUseCase)
-        def usecase = Spy(new LeVADocumentUseCase(steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
-
-        def project = createProject()
-        def documentType = "myType"
-        def message = "myMessage"
-
-        def jqlQuery = [ jql: "project = ${project.id} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_P" ]
-        def documentIssue = createJiraDocumentIssues().first()
-
-        when:
-        usecase.notifyLeVaDocumentTrackingIssue(project.id, documentType, message)
-
-        then:
-        1 * util.getBuildParams() >> [targetEnvironment: "prod", targetEnvironmentToken: "P"]
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
         1 * jiraUseCase.jira.appendCommentToIssue(documentIssue.key, message)
     }
