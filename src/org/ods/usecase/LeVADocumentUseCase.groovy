@@ -337,6 +337,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createDTR(Map project, Map repo, Map data) {
+        this.steps.echo("nifl::createDTR args project: ${project}; repo: ${repo}; data: ${data}")
         def documentType = DocumentType.DTR as String
 
         data = data.tests.unit
@@ -743,6 +744,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createIVR(Map project, Map repo, Map data) {
+        this.steps.echo("nifl::createIVR args project: ${project}; repo: ${repo}; data: ${data}")
         def documentType = DocumentType.IVR as String
 
         data = data.tests.installation
