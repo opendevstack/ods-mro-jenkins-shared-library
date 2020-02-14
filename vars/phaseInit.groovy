@@ -19,6 +19,7 @@ import org.ods.usecase.LeVADocumentUseCase
 import org.ods.usecase.SonarQubeUseCase
 import org.ods.util.GitUtil
 import org.ods.util.MROPipelineUtil
+import org.ods.util.PipelineUtil
 import org.ods.util.PDFUtil
 import org.ods.util.PipelineSteps
 
