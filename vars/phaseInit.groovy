@@ -155,8 +155,8 @@ def call() {
     def phase = MROPipelineUtil.PipelinePhases.INIT
 
     // Clean workspace from previous runs
-    [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.JUNIT_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR].each {
-       Paths.get("${env.WORKSPACE}/${it}").deleteDir()
+    [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.JUNIT_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->
+       Paths.get("${env.WORKSPACE}/${name}").deleteDir()
     }
 
     // Checkout repositories into the workspace
