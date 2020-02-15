@@ -356,7 +356,7 @@ class MROPipelineUtil extends PipelineUtil {
 
     void prepareCheckoutReposNamedJob(Map project, List<Map> repos, Closure preExecute = null, Closure postExecute = null) {
         repos.collectEntries { repo ->
-            prepareCheckoutRepoNamedJob(repo, preExecute, postExecute)
+            this.prepareCheckoutRepoNamedJob(project, repo, preExecute, postExecute)
         }
     }
 
