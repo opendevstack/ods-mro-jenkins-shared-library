@@ -1,11 +1,12 @@
+import groovy.json.JsonOutput
+
 import org.ods.scheduler.LeVADocumentScheduler
 import org.ods.service.JenkinsService
 import org.ods.service.ServiceRegistry
 import org.ods.usecase.JUnitTestReportsUseCase
 import org.ods.usecase.JiraUseCase
 import org.ods.util.MROPipelineUtil
-
-import groovy.json.JsonOutput
+import org.ods.util.PipelineUtil
 
 def call(Map project, List<Set<Map>> repos) {
     def jira             = ServiceRegistry.instance.get(JiraUseCase)
