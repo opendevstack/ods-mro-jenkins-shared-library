@@ -744,7 +744,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     String createIVR(Map project, Map repo, Map data) {
-        this.steps.echo("nifl::executing createIVR")
         def documentType = DocumentType.IVR as String
 
         data = data.tests.installation
