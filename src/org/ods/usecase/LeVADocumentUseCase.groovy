@@ -772,6 +772,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         this.jiraUseCase.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
+        def discrepancies = this.computeTestDiscrepancies("Automated Installation Tests", jiraTestIssues)
+
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
             data: [
@@ -793,7 +795,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 },
                 testfiles: data.testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
-                }
+                },
+                discrepancies: discrepancies.discrepancies,
+                conclusion: [
+                    summary: discrepancies.conclusion.summary,
+                    statement: discrepancies.conclusion.statement
+                ]
             ]
         ]
 
