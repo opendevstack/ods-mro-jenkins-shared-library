@@ -4,6 +4,7 @@ import org.ods.service.ServiceRegistry
 import org.ods.usecase.JUnitTestReportsUseCase
 import org.ods.usecase.JiraUseCase
 import org.ods.util.MROPipelineUtil
+import org.ods.util.PipelineUtil
 
 def call(Map project, List<Set<Map>> repos) {
     def jira             = ServiceRegistry.instance.get(JiraUseCase)
@@ -66,7 +67,7 @@ private List getUnitTestResults(def steps, Map repo) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService)
     def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
 
-    def testReportsPath = "junit/${repo.id}/unit"
+    def testReportsPath = "${PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR}/${repo.id}/unit"
 
     echo "Collecting JUnit XML Reports for ${repo.id}"
     def testReportsStashName = "test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
