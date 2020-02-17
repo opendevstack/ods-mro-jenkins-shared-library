@@ -746,7 +746,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createIVR(Map project, Map repo, Map data) {
         def documentType = DocumentType.IVR as String
 
-        data = data.tests.installation
+        def installationTestData = data.tests.installation
 
         def sections = this.jiraUseCase.getDocumentChapterData(project.id, documentType)
         if (!sections) {
@@ -772,6 +772,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         this.jiraUseCase.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
         def discrepancies = this.computeTestDiscrepancies("Automated Installation Tests", jiraTestIssues)
+        this.steps.echo("nifs::discrepancies=${discrepancies}")
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], project),
@@ -792,7 +793,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         ]
                     ]
                 },
-                testfiles: data.testReportFiles.collect { file ->
+                testfiles: installationTestData.testReportFiles.collect { file ->
                     [ name: file.getName(), path: file.getPath() ]
                 },
                 discrepancies: discrepancies.discrepancies,
@@ -803,7 +804,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def files = data.testReportFiles.collectEntries { file ->
+        def files = installationTestData.testReportFiles.collectEntries { file ->
             [ "raw/${file.getName()}", file.getBytes() ]
         }
 
