@@ -198,7 +198,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data: [
-                // TODO: change template from this.project.repositories to repositories
                 repositories: this.project.repositories,
                 sections: sections,
                 tests: this.project.getAutomatedTestsTypeUnit().collectEntries { testIssue ->
@@ -207,8 +206,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         [
                             key: testIssue.key,
                             description: testIssue.description ?: "",
-                            // TODO: change template from isRelatedTo to systemRequirement
-                            systemRequirement: testIssue.requirements.join(", ")
+                            systemRequirement: testIssue.requirements.join(", "),
+                            // TODO: should we only link in tech specs where the software design is defined?
+                            softwareDesignSpec: testIssue.techSpecs.join(", ")
                         ]
                     ]
                 }
