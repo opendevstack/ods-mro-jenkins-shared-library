@@ -769,7 +769,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             }
         }
 
-        this.jiraUseCase.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        this.jiraUseCase.matchJiraTestIssuesAgainstTestResults(jiraTestIssues, installationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
 
         def discrepancies = this.computeTestDiscrepancies("Automated Installation Tests", jiraTestIssues)
 
