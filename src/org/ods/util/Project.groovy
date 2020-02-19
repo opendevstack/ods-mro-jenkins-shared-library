@@ -452,6 +452,9 @@ class Project {
         ],
         "requirements": [
             "DEMO-6"
+        ],
+        "testSpecs": [
+            "DEMO-15"
         ]
         },
         {
@@ -467,6 +470,9 @@ class Project {
         ],
         "requirements": [
             "DEMO-6"
+        ],
+        "testSpecs": [
+            "DEMO-15"
         ]
         },
         {
@@ -482,6 +488,9 @@ class Project {
         ],
         "requirements": [
             "DEMO-6"
+        ],
+        "testSpecs": [
+            "DEMO-15"
         ]
         },
         {
@@ -865,7 +874,6 @@ class Project {
 
     List<Map> getAutomatedTests(String componentName = null, List<String> testTypes = []) {
         return this.data.jira.tests.findAll { testIssue ->
-            this.steps.echo("??? testIssue: ${testIssue}")
             def result = testIssue.status.toLowerCase() == "ready to test"
 
             if (result && componentName) {
