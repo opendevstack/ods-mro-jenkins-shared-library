@@ -198,7 +198,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data: [
-                repositories: this.project.repositories,
+                repositories: this.project.repositories.collect { repo ->
+                    [
+                        id: repo.id,
+                        description: repo.metadata.description,
+                        url: repo.url
+                    ]
+                },
                 sections: sections,
                 tests: this.project.getAutomatedTestsTypeUnit().collectEntries { testIssue ->
                     [
