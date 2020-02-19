@@ -454,7 +454,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             key: testIssue.key,
                             summary: testIssue.name,
                             // TODO: change template from isRelatedTo to techSpec
-                            techSpec: testIssue.techSpecs.collect{ it.key }.join(", ")
+                            techSpec: testIssue.techSpecs.join(", ")
                         ]
                     ]
                 }
@@ -513,7 +513,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             success: testIssue.isSuccess ? "Y" : "N",
                             summary: testIssue.name,
                             // TODO: change template from isRelatedTo to techSpec
-                            techSpec: testIssue.techSpecs.collect{ it.key }.join(", ")
+                            techSpec: testIssue.techSpecs.join(", ")
                         ]
                     ]
                 },
