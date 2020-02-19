@@ -205,7 +205,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 tests: this.project.getAutomatedTestsTypeUnit().collectEntries { testIssue ->
                     this.steps.echo("??? test: ${testIssue}")
 
-                    [
+                    def x = [
                         testIssue.key,
                         [
                             key: testIssue.key,
@@ -215,6 +215,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             softwareDesignSpec: testIssue.techSpecs ? testIssue.techSpecs.join(", ") : "N/A"
                         ]
                     ]
+
+                    this.steps.echo("??? x: ${x}")
+
+                    return x
                 }
             ]
         ]
