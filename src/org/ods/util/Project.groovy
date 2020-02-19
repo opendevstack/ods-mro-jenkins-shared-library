@@ -452,6 +452,9 @@ class Project {
         ],
         "requirements": [
             "DEMO-6"
+        ],
+        "testSpecs": [
+            "DEMO-15"
         ]
         },
         {
@@ -467,6 +470,9 @@ class Project {
         ],
         "requirements": [
             "DEMO-6"
+        ],
+        "testSpecs": [
+            "DEMO-15"
         ]
         },
         {
@@ -482,6 +488,9 @@ class Project {
         ],
         "requirements": [
             "DEMO-6"
+        ],
+        "testSpecs": [
+            "DEMO-15"
         ]
         },
         {
