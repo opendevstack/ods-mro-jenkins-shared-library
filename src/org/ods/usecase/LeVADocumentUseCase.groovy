@@ -206,9 +206,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         [
                             key: testIssue.key,
                             description: testIssue.description ?: "",
-                            systemRequirement: testIssue.requirements.join(", "),
+                            systemRequirement: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
                             // TODO: should we only link in tech specs where the software design is defined?
-                            softwareDesignSpec: testIssue.techSpecs.join(", ")
+                            softwareDesignSpec: testIssue.techSpecs ? testIssue.techSpecs.join(", ") : "N/A"
                         ]
                     ]
                 }
