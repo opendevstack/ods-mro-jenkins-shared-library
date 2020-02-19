@@ -195,12 +195,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
             watermarkText = this.getWatermarkText(documentType)
         }
 
+        this.steps.echo("??? repos: ${this.project.repositories}")
+
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data: [
                 repositories: this.project.repositories,
                 sections: sections,
                 tests: this.project.getAutomatedTestsTypeUnit().collectEntries { testIssue ->
+                    this.steps.echo("??? test: ${testIssue}")
+
                     [
                         testIssue.key,
                         [
