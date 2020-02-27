@@ -57,7 +57,8 @@ class Project {
             "PLTFMDEV-550",
             "PLTFMDEV-551",
             "PLTFMDEV-552",
-            "PLTFMDEV-553"
+            "PLTFMDEV-553",
+            "PLTFMDEV-1046"
         ],
         "mitigations": [
             "DEMO-8",
@@ -84,6 +85,7 @@ class Project {
             "DEMO-26"
         ],
         "tests": [
+            "PLTFMDEV-401",
             "PLTFMDEV-1045"
         ],
         "mitigations": [
@@ -534,6 +536,42 @@ class Project {
         "requirements": [
             "DEMO-6"
         ]
+        },
+        {
+        "name": "verify database is correctly setup",
+        "description": "verify database is correctly setup",
+        "key": "PLTFMDEV-401",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Installation",
+        "executionType": "Automated",
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15", "DEMO-26"
+        ]
+        },
+        {
+        "name": "verify frontend is correctly setup",
+        "description": "verify frontend is correctly setup",
+        "key": "PLTFMDEV-1046",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Installation",
+        "executionType": "Automated",
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15", "DEMO-26"
+        ]
         }
     ],
     "mitigations": [
@@ -877,11 +915,11 @@ class Project {
             def result = testIssue.status.toLowerCase() == "ready to test"
 
             if (result && componentName) {
-                result = testIssue.components.collect{ it.toLowerCase() }.contains(componentName.toLowerCase()) 
+                result = testIssue.components.collect{ it.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
             if (result && testTypes) {
-                result = testTypes.collect{ it.toLowerCase() }.contains(testIssue.testType.toLowerCase()) 
+                result = testTypes.collect{ it.toLowerCase() }.contains(testIssue.testType.toLowerCase())
             }
 
             return result
@@ -968,7 +1006,7 @@ class Project {
     }
 
     String getId() {
-        return this.data.jira.id 
+        return this.data.jira.id
     }
 
     String getKey() {

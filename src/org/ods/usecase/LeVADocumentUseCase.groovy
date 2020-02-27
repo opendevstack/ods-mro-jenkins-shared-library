@@ -430,32 +430,49 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createIVP(Map repo = null, Map data = null) {
         def documentType = DocumentType.IVP as String
 
+        def watermarkText
         def sections = this.jiraUseCase.getDocumentChapterData(documentType)
         if (!sections) {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        } else {
+            watermarkText = this.getWatermarkText(documentType)
         }
+
+        def automatedInstallationTests = this.project.getAutomatedTestsTypeInstallation()
+
+        // TODO factor this into a method of its own
+        def testsGroupedByRepoType = automatedInstallationTests.collect ({ test ->
+            def component = project.components.find { component ->
+                component.tests.contains test.key
+            }
+            def repository = project.repositories.find { repository ->
+                [repository.id, repository.name].contains component.name.replaceAll("Technology-", "")
+            }
+            test.repoType = repository.type
+            return test
+        }).groupBy { it.repoType }
 
         def data_ = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
             data: [
-                // TODO: change data.project.repositories to data.repositories in template
-                repositories: this.project.repositories,
+                repositories: this.project.repositories.collect{[id:it.id, type: it.type, data:[git:[url: it.data.git == null ? null : it.data.git.url]]]},
                 sections: sections,
-                tests: this.project.getAutomatedTestsTypeInstallation().collectEntries { testIssue ->
+                tests: automatedInstallationTests.collectEntries { testIssue ->
                     [
                         testIssue.key,
                         [
                             key: testIssue.key,
                             summary: testIssue.name,
-                            // TODO: change template from isRelatedTo to techSpec
                             techSpec: testIssue.techSpecs.join(", ")
                         ]
                     ]
-                }
+                },
+                testsOdsService: testsGroupedByRepoType['ods-service'],
+                testsOds: testsGroupedByRepoType['ods']
             ]
         ]
 
-        def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
+        def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
