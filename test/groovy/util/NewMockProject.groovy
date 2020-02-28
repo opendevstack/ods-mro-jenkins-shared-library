@@ -63,9 +63,9 @@ class NewMockProject extends Project {
         result.repositories.each { repo ->
             repo.data?.git = [
                     branch: "origin/master",
-                    commit: UUID.randomUUID().toString(),
-                    previousCommit: UUID.randomUUID().toString(),
-                    previousSucessfulCommit: UUID.randomUUID().toString(),
+                    commit: UUID.randomUUID().toString().replaceAll("-", ""),
+                    previousCommit: UUID.randomUUID().toString().replaceAll("-", ""),
+                    previousSucessfulCommit: UUID.randomUUID().toString().replaceAll("-", ""),
                     url: "https://cd_user@somescm.com/scm/someproject/${repo.id}.git"
             ]
             repo.metadata = [
