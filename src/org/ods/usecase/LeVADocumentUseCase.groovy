@@ -441,16 +441,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def automatedInstallationTests = this.project.getAutomatedTestsTypeInstallation()
 
         // TODO factor this into a method of its own
-        def testsGroupedByRepoType = automatedInstallationTests.collect ({ test ->
+        def testsGroupedByRepoType = automatedInstallationTests.collect { test ->
             def component = project.components.find { component ->
-                component.tests.contains test.key
+                component.tests.contains(test.key)
             }
             def repository = project.repositories.find { repository ->
-                [repository.id, repository.name].contains component.name.replaceAll("Technology-", "")
+                [repository.id, repository.name].contains(component.name.replaceAll("Technology-", ""))
             }
             test.repoType = repository.type
             return test
-        }).groupBy { it.repoType }
+        }.groupBy { it.repoType }
 
         def data_ = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
@@ -467,8 +467,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         ]
                     ]
                 },
-                testsOdsService: testsGroupedByRepoType['ods-service'],
-                testsOds: testsGroupedByRepoType['ods']
+                testsOdsService: testsGroupedByRepoType[MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE],
+                testsOds: testsGroupedByRepoType[MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE]
             ]
         ]
 
