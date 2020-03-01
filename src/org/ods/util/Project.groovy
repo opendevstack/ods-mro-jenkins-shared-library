@@ -880,7 +880,6 @@ class Project {
       }
   },
   "bugs": {}
->>>>>>> feature/refactor-leva-docs
 }"""
 
     protected IPipelineSteps steps
