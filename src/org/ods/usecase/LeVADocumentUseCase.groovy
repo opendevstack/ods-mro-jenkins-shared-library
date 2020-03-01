@@ -644,7 +644,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def systemDesignSpecifications = this.project.getTechnicalSpecifications().collect { techSpec ->
             [
                 key: techSpec.key,
-                req_key: techSpec.requirements.collect{ it }.join(", "),
+                req_key: techSpec.requirements.join(", "),
                 description: techSpec.description
                 // TODO: prefix properties in sec5s1 with .metadata in template 
                 //metadata: techSpec.components.collect { componentKey ->
