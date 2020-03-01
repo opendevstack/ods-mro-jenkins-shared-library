@@ -387,13 +387,12 @@ def "create FTR"() {
 
     def "create IVP"() {
         given:
-        def mockProject = Spy(new NewMockProject(steps, new FakeGitUtil(steps)).load())
-        jiraUseCase = Spy(new JiraUseCase(mockProject, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(mockProject, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.IVP as String
-        def jqlQuery = [ jql: "project = ${mockProject.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
+        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -406,7 +405,7 @@ def "create FTR"() {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * mockProject.getAutomatedTestsTypeInstallation()
+        1 * project.getAutomatedTestsTypeInstallation()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.getWatermarkText(documentType)
         1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
