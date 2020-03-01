@@ -359,7 +359,21 @@ class MROPipelineUtilSpec extends SpecHelper {
 
     def "load multiple repos' pipeline configs"() {
         given:
-        def repoPathA = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "A").toString()
+
+        // TODO should that be -> project
+        def repos = createProject().repositories
+        def repoDirs = []
+        def componentMetadataFileMap = [:]
+        def pipelineConfigFileMap = [:]
+
+        repos.each { repo ->
+            def repoPath = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "${repo.id}").toString()
+            repoDirs << util.createDirectory(repoPath)
+            componentMetadataFileMap[repo.id] = Paths.get(repoPath, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
+            pipelineConfigFileMap[repo.id] = Paths.get(repoPath, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
+        }
+
+        def repoPathA = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "demo-app-carts").toString()
         def repoDirA = util.createDirectory(repoPathA)
         def componentMetadataFileA = Paths.get(repoPathA, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
         def pipelineConfigFileA = Paths.get(repoPathA, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
@@ -374,19 +388,23 @@ class MROPipelineUtilSpec extends SpecHelper {
         def componentMetadataFileC = Paths.get(repoPathC, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
         def pipelineConfigFileC = Paths.get(repoPathC, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
 
-        def repos = createProject().repositories
+        def repoPathD = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "D").toString()
+        def repoDirD = util.createDirectory(repoPathD)
+        def componentMetadataFileD = Paths.get(repoPathD, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
+        def pipelineConfigFileD = Paths.get(repoPathD, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
+
 
         when:
-        componentMetadataFileA << """
-        id: myId-A
-        name: myName-A
-        description: myDescription-A
-        supplier: mySupplier-A
+        componentMetadataFileMap[repos[0].id] << """
+        id: demo-app-carts
+        name: demo-app-carts
+        description: demo-app-carts
+        supplier: mySupplier-demo-app-carts
         version: myVersion-A
         references: myReferences-A
         """
 
-        pipelineConfigFileB << """
+        pipelineConfigFileMap[repos[0].id] << """
         dependencies:
           - A
         
@@ -396,16 +414,16 @@ class MROPipelineUtilSpec extends SpecHelper {
             target: build
         """
 
-        componentMetadataFileB << """
-        id: myId-B
-        name: myName-B
-        description: myDescription-B
-        supplier: mySupplier-B
+        componentMetadataFileMap[repos[1].id] << """
+        id: demo-app-catalogue
+        name: demo-app-catalogue
+        description: demo-app-catalogue
+        supplier: mySupplier-demo-app-catalogue
         version: myVersion-B
         references: myReferences-B
         """
 
-        pipelineConfigFileC << """
+        pipelineConfigFileMap[repos[2].id] << """
         dependencies:
           - B
         
@@ -415,14 +433,24 @@ class MROPipelineUtilSpec extends SpecHelper {
             script: test.sh
         """
 
-        componentMetadataFileC << """
-        id: myId-C
-        name: myName-C
-        description: myDescription-C
-        supplier: mySupplier-C
+        componentMetadataFileMap[repos[2].id] << """
+        id: demo-app-front-end
+        name: demo-app-front-end
+        description: demo-app-front-end
+        supplier: mySupplier-demo-app-front-end
         version: myVersion-C
         references: myReferences-C
         """
+
+        componentMetadataFileMap[repos[3].id] << """
+        id: demo-app-test
+        name: demo-app-test
+        description: demo-app-test
+        supplier: mySupplier-demo-app-test
+        version: myVersion-C
+        references: myReferences-C
+        """
+
 
         def result = util.loadPipelineConfigs(repos.clone())
 
@@ -476,15 +504,26 @@ class MROPipelineUtilSpec extends SpecHelper {
                         ]
                     ]
                 ]
+            ],
+            repos[3] << [
+                metadata: [
+                    id: "demo-app-test",
+                    name: "demo-app-test",
+                    description: "demo-app-test",
+                    supplier: "mySupplier-demo-app-test",
+                    version: "myVersion-C",
+                    references: "myReferences-C"
+                ],
+                pipelineConfig: [:]
             ]
         ]
 
         result == expected
 
         cleanup:
-        repoDirA.deleteDir()
-        repoDirB.deleteDir()
-        repoDirC.deleteDir()
+        repoDirs.each { repoDir ->
+            repoDir.deleteDir()
+        }
     }
 
     def "walk repo directories"() {
@@ -500,9 +539,10 @@ class MROPipelineUtilSpec extends SpecHelper {
         util.walkRepoDirectories(repos, visitor)
 
         then:
-        1 * visitor("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/A", repos[0])
-        1 * visitor("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/B", repos[1])
-        1 * visitor("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/C", repos[2])
+        1 * visitor("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/${repos[0].id}", repos[0])
+        1 * visitor("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/${repos[1].id}", repos[1])
+        1 * visitor("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/${repos[2].id}", repos[2])
+        1 * visitor("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/${repos[3].id}", repos[3])
 
         cleanup:
         repoDirA.deleteDir()

@@ -915,6 +915,7 @@ class Project {
             def result = testIssue.status.toLowerCase() == "ready to test"
 
             if (result && componentName) {
+                // TODO testIssue.componets is a collection of keys, that cannot be matched with compontent.name
                 result = testIssue.components.collect{ it.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
