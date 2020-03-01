@@ -409,6 +409,8 @@ def "create FTR"() {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
+
+        then:
         1 * project.getAutomatedTestsTypeInstallation()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.getWatermarkText(documentType)

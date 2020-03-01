@@ -127,7 +127,8 @@ class Project {
               "PLTFMDEV-550",
               "PLTFMDEV-551",
               "PLTFMDEV-552",
-              "PLTFMDEV-553"
+              "PLTFMDEV-553",
+              "PLTFMDEV-1046"
           ],
           "mitigations": [
               "DEMO-8",
@@ -154,7 +155,8 @@ class Project {
               "DEMO-26"
           ],
           "tests": [
-              "PLTFMDEV-1045"
+              "PLTFMDEV-1045",
+              "PLTFMDEV-401"
           ],
           "mitigations": [
               "DEMO-8",
