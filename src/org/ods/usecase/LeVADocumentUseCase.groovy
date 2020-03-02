@@ -620,9 +620,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
                 metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
                 data    : [
-                        repositories  : this.project.repositories,
-                        sections      : sections,
-                        tests         : installationTestIssues.collectEntries { testIssue ->
+                        repositories   : this.project.repositories,
+                        sections       : sections,
+                        tests          : installationTestIssues.collectEntries { testIssue ->
                             [
                                     testIssue.key,
                                     [
@@ -635,11 +635,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                     ]
                             ]
                         },
-                        testfiles     : data.testReportFiles.collect { file ->
+                        testfiles      : data.testReportFiles.collect { file ->
                             [name: file.getName(), path: file.getPath()]
                         },
-                        testOdsService: testsOfRepoTypeOdsService,
-                        testOds       : testsOfRepoTypeOds
+                        testsOdsService: testsOfRepoTypeOdsService,
+                        testsOds       : testsOfRepoTypeOds
                 ]
         ]
 
