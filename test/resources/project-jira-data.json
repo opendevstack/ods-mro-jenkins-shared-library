@@ -479,6 +479,26 @@
           "status": "READY TO TEST",
           "testType": "Installation",
           "executionType": "Automated",
+          "steps": [
+              {
+                  "index": 0,
+                  "step": "Connect to database",
+                  "data": "database credentials",
+                  "expectedResult": "Connection to database is available and user is authenticated"
+              },
+              {
+                  "index": 1,
+                  "step": "List and verify databases",
+                  "data": "database credentials; Sock Shop DB",
+                  "expectedResult": "authenticated user sees all required databases"
+              },
+              {
+                  "index": 2,
+                  "step": "Use Sock Shop database",
+                  "data": "SockShopDB",
+                  "expectedResult": "Authenticated user can switch to Sock Shop DB and see tables"
+              }
+          ],
           "components": [
               "DEMO-3"
           ],
@@ -497,6 +517,20 @@
           "status": "READY TO TEST",
           "testType": "Installation",
           "executionType": "Automated",
+          "steps": [
+              {
+                  "index": 0,
+                  "step": "Request URL for health endpoint",
+                  "data": "test authentication token",
+                  "expectedResult": "JSoN file with service status messages gets returned."
+              },
+              {
+                  "index": 1,
+                  "step": "Verify that all required services are listed and their status is ok",
+                  "data": "web-ui, rest endpoint",
+                  "expectedResult": "web-ui service: ok; rest service: ok;"
+              }
+          ],
           "components": [
               "DEMO-2"
           ],
