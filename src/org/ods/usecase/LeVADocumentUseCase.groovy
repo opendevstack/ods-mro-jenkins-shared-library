@@ -438,26 +438,42 @@ class LeVADocumentUseCase extends DocGenUseCase {
             watermarkText = this.getWatermarkText(documentType)
         }
 
-        def automatedInstallationTests = this.project.getAutomatedTestsTypeInstallation()
+        def installationTestIssues = this.project.getAutomatedTestsTypeInstallation()
 
         // TODO factor this into a method of its own
-        def testsGroupedByRepoType = automatedInstallationTests.collect { test ->
-            def component = project.components.find { component ->
-                component.tests.contains(test.key)
-            }
-            def repository = project.repositories.find { repository ->
-                [repository.id, repository.name].contains(component.name.replaceAll("Technology-", ""))
-            }
-            test.repoType = repository.type
+        def testsGroupedByRepoType = installationTestIssues.collect { test ->
+            def components = test.getResolvedComponents()
+            test.repoTypes = components.collect { component ->
+                def normalizedComponentName = component.name.replaceAll("Technology-", "")
+                def repository = project.repositories.find { repository ->
+                    [repository.id, repository.name].contains(normalizedComponentName)
+                }
+                if (!repository){
+                    throw new IllegalArgumentException("Error: unable to create ${documentType}. Could not find a repository definition with id or name equal to '${normalizedComponentName}' for Jira component '${component.name}' in project '${this.project.id}'.")
+                }
+                return repository.type
+            } as Set
+
             return test
-        }.groupBy { it.repoType }
+        }.groupBy { it.repoTypes }
+
+        def testsOfRepoTypeOds = []
+        def testsOfRepoTypeOdsService = []
+        testsGroupedByRepoType.each { repoTypes, tests ->
+            if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE)){
+                testsOfRepoTypeOds.addAll(tests)
+            }
+            if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE)){
+                testsOfRepoTypeOdsService.addAll(tests)
+            }
+        }
 
         def data_ = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
             data: [
                 repositories: this.project.repositories.collect{[id:it.id, type: it.type, data:[git:[url: it.data.git == null ? null : it.data.git.url]]]},
                 sections: sections,
-                tests: automatedInstallationTests.collectEntries { testIssue ->
+                tests: installationTestIssues.collectEntries { testIssue ->
                     [
                         testIssue.key,
                         [
@@ -467,8 +483,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         ]
                     ]
                 },
-                testsOdsService: testsGroupedByRepoType[MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE],
-                testsOds: testsGroupedByRepoType[MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE]
+                testsOdsService: testsOfRepoTypeOdsService,
+                testsOds: testsOfRepoTypeOds
             ]
         ]
 
