@@ -360,8 +360,7 @@ class MROPipelineUtilSpec extends SpecHelper {
     def "load multiple repos' pipeline configs"() {
         given:
 
-        // TODO should that be -> project
-        def repos = createProject().repositories
+        def repos = project.repositories
         def repoDirs = []
         def componentMetadataFileMap = [:]
         def pipelineConfigFileMap = [:]
@@ -372,27 +371,6 @@ class MROPipelineUtilSpec extends SpecHelper {
             componentMetadataFileMap[repo.id] = Paths.get(repoPath, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
             pipelineConfigFileMap[repo.id] = Paths.get(repoPath, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
         }
-
-        def repoPathA = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "demo-app-carts").toString()
-        def repoDirA = util.createDirectory(repoPathA)
-        def componentMetadataFileA = Paths.get(repoPathA, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
-        def pipelineConfigFileA = Paths.get(repoPathA, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
-
-        def repoPathB = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "B").toString()
-        def repoDirB = util.createDirectory(repoPathB)
-        def componentMetadataFileB = Paths.get(repoPathB, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
-        def pipelineConfigFileB = Paths.get(repoPathB, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
-
-        def repoPathC = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "C").toString()
-        def repoDirC = util.createDirectory(repoPathC)
-        def componentMetadataFileC = Paths.get(repoPathC, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
-        def pipelineConfigFileC = Paths.get(repoPathC, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
-
-        def repoPathD = Paths.get(steps.env.WORKSPACE, MROPipelineUtil.REPOS_BASE_DIR, "D").toString()
-        def repoDirD = util.createDirectory(repoPathD)
-        def componentMetadataFileD = Paths.get(repoPathD, MROPipelineUtil.COMPONENT_METADATA_FILE_NAME)
-        def pipelineConfigFileD = Paths.get(repoPathD, MROPipelineUtil.PipelineConfig.FILE_NAMES.first())
-
 
         when:
         componentMetadataFileMap[repos[0].id] << """
