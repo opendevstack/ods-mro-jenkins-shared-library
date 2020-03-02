@@ -9,7 +9,7 @@ class OpenShiftService {
     private IPipelineSteps steps
 
     def String openshiftApiHost
-    def String bitbucketHost
+    def String bitbucketUrl
     def String bitbucketUser
     def String bitbucketPassword
     
@@ -22,7 +22,7 @@ class OpenShiftService {
         if (!bitbucketHost) {
             throw new IllegalArgumentException("Error: unable to connect bitbucket host - bitbucketHost NOT defined")
         }
-        this.bitbucketHost = bitbucketHost
+        this.bitbucketUrl = "https://${bitbucketHost}"
         this.bitbucketUser = bitbucketUser
         this.bitbucketPassword = bitbucketPassword
     }
@@ -40,9 +40,6 @@ class OpenShiftService {
     }
 
     String exportProject(String environmentName, String projectName, String changeId) {
-      def scriptBranch = 'production'
-      def userPass = "${bitbucketUser}:${bitbucketPassword.replace('@', '%40').replace('$', '\'$\'')}"
-      def cloneProjectScriptUrl = "https://${bitbucketHost}/projects/opendevstack/repos/ods-core/raw/ocp-scripts/export-project.sh?at=refs%2Fheads%2F${scriptBranch}"
       def branchName = "${changeId}-${environmentName}"
       branchName = branchName.replace(' ', '_')
       steps.echo "Calculated export branch name: ${branchName}"
@@ -50,12 +47,17 @@ class OpenShiftService {
       if (steps.env.DEBUG) {
         debugMode = "--verbose=true"
       }
+      def scriptBranch = 'production'
+      def cloneProjectScriptUrl = "${bitbucketUrl}/projects/opendevstack/repos/ods-core/raw/ocp-scripts/export-project.sh?at=refs%2Fheads%2F${scriptBranch}"
+      def userPass = "${bitbucketUser}:${bitbucketPassword.replace('@', '%40').replace('$', '\'$\'')}"
       steps.sh(script: "curl --fail -s --user ${userPass} -G '${cloneProjectScriptUrl}' -d raw -o export-project.sh", label : "Dowloading export steps")
-      steps.sh(script: "echo https://${userPass}@${this.bitbucketHost} > ~/.git-credentials", label : "resolving credentials")
+      def bbCredentialsUrl = bitbucketUrl.replace('://', "://${userPass}@")
+      steps.sh(script: "echo ${bbCredentialsUrl} > ~/.git-credentials", label : "resolving credentials")
       steps.sh(script: "git config --global credential.helper store", label : "setup credential helper")
-      steps.sh(script: "sh export-project.sh -h ${this.openshiftApiHost} -g https://${this.bitbucketUser}@${this.bitbucketHost} -p ${projectName} -e ${environmentName} -gb ${branchName} ${debugMode}", label : "Started export steps")
+      def bbUserUrl = bitbucketUrl.replace('://', "://${bitbucketUser}@${bitbucketUrl}")
+      steps.sh(script: "sh export-project.sh -h ${this.openshiftApiHost} -g ${bbUserUrl} -p ${projectName} -e ${environmentName} -gb ${branchName} ${debugMode}", label : "Started export steps")
       
-      def exportedArtifactUrl = "https://${bitbucketHost}/projects/${projectName}/repos/${projectName}-occonfig-artifacts/browse?at=refs%2Fheads%2F${branchName}"
+      def exportedArtifactUrl = "${bitbucketUrl}/projects/${projectName}/repos/${projectName}-occonfig-artifacts/browse?at=refs%2Fheads%2F${branchName}"
       steps.echo "export into oc-config-artifacts done - branch name: ${branchName} @ ${exportedArtifactUrl}"
       
       // https://bitbucket.example.com/projects/FOO/repos/foo-occonfig-artifacts/browse?at=refs%2Fheads%2Fchange_15-dev
