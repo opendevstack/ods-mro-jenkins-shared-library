@@ -1,22 +1,11 @@
 package org.ods.usecase
 
-import groovy.json.JsonOutput
+
+import org.ods.scheduler.LeVADocumentScheduler
+import org.ods.service.*
+import org.ods.util.*
 
 import java.time.LocalDateTime
-
-import org.apache.commons.io.FilenameUtils
-import org.ods.scheduler.LeVADocumentScheduler
-import org.ods.service.DocGenService
-import org.ods.service.JenkinsService
-import org.ods.service.LeVADocumentChaptersFileService
-import org.ods.service.NexusService
-import org.ods.service.OpenShiftService
-import org.ods.util.IPipelineSteps
-import org.ods.util.MROPipelineUtil
-import org.ods.util.PDFUtil
-import org.ods.util.PipelineUtil
-import org.ods.util.Project
-import org.ods.util.SortUtil
 
 class LeVADocumentUseCase extends DocGenUseCase {
 
@@ -588,8 +577,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createIVR(Map repo, Map data) {
         def documentType = DocumentType.IVR as String
 
-        data = data.tests.installation
-
         def watermarkText
         def sections = this.jiraUseCase.getDocumentChapterData(documentType)
         if (!sections) {
@@ -598,7 +585,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             watermarkText = this.getWatermarkText(documentType)
         }
 
-        def testIssues = this.project.getAutomatedTestsTypeInstallation()
+        def installationTestIssues = this.project.getAutomatedTestsTypeInstallation()
 
         def matchedHandler = { result ->
             result.each { testIssue, testCase ->
@@ -614,15 +601,28 @@ class LeVADocumentUseCase extends DocGenUseCase {
             }
         }
 
-        this.jiraUseCase.matchTestIssuesAgainstTestResults(testIssues, data?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        this.jiraUseCase.matchTestIssuesAgainstTestResults(installationTestIssues, data.tests.installation?.testResults ?: [:], matchedHandler, unmatchedHandler)
+
+        def testsGroupedByRepoType = groupTestsByRepoType(installationTestIssues)
+
+        def testsOfRepoTypeOds = []
+        def testsOfRepoTypeOdsService = []
+        testsGroupedByRepoType.each { repoTypes, tests ->
+            if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE)) {
+                testsOfRepoTypeOds.addAll(tests)
+            }
+
+            if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE)) {
+                testsOfRepoTypeOdsService.addAll(tests)
+            }
+        }
 
         def data_ = [
                 metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
                 data    : [
-                        // TODO: change data.project.repositories to data.repositories in template
-                        repositories: this.project.repositories,
-                        sections    : sections,
-                        tests       : testIssues.collectEntries { testIssue ->
+                        repositories  : this.project.repositories,
+                        sections      : sections,
+                        tests         : installationTestIssues.collectEntries { testIssue ->
                             [
                                     testIssue.key,
                                     [
@@ -631,18 +631,19 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                             remarks    : testIssue.isMissing ? "not executed" : "",
                                             success    : testIssue.isSuccess ? "Y" : "N",
                                             summary    : testIssue.name,
-                                            // TODO: change template from isRelatedTo to techSpec
                                             techSpec   : testIssue.techSpecs.join(", ")
                                     ]
                             ]
                         },
-                        testfiles   : data.testReportFiles.collect { file ->
+                        testfiles     : data.testReportFiles.collect { file ->
                             [name: file.getName(), path: file.getPath()]
-                        }
+                        },
+                        testOdsService: testsOfRepoTypeOdsService,
+                        testOds       : testsOfRepoTypeOds
                 ]
         ]
 
-        def files = data.testReportFiles.collectEntries { file ->
+        def files = data.tests.installation.testReportFiles.collectEntries { file ->
             ["raw/${file.getName()}", file.getBytes()]
         }
 
