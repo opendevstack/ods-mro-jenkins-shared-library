@@ -35,7 +35,8 @@ class FakeProject extends Project {
         this.data.buildParams = loadBuildParams(steps)
         this.data.git = [commit: git.getCommit(), url: git.getURL() ]
         this.data.metadata = this.loadMetadata(METADATA_FILE_NAME)
-        this.data.jira = this.loadJiraData(this.data.metadata.id)
+        this.data.jira = this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id))
+        this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
         return this
     }
