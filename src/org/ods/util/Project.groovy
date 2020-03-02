@@ -516,6 +516,11 @@ class Project {
           ],
           "requirements": [
               "DEMO-6"
+          ],
+          "bugs": [
+              "PLTFMDEV-658",
+              "PLTFMDEV-674",
+              "PLTFMDEV-690"
           ]
       },
       "PLTFMDEV-552": {
@@ -881,7 +886,33 @@ class Project {
           "tests": []
       }
   },
-  "bugs": {}
+  "bugs": {
+      "PLTFMDEV-658": {
+          "key": "PLTFMDEV-658",
+          "name": "org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "assignee": "Unassigned",
+          "dueDate": "",
+          "status": "TO DO",
+          "tests": "PLTFMDEV-551"
+      },
+      "PLTFMDEV-674": {
+          "key": "PLTFMDEV-674",
+          "name": "org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "assignee": "Unassigned",
+          "dueDate": "",
+          "status": "TO DO",
+          "tests": "PLTFMDEV-551"
+      },
+      "PLTFMDEV-690": {
+          "key": "PLTFMDEV-690",
+          "name": "org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "assignee": "Unassigned",
+          "dueDate": "",
+          "status": "TO DO",
+          "tests": "PLTFMDEV-551"
+      }
+
+  }
 }"""
 
     protected IPipelineSteps steps
@@ -916,7 +947,7 @@ class Project {
             data[type] = data[type].collectEntries { key, item ->
                 return [key, new JiraDataItem(item, type)]
             }
-        }        
+        }
 
         return data
     }
@@ -926,7 +957,7 @@ class Project {
             def result = testIssue.status.toLowerCase() == "ready to test"
 
             if (result && componentName) {
-                result = testIssue.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase()) 
+                result = testIssue.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
             if (result && testTypes) {

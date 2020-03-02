@@ -824,28 +824,35 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def integrationTestData = data?.tests?.integration
 
 
-        def matchedHandler = { result ->
-            result.each { testIssue, testCase ->
-                testIssue.isSuccess = !(testCase.error || testCase.failure || testCase.skipped)
-                testIssue.isMissing = false
-                testIssue.timestamp = testCase.timestamp
-            }
-        }
+        //def matchedHandler = { result ->
+        //    result.each { testIssue, testCase ->
+        //        testIssue.isSuccess = !(testCase.error || testCase.failure || testCase.skipped)
+        //        testIssue.isMissing = false
+        //        testIssue.timestamp = testCase.timestamp
+        //    }
+        //}
+//
+        //def unmatchedHandler = { result ->
+        //    result.each { testIssue ->
+        //        testIssue.isSuccess = false
+        //        testIssue.isMissing = true
+        //    }
+        //}
+        //def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
+        //def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
+//
+        //this.jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        //this.jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+//
+        //def bugs = this.computeTestDiscrepancies("Functional and Requirements Tests", (acceptanceTestIssues + integrationTestIssues))
+        def bugs = this.project.getBugs()
+        this.steps.echo("??? discrepancies bugs:  ${bugs}")
+        def acceptanceTestBugs = bugs.findAll{bug -> bug.getResolvedTest().testType == "Acceptance"}
+        this.steps.echo("??? discrepancies acceptanceTestBugs: ${acceptanceTestBugs}")
+        def integrationTestBugs = bugs.findAll{bug -> bug.getResolvedTest().testType == "Integration"}
+        this.steps.echo("??? discrepancies integrationTestBugs:  ${integrationTestBugs}")
 
-        def unmatchedHandler = { result ->
-            result.each { testIssue ->
-                testIssue.isSuccess = false
-                testIssue.isMissing = true
-            }
-        }
-        def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
-        def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
 
-        this.jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
-        this.jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
-
-        def bugs = this.computeTestDiscrepancies("Functional and Requirements Tests", (acceptanceTestIssues + integrationTestIssues))
-        this.steps.echo("??? discrepancies ${bugs}")
 
 
         def data_ = [
@@ -860,7 +867,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             //Test Case No. -> JIRA (Test Case Key)
                             testcaseID: "testcaseID",
                             //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                            level: "bug.type",
+                            level: "test.type",
                             //Description of Failure or Discrepancy -> Bug Issue Summary
                             description: "bug.summary",
                             //Remediation Action -> "To be fixed"
