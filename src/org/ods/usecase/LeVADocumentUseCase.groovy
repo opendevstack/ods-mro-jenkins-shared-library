@@ -546,24 +546,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def installationTestIssues = this.project.getAutomatedTestsTypeInstallation()
 
-        // TODO factor this into a method of its own
-        def testsGroupedByRepoType = installationTestIssues.collect { test ->
-            def components = test.getResolvedComponents()
-            test.repoTypes = components.collect { component ->
-                def normalizedComponentName = component.name.replaceAll("Technology-", "")
-                def repository = project.repositories.find { repository ->
-                    [repository.id, repository.name].contains(normalizedComponentName)
-                }
-
-                if (!repository) {
-                    throw new IllegalArgumentException("Error: unable to create ${documentType}. Could not find a repository definition with id or name equal to '${normalizedComponentName}' for Jira component '${component.name}' in project '${this.project.id}'.")
-                }
-
-                return repository.type
-            } as Set
-
-            return test
-        }.groupBy { it.repoTypes }
+        def testsGroupedByRepoType = groupTestsByRepoType(installationTestIssues)
 
         def testsOfRepoTypeOds = []
         def testsOfRepoTypeOdsService = []
@@ -908,6 +891,26 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, visitor, this.getWatermarkText(documentType))
         this.notifyJiraTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
+    }
+
+    Map groupTestsByRepoType(List jiraTestIssues) {
+        return jiraTestIssues.collect { test ->
+            def components = test.getResolvedComponents()
+            test.repoTypes = components.collect { component ->
+                def normalizedComponentName = component.name.replaceAll("Technology-", "")
+                def repository = project.repositories.find { repository ->
+                    [repository.id, repository.name].contains(normalizedComponentName)
+                }
+
+                if (!repository) {
+                    throw new IllegalArgumentException("Error: unable to create ${documentType}. Could not find a repository definition with id or name equal to '${normalizedComponentName}' for Jira component '${component.name}' in project '${this.project.id}'.")
+                }
+
+                return repository.type
+            } as Set
+
+            return test
+        }.groupBy { it.repoTypes }
     }
 
     Map getDocumentMetadata(String documentTypeName, Map repo = null) {
