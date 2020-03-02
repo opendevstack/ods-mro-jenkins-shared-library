@@ -38,7 +38,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         OVERALL_DTR,
         OVERALL_IVR,
         OVERALL_SSDS,
-        OVERALL_TIR
+        OVERALL_TIR,
+        DIL
     }
 
     private static Map DOCUMENT_TYPE_NAMES = [
@@ -55,7 +56,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
             (DocumentType.OVERALL_DTR as String) : "Overall Software Development Testing Report",
             (DocumentType.OVERALL_IVR as String) : "Overall Configuration and Installation Testing Report",
             (DocumentType.OVERALL_SSDS as String): "Overall Software Design Specification",
-            (DocumentType.OVERALL_TIR as String) : "Overall Technical Installation Report"
+            (DocumentType.OVERALL_TIR as String) : "Overall Technical Installation Report",
+            (DocumentType.DIL as String)         : "Discrepancy Log"
+
     ]
 
     private static String DEVELOPER_PREVIEW_WATERMARK = "Developer Preview"
@@ -801,6 +804,104 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, visitor, this.getWatermarkText(documentType))
         this.notifyJiraTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        return uri
+    }
+
+    String createDIL(Map repo = null, Map data = null) {
+        def documentType = DocumentType.DIL as String
+
+        def watermarkText
+        //def sections = this.jiraUseCase.getDocumentChapterData(documentType)
+        //if (!sections) {
+//            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        //} else {
+            watermarkText = this.getWatermarkText(documentType)
+        //}
+
+
+        this.steps.echo("??? data ${data}")
+        def acceptanceTestData = data?.tests?.acceptance
+        def integrationTestData = data?.tests?.integration
+
+
+        def matchedHandler = { result ->
+            result.each { testIssue, testCase ->
+                testIssue.isSuccess = !(testCase.error || testCase.failure || testCase.skipped)
+                testIssue.isMissing = false
+                testIssue.timestamp = testCase.timestamp
+            }
+        }
+
+        def unmatchedHandler = { result ->
+            result.each { testIssue ->
+                testIssue.isSuccess = false
+                testIssue.isMissing = true
+            }
+        }
+        def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
+        def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
+
+        this.jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        this.jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+
+        def bugs = this.computeTestDiscrepancies("Functional and Requirements Tests", (acceptanceTestIssues + integrationTestIssues))
+        this.steps.echo("??? discrepancies ${bugs}")
+
+
+        def data_ = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
+            data: [
+                integrationTests: bugs.collectEntries { bug ->
+                    [
+                        bug.key,
+                        [
+                            //Discrepancy ID -> BUG Issue ID
+                            discrepancyID: "bug.key",
+                            //Test Case No. -> JIRA (Test Case Key)
+                            testcaseID: "testcaseID",
+                            //-	Level of Test Case = Unit / Integration / Acceptance / Installation
+                            level: "bug.type",
+                            //Description of Failure or Discrepancy -> Bug Issue Summary
+                            description: "bug.summary",
+                            //Remediation Action -> "To be fixed"
+                            remediation: "To be fixed",
+                            //Responsible / Due Date -> JIRA (assignee, Due date)
+                            responsibleAndDueDate: "JIRA (assignee, Due date)",
+                            //Outcome of the Resolution -> Bug Status
+                            outcomeResolution: "bug.status",
+                            //Resolved Y/N -> JIRA Status -> Done = Yes
+                            resolved: "resolved"
+                        ]
+                    ]
+                },
+                acceptanceTests: bugs.collectEntries { discrepancy ->
+                    [
+                        discrepancy.key,
+                        [
+                            //Discrepancy ID -> BUG Issue ID
+                            discrepancyID: "bug.key",
+                            //Test Case No. -> JIRA (Test Case Key)
+                            testcaseID:    "testcaseID",
+                            //-	Level of Test Case = Unit / Integration / Acceptance / Installation
+                            level:         "bug.type",
+                            //Description of Failure or Discrepancy -> Bug Issue Summary
+                            description:   "bug.summary",
+                            //Remediation Action -> "To be fixed"
+                            remediation:   "To be fixed",
+                            //Responsible / Due Date -> JIRA (assignee, Due date)
+                            responsibleAndDueDate: "JIRA (assignee, Due date)",
+                            //Outcome of the Resolution -> Bug Status
+                            outcomeResolution: "bug.status",
+                            //Resolved Y/N -> JIRA Status -> Done = Yes
+                            resolved:      "resolved"
+                        ]
+                    ]
+                }
+            ]
+        ]
+        //FIX: Need to know in which enviroment this document belogs and if it contains a watermark.
+        def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
+        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 

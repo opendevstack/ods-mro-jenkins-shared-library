@@ -53,7 +53,8 @@ class LeVADocumentScheduler extends DocGenScheduler {
             //LeVADocumentUseCase.DocumentType.OVERALL_SSDS as String, // TODO fixme
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
-            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
+            LeVADocumentUseCase.DocumentType.DIL as String
         ]
     ]
 
@@ -78,6 +79,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
             (LeVADocumentUseCase.DocumentType.IVR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
             (LeVADocumentUseCase.DocumentType.FTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
             (LeVADocumentUseCase.DocumentType.FTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.DIL as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
         ],
         (MROPipelineUtil.PipelinePhases.RELEASE): [
         ],
