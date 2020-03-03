@@ -26,6 +26,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     enum DocumentType {
         CSD,
+        DIL,
         DTP,
         DTR,
         FTP,
@@ -38,12 +39,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
         OVERALL_DTR,
         OVERALL_IVR,
         OVERALL_SSDS,
-        OVERALL_TIR,
-        DIL
+        OVERALL_TIR
     }
 
     private static Map DOCUMENT_TYPE_NAMES = [
             (DocumentType.CSD as String)         : "Configuration Specification", // TODO Change me for the good name
+            (DocumentType.DIL as String)         : "Discrepancy Log",
             (DocumentType.DTP as String)         : "Software Development Testing Plan",
             (DocumentType.DTR as String)         : "Software Development Testing Report",
             (DocumentType.FTP as String)         : "Functional and Requirements Testing Plan",
@@ -56,8 +57,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             (DocumentType.OVERALL_DTR as String) : "Overall Software Development Testing Report",
             (DocumentType.OVERALL_IVR as String) : "Overall Configuration and Installation Testing Report",
             (DocumentType.OVERALL_SSDS as String): "Overall Software Design Specification",
-            (DocumentType.OVERALL_TIR as String) : "Overall Technical Installation Report",
-            (DocumentType.DIL as String)         : "Discrepancy Log"
+            (DocumentType.OVERALL_TIR as String) : "Overall Technical Installation Report"
 
     ]
 
@@ -328,7 +328,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         },
                         integrationTests: integrationTestIssues.collectEntries { testIssue ->
                             [
-                                    issue.key,
+                                    testIssue.key,
                                     [
                                             key        : testIssue.key,
                                             description: testIssue.description ?: "",
@@ -810,34 +810,21 @@ class LeVADocumentUseCase extends DocGenUseCase {
     String createDIL(Map repo = null, Map data = null) {
         def documentType = DocumentType.DIL as String
 
-        def watermarkText
-        //def sections = this.jiraUseCase.getDocumentChapterData(documentType)
-        //if (!sections) {
-//            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
-        //} else {
-            watermarkText = this.getWatermarkText(documentType)
-        //}
-
+        def watermarkText = this.getWatermarkText(documentType)
 
         def bugs = this.project.getBugs().each { bug ->
             bug.tests = bug.getResolvedTests()
         }
-
-        this.steps.echo("??? bugs: " + JsonOutput.toJson(bugs))
-
 
         def acceptanceTestBugs = bugs.findAll{
             bug -> bug.tests.findAll{
                 test -> test.testType == "Acceptance"}
             }
 
-        this.steps.echo("??? acceptanceTestBugs: " + JsonOutput.toJson(acceptanceTestBugs))
-
         def integrationTestBugs = bugs.findAll{
             bug -> bug.tests.findAll{
                 test -> test.testType == "Integration"}
             }
-        this.steps.echo("??? integrationTestBugs: " + JsonOutput.toJson(integrationTestBugs))
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
@@ -853,7 +840,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             //-	Level of Test Case = Unit / Integration / Acceptance / Installation
                             level: "Integration",
                             //Description of Failure or Discrepancy -> Bug Issue Summary
-                            description: "bug.name",
+                            description: bug.name,
                             //Remediation Action -> "To be fixed"
                             remediation: "To be fixed",
                             //Responsible / Due Date -> JIRA (assignee, Due date)
@@ -876,7 +863,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             //-	Level of Test Case = Unit / Integration / Acceptance / Installation
                             level: "Acceptance",
                             //Description of Failure or Discrepancy -> Bug Issue Summary
-                            description: "bug.name",
+                            description: bug.name,
                             //Remediation Action -> "To be fixed"
                             remediation: "To be fixed",
                             //Responsible / Due Date -> JIRA (assignee, Due date)
@@ -892,8 +879,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
         //FIX: Need to know in which enviroment this document belogs and if it contains a watermark.
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        // Is it needed to notify?
-        //this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 

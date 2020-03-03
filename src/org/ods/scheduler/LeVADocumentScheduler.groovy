@@ -42,6 +42,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
         ],
         "5": [
             LeVADocumentUseCase.DocumentType.CSD as String,
+            LeVADocumentUseCase.DocumentType.DIL as String,
             LeVADocumentUseCase.DocumentType.DTP as String,
             LeVADocumentUseCase.DocumentType.DTR as String,
             LeVADocumentUseCase.DocumentType.OVERALL_DTR as String,
@@ -53,8 +54,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
             //LeVADocumentUseCase.DocumentType.OVERALL_SSDS as String, // TODO fixme
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
-            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
-            LeVADocumentUseCase.DocumentType.DIL as String
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
         ]
     ]
 
@@ -115,12 +115,14 @@ class LeVADocumentScheduler extends DocGenScheduler {
         "D": [
             (LeVADocumentUseCase.DocumentType.DTP as String): "${LeVADocumentUseCase.DocumentType.DTP}",
             (LeVADocumentUseCase.DocumentType.FTP as String): "${LeVADocumentUseCase.DocumentType.FTP}",
+            (LeVADocumentUseCase.DocumentType.DIL as String): "${LeVADocumentUseCase.DocumentType.DIL}_Q",
             (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_Q",
             (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.TIP}_Q"
         ],
         "Q": [
             (LeVADocumentUseCase.DocumentType.DTR as String): "${LeVADocumentUseCase.DocumentType.DTR}",
             (LeVADocumentUseCase.DocumentType.FTR as String): "${LeVADocumentUseCase.DocumentType.FTR}",
+            (LeVADocumentUseCase.DocumentType.DIL as String): "${LeVADocumentUseCase.DocumentType.DIL}_P",
             (LeVADocumentUseCase.DocumentType.IVR as String): "${LeVADocumentUseCase.DocumentType.IVR}_Q",
             (LeVADocumentUseCase.DocumentType.TIR as String): "${LeVADocumentUseCase.DocumentType.TIR}_Q",
             (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_P",
