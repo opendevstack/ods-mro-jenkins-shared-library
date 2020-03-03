@@ -394,6 +394,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                     ]
                             ]
                         },
+                        additionalAcceptanceTests: 11, // Only with test pourposes
                         integrationTests: integrationTestIssues.collectEntries { testIssue ->
                             [
                                     testIssue.key,
@@ -408,6 +409,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                     ]
                             ]
                         },
+                        additionalIntegrationTests: 3, // Only with test pourposes
                         testfiles       : (acceptanceTestData + integrationTestData).testReportFiles.collect { file ->
                             [name: file.getName(), path: file.getPath()]
                         },
