@@ -912,7 +912,7 @@ class Project {
   "bugs": {
       "PLTFMDEV-658": {
           "key": "PLTFMDEV-658",
-          "name": "org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
           "assignee": "Unassigned",
           "dueDate": "",
           "status": "TO DO",
@@ -920,7 +920,7 @@ class Project {
       },
       "PLTFMDEV-674": {
           "key": "PLTFMDEV-674",
-          "name": "org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
           "assignee": "Unassigned",
           "dueDate": "",
           "status": "TO DO",
@@ -928,7 +928,7 @@ class Project {
       },
       "PLTFMDEV-690": {
           "key": "PLTFMDEV-690",
-          "name": "org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
           "assignee": "Unassigned",
           "dueDate": "",
           "status": "TO DO",
@@ -936,7 +936,7 @@ class Project {
       },
       "PLTFMDEV-10658": {
           "key": "PLTFMDEV-10658",
-          "name": "One org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "name": "One org.spockframework.runtime. ConditionFailedWithExceptionError",
           "assignee": "Unassigned",
           "dueDate": "",
           "status": "TO DO",
@@ -944,7 +944,7 @@ class Project {
       },
       "PLTFMDEV-10674": {
           "key": "PLTFMDEV-10674",
-          "name": "Two org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "name": "Two org.spockframework.runtime. ConditionFailedWithExceptionError",
           "assignee": "Unassigned",
           "dueDate": "",
           "status": "TO DO",
@@ -952,7 +952,7 @@ class Project {
       },
       "PLTFMDEV-10690": {
           "key": "PLTFMDEV-10690",
-          "name": "Three org.spockframework.runtime.ConditionFailedWithExceptionError",
+          "name": "Three org.spockframework.runtime. ConditionFailedWithExceptionError",
           "assignee": "Unassigned",
           "dueDate": "",
           "status": "TO DO",
