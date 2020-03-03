@@ -452,7 +452,7 @@ def "create CFTR"() {
 
         // Test Parameters
         def xmlFile = Files.createTempFile("junit", ".xml").toFile()
-        xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
+        xmlFile << "<?xml version='1.0' ?>\n" + createSockShopJUnitXmlTestResults()
 
         def repo = project.repositories.first()
         def testIssues = project.getAutomatedTestsTypeInstallation()
