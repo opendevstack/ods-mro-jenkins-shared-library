@@ -647,7 +647,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         testsOds       : testsOfRepoTypeOds
                 ]
         ]
-
+        this.steps.echo("nifl::createIVR() model is ${data_}")
         def files = data.tests.installation.testReportFiles.collectEntries { file ->
             ["raw/${file.getName()}", file.getBytes()]
         }
