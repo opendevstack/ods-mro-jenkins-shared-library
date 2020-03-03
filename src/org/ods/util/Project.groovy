@@ -1052,15 +1052,6 @@ class Project {
         return this.data.metadata.services
     }
 
-    /**
-     * Returns the requirements grouped by their GAMP topic
-     * @param componentKey
-     * @return
-     */
-    Map getRequirementsGroupByGAMPTopic() {
-         this.data.jira.requirements.collect{ it.value } .groupBy{ it.gampTopic.toLowerCase() }
-    }
-
     List<Map> getSystemRequirements(String componentName = null, List<String> gampTopics = []) {
         return this.data.jira.requirements.findAll { key, req ->
             def result = true

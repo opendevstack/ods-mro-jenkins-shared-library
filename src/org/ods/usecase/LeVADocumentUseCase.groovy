@@ -42,7 +42,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     private static Map DOCUMENT_TYPE_NAMES = [
-            (DocumentType.CSD as String)         : "Configuration Specification", // TODO Change me for the good name
+            (DocumentType.CSD as String)         : "Combined Specification Document",
             (DocumentType.DTP as String)         : "Software Development Testing Plan",
             (DocumentType.DTR as String)         : "Software Development Testing Report",
             (DocumentType.FTP as String)         : "Functional and Requirements Testing Plan",
@@ -158,7 +158,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         }
 
-        def requirements = this.project.getRequirementsGroupByGAMPTopic().collectEntries{ k, v -> 
+        def requirements = this.project.getSystemRequirements()
+            .groupBy{ it.gampTopic.toLowerCase() }.collectEntries{ k, v -> 
             [ 
                 k.replaceAll(" ","").toLowerCase(), 
                 SortUtil.sortIssuesByProperties(v.collect{ req ->
@@ -170,7 +171,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
                    fsName: req.funcSpec.name
                 ]}, ["key"])
              ]}
-
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data: [

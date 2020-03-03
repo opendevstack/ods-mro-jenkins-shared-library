@@ -822,44 +822,4 @@ class ProjectSpec extends SpecHelper {
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'repositories[1].id' is undefined."
     }
-
-    def "group requirements by gamp topic for all the project"() {
-        given: 
-        def req1 = [ key: "REQ-1", name: "Req 1 is...", gampTopic: "performance requirement"]
-        def req2 = [ key: "REQ-2", name: "Req 2 is...", gampTopic: "roles"]
-        def req3 = [ key: "REQ-3", name: "Req 3 is...", gampTopic: "roles"]
-
-        when: 
-        project.load()
-        def result = project.getRequirementsGroupByGAMPTopic()
-
-        then: 
-        1 * project.loadJiraData(_) >> [
-            project: [ name: "my-project"],
-            bugs: [],
-            components:[],
-            epics:[],
-            risks:[],
-            tests:[],
-            techSpecs:[],
-            mitigations:[],
-            requirements: [(req1.key): req1, (req2.key): req2, (req3.key): req3]
-           ]
-
-        then: 
-        def categories = result.keySet() 
-        categories.size() == 2
-        categories.contains("roles")
-        categories.contains("performance requirement") 
-
-        then:
-        def perfReq = result["performance requirement"]
-        perfReq.size() == 1
-        perfReq == [req1]
-
-        then:
-        def rolesReq = result["roles"]
-        rolesReq.size() == 2
-        rolesReq == [req2, req3]
-    }
 }
