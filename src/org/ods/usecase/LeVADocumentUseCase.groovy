@@ -207,13 +207,15 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 },
                 sections: sections,
                 tests: this.project.getAutomatedTestsTypeUnit().collectEntries { testIssue ->
+                    def techSpecsWithSoftwareDesignSpec = testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }
+
                     [
                         testIssue.key,
                         [
                             key: testIssue.key,
                             description: testIssue.description ?: "",
                             systemRequirement: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
-                            softwareDesignSpec: testIssue.techSpecs ? testIssue.techSpecs.findAll{ it.softwareDesignSpec }.join(", ") : "N/A"
+                            softwareDesignSpec: techSpecsWithSoftwareDesignSpec ? techSpecsWithSoftwareDesignSpec.join(", ") : "N/A"
                         ]
                     ]
                 }
