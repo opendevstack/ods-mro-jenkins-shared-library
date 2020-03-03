@@ -23,6 +23,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         IVP,
         IVR,
         SSDS,
+        TCP,
+        TCR,
         TIP,
         TIR,
         OVERALL_DTR,
@@ -41,6 +43,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.IVP as String)         : "Configuration and Installation Testing Plan",
         (DocumentType.IVR as String)         : "Configuration and Installation Testing Report",
         (DocumentType.SSDS as String)        : "Software Design Specification",
+        (DocumentType.TCP as String)         : "Test Case Plan",
+        (DocumentType.TCR as String)         : "Test Case Report",
         (DocumentType.TIP as String)         : "Technical Installation Plan",
         (DocumentType.TIR as String)         : "Technical Installation Report",
         (DocumentType.OVERALL_DTR as String) : "Overall Software Development Testing Report",
@@ -570,6 +574,18 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 testsOdsService: testsOfRepoTypeOdsService,
                 testsOdsCode   : testsOfRepoTypeOdsCode
             ]
+        ]
+
+        def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
+        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        return uri
+    }
+
+    String createTCP(Map repo, Map data) {
+        String documentType = DcoumentType.TCP as String
+
+        def model = [
+                metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType])
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
