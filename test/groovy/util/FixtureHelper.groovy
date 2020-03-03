@@ -320,26 +320,26 @@ class FixtureHelper {
 
     static String createJUnitXMLTestResults() {
         return """
-        <testsuites name="my-suites" tests="4" failures="1" errors="1">
-            <testsuite name="my-suite-1" tests="2" failures="0" errors="1" skipped="0">
+        <testsuites name="sockshop-suites" tests="4" failures="1" errors="1">
+            <testsuite name="sockshop-suite-1" tests="2" failures="0" errors="1" skipped="0">
                 <properties>
                     <property name="my-property-a" value="my-property-a-value"/>
                 </properties>
-                <testcase name="JIRA1_my-testcase-1" classname="app.MyTestCase1" status="Succeeded" time="1"/>
-                <testcase name="JIRA2_my-testcase-2" classname="app.MyTestCase2" status="Error" time="2">
+                <testcase name="PLTFMDEV401_verify-database-setup" classname="org.sockshop.DatabaseSetupTest" status="Succeeded" time="1"/>
+                <testcase name="PLTFMDEV1060_verfify-database-installation" classname="org.sockshop.DatabaseInstallationTest" status="Error" time="2">
                     <error type="my-error-type" message="my-error-message">This is an error.</error>
                 </testcase>
             </testsuite>
-            <testsuite name="my-suite-2" tests="2" failures="1" errors="0" skipped="1">
-                <testcase name="JIRA3_my-testcase-3" classname="app.MyTestCase3" status="Failed" time="3">
+            <testsuite name="sockshop-suite-2" tests="2" failures="1" errors="0" skipped="1">
+                <testcase name="PLTFMDEV1061_verify-database-is-operational" classname="org.sockshop.DatabaseOperationalTest" status="Failed" time="3">
                     <failure type="my-failure-type" message="my-failure-message">This is a failure.</failure>
                 </testcase>
-                <testcase name="JIRA4_my-testcase-4" classname="app.MyTestCase4" status="Missing" time="4">
+                <testcase name="PLTFMDEV1062_verify-databse-authentication" classname="org.sockshop.DatabaseAuthenticationTest" status="Missing" time="4">
                     <skipped/>
                 </testcase>
             </testsuite>
-            <testsuite name="my-suite-3" tests="1" failures="0" errors="0" skipped="0">
-                <testcase name="my-testcase-5" classname="app.MyTestCase5" status="Succeeded" time="5"/>
+            <testsuite name="sockshop-suite-3" tests="1" failures="0" errors="0" skipped="0">
+                <testcase name="PLTFMDEV1046_verify-frontend-is-setup-correctly" classname="org.sockshop.FrontendSetupTest" status="Succeeded" time="5"/>
             </testsuite>
         </testsuites>
         """

@@ -199,9 +199,9 @@ class JiraUseCase {
             testSuite.testcases.each { testCase ->
                 def testIssue = testIssues.find { testIssue ->
                     // FIXME: invoking checkTestsIssueMatchesTestCase results in failing tests (presumably be a bug in a test dependency)
-                    // this.checkTestsIssueMatchesTestCase(testIssue, testCase)
-                    def testIssueKeyClean = testIssue.key.replaceAll("-", "")
-                    return testCase.name.startsWith("${testIssueKeyClean} ") || testCase.name.startsWith("${testIssueKeyClean}-") || testCase.name.startsWith("${testIssueKeyClean}_")
+                    this.checkTestsIssueMatchesTestCase(testIssue, testCase)
+                    // def testIssueKeyClean = testIssue.key.replaceAll("-", "")
+                    // return testCase.name.startsWith("${testIssueKeyClean} ") || testCase.name.startsWith("${testIssueKeyClean}-") || testCase.name.startsWith("${testIssueKeyClean}_")
                 }
 
                 def isMatch = testIssue != null

@@ -95,7 +95,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     // FIXME: re-implement to depend on testResults, not on testIssues
     // since we want to report all executed tests (and draw conclusions from them)
-    protected Map computeTestDiscrepancies(String name, List testIssues) {
+    protected Map computeTestDiscrepancies(String name, List jiraTestIssues) {
         def result = [
                 discrepancies: "No discrepancies found.",
                 conclusion   : [
@@ -107,7 +107,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def failed = []
         def missing = []
 
-        testIssues.each { issue ->
+        jiraTestIssues.each { issue ->
             if (!issue.isSuccess && !issue.isMissing) {
                 failed << issue.key
             }
@@ -576,11 +576,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
     String createIVR(Map repo, Map data) {
         def documentType = DocumentType.IVR as String
-
+        def installationTestData = data.tests.installation
         def watermarkText
         def sections = this.jiraUseCase.getDocumentChapterData(documentType)
         if (!sections) {
-            sections = this.levaFiles.getDocumentChapterData(documentType)
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         } else {
             watermarkText = this.getWatermarkText(documentType)
         }
@@ -601,8 +601,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             }
         }
 
-        this.jiraUseCase.matchTestIssuesAgainstTestResults(installationTestIssues, data.tests.installation?.testResults ?: [:], matchedHandler, unmatchedHandler)
-
+        this.jiraUseCase.matchTestIssuesAgainstTestResults(installationTestIssues, installationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        def discrepancies = this.computeTestDiscrepancies("Automated Installation Tests", installationTestIssues)
         def testsGroupedByRepoType = groupTestsByRepoType(installationTestIssues)
 
         def testsOfRepoTypeOds = []
@@ -635,9 +635,14 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                     ]
                             ]
                         },
-                        testfiles      : data.testReportFiles.collect { file ->
+                        testfiles      : installationTestData.testReportFiles.collect { file ->
                             [name: file.getName(), path: file.getPath()]
                         },
+                        discrepancies: discrepancies.discrepancies,
+                        conclusion: [
+                                summary: discrepancies.conclusion.summary,
+                                statement: discrepancies.conclusion.statement
+                        ],
                         testsOdsService: testsOfRepoTypeOdsService,
                         testsOds       : testsOfRepoTypeOds
                 ]
