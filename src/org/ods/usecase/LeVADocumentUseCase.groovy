@@ -348,6 +348,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def acceptanceTestData = data.tests.acceptance
         def integrationTestData = data.tests.integration
 
+        // Obtain the total number of test in report
+        def numberAcceptanceTest = getNumberOfTest(acceptanceTestData.testResults)
+        def numberIntegrationTest = getNumberOfTest(integrationTestData.testResults)
+
         def sections = this.jiraUseCase.getDocumentChapterData(documentType)
         if (!sections) {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
@@ -394,7 +398,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                     ]
                             ]
                         },
-                        additionalAcceptanceTests: 11, // Only with test pourposes
+                        additionalAcceptanceTests: numberAcceptanceTest - acceptanceTestIssues.count { !it.isMissing }, 
                         integrationTests: integrationTestIssues.collectEntries { testIssue ->
                             [
                                     testIssue.key,
@@ -409,7 +413,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                     ]
                             ]
                         },
-                        additionalIntegrationTests: 3, // Only with test pourposes
+                        additionalIntegrationTests: numberIntegrationTest - integrationTestIssues.count { !it.isMissing }, 
                         testfiles       : (acceptanceTestData + integrationTestData).testReportFiles.collect { file ->
                             [name: file.getName(), path: file.getPath()]
                         },
@@ -875,5 +879,14 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         // Add a comment to the Jira issue with a link to the report
         this.jiraUseCase.jira.appendCommentToIssue(jiraIssues.first().key, message)
+    }
+
+    protected Integer getNumberOfTest(Map testResults) {
+        def count = 0
+        testResults.testsuites.each { testSuite ->
+            count += testSuite.testcases.size()
+        }
+
+        return count
     }
 }
