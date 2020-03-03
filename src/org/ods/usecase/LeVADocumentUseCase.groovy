@@ -819,88 +819,72 @@ class LeVADocumentUseCase extends DocGenUseCase {
         //}
 
 
-        this.steps.echo("??? data ${data}")
-        def acceptanceTestData = data?.tests?.acceptance
-        def integrationTestData = data?.tests?.integration
+        def bugs = this.project.getBugs().each { bug ->
+            bug.tests = bug.getResolvedTests()
+        }
+
+        this.steps.echo("??? bugs: " + JsonOutput.toJson(bugs))
 
 
-        //def matchedHandler = { result ->
-        //    result.each { testIssue, testCase ->
-        //        testIssue.isSuccess = !(testCase.error || testCase.failure || testCase.skipped)
-        //        testIssue.isMissing = false
-        //        testIssue.timestamp = testCase.timestamp
-        //    }
-        //}
-//
-        //def unmatchedHandler = { result ->
-        //    result.each { testIssue ->
-        //        testIssue.isSuccess = false
-        //        testIssue.isMissing = true
-        //    }
-        //}
-        //def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
-        //def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
-//
-        //this.jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
-        //this.jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
-//
-        //def bugs = this.computeTestDiscrepancies("Functional and Requirements Tests", (acceptanceTestIssues + integrationTestIssues))
-        def bugs = this.project.getBugs()
-        this.steps.echo("??? discrepancies bugs:  ${bugs}")
-        def acceptanceTestBugs = bugs.findAll{bug -> bug.getResolvedTest().testType == "Acceptance"}
-        this.steps.echo("??? discrepancies acceptanceTestBugs: ${acceptanceTestBugs}")
-        def integrationTestBugs = bugs.findAll{bug -> bug.getResolvedTest().testType == "Integration"}
-        this.steps.echo("??? discrepancies integrationTestBugs:  ${integrationTestBugs}")
+        def acceptanceTestBugs = bugs.findAll{
+            bug -> bug.tests.findAll{
+                test -> test.testType == "Acceptance"}
+            }
 
+        this.steps.echo("??? acceptanceTestBugs: " + JsonOutput.toJson(acceptanceTestBugs))
 
-
+        def integrationTestBugs = bugs.findAll{
+            bug -> bug.tests.findAll{
+                test -> test.testType == "Integration"}
+            }
+        this.steps.echo("??? integrationTestBugs: " + JsonOutput.toJson(integrationTestBugs))
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data: [
-                integrationTests: bugs.collectEntries { bug ->
+                integrationTests: integrationTestBugs?.collectEntries { bug ->
                     [
                         bug.key,
                         [
                             //Discrepancy ID -> BUG Issue ID
-                            discrepancyID: "bug.key",
+                            discrepancyID: bug.key,
                             //Test Case No. -> JIRA (Test Case Key)
-                            testcaseID: "testcaseID",
+                            testcaseID: bug.tests.first().key,
                             //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                            level: "test.type",
+                            level: "Integration",
                             //Description of Failure or Discrepancy -> Bug Issue Summary
-                            description: "bug.summary",
+                            description: "bug.name",
                             //Remediation Action -> "To be fixed"
                             remediation: "To be fixed",
                             //Responsible / Due Date -> JIRA (assignee, Due date)
-                            responsibleAndDueDate: "JIRA (assignee, Due date)",
+                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} ${bug.dueDate?bug.dueDate:'N/A'}",
                             //Outcome of the Resolution -> Bug Status
-                            outcomeResolution: "bug.status",
+                            outcomeResolution: bug.status,
                             //Resolved Y/N -> JIRA Status -> Done = Yes
-                            resolved: "resolved"
+                            resolved: bug.status=="Done"?"Yes":"No"
                         ]
                     ]
                 },
-                acceptanceTests: bugs.collectEntries { discrepancy ->
+                acceptanceTests: acceptanceTestBugs.collectEntries { bug ->
                     [
-                        discrepancy.key,
+                        bug.key,
                         [
                             //Discrepancy ID -> BUG Issue ID
-                            discrepancyID: "bug.key",
+                            discrepancyID: bug.key,
                             //Test Case No. -> JIRA (Test Case Key)
-                            testcaseID:    "testcaseID",
+                            testcaseID: bug.tests.first().key,
                             //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                            level:         "bug.type",
+                            level: "Acceptance",
                             //Description of Failure or Discrepancy -> Bug Issue Summary
-                            description:   "bug.summary",
+                            description: "bug.name",
                             //Remediation Action -> "To be fixed"
-                            remediation:   "To be fixed",
+                            remediation: "To be fixed",
                             //Responsible / Due Date -> JIRA (assignee, Due date)
-                            responsibleAndDueDate: "JIRA (assignee, Due date)",
+                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} ${bug.dueDate?bug.dueDate:'N/A'}",
                             //Outcome of the Resolution -> Bug Status
-                            outcomeResolution: "bug.status",
+                            outcomeResolution: bug.status,
                             //Resolved Y/N -> JIRA Status -> Done = Yes
-                            resolved:      "resolved"
+                            resolved: bug.status=="Done"?"Yes":"No"
                         ]
                     ]
                 }
@@ -908,7 +892,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
         //FIX: Need to know in which enviroment this document belogs and if it contains a watermark.
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        // Is it needed to notify?
+        //this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
