@@ -28,8 +28,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         CSD,
         DTP,
         DTR,
-        FTP,
-        FTR,
+        CFTP,
+        CFTR,
         IVP,
         IVR,
         SSDS,
@@ -45,8 +45,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             (DocumentType.CSD as String)         : "Configuration Specification", // TODO Change me for the good name
             (DocumentType.DTP as String)         : "Software Development Testing Plan",
             (DocumentType.DTR as String)         : "Software Development Testing Report",
-            (DocumentType.FTP as String)         : "Functional and Requirements Testing Plan",
-            (DocumentType.FTR as String)         : "Functional and Requirements Testing Report",
+            (DocumentType.CFTP as String)        : "Combined Functional and Requirements Testing Plan",
+            (DocumentType.CFTR as String)        : "Combined Functional and Requirements Testing Report",
             (DocumentType.IVP as String)         : "Configuration and Installation Testing Plan",
             (DocumentType.IVR as String)         : "Configuration and Installation Testing Report",
             (DocumentType.SSDS as String)        : "Software Design Specification",
@@ -297,8 +297,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
-    String createFTP(Map repo = null, Map data = null) {
-        def documentType = DocumentType.FTP as String
+    String createCFTP(Map repo = null, Map data = null) {
+        def documentType = DocumentType.CFTP as String
 
         def sections = this.jiraUseCase.getDocumentChapterData(documentType)
         if (!sections) {
@@ -342,8 +342,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
-    String createFTR(Map repo, Map data) {
-        def documentType = DocumentType.FTR as String
+    String createCFTR(Map repo, Map data) {
+        def documentType = DocumentType.CFTR as String
 
         def acceptanceTestData = data.tests.acceptance
         def integrationTestData = data.tests.integration
