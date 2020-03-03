@@ -212,7 +212,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
 
         def repo = project.repositories.first()
-        def testIssues = project.getAutomatedTestsTypeUnit()
+        repo.id = "demo-app-carts"
+
+        def testIssues = project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         def testReportFiles = [xmlFile]
         def testResults = new JUnitTestReportsUseCase(project, steps, util).parseTestReportFiles(testReportFiles)
         def data = [
@@ -259,7 +261,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
 
         def repo = project.repositories.first()
-        def testIssues = project.getAutomatedTestsTypeUnit()
+        repo.id = "demo-app-carts"
+
+        def testIssues = project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         def testReportFiles = [xmlFile]
         def testResults = new JUnitTestReportsUseCase(project, steps, util).parseTestReportFiles(testReportFiles)
         def data = [
@@ -467,6 +471,7 @@ def "create FTR"() {
         xmlFile.delete()
     }
 
+    @Ignore
     def "create SSDS"() {
         given:
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
