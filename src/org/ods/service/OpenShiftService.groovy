@@ -54,7 +54,7 @@ class OpenShiftService {
       def bbCredentialsUrl = bitbucketUrl.replace('://', "://${userPass}@")
       steps.sh(script: "echo ${bbCredentialsUrl} > ~/.git-credentials", label : "resolving credentials")
       steps.sh(script: "git config --global credential.helper store", label : "setup credential helper")
-      def bbUserUrl = bitbucketUrl.replace('://', "://${bitbucketUser}@${bitbucketUrl}")
+      def bbUserUrl = bitbucketUrl.replace('://', "://${bitbucketUser}@")
       steps.sh(script: "sh export-project.sh -h ${this.openshiftApiHost} -g ${bbUserUrl} -p ${projectName} -e ${environmentName} -gb ${branchName} ${debugMode}", label : "Started export steps")
       
       def exportedArtifactUrl = "${bitbucketUrl}/projects/${projectName}/repos/${projectName}-occonfig-artifacts/browse?at=refs%2Fheads%2F${branchName}"
