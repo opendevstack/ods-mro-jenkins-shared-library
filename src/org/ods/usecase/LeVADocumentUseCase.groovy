@@ -187,6 +187,84 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
+    String createDIL(Map repo = null, Map data = null) {
+        def documentType = DocumentType.DIL as String
+
+        def watermarkText = this.getWatermarkText(documentType)
+
+        def bugs = this.project.getBugs().each { bug ->
+            bug.tests = bug.getResolvedTests()
+        }
+
+        def acceptanceTestBugs = bugs.findAll{
+            bug -> bug.tests.findAll{
+                test -> test.testType == "Acceptance"}
+            }
+
+        def integrationTestBugs = bugs.findAll{
+            bug -> bug.tests.findAll{
+                test -> test.testType == "Integration"}
+            }
+
+        def data_ = [
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
+            data: [
+                integrationTests: integrationTestBugs?.collectEntries { bug ->
+                    [
+                        bug.key,
+                        [
+                            //Discrepancy ID -> BUG Issue ID
+                            discrepancyID: bug.key,
+                            //Test Case No. -> JIRA (Test Case Key)
+                            testcaseID: bug.tests.first().key,
+                            //-	Level of Test Case = Unit / Integration / Acceptance / Installation
+                            level: "Integration",
+                            //Description of Failure or Discrepancy -> Bug Issue Summary
+                            description: bug.name,
+                            //Remediation Action -> "To be fixed"
+                            remediation: "To be fixed",
+                            //Responsible / Due Date -> JIRA (assignee, Due date)
+                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} / ${bug.dueDate?bug.dueDate:'N/A'}",
+                            //Outcome of the Resolution -> Bug Status
+                            outcomeResolution: bug.status,
+                            //Resolved Y/N -> JIRA Status -> Done = Yes
+                            resolved: bug.status=="Done"?"Yes":"No"
+                        ]
+                    ]
+                },
+                acceptanceTests: acceptanceTestBugs.collectEntries { bug ->
+                    [
+                        bug.key,
+                        [
+                            //Discrepancy ID -> BUG Issue ID
+                            discrepancyID: bug.key,
+                            //Test Case No. -> JIRA (Test Case Key)
+                            testcaseID: bug.tests.first().key,
+                            //-	Level of Test Case = Unit / Integration / Acceptance / Installation
+                            level: "Acceptance",
+                            //Description of Failure or Discrepancy -> Bug Issue Summary
+                            description: bug.name,
+                            //Remediation Action -> "To be fixed"
+                            remediation: "To be fixed",
+                            //Responsible / Due Date -> JIRA (assignee, Due date)
+                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} / ${bug.dueDate?bug.dueDate:'N/A'}",
+                            //Outcome of the Resolution -> Bug Status
+                            outcomeResolution: bug.status,
+                            //Resolved Y/N -> JIRA Status -> Done = Yes
+                            resolved: bug.status=="Done"?"Yes":"No"
+                        ]
+                    ]
+                }
+            ]
+        ]
+        //FIX: Need to know in which enviroment this document belogs and if it contains a watermark.
+        def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
+        this.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+
+        return uri
+    }
+
+
     String createDTP(Map repo = null, Map data = null) {
         def documentType = DocumentType.DTP as String
 
@@ -807,80 +885,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
-    String createDIL(Map repo = null, Map data = null) {
-        def documentType = DocumentType.DIL as String
-
-        def watermarkText = this.getWatermarkText(documentType)
-
-        def bugs = this.project.getBugs().each { bug ->
-            bug.tests = bug.getResolvedTests()
-        }
-
-        def acceptanceTestBugs = bugs.findAll{
-            bug -> bug.tests.findAll{
-                test -> test.testType == "Acceptance"}
-            }
-
-        def integrationTestBugs = bugs.findAll{
-            bug -> bug.tests.findAll{
-                test -> test.testType == "Integration"}
-            }
-
-        def data_ = [
-            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
-            data: [
-                integrationTests: integrationTestBugs?.collectEntries { bug ->
-                    [
-                        bug.key,
-                        [
-                            //Discrepancy ID -> BUG Issue ID
-                            discrepancyID: bug.key,
-                            //Test Case No. -> JIRA (Test Case Key)
-                            testcaseID: bug.tests.first().key,
-                            //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                            level: "Integration",
-                            //Description of Failure or Discrepancy -> Bug Issue Summary
-                            description: bug.name,
-                            //Remediation Action -> "To be fixed"
-                            remediation: "To be fixed",
-                            //Responsible / Due Date -> JIRA (assignee, Due date)
-                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} ${bug.dueDate?bug.dueDate:'N/A'}",
-                            //Outcome of the Resolution -> Bug Status
-                            outcomeResolution: bug.status,
-                            //Resolved Y/N -> JIRA Status -> Done = Yes
-                            resolved: bug.status=="Done"?"Yes":"No"
-                        ]
-                    ]
-                },
-                acceptanceTests: acceptanceTestBugs.collectEntries { bug ->
-                    [
-                        bug.key,
-                        [
-                            //Discrepancy ID -> BUG Issue ID
-                            discrepancyID: bug.key,
-                            //Test Case No. -> JIRA (Test Case Key)
-                            testcaseID: bug.tests.first().key,
-                            //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                            level: "Acceptance",
-                            //Description of Failure or Discrepancy -> Bug Issue Summary
-                            description: bug.name,
-                            //Remediation Action -> "To be fixed"
-                            remediation: "To be fixed",
-                            //Responsible / Due Date -> JIRA (assignee, Due date)
-                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} ${bug.dueDate?bug.dueDate:'N/A'}",
-                            //Outcome of the Resolution -> Bug Status
-                            outcomeResolution: bug.status,
-                            //Resolved Y/N -> JIRA Status -> Done = Yes
-                            resolved: bug.status=="Done"?"Yes":"No"
-                        ]
-                    ]
-                }
-            ]
-        ]
-        //FIX: Need to know in which enviroment this document belogs and if it contains a watermark.
-        def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        return uri
-    }
 
     Map getDocumentMetadata(String documentTypeName, Map repo = null) {
         def name = this.project.name
@@ -945,6 +949,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         // Search for the Jira issue associated with the document
         def jiraIssues = this.jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery)
+
         if (jiraIssues.size() != 1) {
             throw new RuntimeException("Error: Jira query returned ${jiraIssues.size()} issues: '${jqlQuery}'.")
         }
