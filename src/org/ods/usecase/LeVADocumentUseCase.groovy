@@ -386,33 +386,27 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
                 data    : [
                         sections        : sections,
-                        acceptanceTests : acceptanceTestIssues.collectEntries { testIssue ->
+                        acceptanceTests : acceptanceTestIssues.each { testIssue ->
                             [
-                                    testIssue.key,
-                                    [
-                                            key        : testIssue.key,
-                                            datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
-                                            description: testIssue.description ?: "",
-                                            remarks    : testIssue.isMissing ? "not executed" : "",
-                                            risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
-                                            success    : testIssue.isSuccess ? "Y" : "N",
-                                            ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
-                                    ]
+                                    key        : testIssue.key,
+                                    datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
+                                    description: testIssue.description ?: "",
+                                    remarks    : testIssue.isMissing ? "not executed" : "",
+                                    risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
+                                    success    : testIssue.isSuccess ? "Y" : "N",
+                                    ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
                             ]
                         },
                         additionalAcceptanceTests: numberAcceptanceTest - acceptanceTestIssues.count { !it.isMissing }, 
-                        integrationTests: integrationTestIssues.collectEntries { testIssue ->
+                        integrationTests: integrationTestIssues.each { testIssue ->
                             [
-                                    testIssue.key,
-                                    [
-                                            key        : testIssue.key,
-                                            datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
-                                            description: testIssue.description ?: "",
-                                            remarks    : testIssue.isMissing ? "not executed" : "",
-                                            risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
-                                            success    : testIssue.isSuccess ? "Y" : "N",
-                                            ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
-                                    ]
+                                    key        : testIssue.key,
+                                    datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
+                                    description: testIssue.description ?: "",
+                                    remarks    : testIssue.isMissing ? "not executed" : "",
+                                    risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
+                                    success    : testIssue.isSuccess ? "Y" : "N",
+                                    ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
                             ]
                         },
                         additionalIntegrationTests: numberIntegrationTest - integrationTestIssues.count { !it.isMissing }, 
