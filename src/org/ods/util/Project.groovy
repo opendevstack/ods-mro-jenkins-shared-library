@@ -128,6 +128,7 @@ class Project {
               "PLTFMDEV-551",
               "PLTFMDEV-552",
               "PLTFMDEV-553",
+              "PLTFMDEV-1067",
               "PLTFMDEV-1046"
           ],
           "mitigations": [
@@ -594,6 +595,21 @@ class Project {
           ],
           "techSpecs": [
               "DEMO-15", "DEMO-26"
+          ]
+      },
+      "PLTFMDEV-1067": {
+          "name": "User doesn't exists in system",
+          "description": "User doesn't exists in system",
+          "key": "PLTFMDEV-1067",
+          "version": "1.0",
+          "status": "READY TO TEST",
+          "testType": "Integration",
+          "executionType": "Automated",
+          "components": [
+              "DEMO-2"
+          ],
+          "requirements": [
+              "DEMO-6"
           ]
       }
   },
