@@ -426,8 +426,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 ]
         ]
 
-        println "Salida: ${data_}"
-
         def files = (acceptanceTestData + integrationTestData).testReportFiles.collectEntries { file ->
             ["raw/${file.getName()}", file.getBytes()]
         }
