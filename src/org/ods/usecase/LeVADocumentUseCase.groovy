@@ -537,11 +537,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def testsGroupedByRepoType = groupTestsByRepoType(installationTestIssues)
 
-        def testsOfRepoTypeOds = []
+        def testsOfRepoTypeOdsCode = []
         def testsOfRepoTypeOdsService = []
         testsGroupedByRepoType.each { repoTypes, tests ->
             if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE)) {
-                testsOfRepoTypeOds.addAll(tests)
+                testsOfRepoTypeOdsCode.addAll(tests)
             }
 
             if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE)) {
@@ -564,8 +564,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                     ]
                             ]
                         },
-                        testsOdsService: testsOfRepoTypeOdsService,
-                        testsOds       : testsOfRepoTypeOds
+                        testsOdsService    : testsOfRepoTypeOdsService,
+                        testsOdsCode       : testsOfRepoTypeOdsCode
                 ]
         ]
 
@@ -606,11 +606,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def discrepancies = this.computeTestDiscrepancies("Automated Installation Tests", installationTestIssues)
         def testsGroupedByRepoType = groupTestsByRepoType(installationTestIssues)
 
-        def testsOfRepoTypeOds = []
+        def testsOfRepoTypeOdsCode = []
         def testsOfRepoTypeOdsService = []
         testsGroupedByRepoType.each { repoTypes, tests ->
             if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE)) {
-                testsOfRepoTypeOds.addAll(tests)
+                testsOfRepoTypeOdsCode.addAll(tests)
             }
 
             if (repoTypes.contains(MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_SERVICE)) {
@@ -645,7 +645,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                 statement: discrepancies.conclusion.statement
                         ],
                         testsOdsService: testsOfRepoTypeOdsService,
-                        testsOds       : testsOfRepoTypeOds
+                        testsOdsCode   : testsOfRepoTypeOdsCode
                 ]
         ]
 
@@ -900,7 +900,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
-    Map groupTestsByRepoType(List jiraTestIssues) {
+    private Map groupTestsByRepoType(List jiraTestIssues) {
         return jiraTestIssues.collect { test ->
             def components = test.getResolvedComponents()
             test.repoTypes = components.collect { component ->
