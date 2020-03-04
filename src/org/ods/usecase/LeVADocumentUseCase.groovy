@@ -374,9 +374,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
         this.jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        acceptanceTestIssues = SortUtil.sortIssuesByProperties(acceptanceTestIssues ?: [], ["key"])
 
         def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
         this.jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        integrationTestIssues = SortUtil.sortIssuesByProperties(integrationTestIssues ?: [], ["key"])
 
         def discrepancies = this.computeTestDiscrepancies("Functional and Requirements Tests", (acceptanceTestIssues + integrationTestIssues))
 
@@ -418,8 +420,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             [name: file.getName(), path: file.getPath()]
                         },
                         conclusion      : [
-                                summary  : discrepancies.conclusion.summary,
-                                statement: discrepancies.conclusion.statement
+                            summary  : discrepancies.conclusion.summary,
+                            statement: discrepancies.conclusion.statement
                         ]
                 ]
         ]
