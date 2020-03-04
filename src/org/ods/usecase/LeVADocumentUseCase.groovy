@@ -581,14 +581,26 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
-    String createTCP(Map repo, Map data) {
-        String documentType = DcoumentType.TCP as String
+    String createTCP(Map repo = null, Map data = null) {
+        String documentType = DocumentType.TCP as String
+
+        def watermarkText
+        def sections = this.jiraUseCase.getDocumentChapterData(documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        } else {
+            watermarkText = this.getWatermarkText(documentType)
+        }
+
 
         def model = [
-                metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType])
+                metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
+                data    : [
+                        sections: sections
+                ]
         ]
 
-        def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
+        def uri = this.createDocument(documentType, null, model, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }

@@ -16,6 +16,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.CFTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.TCP as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
             LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
@@ -36,6 +37,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.CFTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.TCP as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
             LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
@@ -52,6 +54,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.IVR as String,
             LeVADocumentUseCase.DocumentType.SSDS as String,
             //LeVADocumentUseCase.DocumentType.OVERALL_SSDS as String, // TODO fixme
+            LeVADocumentUseCase.DocumentType.TCP as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
             LeVADocumentUseCase.DocumentType.TIR as String,
             LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
@@ -77,9 +80,15 @@ class LeVADocumentScheduler extends DocGenScheduler {
             (LeVADocumentUseCase.DocumentType.SSDS as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
             (LeVADocumentUseCase.DocumentType.IVP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
             (LeVADocumentUseCase.DocumentType.IVR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+<<<<<<< HEAD
             (LeVADocumentUseCase.DocumentType.CFTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
             (LeVADocumentUseCase.DocumentType.CFTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
             (LeVADocumentUseCase.DocumentType.DIL as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
+=======
+            (LeVADocumentUseCase.DocumentType.FTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
+            (LeVADocumentUseCase.DocumentType.FTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.TCP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START
+>>>>>>> implement document scheduling for TCP
         ],
         (MROPipelineUtil.PipelinePhases.RELEASE): [
         ],
@@ -117,7 +126,8 @@ class LeVADocumentScheduler extends DocGenScheduler {
             (LeVADocumentUseCase.DocumentType.CFTP as String): "${LeVADocumentUseCase.DocumentType.CFTP}",
             (LeVADocumentUseCase.DocumentType.DIL as String): "${LeVADocumentUseCase.DocumentType.DIL}_Q",
             (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_Q",
-            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.TIP}_Q"
+            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.TIP}_Q",
+            (LeVADocumentUseCase.DocumentType.TCP as String): "${LeVADocumentUseCase.DocumentType.TCP}"
         ],
         "Q": [
             (LeVADocumentUseCase.DocumentType.DTR as String): "${LeVADocumentUseCase.DocumentType.DTR}",

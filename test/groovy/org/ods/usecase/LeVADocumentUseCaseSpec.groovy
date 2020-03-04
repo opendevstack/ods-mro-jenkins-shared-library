@@ -1,27 +1,19 @@
 package org.ods.usecase
 
-import groovy.json.JsonOutput
 
-import java.nio.file.Files
-
-import org.ods.service.DocGenService
-import org.ods.service.JenkinsService
-import org.ods.service.JiraService
-import org.ods.service.LeVADocumentChaptersFileService
-import org.ods.service.NexusService
-import org.ods.service.OpenShiftService
-import org.ods.usecase.DocGenUseCase
+import org.ods.service.*
 import org.ods.usecase.JiraUseCase
 import org.ods.usecase.SonarQubeUseCase
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PDFUtil
 import org.ods.util.Project
+import spock.lang.Ignore
+import util.PipelineSteps
+import util.SpecHelper
 
-import spock.lang.*
+import java.nio.file.Files
 
 import static util.FixtureHelper.*
-
-import util.*
 
 class LeVADocumentUseCaseSpec extends SpecHelper {
 
@@ -248,8 +240,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                 unit: [
                     testReportFiles: testReportFiles,
                     testResults    : testResults
+                    ]
                 ]
-            ]
         ]
 
         // Argument Constraints
@@ -298,7 +290,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                     testReportFiles: testReportFiles,
                     testResults    : testResults
                 ]
-            ]
+                ]
         ]
 
         // Argument Constraints
@@ -380,7 +372,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                     testReportFiles: testReportFiles,
                     testResults    : testResults
                 ]
-            ]
+                ]
         ]
 
         // Argument Constraints
@@ -413,6 +405,32 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         cleanup:
         xmlFile.delete()
+    }
+
+    def "create TCP"() {
+        given:
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+
+        // argument constraints
+        String documentType = LeVADocumentUseCase.DocumentType.TCP as String
+        Map jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+
+        // stubbed method responses
+        Map chapterData = ["sec1": "myContent"]
+        String uri = "http://nexus"
+        Map documentIssue = createJiraDocumentIssues().first()
+
+
+        when:
+        usecase.createTCP()
+
+        then:
+        1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
+
+        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
+        1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
     }
 
     def "create IVP"() {
@@ -464,7 +482,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                     testReportFiles: testReportFiles,
                     testResults    : testResults
                 ]
-            ]
+                ]
         ]
 
         // Argument Constraints
@@ -722,7 +740,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def result = usecase.getSupportedDocuments()
 
         then:
-        result.size() == 15
+        result.size() == 16
 
         then:
         result.contains("CSD")
@@ -734,6 +752,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.contains("IVP")
         result.contains("IVR")
         result.contains("SSDS")
+        result.contains("TCP")
+        result.contains("TCR")
         result.contains("TIP")
         result.contains("TIR")
         result.contains("OVERALL_DTR")
