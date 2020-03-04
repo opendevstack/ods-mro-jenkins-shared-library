@@ -128,7 +128,7 @@ class Project {
               "PLTFMDEV-551",
               "PLTFMDEV-552",
               "PLTFMDEV-553",
-              "PLTFMDEV-1067",
+              "PLTFMDEV-554",
               "PLTFMDEV-1046"
           ],
           "mitigations": [
@@ -597,10 +597,10 @@ class Project {
               "DEMO-15", "DEMO-26"
           ]
       },
-      "PLTFMDEV-1067": {
+      "PLTFMDEV-554": {
           "name": "User doesn't exists in system",
           "description": "User doesn't exists in system",
-          "key": "PLTFMDEV-1067",
+          "key": "PLTFMDEV-554",
           "version": "1.0",
           "status": "READY TO TEST",
           "testType": "Integration",
