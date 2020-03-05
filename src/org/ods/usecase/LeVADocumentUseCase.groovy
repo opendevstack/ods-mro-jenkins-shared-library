@@ -629,22 +629,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data    : [
                 repositories   : this.project.repositories.collect { [id: it.id, type: it.type, data: [git: [url: it.data.git == null ? null : it.data.git.url]]] },
                 sections       : sections,
-                tests          : installationTestIssues.collectEntries { testIssue ->
+                tests          : SortUtil.sortIssuesByProperties(installationTestIssues.collect { testIssue ->
                     [
-                        testIssue.key,
-                        [
-                            key        : testIssue.key,
-                            description: testIssue.description ?: "",
-                            remarks    : testIssue.isMissing ? "not executed" : "",
-                            success    : testIssue.isSuccess ? "Y" : "N",
-                            summary    : testIssue.name,
-                            techSpec   : testIssue.techSpecs.join(", "),
-                            sortIndex  : testIssue.key.split("-")[1] as Integer
-                        ]
+                        key        : testIssue.key,
+                        description: testIssue.description ?: "",
+                        remarks    : testIssue.isMissing ? "not executed" : "",
+                        success    : testIssue.isSuccess ? "Y" : "N",
+                        summary    : testIssue.name,
+                        techSpec   : testIssue.techSpecs.join(", ")
                     ]
-                }.sort { entry1, entry2 ->
-                    return entry1.value.sortIndex <=> entry2.value.sortIndex
-                },
+                }, ["key"]),
                 testfiles      : installationTestData.testReportFiles.collect { file ->
                     [name: file.getName(), path: file.getPath()]
                 },
