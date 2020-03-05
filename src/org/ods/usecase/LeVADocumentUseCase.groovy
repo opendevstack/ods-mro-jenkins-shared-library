@@ -208,8 +208,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
-            data: [
-                integrationTests: integrationTestBugs?.collectEntries { bug ->
+            data: [:]
+        ]
+
+        if (!integrationTestBugs.isEmpty()) {
+            data_.data.integrationTests = integrationTestBugs.collectEntries { bug ->
                     [
                         bug.key,
                         [
@@ -231,8 +234,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             resolved: bug.status=="Done"?"Yes":"No"
                         ]
                     ]
-                },
-                acceptanceTests: acceptanceTestBugs.collectEntries { bug ->
+                }
+        }
+
+        if (!acceptanceTestBugs.isEmpty()) {
+            data_.data.acceptanceTests = acceptanceTestBugs.collectEntries { bug ->
                     [
                         bug.key,
                         [
@@ -255,8 +261,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         ]
                     ]
                 }
-            ]
-        ]
+        }
         //FIX: Need to know in which enviroment this document belogs and if it contains a watermark.
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
