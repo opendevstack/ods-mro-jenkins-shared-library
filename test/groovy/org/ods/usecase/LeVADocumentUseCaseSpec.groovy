@@ -492,6 +492,7 @@ def "create FTR"() {
         def documentIssue = createJiraDocumentIssues().first()
         def sqReportFiles = [ getResource("Test.docx") ]
         def requirement = [ key: "REQ-1", name: "This is the req 1", gampTopic: "roles" ]
+        def techSpec = [ key: "TS-1", softwareDesignSpec: "This is the software design spec for TS-1", name: "techSpec 1"]
         def compMetadata = [
             "demo-app-front-end": [
                 key: "Front-key",
@@ -504,7 +505,8 @@ def "create FTR"() {
                 references: "N/A",
                 supplier: "N/A",
                 version: "0.1",
-                requirements: [ requirement ] 
+                requirements: [ requirement ],
+                techSpecs: [ techSpec ]
             ]
         ]
         when:
@@ -517,7 +519,7 @@ def "create FTR"() {
         then:
 		1 * usecase.computeComponentMetadata(documentType) >> compMetadata
 		1 * project.getTechnicalSpecifications()
-        3 * jenkins.unstashFilesIntoPath(_, _, "SonarQube Report") >> true
+        jenkins.unstashFilesIntoPath(_, _, "SonarQube Report") >> true
         sq.loadReportsFromPath(_) >> sqReportFiles
 
         then:

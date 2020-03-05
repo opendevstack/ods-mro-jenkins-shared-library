@@ -86,6 +86,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 throw new RuntimeException("Error: unable to create ${documentType}. Could not find a repository configuration with id or name equal to '${normComponentName}' for Jira component '${component.name}' in project '${this.project.key}'.")
             }
             def metadata = repo_.metadata
+        
             return [
                 component.name, 
                 [
@@ -99,7 +100,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                    references: metadata.references ?: "N/A",
                    supplier: metadata.supplier,
                    version: metadata.version,
-                   requirements: component.getResolvedSystemRequirements()
+                   requirements: component.getResolvedSystemRequirements(),
+                   softwareDesignSpec: component.getResolvedTechnicalSpecifications().findAll{ 
+                       it.softwareDesignSpec }.collect { 
+                           [key: it.key, softwareDesignSpec: it.softwareDesignSpec ]}
                 ]
             ]
         }
@@ -604,13 +608,15 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def componentsMetadata = SortUtil.sortIssuesByProperties(this.computeComponentMetadata(documentType).collect { it.value }, ["key"])
-        def systemDesignSpecifications = this.project.getTechnicalSpecifications().collect { techSpec ->
-            [
-                key: techSpec.key,
-                req_key: techSpec.requirements.join(", "),
-                description: techSpec.description
-            ]
-        }
+        def systemDesignSpecifications = this.project.getTechnicalSpecifications()
+            .findAll { it.systemDesignSpec }
+            .collect { techSpec ->
+                [
+                    key: techSpec.key,
+                    req_key: techSpec.requirements.join(", "),
+                    description: techSpec.systemDesignSpec
+                ]
+            }
 
         if (!sections."sec3s1") sections."sec3s1" = [:]
         sections."sec3s1".specifications = SortUtil.sortIssuesByProperties(systemDesignSpecifications, ["req_key", "key"])
@@ -626,7 +632,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             // We will set-up a double loop in the template. For moustache limitations we need to have lists
             component.requirements = component.requirements.collect {r ->
                 [ key: r.key, name: r.name, gampTopic: r.gampTopic ] 
-            }.groupBy{ it.gampTopic.toLowerCase() }.collect { k, v -> [gamptopic: k, requirementsofTopic: v] }
+            }.groupBy{ it.gampTopic.toLowerCase() }.collect { k, v -> [gampTopic: k, requirementsofTopic: v] }
             component
         }
         if (!sections."sec10") sections."sec10" = [:]

@@ -810,6 +810,8 @@ class Project {
           "key": "DEMO-15",
           "version": "1.0",
           "status": "IN DESIGN",
+		  "systemDesignSpec" : "SystemDesignSpec for DEMO-15",
+      	  "softwareDesignSpec" : "SoftwareDesignSpec for DEMO-15",
           "components": [
               "DEMO-4",
               "DEMO-3"
@@ -821,14 +823,17 @@ class Project {
               "DEMO-16",
               "DEMO-20"
           ],
-          "tests": []
+          "tests": [ "DEMO-19", "DEMO-18", "DEMO-25", "DEMO-24", "DEMO-23", "DEMO-22" ]
       },
       "DEMO-26": {
           "name": "TechSpec-2",
           "description": "TechSpec-2 is described here...",
           "key": "DEMO-26",
+          "softwareDesignSpec": "true",
           "version": "1.0",
           "status": "IN DESIGN",
+		  "systemDesignSpec" : "SystemDesignSpec for DEMO-26",
+          "softwareDesignSpec" : "SoftwareDesignSpec for DEMO-26",
           "components": [
               "DEMO-2",
               "DEMO-3"
@@ -840,7 +845,7 @@ class Project {
               "DEMO-27",
               "DEMO-31"
           ],
-          "tests": []
+          "tests": [ "DEMO-30", "DEMO-29", "DEMO-36", "DEMO-35", "DEMO-34", "DEMO-33" ]
       },
       "DEMO-49": {
           "name": "TechSpec-1",
@@ -848,6 +853,8 @@ class Project {
           "key": "DEMO-49",
           "version": "1.0",
           "status": "IN DESIGN",
+		  "systemDesignSpec" : "SystemDesignSpec for DEMO-49",
+ 	      "softwareDesignSpec" : "SoftwareDesignSpec for DEMO-49",
           "components": [
               "DEMO-2",
               "DEMO-3"
@@ -859,7 +866,7 @@ class Project {
               "DEMO-50",
               "DEMO-54"
           ],
-          "tests": []
+          "tests": [ "DEMO-52", "DEMO-59", "DEMO-58", "DEMO-57", "DEMO-56", "DEMO-53" ]
       },
       "DEMO-60": {
           "name": "TechSpec-2",
@@ -867,6 +874,8 @@ class Project {
           "key": "DEMO-60",
           "version": "1.0",
           "status": "IN DESIGN",
+          "systemDesignSpec" : "SystemDesignSpec for DEMO-60",
+          "softwareDesignSpec" : "SoftwareDesignSpec for DEMO-60",
           "components": [
               "DEMO-4",
               "DEMO-2"
@@ -878,7 +887,7 @@ class Project {
               "DEMO-61",
               "DEMO-65"
           ],
-          "tests": []
+          "tests": [ "DEMO-63", "DEMO-70", "DEMO-69", "DEMO-68", "DEMO-67", "DEMO-64" ]
       }
   },
   "bugs": {}
