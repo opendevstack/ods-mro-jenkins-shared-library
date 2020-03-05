@@ -1,7 +1,9 @@
 package org.ods.util
 
+import java.nio.file.Files
 import java.nio.file.Paths
 
+import org.ods.parser.JUnitParser
 import org.ods.util.IPipelineSteps
 import org.ods.util.Project
 
@@ -526,5 +528,29 @@ class MROPipelineUtilSpec extends SpecHelper {
         repoDirA.deleteDir()
         repoDirB.deleteDir()
         repoDirC.deleteDir()
+    }
+
+    def "warn if test results contain failure"() {
+        given:
+        def xmlFiles = Files.createTempDirectory("junit-test-reports-")
+        def xmlFile = Files.createTempFile(xmlFiles, "junit", ".xml").toFile()
+        xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
+
+        def testResults = JUnitParser.parseJUnitXML(xmlFile.text)
+
+        when:
+        util.warnBuildIfTestResultsContainFailure(testResults)
+
+        then:
+        project.hasFailingTests() == true
+
+        then:
+        steps.currentBuild.result == "UNSTABLE"
+
+        then:
+        noExceptionThrown() // pipeline does not stop here
+
+        cleanup:
+        xmlFiles.toFile().deleteDir()
     }
 }

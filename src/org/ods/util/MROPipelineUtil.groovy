@@ -308,4 +308,11 @@ class MROPipelineUtil extends PipelineUtil {
             visitor("${this.steps.env.WORKSPACE}/${REPOS_BASE_DIR}/${repo.id}", repo)
         }
     }
+
+    void warnBuildIfTestResultsContainFailure(Map testResults) {
+        if (testResults.testsuites.find { (it.errors && it.errors.toInteger() > 0) || (it.failures && it.failures.toInteger() > 0) }) {
+            this.project.setHasFailingTests(true)
+            this.warnBuild("Warning: found failing tests in test reports.")
+        }
+    }
 }

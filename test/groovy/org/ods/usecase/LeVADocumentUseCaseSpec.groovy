@@ -242,7 +242,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         def testIssues = project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(project, steps, util).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(project, steps).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 unit: [
@@ -291,7 +291,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         def testIssues = project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(project, steps, util).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(project, steps).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 unit: [
@@ -369,7 +369,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def acceptanceTestIssues = project.getAutomatedTestsTypeAcceptance()
         def integrationTestIssues = project.getAutomatedTestsTypeIntegration()
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(project, steps, util).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(project, steps).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 acceptance : [
@@ -457,7 +457,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def repo = project.repositories.first()
         def testIssues = project.getAutomatedTestsTypeInstallation()
         def testReportFiles = [xmlFile]
-        def testResults = new JUnitTestReportsUseCase(project, steps, util).parseTestReportFiles(testReportFiles)
+        def testResults = new JUnitTestReportsUseCase(project, steps).parseTestReportFiles(testReportFiles)
         def data = [
             tests: [
                 installation: [

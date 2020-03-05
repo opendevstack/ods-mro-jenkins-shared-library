@@ -183,6 +183,10 @@ class JiraUseCase {
 
         this.support.applyXunitTestResults(testIssues, testResults)
 
+        // Warn the build in case of failing tests
+        this.util.warnBuildIfTestResultsContainFailure(testResults)
+        this.util.warnBuildIfJiraTestsAreNotExecuted(testIssues, testResults)
+
         if (["Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
             // Create bugs for erroneous test issues
             def errors = JUnitParser.Helper.getErrors(testResults)

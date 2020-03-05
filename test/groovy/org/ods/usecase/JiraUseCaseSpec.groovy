@@ -272,6 +272,7 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * support.applyXunitTestResults(testIssues, testResults)
+        1 * util.warnBuildIfTestResultsContainFailure(testResults)
     }
 
     def "report test results for component in QA"() {
