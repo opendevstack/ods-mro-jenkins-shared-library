@@ -128,6 +128,7 @@ class Project {
               "PLTFMDEV-551",
               "PLTFMDEV-552",
               "PLTFMDEV-553",
+              "PLTFMDEV-554",
               "PLTFMDEV-1046"
           ],
           "mitigations": [
@@ -563,6 +564,9 @@ class Project {
           ],
           "requirements": [
               "DEMO-6"
+          ],
+          "techSpecs": [
+              "DEMO-15"
           ]
       },
       "PLTFMDEV-401": {
@@ -838,6 +842,8 @@ class Project {
           "key": "DEMO-15",
           "version": "1.0",
           "status": "IN DESIGN",
+          "systemDesignSpec": "Some system design specification.",
+          "softwareDesignSpec": "Some software design specification.",
           "components": [
               "DEMO-4",
               "DEMO-3"
@@ -849,7 +855,9 @@ class Project {
               "DEMO-16",
               "DEMO-20"
           ],
-          "tests": []
+          "tests": [
+              "PLTFMDEV-1045"
+          ]
       },
       "DEMO-26": {
           "name": "TechSpec-2",
