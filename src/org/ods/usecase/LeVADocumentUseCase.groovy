@@ -386,35 +386,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
                 data    : [
                         sections        : sections,
-                        acceptanceTests : acceptanceTestIssues ? acceptanceTestIssues.collectEntries { testIssue ->
-                            [
-                                    testIssue.key,
-                                    [
-                                            key        : testIssue.key,
-                                            datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
-                                            description: testIssue.description ?: "",
-                                            remarks    : testIssue.isMissing ? "not executed" : "",
-                                            risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
-                                            success    : testIssue.isSuccess ? "Y" : "N",
-                                            ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
-                                    ]
-                            ]
-                        } : [],
                         additionalAcceptanceTests: numberAcceptanceTest - acceptanceTestIssues.count { !it.isMissing }, 
-                        integrationTests: integrationTestIssues ? integrationTestIssues.collectEntries { testIssue ->
-                            [
-                                    testIssue.key,
-                                    [
-                                            key        : testIssue.key,
-                                            datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
-                                            description: testIssue.description ?: "",
-                                            remarks    : testIssue.isMissing ? "not executed" : "",
-                                            risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
-                                            success    : testIssue.isSuccess ? "Y" : "N",
-                                            ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
-                                    ]
-                            ]
-                        } : [],
                         additionalIntegrationTests: numberIntegrationTest - integrationTestIssues.count { !it.isMissing }, 
                         testfiles       : (acceptanceTestData + integrationTestData).testReportFiles.collect { file ->
                             [name: file.getName(), path: file.getPath()]
@@ -425,6 +397,40 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         ]
                 ]
         ]
+
+        if (!acceptanceTestIssues.isEmpty()) {
+            data_.data = data_.data << [acceptanceTests : acceptanceTestIssues.collectEntries { testIssue ->
+                [
+                    testIssue.key,
+                    [
+                            key        : testIssue.key,
+                            datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
+                            description: testIssue.description ?: "",
+                            remarks    : testIssue.isMissing ? "not executed" : "",
+                            risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
+                            success    : testIssue.isSuccess ? "Y" : "N",
+                            ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
+                    ]
+                ]
+            }]
+        }
+
+        if (!integrationTestIssues.isEmpty()) {
+            data_.data = data_.data << [integrationTests : integrationTestIssues.collectEntries { testIssue ->
+                [
+                    testIssue.key,
+                    [
+                            key        : testIssue.key,
+                            datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
+                            description: testIssue.description ?: "",
+                            remarks    : testIssue.isMissing ? "not executed" : "",
+                            risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
+                            success    : testIssue.isSuccess ? "Y" : "N",
+                            ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
+                    ]
+                ]
+            }]
+        }
 
         def files = (acceptanceTestData + integrationTestData).testReportFiles.collectEntries { file ->
             ["raw/${file.getName()}", file.getBytes()]
