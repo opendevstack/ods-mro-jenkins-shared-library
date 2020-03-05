@@ -275,6 +275,29 @@ class JiraUseCaseSpec extends SpecHelper {
         1 * util.warnBuildIfTestResultsContainFailure(testResults)
     }
 
+    def "report test results for component with unexecuted Jira tests"() {
+        given:
+        def support = Mock(JiraUseCaseSupport)
+        usecase.setSupport(support)
+
+        // Test Parameters
+        def componentName = "myComponent"
+        def testTypes = ["myTestType"]
+        def testResults = [:] // unexecuted tests
+
+        // Stubbed Method Responses
+        def testIssues = createJiraTestIssues()
+
+        when:
+        usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
+
+        then:
+        1 * project.getAutomatedTests(componentName, testTypes) >> testIssues
+
+        then:
+        1 * util.warnBuildAboutUnexecutedJiraTests(testIssues)
+    }
+
     def "report test results for component in QA"() {
         given:
         project.buildParams.targetEnvironmentToken = "Q"
@@ -304,6 +327,7 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * support.applyXunitTestResults(testIssues, testResults)
+        1 * util.warnBuildIfTestResultsContainFailure(testResults)
 
         // create bug and block impacted test cases for error
         then:
@@ -361,6 +385,7 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * support.applyXunitTestResults(testIssues, testResults)
+        1 * util.warnBuildIfTestResultsContainFailure(testResults)
 
         // create bug and block impacted test cases for error
         then:

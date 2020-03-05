@@ -1090,8 +1090,10 @@ class Project {
     }
 
     Project load() {
-        this.data.build = [:]
-        this.data.build.hasFailingTests = false
+        this.data.build = [
+            hasFailingTests: false,
+            hasUnexecutedJiraTests: false
+        ]
 
         this.data.buildParams = loadBuildParams(steps)
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
@@ -1299,6 +1301,10 @@ class Project {
         return this.data.build.hasFailingTests
     }
 
+    boolean hasUnexecutedJiraTests() {
+        return this.data.build.hasUnexecutedJiraTests
+    }
+
     static Map loadBuildParams(IPipelineSteps steps) {
         def version = steps.env.version?.trim() ?: "WIP"
         def targetEnvironment = steps.env.environment?.trim() ?: "dev"
@@ -1429,6 +1435,10 @@ class Project {
 
     void setHasFailingTests(boolean status) {
         this.data.build.hasFailingTests = status
+    }
+
+    void setHasUnexecutedJiraTests(boolean status) {
+        this.data.build.hasUnexecutedJiraTests = status
     }
 
     String toString() {

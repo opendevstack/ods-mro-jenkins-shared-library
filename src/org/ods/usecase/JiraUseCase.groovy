@@ -172,8 +172,13 @@ class JiraUseCase {
             }
         }
 
-        matchedHandler(result.matched)
-        unmatchedHandler(result.unmatched)
+        if (matchedHandler) {
+            matchedHandler(result.matched)
+        }
+
+        if (unmatchedHandler) {
+            unmatchedHandler(result.unmatched)
+        }
     }
 
     void reportTestResultsForComponent(String componentName, List<String> testTypes, Map testResults) {
@@ -181,11 +186,14 @@ class JiraUseCase {
 
         def testIssues = this.project.getAutomatedTests(componentName, testTypes)
 
-        this.support.applyXunitTestResults(testIssues, testResults)
-
-        // Warn the build in case of failing tests
         this.util.warnBuildIfTestResultsContainFailure(testResults)
-        this.util.warnBuildIfJiraTestsAreNotExecuted(testIssues, testResults)
+        this.matchTestIssuesAgainstTestResults(testIssues, testResults, null) { unexecutedJiraTests ->
+            if (!unexecutedJiraTests.isEmpty()) {
+                this.util.warnBuildAboutUnexecutedJiraTests(unexecutedJiraTests)
+            }
+        }
+
+        this.support.applyXunitTestResults(testIssues, testResults)
 
         if (["Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
             // Create bugs for erroneous test issues
