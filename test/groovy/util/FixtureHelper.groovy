@@ -88,85 +88,85 @@ class FixtureHelper {
 
     static Map createProjectBuildParams() {
         return [
-                changeDescription            : "The change I've wanted.",
-                changeId                     : "0815",
-                configItem                   : "myItem",
-                sourceEnvironmentToClone     : "dev",
-                sourceEnvironmentToCloneToken: "D",
-                targetEnvironment            : "dev",
-                targetEnvironmentToken       : "D",
-                version                      : "0.1"
+            changeDescription            : "The change I've wanted.",
+            changeId                     : "0815",
+            configItem                   : "myItem",
+            sourceEnvironmentToClone     : "dev",
+            sourceEnvironmentToCloneToken: "D",
+            targetEnvironment            : "dev",
+            targetEnvironmentToken       : "D",
+            version                      : "0.1"
         ]
     }
 
     static Map createProjectMetadata() {
         def result = [
-                id          : "pltfmdev",
-                name        : "Sock Shop",
-                description : "A socks-selling e-commerce demo application.",
-                services    : [
-                        bitbucket: [
-                                credentials: [
-                                        id: "pltfmdev-cd-cd-user-with-password"
-                                ]
-                        ],
-                        jira     : [
-                                credentials: [
-                                        id: "pltfmdev-cd-cd-user-with-password"
-                                ]
-                        ],
-                        nexus    : [
-                                repository: [
-                                        name: "leva-documentation"
-                                ]
-                        ]
+            id          : "pltfmdev",
+            name        : "Sock Shop",
+            description : "A socks-selling e-commerce demo application.",
+            services    : [
+                bitbucket: [
+                    credentials: [
+                        id: "pltfmdev-cd-cd-user-with-password"
+                    ]
                 ],
-                repositories: [
-                        [
-                                id  : "demo-app-carts",
-                                type: "ods-service",
-                                data: [
-                                        documents: [:]
-                                ]
-                        ],
-                        [
-                                id  : "demo-app-catalogue",
-                                type: "ods",
-                                data: [
-                                        documents: [:]
-                                ]
-                        ],
-                        [
-                                id  : "demo-app-front-end",
-                                type: "ods",
-                                data: [
-                                        documents: [:]
-                                ]
-                        ],
-                        [
-                                id  : "demo-app-test",
-                                type: "ods-test",
-                                data: [
-                                        documents: [:]
-                                ]
-                        ]
+                jira     : [
+                    credentials: [
+                        id: "pltfmdev-cd-cd-user-with-password"
+                    ]
                 ],
-                capabilities: []
+                nexus    : [
+                    repository: [
+                        name: "leva-documentation"
+                    ]
+                ]
+            ],
+            repositories: [
+                [
+                    id  : "demo-app-carts",
+                    type: "ods-service",
+                    data: [
+                        documents: [:]
+                    ]
+                ],
+                [
+                    id  : "demo-app-catalogue",
+                    type: "ods",
+                    data: [
+                        documents: [:]
+                    ]
+                ],
+                [
+                    id  : "demo-app-front-end",
+                    type: "ods",
+                    data: [
+                        documents: [:]
+                    ]
+                ],
+                [
+                    id  : "demo-app-test",
+                    type: "ods-test",
+                    data: [
+                        documents: [:]
+                    ]
+                ]
+            ],
+            capabilities: []
         ]
 
         result.repositories.each { repo ->
             repo.data?.git = [
-                    branch                 : "origin/master",
-                    commit                 : UUID.randomUUID().toString().replaceAll("-", ""),
-                    previousCommit         : UUID.randomUUID().toString().replaceAll("-", ""),
-                    previousSucessfulCommit: UUID.randomUUID().toString().replaceAll("-", ""),
-                    url                    : "https://cd_user@somescm.com/scm/someproject/${repo.id}.git"
+                branch                 : "origin/master",
+                commit                 : UUID.randomUUID().toString().replaceAll("-", ""),
+                previousCommit         : UUID.randomUUID().toString().replaceAll("-", ""),
+                previousSucessfulCommit: UUID.randomUUID().toString().replaceAll("-", ""),
+                url                    : "https://cd_user@somescm.com/scm/someproject/${repo.id}.git"
             ]
             repo.metadata = [
-                    name       : "Sock Shop: ${repo.id}",
-                    description: "Some description for ${repo.id}",
-                    supplier   : "https://github.com/microservices-demo/",
-                    version    : "1.0"
+                name       : "Sock Shop: ${repo.id}",
+                description: "Some description for ${repo.id}",
+                supplier   : "https://github.com/microservices-demo/",
+                version    : "1.0"
             ]
         }
 
@@ -175,10 +175,10 @@ class FixtureHelper {
 
     static Map createJiraIssue(String id, String issuetype = "Story", String summary = null, String description = null) {
         def result = [
-                id    : id,
-                key   : "JIRA-${id}",
-                fields: [:],
-                self  : "http://${id}"
+            id    : id,
+            key   : "JIRA-${id}",
+            fields: [:],
+            self  : "http://${id}"
         ]
 
         result.fields.summary = summary ?: "${id}-summary"
@@ -187,7 +187,7 @@ class FixtureHelper {
         result.fields.components = []
         result.fields.issuelinks = []
         result.fields.issuetype = [
-                name: issuetype
+            name: issuetype
         ]
 
         return result
@@ -195,13 +195,13 @@ class FixtureHelper {
 
     static Map createJiraIssueLink(String id, Map inwardIssue = null, Map outwardIssue = null) {
         def result = [
-                id  : id,
-                type: [
-                        name   : "Relate",
-                        inward : "relates to",
-                        outward: "is related to"
-                ],
-                self: "http://${id}"
+            id  : id,
+            type: [
+                name   : "Relate",
+                inward : "relates to",
+                outward: "is related to"
+            ],
+            self: "http://${id}"
         ]
 
         if (inwardIssue) {
@@ -225,31 +225,31 @@ class FixtureHelper {
         // Create an issue belonging to 3 components and 2 inward links
         def issue1 = createJiraIssue("1", issuetype)
         issue1.fields.components = [
-                [name: "myComponentA"],
-                [name: "myComponentB"],
-                [name: "myComponentC"]
+            [name: "myComponentA"],
+            [name: "myComponentB"],
+            [name: "myComponentC"]
         ]
         issue1.fields.issuelinks = [
-                createJiraIssueLink("1", createJiraIssue("100")),
-                createJiraIssueLink("2", createJiraIssue("101"))
+            createJiraIssueLink("1", createJiraIssue("100")),
+            createJiraIssueLink("2", createJiraIssue("101"))
         ]
         result << issue1
 
         // Create an issue belonging to 2 components and 1 outward links
         def issue2 = createJiraIssue("2", issuetype)
         issue2.fields.components = [
-                [name: "myComponentA"],
-                [name: "myComponentB"]
+            [name: "myComponentA"],
+            [name: "myComponentB"]
         ]
         issue2.fields.issuelinks = [
-                createJiraIssueLink("1", createJiraIssue("200"))
+            createJiraIssueLink("1", createJiraIssue("200"))
         ]
         result << issue2
 
         // Create an issue belonging to 1 component and 0 outward links
         def issue3 = createJiraIssue("3", issuetype)
         issue3.fields.components = [
-                [name: "myComponentA"]
+            [name: "myComponentA"]
         ]
         result << issue3
 
@@ -272,42 +272,42 @@ class FixtureHelper {
 
         def issue1 = result[0]
         issue1.fields.issuelinks = [
-                createJiraIssueLink("1", null, createJiraIssue("100"))
+            createJiraIssueLink("1", null, createJiraIssue("100"))
         ]
         issue1.test = [
-                description: issue1.description
+            description: issue1.description
         ]
 
         def issue2 = result[1]
         issue2.fields.issuelinks = [
-                createJiraIssueLink("1", null, createJiraIssue("200")),
+            createJiraIssueLink("1", null, createJiraIssue("200")),
         ]
         issue2.test = [
-                description: issue2.description
+            description: issue2.description
         ]
 
         def issue3 = result[2]
         issue3.fields.issuelinks = [
-                createJiraIssueLink("1", null, createJiraIssue("300"))
+            createJiraIssueLink("1", null, createJiraIssue("300"))
         ]
         issue3.test = [
-                description: issue3.description
+            description: issue3.description
         ]
 
         def issue4 = result[3]
         issue4.fields.issuelinks = [
-                createJiraIssueLink("1", null, createJiraIssue("400")),
+            createJiraIssueLink("1", null, createJiraIssue("400")),
         ]
         issue4.test = [
-                description: issue4.description
+            description: issue4.description
         ]
 
         def issue5 = createJiraIssue("5", "Test")
         issue5.fields.issuelinks = [
-                createJiraIssueLink("1", null, createJiraIssue("500")),
+            createJiraIssueLink("1", null, createJiraIssue("500")),
         ]
         issue5.test = [
-                description: issue5.description
+            description: issue5.description
         ]
         result << issue5
 
@@ -370,31 +370,31 @@ class FixtureHelper {
 
     static Map createOpenShiftPodDataForComponent() {
         return [
-                items: [
-                        [
-                                metadata: [
-                                        name             : "myPodName",
-                                        namespace        : "myPodNamespace",
-                                        creationTimestamp: "myPodCreationTimestamp",
-                                        labels           : [
-                                                env: "myPodEnvironment"
-                                        ]
-                                ],
-                                spec    : [
-                                        nodeName: "myPodNode"
-                                ],
-                                status  : [
-                                        podIP: "1.2.3.4",
-                                        phase: "myPodStatus"
-                                ]
+            items: [
+                [
+                    metadata: [
+                        name             : "myPodName",
+                        namespace        : "myPodNamespace",
+                        creationTimestamp: "myPodCreationTimestamp",
+                        labels           : [
+                            env: "myPodEnvironment"
                         ]
+                    ],
+                    spec    : [
+                        nodeName: "myPodNode"
+                    ],
+                    status  : [
+                        podIP: "1.2.3.4",
+                        phase: "myPodStatus"
+                    ]
                 ]
+            ]
         ]
     }
 
     static Map createTestResults() {
         return JUnitParser.parseJUnitXML(
-                createJUnitXMLTestResults()
+            createJUnitXMLTestResults()
         )
     }
 
