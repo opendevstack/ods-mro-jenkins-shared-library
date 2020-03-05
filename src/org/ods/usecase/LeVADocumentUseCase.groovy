@@ -661,7 +661,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def files = data.tests.installation.testReportFiles.collectEntries { file ->
             ["raw/${file.getName()}", file.getBytes()]
         }
-
+        this.steps.echo("nifl::createIVR() data_.data.tests is ${data_.data.tests}")
         def uri = this.createDocument(documentType, null, data_, files, null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
