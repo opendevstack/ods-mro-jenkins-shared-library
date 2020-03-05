@@ -621,21 +621,9 @@ class Project {
           "steps": [
               {
                   "index": 0,
-                  "step": "Connect to database",
-                  "data": "database credentials",
-                  "expectedResult": "Connection to database is available and user is authenticated"
-              },
-              {
-                  "index": 1,
-                  "step": "List and verify databases",
-                  "data": "database credentials; Sock Shop DB",
-                  "expectedResult": "authenticated user sees all required databases"
-              },
-              {
-                  "index": 2,
-                  "step": "Use Sock Shop database",
-                  "data": "SockShopDB",
-                  "expectedResult": "Authenticated user can switch to Sock Shop DB and see tables"
+                  "step": "Connect to the service on :80/health via HTTP",
+                  "data": "N/A",
+                  "expectedResult": "Connection to the service is established and the service returns 'OK'"
               }
           ],
           "components": [
@@ -659,21 +647,9 @@ class Project {
           "steps": [
               {
                   "index": 0,
-                  "step": "Connect to database",
-                  "data": "database credentials",
-                  "expectedResult": "Connection to database is available and user is authenticated"
-              },
-              {
-                  "index": 1,
-                  "step": "List and verify databases",
-                  "data": "database credentials; Sock Shop DB",
-                  "expectedResult": "authenticated user sees all required databases"
-              },
-              {
-                  "index": 2,
-                  "step": "Use Sock Shop database",
-                  "data": "SockShopDB",
-                  "expectedResult": "Authenticated user can switch to Sock Shop DB and see tables"
+                  "step": "Connect to the service on :80/health via HTTP",
+                  "data": "N/A",
+                  "expectedResult": "Connection to the service is established and the service returns 'OK'"
               }
           ],
           "components": [
@@ -697,21 +673,9 @@ class Project {
           "steps": [
               {
                   "index": 0,
-                  "step": "Connect to database",
-                  "data": "database credentials",
-                  "expectedResult": "Connection to database is available and user is authenticated"
-              },
-              {
-                  "index": 1,
-                  "step": "List and verify databases",
-                  "data": "database credentials; Sock Shop DB",
-                  "expectedResult": "authenticated user sees all required databases"
-              },
-              {
-                  "index": 2,
-                  "step": "Use Sock Shop database",
-                  "data": "SockShopDB",
-                  "expectedResult": "Authenticated user can switch to Sock Shop DB and see tables"
+                  "step": "Connect to the service on :80/health via HTTP",
+                  "data": "N/A",
+                  "expectedResult": "Connection to the service is established and the service returns 'OK'"
               }
           ],
           "components": [
@@ -735,15 +699,9 @@ class Project {
           "steps": [
               {
                   "index": 0,
-                  "step": "Request URL for health endpoint",
-                  "data": "test authentication token",
-                  "expectedResult": "JSoN file with service status messages gets returned."
-              },
-              {
-                  "index": 1,
-                  "step": "Verify that all required services are listed and their status is ok",
-                  "data": "web-ui, rest endpoint",
-                  "expectedResult": "web-ui service: ok; rest service: ok;"
+                  "step": "Connect to the service on :80/health via HTTP",
+                  "data": "N/A",
+                  "expectedResult": "Connection to the service is established and the service returns 'OK'"
               }
           ],
           "components": [
