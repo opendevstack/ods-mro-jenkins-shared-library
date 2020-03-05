@@ -198,12 +198,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def acceptanceTestBugs = bugs.findAll{
             bug -> bug.tests.findAll{
-                test -> test.testType == "Acceptance"}
+                test -> test.testType == Project.TestType.ACCEPTANCE}
             }
 
         def integrationTestBugs = bugs.findAll{
             bug -> bug.tests.findAll{
-                test -> test.testType == "Integration"}
+                test -> test.testType == Project.TestType.INTEGRATION}
             }
 
         def data_ = [
@@ -213,28 +213,28 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         if (!integrationTestBugs.isEmpty()) {
             data_.data.integrationTests = integrationTestBugs.collectEntries { bug ->
+                [
+                    bug.key,
                     [
-                        bug.key,
-                        [
-                            //Discrepancy ID -> BUG Issue ID
-                            discrepancyID: bug.key,
-                            //Test Case No. -> JIRA (Test Case Key)
-                            testcaseID: bug.tests.first().key,
-                            //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                            level: "Integration",
-                            //Description of Failure or Discrepancy -> Bug Issue Summary
-                            description: bug.name,
-                            //Remediation Action -> "To be fixed"
-                            remediation: "To be fixed",
-                            //Responsible / Due Date -> JIRA (assignee, Due date)
-                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} / ${bug.dueDate?bug.dueDate:'N/A'}",
-                            //Outcome of the Resolution -> Bug Status
-                            outcomeResolution: bug.status,
-                            //Resolved Y/N -> JIRA Status -> Done = Yes
-                            resolved: bug.status=="Done"?"Yes":"No"
-                        ]
+                        //Discrepancy ID -> BUG Issue ID
+                        discrepancyID: bug.key,
+                        //Test Case No. -> JIRA (Test Case Key)
+                        testcaseID: bug.tests.first().key,
+                        //-	Level of Test Case = Unit / Integration / Acceptance / Installation
+                        level: "Integration",
+                        //Description of Failure or Discrepancy -> Bug Issue Summary
+                        description: bug.name,
+                        //Remediation Action -> "To be fixed"
+                        remediation: "To be fixed",
+                        //Responsible / Due Date -> JIRA (assignee, Due date)
+                        responsibleAndDueDate: "${bug.assignee ? bug.assignee : 'N/A'} / ${bug.dueDate ? bug.dueDate : 'N/A'}",
+                        //Outcome of the Resolution -> Bug Status
+                        outcomeResolution: bug.status,
+                        //Resolved Y/N -> JIRA Status -> Done = Yes
+                        resolved: bug.status == "Done" ? "Yes" : "No"
                     ]
-                }
+                ]
+            }
         }
 
         if (!acceptanceTestBugs.isEmpty()) {
@@ -253,22 +253,20 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             //Remediation Action -> "To be fixed"
                             remediation: "To be fixed",
                             //Responsible / Due Date -> JIRA (assignee, Due date)
-                            responsibleAndDueDate: "${bug.assignee?bug.assignee:'N/A'} / ${bug.dueDate?bug.dueDate:'N/A'}",
+                            responsibleAndDueDate: "${bug.assignee ? bug.assignee : 'N/A'} / ${bug.dueDate ? bug.dueDate : 'N/A'}",
                             //Outcome of the Resolution -> Bug Status
                             outcomeResolution: bug.status,
                             //Resolved Y/N -> JIRA Status -> Done = Yes
-                            resolved: bug.status=="Done"?"Yes":"No"
+                            resolved: bug.status == "Done" ? "Yes" : "No"
                         ]
                     ]
                 }
         }
-        //FIX: Need to know in which enviroment this document belogs and if it contains a watermark.
+
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
-
         return uri
     }
-
 
     String createDTP(Map repo = null, Map data = null) {
         def documentType = DocumentType.DTP as String
@@ -890,7 +888,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
-
     Map getDocumentMetadata(String documentTypeName, Map repo = null) {
         def name = this.project.name
         if (repo) {
@@ -954,7 +951,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         // Search for the Jira issue associated with the document
         def jiraIssues = this.jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery)
-
         if (jiraIssues.size() != 1) {
             throw new RuntimeException("Error: Jira query returned ${jiraIssues.size()} issues: '${jqlQuery}'.")
         }
