@@ -573,7 +573,7 @@ class Project {
           ]
       },
       "PLTFMDEV-401": {
-          "name": "verify database is correctly setup",
+          "name": "verify database is correctly installed",
           "description": "verify database is correctly setup. Outcome: Succeeded",
           "key": "PLTFMDEV-401",
           "version": "1.0",
@@ -611,8 +611,8 @@ class Project {
           ]
       },
       "PLTFMDEV-1060": {
-          "name": "verify database is correctly installed",
-          "description": "verify database is correctly setup. Outcome: Error",
+          "name": "verify payment service is correctly installed",
+          "description": "verify payment service is correctly setup. Outcome: Error",
           "key": "PLTFMDEV-1060",
           "version": "1.0",
           "status": "READY TO TEST",
@@ -649,8 +649,8 @@ class Project {
           ]
       },
       "PLTFMDEV-1061": {
-          "name": "verify database is operational",
-          "description": "verify database is operational. Outcome: Failed",
+          "name": "verify order service is correctly installed",
+          "description": "verify order service is correctly installed. Outcome: Failed",
           "key": "PLTFMDEV-1061",
           "version": "1.0",
           "status": "READY TO TEST",
@@ -687,8 +687,8 @@ class Project {
           ]
       },
       "PLTFMDEV-1062": {
-          "name": "verify database is authentication is working",
-          "description": "verify database is correctly setup. Outcome: Missing",
+          "name": "verify shipping service is correctly installed",
+          "description": "verify shipping service is correctly installed. Outcome: Missing",
           "key": "PLTFMDEV-1062",
           "version": "1.0",
           "status": "READY TO TEST",
@@ -725,8 +725,8 @@ class Project {
           ]
       },
       "PLTFMDEV-1046": {
-          "name": "verify frontend is correctly setup",
-          "description": "verify frontend is correctly setup. Outcome: Succeeded",
+          "name": "verify frontend is correctly installed",
+          "description": "verify frontend is correctly installed. Outcome: Succeeded",
           "key": "PLTFMDEV-1046",
           "version": "1.0",
           "status": "READY TO TEST",
