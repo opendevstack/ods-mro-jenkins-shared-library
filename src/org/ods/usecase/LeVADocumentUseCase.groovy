@@ -406,7 +406,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         if (!acceptanceTestIssues.isEmpty()) {
-            data_.data = data_.data << [acceptanceTests : acceptanceTestIssues.collectEntries { testIssue ->
+            data_.data.acceptanceTests = acceptanceTestIssues.collectEntries { testIssue ->
                 [
                     testIssue.key,
                     [
@@ -419,11 +419,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
                     ]
                 ]
-            }]
+            }
         }
 
         if (!integrationTestIssues.isEmpty()) {
-            data_.data = data_.data << [integrationTests : integrationTestIssues.collectEntries { testIssue ->
+            data_.data.integrationTests = integrationTestIssues.collectEntries { testIssue ->
                 [
                     testIssue.key,
                     [
@@ -436,7 +436,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
                     ]
                 ]
-            }]
+            }
         }
 
         def files = (acceptanceTestData + integrationTestData).testReportFiles.collectEntries { file ->
