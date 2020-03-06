@@ -5717,7 +5717,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         where:
         documentType                         | repo | phase                               | stage                                               || result
-        LeVADocumentUseCase.DocumentType.CSD  | null | MROPipelineUtil.PipelinePhases.INIT | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || false
+        LeVADocumentUseCase.DocumentType.CSD | null | MROPipelineUtil.PipelinePhases.INIT | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || false
     }
 
     def "is document applicable in the absence of repositories"() {
