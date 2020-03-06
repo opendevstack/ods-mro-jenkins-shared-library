@@ -367,6 +367,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                             [name: file.getName(), path: file.getPath()]
                         },
                         testsuites   : data.testResults,
+                        testxUnits   : this.getxUnitTestInfo(data),
                         discrepancies: discrepancies.discrepancies,
                         conclusion   : [
                                 summary  : discrepancies.conclusion.summary,
@@ -988,5 +989,18 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         return count
+    }
+
+    protected List getxUnitTestInfo(Map tests) {
+        def data = tests.testReportFiles.collect { testReportFile ->
+            [
+                testReportFileName : testReportFile.name,
+                testReportFileRaw  : testReportFile.text
+            ]
+        }
+
+        data = SortUtil.sortIssuesByProperties(data ?: [], ["testReportFileName"])
+
+        return data
     }
 }
