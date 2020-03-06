@@ -97,12 +97,133 @@ class Project {
 
     private static final TEMP_FAKE_JIRA_DATA = """
 {
+{
     "project": {
         "name": "PLTFMDEV",
         "description": "Sample Project with 68 fictional Issues",
         "key": "PLTFMDEV",
         "id": 4711,
-        "jiraBaseUrl": "http://localhost:2990/jira/DEMO"
+        "jiraBaseUrl": "http://localhost:2990/jira/DEMO",
+        "gampTopics": [
+            "operational requirements",
+            "functional requirements",
+            "data requirements",
+            "technical requirements",
+            "interface requirements",
+            "environment requirements",
+            "performance requirements",
+            "availability requirements",
+            "security requirements",
+            "maintenance requirements",
+            "regulatory requirements",
+            "roles",
+            "compatibility",
+            "procedural constraints",
+            "overarching requirements"
+        ],
+        "projectProperties": {
+            "PROJECT.POO_CAT.HIGH": "Frequency of the usage of the related function is >10 times per week.",
+            "PROJECT.POO_CAT.LOW": "Frequency of the usage of the related function is <10 times per year.",
+            "PROJECT.POO_CAT.MEDIUM": "Frequency of the usage of the related function is <10 times per week.",
+            "PROJECT.USES_POO": "true"
+        },
+        "enumDictionary": {
+            "ProbabilityOfDetection": {
+                "1": {
+                    "value": 1,
+                    "text": "Immediate",
+                    "short": "I"
+                },
+                "2": {
+                    "value": 2,
+                    "text": "Before Impact",
+                    "short": "B"
+                },
+                "3": {
+                    "value": 3,
+                    "text": "After Impact",
+                    "short": "A"
+                }
+            },
+            "SeverityOfImpact": {
+                "1": {
+                    "value": 1,
+                    "text": "Low",
+                    "short": "L"
+                },
+                "2": {
+                    "value": 2,
+                    "text": "Medium",
+                    "short": "M"
+                },
+                "3": {
+                    "value": 3,
+                    "text": "High",
+                    "short": "H"
+                }
+            },
+            "ProbabilityOfOccurrence": {
+                "1": {
+                    "value": 1,
+                    "text": "LOW",
+                    "short": "L"
+                },
+                "2": {
+                    "value": 2,
+                    "text": "MEDIUM",
+                    "short": "M"
+                },
+                "3": {
+                    "value": 3,
+                    "text": "HIGH",
+                    "short": "H"
+                }
+            },
+            "RiskPriority": {
+                "0": {
+                    "value": 0,
+                    "text": "N/A",
+                    "short": "N"
+                },
+                "1": {
+                    "value": 1,
+                    "text": "HIGH",
+                    "short": "H"
+                },
+                "2": {
+                    "value": 2,
+                    "text": "MEDIUM",
+                    "short": "M"
+                },
+                "3": {
+                    "value": 3,
+                    "text": "LOW",
+                    "short": "L"
+                }
+            },
+            "GxPRelevance": {
+                "R2": {
+                    "value": 2,
+                    "text": "Relevant",
+                    "short": "R2"
+                },
+                "N0": {
+                    "value": 0,
+                    "text": "Not relevant/ZERO",
+                    "short": "N0"
+                },
+                "N1": {
+                    "value": 1,
+                    "text": "Not relevant/LESS",
+                    "short": "N1"
+                },
+                "N2": {
+                    "value": 2,
+                    "text": "Not relevant/EQUAL",
+                    "short": "N2"
+                }
+            }
+        }
     },
     "components": {
         "DEMO-2": {
@@ -157,10 +278,7 @@ class Project {
             ],
             "tests": [
                 "PLTFMDEV-1045",
-                "PLTFMDEV-401",
-                "PLTFMDEV-1060",
-                "PLTFMDEV-1061",
-                "PLTFMDEV-1062"
+                "PLTFMDEV-401"
             ],
             "mitigations": [
                 "DEMO-8",
@@ -295,151 +413,21 @@ class Project {
         }
     },
     "risks": {
-        "DEMO-7": {
-            "name": "Risk-1 on Req DEMO-6",
-            "description": "Risk-1 on Req DEMO-6 is described here...",
-            "key": "DEMO-7",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/ZERO",
-            "probabilityOfOccurrence": "MEDIUM",
-            "severityOfImpact": "Medium",
-            "probabilityOfDetection": "After Impact",
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-11": {
-            "name": "Risk-2 on Req DEMO-6",
-            "description": "Risk-2 on Req DEMO-6 is described here...",
-            "key": "DEMO-11",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/LESS",
-            "probabilityOfOccurrence": "HIGH",
-            "severityOfImpact": "High",
-            "probabilityOfDetection": "Immediate",
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-16": {
-            "name": "Risk-1 on TechSpec DEMO-15",
-            "description": "Risk-1 on TechSpec DEMO-15 is described here...",
-            "key": "DEMO-16",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/EQUAL",
-            "probabilityOfOccurrence": "MEDIUM",
-            "severityOfImpact": "High",
-            "probabilityOfDetection": "Immediate",
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-20": {
-            "name": "Risk-2 on TechSpec DEMO-15",
-            "description": "Risk-2 on TechSpec DEMO-15 is described here...",
-            "key": "DEMO-20",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Relevant",
-            "probabilityOfOccurrence": "HIGH",
-            "severityOfImpact": "Low",
-            "probabilityOfDetection": "Immediate",
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-27": {
-            "name": "Risk-1 on TechSpec DEMO-26",
-            "description": "Risk-1 on TechSpec DEMO-26 is described here...",
-            "key": "DEMO-27",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Relevant",
-            "probabilityOfOccurrence": "HIGH",
-            "severityOfImpact": "Medium",
-            "probabilityOfDetection": "After Impact",
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-31": {
-            "name": "Risk-2 on TechSpec DEMO-26",
-            "description": "Risk-2 on TechSpec DEMO-26 is described here...",
-            "key": "DEMO-31",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/LESS",
-            "probabilityOfOccurrence": "HIGH",
-            "severityOfImpact": "Medium",
-            "probabilityOfDetection": "Immediate",
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
         "DEMO-41": {
             "name": "Risk-1 on Req DEMO-40",
             "description": "Risk-1 on Req DEMO-40 is described here...",
             "key": "DEMO-41",
             "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/LESS",
-            "probabilityOfOccurrence": "HIGH",
-            "severityOfImpact": "Medium",
-            "probabilityOfDetection": "Immediate",
-            "requirements": [
-                "DEMO-40"
+            "status": "TO DO",
+            "gxpRelevance": "N0",
+            "probabilityOfOccurrence": 1,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 0,
+            "riskPriority": 0,
+            "mitigations": [
+                "DEMO-42"
             ],
-            "tests": []
-        },
-        "DEMO-45": {
-            "name": "Risk-2 on Req DEMO-40",
-            "description": "Risk-2 on Req DEMO-40 is described here...",
-            "key": "DEMO-45",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/EQUAL",
-            "probabilityOfOccurrence": "HIGH",
-            "severityOfImpact": "Low",
-            "probabilityOfDetection": "After Impact",
-            "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-50": {
-            "name": "Risk-1 on TechSpec DEMO-49",
-            "description": "Risk-1 on TechSpec DEMO-49 is described here...",
-            "key": "DEMO-50",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Relevant",
-            "probabilityOfOccurrence": "MEDIUM",
-            "severityOfImpact": "Medium",
-            "probabilityOfDetection": "Immediate",
-            "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-54": {
-            "name": "Risk-2 on TechSpec DEMO-49",
-            "description": "Risk-2 on TechSpec DEMO-49 is described here...",
-            "key": "DEMO-54",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/EQUAL",
-            "probabilityOfOccurrence": "MEDIUM",
-            "severityOfImpact": "High",
-            "probabilityOfDetection": "After Impact",
             "requirements": [
                 "DEMO-40"
             ],
@@ -450,13 +438,138 @@ class Project {
             "description": "Risk-1 on TechSpec DEMO-60 is described here...",
             "key": "DEMO-61",
             "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/ZERO",
-            "probabilityOfOccurrence": "HIGH",
-            "severityOfImpact": "High",
-            "probabilityOfDetection": "Immediate",
+            "status": "TO DO",
+            "gxpRelevance": "N0",
+            "probabilityOfOccurrence": 3,
+            "severityOfImpact": 2,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 0,
+            "riskPriority": 0,
+            "mitigations": [
+                "DEMO-62"
+            ],
             "requirements": [
                 "DEMO-40"
+            ],
+            "tests": []
+        },
+        "DEMO-50": {
+            "name": "Risk-1 on TechSpec DEMO-49",
+            "description": "Risk-1 on TechSpec DEMO-49 is described here...",
+            "key": "DEMO-50",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "N1",
+            "probabilityOfOccurrence": 2,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 12,
+            "riskPriority": 2,
+            "mitigations": [
+                "DEMO-51"
+            ],
+            "requirements": [
+                "DEMO-40"
+            ],
+            "tests": []
+        },
+        "DEMO-7": {
+            "name": "Risk-1 on Req DEMO-6",
+            "description": "Risk-1 on Req DEMO-6 is described here...",
+            "key": "DEMO-7",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "N0",
+            "probabilityOfOccurrence": 3,
+            "severityOfImpact": 2,
+            "probabilityOfDetection": 3,
+            "riskPriorityNumber": 0,
+            "riskPriority": 0,
+            "mitigations": [
+                "DEMO-8"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "tests": []
+        },
+        "DEMO-27": {
+            "name": "Risk-1 on TechSpec DEMO-26",
+            "description": "Risk-1 on TechSpec DEMO-26 is described here...",
+            "key": "DEMO-27",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "R2",
+            "probabilityOfOccurrence": 2,
+            "severityOfImpact": 2,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 16,
+            "riskPriority": 2,
+            "mitigations": [
+                "DEMO-28"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "tests": []
+        },
+        "DEMO-16": {
+            "name": "Risk-1 on TechSpec DEMO-15",
+            "description": "Risk-1 on TechSpec DEMO-15 is described here...",
+            "key": "DEMO-16",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "N1",
+            "probabilityOfOccurrence": 3,
+            "severityOfImpact": 1,
+            "probabilityOfDetection": 3,
+            "riskPriorityNumber": 9,
+            "riskPriority": 2,
+            "mitigations": [
+                "DEMO-17"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "tests": []
+        },
+        "DEMO-45": {
+            "name": "Risk-2 on Req DEMO-40",
+            "description": "Risk-2 on Req DEMO-40 is described here...",
+            "key": "DEMO-45",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "N0",
+            "probabilityOfOccurrence": 3,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 1,
+            "riskPriorityNumber": 0,
+            "riskPriority": 0,
+            "mitigations": [
+                "DEMO-46"
+            ],
+            "requirements": [
+                "DEMO-40"
+            ],
+            "tests": []
+        },
+        "DEMO-11": {
+            "name": "Risk-2 on Req DEMO-6",
+            "description": "Risk-2 on Req DEMO-6 is described here...",
+            "key": "DEMO-11",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "N0",
+            "probabilityOfOccurrence": 3,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 3,
+            "riskPriorityNumber": 0,
+            "riskPriority": 0,
+            "mitigations": [
+                "DEMO-12"
+            ],
+            "requirements": [
+                "DEMO-6"
             ],
             "tests": []
         },
@@ -465,13 +578,78 @@ class Project {
             "description": "Risk-2 on TechSpec DEMO-60 is described here...",
             "key": "DEMO-65",
             "version": "1.0",
-            "status": "IN DESIGN",
-            "gxpRelevance": "Not relevant/ZERO",
-            "probabilityOfOccurrence": "MEDIUM",
-            "severityOfImpact": "Low",
-            "probabilityOfDetection": "Immediate",
+            "status": "TO DO",
+            "gxpRelevance": "N1",
+            "probabilityOfOccurrence": 2,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 3,
+            "riskPriorityNumber": 18,
+            "riskPriority": 1,
+            "mitigations": [
+                "DEMO-66"
+            ],
             "requirements": [
                 "DEMO-40"
+            ],
+            "tests": []
+        },
+        "DEMO-54": {
+            "name": "Risk-2 on TechSpec DEMO-49",
+            "description": "Risk-2 on TechSpec DEMO-49 is described here...",
+            "key": "DEMO-54",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "N2",
+            "probabilityOfOccurrence": 1,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 3,
+            "riskPriorityNumber": 18,
+            "riskPriority": 1,
+            "mitigations": [
+                "DEMO-55"
+            ],
+            "requirements": [
+                "DEMO-40"
+            ],
+            "tests": []
+        },
+        "DEMO-31": {
+            "name": "Risk-2 on TechSpec DEMO-26",
+            "description": "Risk-2 on TechSpec DEMO-26 is described here...",
+            "key": "DEMO-31",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "N2",
+            "probabilityOfOccurrence": 3,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 36,
+            "riskPriority": 1,
+            "mitigations": [
+                "DEMO-32"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "tests": []
+        },
+        "DEMO-20": {
+            "name": "Risk-2 on TechSpec DEMO-15",
+            "description": "Risk-2 on TechSpec DEMO-15 is described here...",
+            "key": "DEMO-20",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "R2",
+            "probabilityOfOccurrence": 2,
+            "severityOfImpact": 2,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 16,
+            "riskPriority": 2,
+            "mitigations": [
+                "DEMO-21"
+            ],
+            "requirements": [
+                "DEMO-6"
             ],
             "tests": []
         }
@@ -573,114 +751,13 @@ class Project {
             ]
         },
         "PLTFMDEV-401": {
-            "name": "verify database is correctly installed",
-            "description": "verify database is correctly setup. Outcome: Succeeded",
+            "name": "verify database is correctly setup",
+            "description": "verify database is correctly setup",
             "key": "PLTFMDEV-401",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to database",
-                    "data": "database credentials",
-                    "expectedResult": "Connection to database is available and user is authenticated"
-                },
-                {
-                    "index": 1,
-                    "step": "List and verify databases",
-                    "data": "database credentials; Sock Shop DB",
-                    "expectedResult": "authenticated user sees all required databases"
-                },
-                {
-                    "index": 2,
-                    "step": "Use Sock Shop database",
-                    "data": "SockShopDB",
-                    "expectedResult": "Authenticated user can switch to Sock Shop DB and see tables"
-                }
-            ],
-            "components": [
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
-        },
-        "PLTFMDEV-1060": {
-            "name": "verify payment service is correctly installed",
-            "description": "verify payment service is correctly setup. Outcome: Error",
-            "key": "PLTFMDEV-1060",
-            "version": "1.0",
-            "status": "READY TO TEST",
-            "testType": "Installation",
-            "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to the service on :80/health via HTTP",
-                    "data": "N/A",
-                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
-                }
-            ],
-            "components": [
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
-        },
-        "PLTFMDEV-1061": {
-            "name": "verify order service is correctly installed",
-            "description": "verify order service is correctly installed. Outcome: Failed",
-            "key": "PLTFMDEV-1061",
-            "version": "1.0",
-            "status": "READY TO TEST",
-            "testType": "Installation",
-            "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to the service on :80/health via HTTP",
-                    "data": "N/A",
-                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
-                }
-            ],
-            "components": [
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
-        },
-        "PLTFMDEV-1062": {
-            "name": "verify shipping service is correctly installed",
-            "description": "verify shipping service is correctly installed. Outcome: Missing",
-            "key": "PLTFMDEV-1062",
-            "version": "1.0",
-            "status": "READY TO TEST",
-            "testType": "Installation",
-            "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to the service on :80/health via HTTP",
-                    "data": "N/A",
-                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
-                }
-            ],
             "components": [
                 "DEMO-3"
             ],
@@ -693,21 +770,13 @@ class Project {
             ]
         },
         "PLTFMDEV-1046": {
-            "name": "verify frontend is correctly installed",
-            "description": "verify frontend is correctly installed. Outcome: Succeeded",
+            "name": "verify frontend is correctly setup",
+            "description": "verify frontend is correctly setup",
             "key": "PLTFMDEV-1046",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to the service on :80/health via HTTP",
-                    "data": "N/A",
-                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
-                }
-            ],
             "components": [
                 "DEMO-2"
             ],
@@ -1150,6 +1219,16 @@ class Project {
 
             return result
         }.values() as List
+    }
+
+    Map getEnumDictionary(String dictionaryName = null) {
+        return this.data.jira.project.enumDictionary.find { d ->
+            d.key.toLowerCase() == dictionaryName.toLowerCase()
+        }.value
+    }
+
+    Map getProjectProperties() {
+        return this.data.jira.project.projectProperties
     }
 
     List<Map> getAutomatedTestsTypeAcceptance(String componentName = null) {
