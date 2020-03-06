@@ -26,6 +26,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         SSDS,
         TIP,
         TIR,
+        TRC,
         OVERALL_DTR,
         OVERALL_IVR,
         OVERALL_TIR
@@ -41,6 +42,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.IVP as String)        : "Configuration and Installation Testing Plan",
         (DocumentType.IVR as String)        : "Configuration and Installation Testing Report",
         (DocumentType.RA as String)         : "Risk Assessment",
+        (DocumentType.TRC as String)         : "Traceability Matrix",
         (DocumentType.SSDS as String)       : "Software Design Specification",
         (DocumentType.TIP as String)        : "Technical Installation Plan",
         (DocumentType.TIR as String)        : "Technical Installation Report",
@@ -888,6 +890,40 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         return this.createDocument(documentType, repo, data_, [:], modifier, null, watermarkText)
+    }
+
+    String createTRC(Map repo = null, Map data = null) {
+        def documentType = DocumentType.TRC as String
+
+        def sections = this.jiraUseCase.getDocumentChapterData(documentType)
+        if (!sections) {
+            throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
+        }
+
+        def systemRequirements = this.project.getSystemRequirements().collect { r ->
+            [
+                key: r.key,
+                name: r.name,
+                description: r.description,
+                risks: r.risks.join(", "),
+                tests: r.tests.join(", ")
+            ]
+        }
+
+        if (!sections."sec4") sections."sec4" = [:]
+        sections."sec4".systemRequirements = SortUtil.sortIssuesByProperties(systemRequirements, ["key"])
+
+        def data_ = [
+                metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
+                data    : [
+                        sections: sections
+                ]
+        ]
+
+        def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
+        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        return uri
+
     }
 
     String createOverallDTR(Map repo = null, Map data = null) {
