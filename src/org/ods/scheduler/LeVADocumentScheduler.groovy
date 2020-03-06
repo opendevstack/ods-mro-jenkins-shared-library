@@ -13,8 +13,8 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.SSDS as String,
             LeVADocumentUseCase.DocumentType.CSD as String,
             LeVADocumentUseCase.DocumentType.RA as String,
-            LeVADocumentUseCase.DocumentType.FTP as String,
-            LeVADocumentUseCase.DocumentType.FTR as String,
+            LeVADocumentUseCase.DocumentType.CFTP as String,
+            LeVADocumentUseCase.DocumentType.CFTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
@@ -35,8 +35,8 @@ class LeVADocumentScheduler extends DocGenScheduler {
             LeVADocumentUseCase.DocumentType.SSDS as String,
             LeVADocumentUseCase.DocumentType.CSD as String,
             LeVADocumentUseCase.DocumentType.RA as String,
-            LeVADocumentUseCase.DocumentType.FTP as String,
-            LeVADocumentUseCase.DocumentType.FTR as String,
+            LeVADocumentUseCase.DocumentType.CFTP as String,
+            LeVADocumentUseCase.DocumentType.CFTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
             LeVADocumentUseCase.DocumentType.TIP as String,
@@ -45,12 +45,13 @@ class LeVADocumentScheduler extends DocGenScheduler {
         ],
         "5": [
             LeVADocumentUseCase.DocumentType.CSD as String,
+            LeVADocumentUseCase.DocumentType.DIL as String,
             LeVADocumentUseCase.DocumentType.DTP as String,
             LeVADocumentUseCase.DocumentType.RA as String,
             LeVADocumentUseCase.DocumentType.DTR as String,
             LeVADocumentUseCase.DocumentType.OVERALL_DTR as String,
-            LeVADocumentUseCase.DocumentType.FTP as String,
-            LeVADocumentUseCase.DocumentType.FTR as String,
+            LeVADocumentUseCase.DocumentType.CFTP as String,
+            LeVADocumentUseCase.DocumentType.CFTR as String,
             LeVADocumentUseCase.DocumentType.IVP as String,
             LeVADocumentUseCase.DocumentType.IVR as String,
             LeVADocumentUseCase.DocumentType.SSDS as String,
@@ -81,8 +82,9 @@ class LeVADocumentScheduler extends DocGenScheduler {
             (LeVADocumentUseCase.DocumentType.RA as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
             (LeVADocumentUseCase.DocumentType.IVP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
             (LeVADocumentUseCase.DocumentType.IVR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
-            (LeVADocumentUseCase.DocumentType.FTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
-            (LeVADocumentUseCase.DocumentType.FTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.CFTP as String): MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START,
+            (LeVADocumentUseCase.DocumentType.CFTR as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END,
+            (LeVADocumentUseCase.DocumentType.DIL as String): MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END
         ],
         (MROPipelineUtil.PipelinePhases.RELEASE): [
         ],
@@ -109,7 +111,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
     private static List REQUIRING_REPOSITORIES = [
         LeVADocumentUseCase.DocumentType.OVERALL_DTR as String,
         LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
-        LeVADocumentUseCase.DocumentType.FTR as String,
+        LeVADocumentUseCase.DocumentType.CFTR as String,
         LeVADocumentUseCase.DocumentType.IVR as String
     ]
 
@@ -117,13 +119,15 @@ class LeVADocumentScheduler extends DocGenScheduler {
     public static Map ENVIRONMENT_TYPE = [
         "D": [
             (LeVADocumentUseCase.DocumentType.DTP as String): "${LeVADocumentUseCase.DocumentType.DTP}",
-            (LeVADocumentUseCase.DocumentType.FTP as String): "${LeVADocumentUseCase.DocumentType.FTP}",
+            (LeVADocumentUseCase.DocumentType.CFTP as String): "${LeVADocumentUseCase.DocumentType.CFTP}",
+            (LeVADocumentUseCase.DocumentType.DIL as String): "${LeVADocumentUseCase.DocumentType.DIL}_Q",
             (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_Q",
             (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.TIP}_Q"
         ],
         "Q": [
             (LeVADocumentUseCase.DocumentType.DTR as String): "${LeVADocumentUseCase.DocumentType.DTR}",
-            (LeVADocumentUseCase.DocumentType.FTR as String): "${LeVADocumentUseCase.DocumentType.FTR}",
+            (LeVADocumentUseCase.DocumentType.CFTR as String): "${LeVADocumentUseCase.DocumentType.CFTR}",
+            (LeVADocumentUseCase.DocumentType.DIL as String): "${LeVADocumentUseCase.DocumentType.DIL}_P",
             (LeVADocumentUseCase.DocumentType.IVR as String): "${LeVADocumentUseCase.DocumentType.IVR}_Q",
             (LeVADocumentUseCase.DocumentType.TIR as String): "${LeVADocumentUseCase.DocumentType.TIR}_Q",
             (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_P",
