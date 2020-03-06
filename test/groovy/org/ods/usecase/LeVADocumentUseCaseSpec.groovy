@@ -725,7 +725,7 @@ def "create CFTR"() {
         def result = usecase.getSupportedDocuments()
 
         then:
-        result.size() == 14
+        result.size() == 15
 
         then:
         result.contains("CSD")

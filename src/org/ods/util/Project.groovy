@@ -879,7 +879,7 @@ class Project {
               "DEMO-27",
               "DEMO-31"
           ],
-          "tests": [ "DEMO-30", "DEMO-29", "DEMO-36", "DEMO-35", "DEMO-34", "DEMO-33" ]
+          "tests": [ ]
       },
       "DEMO-49": {
           "name": "TechSpec-1",
@@ -900,7 +900,7 @@ class Project {
               "DEMO-50",
               "DEMO-54"
           ],
-          "tests": [ "DEMO-52", "DEMO-59", "DEMO-58", "DEMO-57", "DEMO-56", "DEMO-53" ]
+          "tests": [ ]
       },
       "DEMO-60": {
           "name": "TechSpec-2",
@@ -921,7 +921,7 @@ class Project {
               "DEMO-61",
               "DEMO-65"
           ],
-          "tests": [ "DEMO-63", "DEMO-70", "DEMO-69", "DEMO-68", "DEMO-67", "DEMO-64" ]
+          "tests": [ ]
       }
   },
   "bugs": {
