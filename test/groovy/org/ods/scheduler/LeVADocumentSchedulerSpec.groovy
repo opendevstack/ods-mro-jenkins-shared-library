@@ -772,6 +772,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
+        // RA: Risk Assessment
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
         // SSDS: Software Design Specification
         LeVADocumentUseCase.DocumentType.SSDS | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.SSDS | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -1975,6 +2074,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        // RA: Risk Assessment
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
         // SSDS: Software Design Specification
         LeVADocumentUseCase.DocumentType.SSDS | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
@@ -3180,6 +3378,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
+        // RA: Risk Assessment
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
         // SSDS: Software Design Specification
         LeVADocumentUseCase.DocumentType.SSDS | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.SSDS | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -4384,6 +4681,105 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
         LeVADocumentUseCase.DocumentType.IVR | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
 
+        // RA: Risk Assessment
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || true
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | null | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_CODE    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_SERVICE | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.BUILD    | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.DEPLOY   | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.TEST     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.RELEASE  | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO || false
+        LeVADocumentUseCase.DocumentType.RA | REPO_ODS_TEST    | MROPipelineUtil.PipelinePhases.FINALIZE | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END           || false
+
         // SSDS: Software Design Specification
         LeVADocumentUseCase.DocumentType.SSDS | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START        || false
         LeVADocumentUseCase.DocumentType.SSDS | null | MROPipelineUtil.PipelinePhases.INIT     | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO  || false
@@ -4925,7 +5321,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         where:
         documentType                         | repo | phase                               | stage                                               || result
-        LeVADocumentUseCase.DocumentType.CSD  | null | MROPipelineUtil.PipelinePhases.INIT | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || false
+        LeVADocumentUseCase.DocumentType.CSD | null | MROPipelineUtil.PipelinePhases.INIT | MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END || false
     }
 
     def "is document applicable in the absence of repositories"() {
@@ -4952,6 +5348,8 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_1
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
+
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -4991,24 +5389,28 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createCSD", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createTIP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_CODE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
@@ -5016,30 +5418,31 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         then:
         1 * usecase.invokeMethod("createCFTP", [null, null] as Object[])
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
-
-        when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
-
-        then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.FINALIZE, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
 
         then:
         1 * usecase.invokeMethod("createOverallTIR", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 3 in DEV"() {
         given:
         def project = PROJECT_GAMP_3
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5079,24 +5482,30 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createCSD", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 4 in DEV"() {
         given:
         def project = PROJECT_GAMP_4
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5142,6 +5551,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createCSD", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
@@ -5149,24 +5559,24 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         then:
         1 * usecase.invokeMethod("createCFTP", [null, null] as Object[])
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
-
-        when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
-
-        then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 5 in DEV"() {
         given:
         def project = PROJECT_GAMP_5
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5206,54 +5616,61 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createCSD", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.BUILD, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createDTP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.BUILD, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
 
         then:
         1 * usecase.invokeMethod("createOverallDTR", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.BUILD, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_CODE, data)
 
         then:
         1 * usecase.invokeMethod("createDTR", [REPO_ODS_CODE, data] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.BUILD, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, REPO_ODS_CODE)
 
         then:
-        0 * usecase.invokeMethod("createSSDS", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.BUILD, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, REPO_ODS_TEST)
 
         then:
-        0 * usecase.invokeMethod("createSSDS", [REPO_ODS_TEST, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createTIP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_CODE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
@@ -5261,30 +5678,43 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         then:
         1 * usecase.invokeMethod("createCFTP", [null, null] as Object[])
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createDIL", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createDIL", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.FINALIZE, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
 
         then:
         1 * usecase.invokeMethod("createOverallTIR", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 1 in QA"() {
         given:
         def project = PROJECT_GAMP_1
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5324,36 +5754,43 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_CODE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 3 in QA"() {
         given:
         def project = PROJECT_GAMP_3
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5393,18 +5830,21 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 4 in QA"() {
         given:
         def project = PROJECT_GAMP_4
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5444,19 +5884,22 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
-
-        
+        0 * usecase.invokeMethod(*_)
+ 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 5 in QA"() {
         given:
         def project = PROJECT_GAMP_5
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5496,36 +5939,44 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_CODE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createDIL", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 1 in PROD"() {
         given:
         def project = PROJECT_GAMP_1
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5565,24 +6016,28 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 3 in PROD"() {
         given:
         def project = PROJECT_GAMP_3
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5628,6 +6083,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_4
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5667,12 +6123,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 5 in PROD"() {
         given:
         def project = PROJECT_GAMP_5
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5712,18 +6170,21 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "in DEV environment all documents types are applicable"() {
@@ -5871,6 +6332,8 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
     def "run with a failure stops the pipeline"() {
         given:
         def project = PROJECT_GAMP_1
+        project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
