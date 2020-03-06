@@ -740,7 +740,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def result = usecase.getSupportedDocuments()
 
         then:
-        result.size() == 16
+        result.size() == 17
 
         then:
         result.contains("CSD")
