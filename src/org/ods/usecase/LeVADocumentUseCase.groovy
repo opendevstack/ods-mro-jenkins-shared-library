@@ -32,21 +32,21 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     private static Map DOCUMENT_TYPE_NAMES = [
-        (DocumentType.CSD as String)         : "Combined Specification Document",
-        (DocumentType.DIL as String)         : "Discrepancy Log",
-        (DocumentType.DTP as String)         : "Software Development Testing Plan",
-        (DocumentType.DTR as String)         : "Software Development Testing Report",
-        (DocumentType.CFTP as String)        : "Combined Functional and Requirements Testing Plan",
-        (DocumentType.CFTR as String)        : "Combined Functional and Requirements Testing Report",
-        (DocumentType.IVP as String)         : "Configuration and Installation Testing Plan",
-        (DocumentType.IVR as String)         : "Configuration and Installation Testing Report",
-        (DocumentType.RA as String)          : "Risk Assessment",
-        (DocumentType.SSDS as String)        : "Software Design Specification",
-        (DocumentType.TIP as String)         : "Technical Installation Plan",
-        (DocumentType.TIR as String)         : "Technical Installation Report",
-        (DocumentType.OVERALL_DTR as String) : "Overall Software Development Testing Report",
-        (DocumentType.OVERALL_IVR as String) : "Overall Configuration and Installation Testing Report",
-        (DocumentType.OVERALL_TIR as String) : "Overall Technical Installation Report"
+        (DocumentType.CSD as String)        : "Combined Specification Document",
+        (DocumentType.DIL as String)        : "Discrepancy Log",
+        (DocumentType.DTP as String)        : "Software Development Testing Plan",
+        (DocumentType.DTR as String)        : "Software Development Testing Report",
+        (DocumentType.CFTP as String)       : "Combined Functional and Requirements Testing Plan",
+        (DocumentType.CFTR as String)       : "Combined Functional and Requirements Testing Report",
+        (DocumentType.IVP as String)        : "Configuration and Installation Testing Plan",
+        (DocumentType.IVR as String)        : "Configuration and Installation Testing Report",
+        (DocumentType.RA as String)         : "Risk Assessment",
+        (DocumentType.SSDS as String)       : "Software Design Specification",
+        (DocumentType.TIP as String)        : "Technical Installation Plan",
+        (DocumentType.TIR as String)        : "Technical Installation Report",
+        (DocumentType.OVERALL_DTR as String): "Overall Software Development Testing Report",
+        (DocumentType.OVERALL_IVR as String): "Overall Configuration and Installation Testing Report",
+        (DocumentType.OVERALL_TIR as String): "Overall Technical Installation Report"
     ]
 
     private static String DEVELOPER_PREVIEW_WATERMARK = "Developer Preview"
@@ -83,20 +83,22 @@ class LeVADocumentUseCase extends DocGenUseCase {
             return [
                 component.name,
                 [
-                   key: component.key,
-                   componentName: component.name,
-                   componentId: metadata.id ?: "N/A - part of this application",
-                   componentType: (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) ? "ODS Component" : "Software",
-                   odsRepoType: repo_.type?.toLowerCase(),
-                   description: metadata.description,
-                   nameOfSoftware: metadata.name,
-                   references: metadata.references ?: "N/A",
-                   supplier: metadata.supplier,
-                   version: metadata.version,
-                   requirements: component.getResolvedSystemRequirements(),
-                   softwareDesignSpec: component.getResolvedTechnicalSpecifications().findAll{
-                       it.softwareDesignSpec }.collect {
-                           [key: it.key, softwareDesignSpec: it.softwareDesignSpec ]}
+                    key               : component.key,
+                    componentName     : component.name,
+                    componentId       : metadata.id ?: "N/A - part of this application",
+                    componentType     : (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) ? "ODS Component" : "Software",
+                    odsRepoType       : repo_.type?.toLowerCase(),
+                    description       : metadata.description,
+                    nameOfSoftware    : metadata.name,
+                    references        : metadata.references ?: "N/A",
+                    supplier          : metadata.supplier,
+                    version           : metadata.version,
+                    requirements      : component.getResolvedSystemRequirements(),
+                    softwareDesignSpec: component.getResolvedTechnicalSpecifications().findAll {
+                        it.softwareDesignSpec
+                    }.collect {
+                        [key: it.key, softwareDesignSpec: it.softwareDesignSpec]
+                    }
                 ]
             ]
         }
@@ -476,8 +478,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             throw new RuntimeException("Error: unable to create ${documentType}. Could not obtain document chapter data from Jira.")
         }
 
-        def obtainEnumShort = { category, value -> this.project.getEnumDictionary(category)[value as String]."short"}
-        def obtainEnumValue = { category, value -> this.project.getEnumDictionary(category)[value as String].value}
+        def obtainEnumShort = { category, value -> this.project.getEnumDictionary(category)[value as String]."short" }
+        def obtainEnumValue = { category, value -> this.project.getEnumDictionary(category)[value as String].value }
 
         def risks = this.project.getRisks().collect { r ->
             def mitigationsText = r.mitigations ? r.mitigations.join(", ") : "None"
@@ -490,7 +492,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
             r.gxpRelevance = (obtainEnumShort("gxprelevance", r.gxpRelevance).contains("N")) ? "No" : "Yes"
             r.probabilityOfOccurrence = obtainEnumShort("ProbabilityOfOccurrence", r.probabilityOfOccurrence)
-            r.severityOfImpact = obtainEnumValue( "SeverityOfImpact", r.severityOfImpact)
+            r.severityOfImpact = obtainEnumValue("SeverityOfImpact", r.severityOfImpact)
             r.probabilityOfDetection = obtainEnumShort("ProbabilityOfDetection", r.probabilityOfDetection)
             r.riskPriority = obtainEnumValue("RiskPriority", r.riskPriority)
 
@@ -498,20 +500,21 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def proposedMeasuresDesription = this.project.getRisks().collect { r ->
-            (r.getResolvedTests().collect{
+            (r.getResolvedTests().collect {
                 if (!it) throw new IllegalArgumentException("Error: test for requirement ${r.key} could not be obtained. Check if all of ${r.tests.join(", ")} exist in JIRA")
-                [key: it.key, name: it.name, type: "test", referencesRisk: r.key]} +
-             r.getResolvedMitigations().collect{ [key: it?.key, name: it?.name, type: "mitigation", referencesRisk: r.key ]})
+                [key: it.key, name: it.name, type: "test", referencesRisk: r.key]
+            } +
+                r.getResolvedMitigations().collect { [key: it?.key, name: it?.name, type: "mitigation", referencesRisk: r.key] })
         }.flatten()
 
         if (!sections."sec4s2s2") sections."sec4s2s2" = [:]
 
         if (this.project.getProjectProperties()."PROJECT.USES_POO" == "true") {
             sections."sec4s2s2" = [
-                usesPoo: "true",
-                lowDescription: this.project.getProjectProperties()."PROJECT.POO_CAT.LOW",
+                usesPoo          : "true",
+                lowDescription   : this.project.getProjectProperties()."PROJECT.POO_CAT.LOW",
                 mediumDescription: this.project.getProjectProperties()."PROJECT.POO_CAT.MEDIUM",
-                highDescription: this.project.getProjectProperties()."PROJECT.POO_CAT.HIGH"
+                highDescription  : this.project.getProjectProperties()."PROJECT.POO_CAT.HIGH"
             ]
         }
 
@@ -692,6 +695,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def installationTestData = data.tests.installation
         def installationTestIssues = this.project.getAutomatedTestsTypeInstallation()
+        def numberOfInstallationTests = getNumberOfTest(installationTestData.testResults)
 
         def matchedHandler = { result ->
             result.each { testIssue, testCase ->
@@ -722,13 +726,14 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 testsOfRepoTypeOdsService.addAll(tests)
             }
         }
-
+        this.steps.echo("nifl::createIVR() additionalInstallationTests is ${numberOfInstallationTests - installationTestIssues.count { !it.isMissing }}")
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data    : [
-                repositories   : this.project.repositories.collect { [id: it.id, type: it.type, data: [git: [url: it.data.git == null ? null : it.data.git.url]]] },
-                sections       : sections,
-                tests          : SortUtil.sortIssuesByProperties(installationTestIssues.collect { testIssue ->
+                repositories               : this.project.repositories.collect { [id: it.id, type: it.type, data: [git: [url: it.data.git == null ? null : it.data.git.url]]] },
+                sections                   : sections,
+                additionalInstallationTests: numberOfInstallationTests - installationTestIssues.count { !it.isMissing },
+                tests                      : SortUtil.sortIssuesByProperties(installationTestIssues.collect { testIssue ->
                     [
                         key        : testIssue.key,
                         description: testIssue.description ?: "",
@@ -738,16 +743,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         techSpec   : testIssue.techSpecs.join(", ")
                     ]
                 }, ["key"]),
-                testfiles      : installationTestData.testReportFiles.collect { file ->
+                testfiles                  : installationTestData.testReportFiles.collect { file ->
                     [name: file.getName(), path: file.getPath()]
                 },
-                discrepancies  : discrepancies.discrepancies,
-                conclusion     : [
+                discrepancies              : discrepancies.discrepancies,
+                conclusion                 : [
                     summary  : discrepancies.conclusion.summary,
                     statement: discrepancies.conclusion.statement
                 ],
-                testsOdsService: testsOfRepoTypeOdsService,
-                testsOdsCode   : testsOfRepoTypeOdsCode
+                testsOdsService            : testsOfRepoTypeOdsService,
+                testsOdsCode               : testsOfRepoTypeOdsCode
             ]
         ]
 
@@ -774,8 +779,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             .findAll { it.systemDesignSpec }
             .collect { techSpec ->
                 [
-                    key: techSpec.key,
-                    req_key: techSpec.requirements.join(", "),
+                    key        : techSpec.key,
+                    req_key    : techSpec.requirements.join(", "),
                     description: techSpec.systemDesignSpec
                 ]
             }
@@ -785,16 +790,17 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         if (!sections."sec5s1") sections."sec5s1" = [:]
         sections."sec5s1".components = componentsMetadata.collect { c ->
-            [key: c.key, nameOfSoftware: c.nameOfSoftware, componentType: c.componentType,
-            componentId: c.componentId, description: c.description, supplier: c.supplier,
-            version: c.version, references: c.references] }
+            [key        : c.key, nameOfSoftware: c.nameOfSoftware, componentType: c.componentType,
+             componentId: c.componentId, description: c.description, supplier: c.supplier,
+             version    : c.version, references: c.references]
+        }
 
         // Get the components that we consider modules in SSDS (the ones you have to code)
         def modules = componentsMetadata.findAll { it.odsRepoType.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE.toLowerCase() }.collect { component ->
             // We will set-up a double loop in the template. For moustache limitations we need to have lists
-            component.requirements = component.requirements.collect {r ->
-                [ key: r.key, name: r.name, gampTopic: r.gampTopic ]
-            }.groupBy{ it.gampTopic.toLowerCase() }.collect { k, v -> [gampTopic: k, requirementsofTopic: v] }
+            component.requirements = component.requirements.collect { r ->
+                [key: r.key, name: r.name, gampTopic: r.gampTopic]
+            }.groupBy { it.gampTopic.toLowerCase() }.collect { k, v -> [gampTopic: k, requirementsofTopic: v] }
             component
         }
         if (!sections."sec10") sections."sec10" = [:]
