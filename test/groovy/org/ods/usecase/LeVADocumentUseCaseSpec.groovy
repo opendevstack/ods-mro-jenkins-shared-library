@@ -877,7 +877,13 @@ def "create CFTR"() {
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.SSDS as String)
 
         then:
-        result == "Developer Preview"
+        result == null
+
+        when:
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.RA as String)
+
+        then:
+        result == null
 
         when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TIP as String)

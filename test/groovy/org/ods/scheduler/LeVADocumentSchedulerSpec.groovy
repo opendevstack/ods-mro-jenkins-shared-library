@@ -5744,6 +5744,8 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_1
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
+
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5836,6 +5838,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_3
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5898,6 +5901,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_4
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -5958,14 +5962,9 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
-        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
-        0 * usecase.invokeMethod(*_)
-
-        when:
-        scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
-
-        then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
         0 * usecase.invokeMethod(*_)
     }
 
@@ -5973,6 +5972,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_5
         project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6026,7 +6026,6 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createOverallDTR", [null, null] as Object[])
-        // 0 * usecase.invokeMethod("createOverallSSDS", [null, null] as Object[])
         0 * usecase.invokeMethod(*_)
 
         when:
@@ -6040,14 +6039,12 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         scheduler.run(MROPipelineUtil.PipelinePhases.BUILD, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, REPO_ODS_CODE)
 
         then:
-    //    0 * usecase.invokeMethod("createSSDS", [REPO_ODS_CODE, null] as Object[])
         0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.BUILD, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, REPO_ODS_TEST)
 
         then:
-        // 0 * usecase.invokeMethod("createSSDS", [REPO_ODS_TEST, null] as Object[])
         0 * usecase.invokeMethod(*_)
 
         when:
@@ -6084,7 +6081,10 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
         1 * usecase.invokeMethod("createDIL", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
         0 * usecase.invokeMethod(*_)
 
         when:
@@ -6092,6 +6092,10 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createDIL", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createRA", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createSSDS", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
         0 * usecase.invokeMethod(*_)
 
         when:
@@ -6106,6 +6110,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_1
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6145,36 +6150,43 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_CODE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 3 in QA"() {
         given:
         def project = PROJECT_GAMP_3
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6214,18 +6226,21 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 4 in QA"() {
         given:
         def project = PROJECT_GAMP_4
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6265,19 +6280,22 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
-
-        
+        0 * usecase.invokeMethod(*_)
+ 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 5 in QA"() {
         given:
         def project = PROJECT_GAMP_5
         project.buildParams.targetEnvironment = "qa"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6317,36 +6335,44 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_CODE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
         then:
         1 * usecase.invokeMethod("createIVP", [null, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createDIL", [[:], data] as Object[])
+        1 * usecase.invokeMethod("createCFTR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 1 in PROD"() {
         given:
         def project = PROJECT_GAMP_1
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6386,24 +6412,28 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 3 in PROD"() {
         given:
         def project = PROJECT_GAMP_3
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6449,6 +6479,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         given:
         def project = PROJECT_GAMP_4
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6488,12 +6519,14 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "run for GAMP category 5 in PROD"() {
         given:
         def project = PROJECT_GAMP_5
         project.buildParams.targetEnvironment = "prod"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
@@ -6533,18 +6566,21 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_CODE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.DEPLOY, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, REPO_ODS_SERVICE)
 
         then:
         1 * usecase.invokeMethod("createTIR", [REPO_ODS_SERVICE, null] as Object[])
+        0 * usecase.invokeMethod(*_)
 
         when:
         scheduler.run(MROPipelineUtil.PipelinePhases.TEST, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], data)
 
         then:
         1 * usecase.invokeMethod("createIVR", [[:], data] as Object[])
+        0 * usecase.invokeMethod(*_)
     }
 
     def "in DEV environment all documents types are applicable"() {
@@ -6692,6 +6728,8 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
     def "run with a failure stops the pipeline"() {
         given:
         def project = PROJECT_GAMP_1
+        project.buildParams.targetEnvironment = "dev"
+        project.buildParams.targetEnvironmentToken = project.buildParams.targetEnvironment[0].toUpperCase()
 
         def steps = Spy(PipelineSteps)
         def docGen = Mock(DocGenService)
