@@ -726,7 +726,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 testsOfRepoTypeOdsService.addAll(tests)
             }
         }
-        this.steps.echo("nifl::createIVR() additionalInstallationTests is ${numberOfInstallationTests - installationTestIssues.count { !it.isMissing }}")
+
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data    : [
