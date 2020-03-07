@@ -136,7 +136,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
     }
 
-    def "create DIL"(){
+    def "create DIL"() {
         given:
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
         usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
@@ -144,7 +144,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DIL as String
 
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q"]
         def documentIssue = createJiraDocumentIssues().first()
         def uri = "http://nexus"
 
@@ -240,8 +240,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                 unit: [
                     testReportFiles: testReportFiles,
                     testResults    : testResults
-                    ]
                 ]
+            ]
         ]
 
         // Argument Constraints
@@ -290,7 +290,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                     testReportFiles: testReportFiles,
                     testResults    : testResults
                 ]
-                ]
+            ]
         ]
 
         // Argument Constraints
@@ -324,7 +324,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.CFTP as String
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -372,13 +372,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                     testReportFiles: testReportFiles,
                     testResults    : testResults
                 ]
-                ]
+            ]
         ]
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.CFTR as String
-        def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def files = ["raw/${xmlFile.name}": xmlFile.bytes]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -482,7 +482,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                     testReportFiles: testReportFiles,
                     testResults    : testResults
                 ]
-                ]
+            ]
         ]
 
         // Argument Constraints
@@ -526,7 +526,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.SSDS as String
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
         def sqReportsPath = "sonarqube/${repo.id}"
         def sqReportsStashName = "scrr-report-${repo.id}-${steps.env.BUILD_ID}"
 
@@ -534,23 +534,23 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
         def documentIssue = createJiraDocumentIssues().first()
-        def sqReportFiles = [ getResource("Test.docx") ]
-        def requirement = [ key: "REQ-1", name: "This is the req 1", gampTopic: "roles" ]
-        def techSpec = [ key: "TS-1", softwareDesignSpec: "This is the software design spec for TS-1", name: "techSpec 1"]
+        def sqReportFiles = [getResource("Test.docx")]
+        def requirement = [key: "REQ-1", name: "This is the req 1", gampTopic: "roles"]
+        def techSpec = [key: "TS-1", softwareDesignSpec: "This is the software design spec for TS-1", name: "techSpec 1"]
         def compMetadata = [
             "demo-app-front-end": [
-                key: "Front-key",
-                componentName: "demo-app-front-end",
-                componentId: "front",
-                componentType: "ODS Component",
-                odsRepoType: "ods",
-                description: "Example description",
+                key           : "Front-key",
+                componentName : "demo-app-front-end",
+                componentId   : "front",
+                componentType : "ODS Component",
+                odsRepoType   : "ods",
+                description   : "Example description",
                 nameOfSoftware: "Stock Shop frontend",
-                references: "N/A",
-                supplier: "N/A",
-                version: "0.1",
-                requirements: [ requirement ],
-                techSpecs: [ techSpec ]
+                references    : "N/A",
+                supplier      : "N/A",
+                version       : "0.1",
+                requirements  : [requirement],
+                techSpecs     : [techSpec]
             ]
         ]
         when:
@@ -561,8 +561,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-		1 * usecase.computeComponentMetadata(documentType) >> compMetadata
-		1 * project.getTechnicalSpecifications()
+        1 * usecase.computeComponentMetadata(documentType) >> compMetadata
+        1 * project.getTechnicalSpecifications()
         jenkins.unstashFilesIntoPath(_, _, "SonarQube Report") >> true
         sq.loadReportsFromPath(_) >> sqReportFiles
 
@@ -570,7 +570,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], null)
         1 * usecase.getWatermarkText(documentType)
         1 * usecase.createDocument(documentType, null, _, _, _, null, _) >> uri
-		1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
 
     }
@@ -582,7 +582,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.RA as String
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -597,11 +597,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-		2 * project.getRisks()
+        2 * project.getRisks()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], null)
         1 * usecase.getWatermarkText(documentType)
         1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-		1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
     }
 

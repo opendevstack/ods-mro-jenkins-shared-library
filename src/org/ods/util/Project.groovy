@@ -97,7 +97,6 @@ class Project {
 
     private static final TEMP_FAKE_JIRA_DATA = """
 {
-{
     "project": {
         "name": "PLTFMDEV",
         "description": "Sample Project with 68 fictional Issues",
@@ -278,7 +277,10 @@ class Project {
             ],
             "tests": [
                 "PLTFMDEV-1045",
-                "PLTFMDEV-401"
+                "PLTFMDEV-401",
+                "PLTFMDEV-1060",
+                "PLTFMDEV-1061",
+                "PLTFMDEV-1062"
             ],
             "mitigations": [
                 "DEMO-8",
@@ -751,13 +753,114 @@ class Project {
             ]
         },
         "PLTFMDEV-401": {
-            "name": "verify database is correctly setup",
-            "description": "verify database is correctly setup",
+            "name": "verify database is correctly installed",
+            "description": "verify database is correctly setup. Outcome: Succeeded",
             "key": "PLTFMDEV-401",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to database",
+                    "data": "database credentials",
+                    "expectedResult": "Connection to database is available and user is authenticated"
+                },
+                {
+                    "index": 1,
+                    "step": "List and verify databases",
+                    "data": "database credentials; Sock Shop DB",
+                    "expectedResult": "authenticated user sees all required databases"
+                },
+                {
+                    "index": 2,
+                    "step": "Use Sock Shop database",
+                    "data": "SockShopDB",
+                    "expectedResult": "Authenticated user can switch to Sock Shop DB and see tables"
+                }
+            ],
+            "components": [
+                "DEMO-3"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "techSpecs": [
+                "DEMO-15",
+                "DEMO-26"
+            ]
+        },
+        "PLTFMDEV-1060": {
+            "name": "verify payment service is correctly installed",
+            "description": "verify payment service is correctly setup. Outcome: Error",
+            "key": "PLTFMDEV-1060",
+            "version": "1.0",
+            "status": "READY TO TEST",
+            "testType": "Installation",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
+            "components": [
+                "DEMO-3"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "techSpecs": [
+                "DEMO-15",
+                "DEMO-26"
+            ]
+        },
+        "PLTFMDEV-1061": {
+            "name": "verify order service is correctly installed",
+            "description": "verify order service is correctly installed. Outcome: Failed",
+            "key": "PLTFMDEV-1061",
+            "version": "1.0",
+            "status": "READY TO TEST",
+            "testType": "Installation",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
+            "components": [
+                "DEMO-3"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "techSpecs": [
+                "DEMO-15",
+                "DEMO-26"
+            ]
+        },
+        "PLTFMDEV-1062": {
+            "name": "verify shipping service is correctly installed",
+            "description": "verify shipping service is correctly installed. Outcome: Missing",
+            "key": "PLTFMDEV-1062",
+            "version": "1.0",
+            "status": "READY TO TEST",
+            "testType": "Installation",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
             "components": [
                 "DEMO-3"
             ],
@@ -770,13 +873,21 @@ class Project {
             ]
         },
         "PLTFMDEV-1046": {
-            "name": "verify frontend is correctly setup",
-            "description": "verify frontend is correctly setup",
+            "name": "verify frontend is correctly installed",
+            "description": "verify frontend is correctly installed. Outcome: Succeeded",
             "key": "PLTFMDEV-1046",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
             "components": [
                 "DEMO-2"
             ],
