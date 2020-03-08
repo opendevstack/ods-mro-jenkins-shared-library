@@ -711,16 +711,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
                     [
                         key        : testIssue.key,
                         description: testIssue.description,
-                        techSpec   : testIssue.techSpecs.join(", "),
-                        location   : this.project.buildParams.targetEnvironment.token
+                        techSpec   : testIssue.requirements.join(", "),
+                        location   : this.project.buildParams.targetEnvironmentToken
                     ]
                 }, ["key"]),
                 acceptanceTests : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
                     [
                         key        : testIssue.key,
                         description: testIssue.description,
-                        techSpec   : testIssue.techSpecs.join(", "),
-                        location   : this.project.buildParams.targetEnvironment.token
+                        techSpec   : testIssue.requirements.join(", "),
+                        location   : this.project.buildParams.targetEnvironmentToken
                     ]
                 }, ["key"])
             ]
@@ -753,16 +753,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
                     [
                         key        : testIssue.key,
                         description: testIssue.description,
-                        techSpec   : testIssue.techSpecs.join(", "),
-                        location   : this.project.buildParams.targetEnvironment.token
+                        techSpec   : testIssue.requirements.join(", "),
+                        location   : this.project.buildParams.targetEnvironmentToken
                     ]
                 }, ["key"]),
                 acceptanceTests : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
                     [
                         key        : testIssue.key,
                         description: testIssue.description,
-                        techSpec   : testIssue.techSpecs.join(", "),
-                        location   : this.project.buildParams.targetEnvironment.token
+                        techSpec   : testIssue.requirements.join(", "),
+                        location   : this.project.buildParams.targetEnvironmentToken
                     ]
                 }, ["key"])
             ]

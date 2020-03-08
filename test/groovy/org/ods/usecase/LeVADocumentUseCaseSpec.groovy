@@ -1,13 +1,11 @@
 package org.ods.usecase
 
-
 import org.ods.service.*
 import org.ods.usecase.JiraUseCase
 import org.ods.usecase.SonarQubeUseCase
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PDFUtil
 import org.ods.util.Project
-import spock.lang.Ignore
 import util.PipelineSteps
 import util.SpecHelper
 
@@ -431,6 +429,62 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+    }
+
+    def "create TCR"() {
+        given:
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+
+        // prepare mock test data
+        def xmlFile = Files.createTempFile("junit", ".xml").toFile()
+        // TODO add integration test results
+        xmlFile << "<?xml version='1.0'?>\n" + createSockShopJUnitXmlTestResults()
+
+        def integrationTestIssues = project.getAutomatedTestsTypeIntegration()
+        def acceptanceTestIssues = project.getAutomatedTestsTypeAcceptance()
+        def testReportFiles = [xmlFile]
+        def testResults = new JUnitTestReportsUseCase(project, steps).parseTestReportFiles(testReportFiles)
+        def data = [
+            tests: [
+                integration: [
+                    testReportFiles: testReportFiles,
+                    testResults    : testResults
+                ],
+                acceptance : [
+                    testReportFiles: testReportFiles,
+                    testResults    : testResults
+                ]
+            ]
+        ]
+
+        // arguments constraints
+        def documentType = LeVADocumentUseCase.DocumentType.TCR as String
+        def files = ["raw/${xmlFile.name}": xmlFile.bytes]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+
+        // Stubbed method responses
+        def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
+
+        when:
+        usecase.createTCR(null, data)
+
+        then:
+        1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
+        0 * levaFiles.getDocumentChapterData(documentType)
+        1 * usecase.getWatermarkText(documentType)
+
+        then:
+        1 * project.getAutomatedTestsTypeIntegration() >> integrationTestIssues
+        1 * project.getAutomatedTestsTypeAcceptance() >> acceptanceTestIssues
+        1 * usecase.createDocument(documentType, null, _, [:], null, null, _) >> uri
+        1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+
+        cleanup:
+        xmlFile.delete()
     }
 
     def "create IVP"() {
