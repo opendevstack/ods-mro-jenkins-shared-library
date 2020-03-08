@@ -725,7 +725,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 }, ["key"])
             ]
         ]
-
+        this.steps.echo("nifl::createTCR() data_ -> ${data_}")
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
@@ -767,7 +767,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 }, ["key"])
             ]
         ]
-
+        this.steps.echo("nifl::createTCP() data_ -> ${data_}")
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
