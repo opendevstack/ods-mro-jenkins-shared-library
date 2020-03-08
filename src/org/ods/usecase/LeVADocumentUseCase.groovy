@@ -698,10 +698,31 @@ class LeVADocumentUseCase extends DocGenUseCase {
             watermarkText = this.getWatermarkText(documentType)
         }
 
+        def integrationTestData = data.tests.integration
+        def acceptanceTestData = data.tests.acceptance
+        def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
+        def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
+
         def data_ = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
             data    : [
-                sections: sections
+                sections        : sections,
+                integrationTests: SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
+                    [
+                        key        : testIssue.key,
+                        description: testIssue.description,
+                        techSpec   : testIssue.techSpecs.join(", "),
+                        location   : this.project.buildParams.targetEnvironment.token
+                    ]
+                }, ["key"]),
+                acceptanceTests : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
+                    [
+                        key        : testIssue.key,
+                        description: testIssue.description,
+                        techSpec   : testIssue.techSpecs.join(", "),
+                        location   : this.project.buildParams.targetEnvironment.token
+                    ]
+                }, ["key"])
             ]
         ]
 
@@ -721,11 +742,29 @@ class LeVADocumentUseCase extends DocGenUseCase {
             watermarkText = this.getWatermarkText(documentType)
         }
 
+        def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
+        def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
 
         def data_ = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
             data    : [
-                sections: sections
+                sections        : sections,
+                integrationTests: SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
+                    [
+                        key        : testIssue.key,
+                        description: testIssue.description,
+                        techSpec   : testIssue.techSpecs.join(", "),
+                        location   : this.project.buildParams.targetEnvironment.token
+                    ]
+                }, ["key"]),
+                acceptanceTests : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
+                    [
+                        key        : testIssue.key,
+                        description: testIssue.description,
+                        techSpec   : testIssue.techSpecs.join(", "),
+                        location   : this.project.buildParams.targetEnvironment.token
+                    ]
+                }, ["key"])
             ]
         ]
 
