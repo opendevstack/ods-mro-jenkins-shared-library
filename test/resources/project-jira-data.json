@@ -609,6 +609,26 @@
             "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "User logs into web shop",
+                    "data": "N/A",
+                    "expectedResult": "Webshop Landing Page gets displayed"
+                },
+                {
+                    "index": 1,
+                    "step": "User adds item to shopping cart",
+                    "data": "N/A",
+                    "expectedResult": "One item added to shopping cart"
+                },
+                {
+                    "index": 2,
+                    "step": "User follows link to shopping cart",
+                    "data": "N/A",
+                    "expectedResult": "Shopping cart is displayed, containing one item."
+                }
+            ],
             "components": [
                 "DEMO-2"
             ],
@@ -624,6 +644,20 @@
             "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "User logs into web shop",
+                    "data": "N/A",
+                    "expectedResult": "Webshop Landing Page gets displayed"
+                },
+                {
+                    "index": 1,
+                    "step": "User follows link to catalogue",
+                    "data": "N/A",
+                    "expectedResult": "Catalogue is displayed in web page."
+                }
+            ],
             "components": [
                 "DEMO-2"
             ],
@@ -639,6 +673,32 @@
             "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "User logs into web shop",
+                    "data": "N/A",
+                    "expectedResult": "Webshop Landing Page gets displayed"
+                },
+                {
+                    "index": 1,
+                    "step": "User adds item to shopping cart",
+                    "data": "N/A",
+                    "expectedResult": "One item added to shopping cart"
+                },
+                {
+                    "index": 2,
+                    "step": "User follows link to shopping cart",
+                    "data": "N/A",
+                    "expectedResult": "Shopping cart is displayed, containing one item."
+                },
+                {
+                    "index": 3,
+                    "step": "User clicks 'buy now' button",
+                    "data": "N/A",
+                    "expectedResult": "Shipping details are displayed."
+                }
+            ],
             "components": [
                 "DEMO-2"
             ],
