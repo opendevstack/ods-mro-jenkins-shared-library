@@ -732,7 +732,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         requirements: testIssue.requirements.join(", "),
                         isSuccess   : testIssue.isSuccess,
                         bugs        : testIssue.bugs?.join(", "),
-                        steps       : testIssue.steps
+                        steps       : testIssue.steps,
+                        timestamp   : testIssue.timestamp?.replaceAll("T", "<br/>")
                     ]
                 }, ["key"]),
                 acceptanceTests    : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
@@ -742,7 +743,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         requirements: testIssue.requirements.join(", "),
                         isSuccess   : testIssue.isSuccess,
                         bugs        : testIssue.bugs?.join(", "),
-                        steps       : testIssue.steps
+                        steps       : testIssue.steps,
+                        timestamp   : testIssue.timestamp?.replaceAll("T", "<br/>")
                     ]
                 }, ["key"]),
                 integrationTestData: integrationTestData,
