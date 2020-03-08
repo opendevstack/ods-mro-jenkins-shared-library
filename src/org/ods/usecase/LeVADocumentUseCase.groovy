@@ -709,18 +709,20 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 sections        : sections,
                 integrationTests: SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
                     [
-                        key        : testIssue.key,
-                        description: testIssue.description,
-                        techSpec   : testIssue.requirements.join(", "),
-                        location   : this.project.buildParams.targetEnvironmentToken
+                        key         : testIssue.key,
+                        description : testIssue.description,
+                        requirements: testIssue.requirements.join(", "),
+                        bugs        : testIssue.bugs?.join(", "),
+                        steps       : testIssue.steps
                     ]
                 }, ["key"]),
                 acceptanceTests : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
                     [
-                        key        : testIssue.key,
-                        description: testIssue.description,
-                        techSpec   : testIssue.requirements.join(", "),
-                        location   : this.project.buildParams.targetEnvironmentToken
+                        key         : testIssue.key,
+                        description : testIssue.description,
+                        requirements: testIssue.requirements.join(", "),
+                        bugs        : testIssue.bugs?.join(", "),
+                        steps       : testIssue.steps
                     ]
                 }, ["key"])
             ]
@@ -751,18 +753,20 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 sections        : sections,
                 integrationTests: SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
                     [
-                        key        : testIssue.key,
-                        description: testIssue.description,
-                        techSpec   : testIssue.requirements.join(", "),
-                        location   : this.project.buildParams.targetEnvironmentToken
+                        key         : testIssue.key,
+                        description : testIssue.description,
+                        requirements: testIssue.requirements.join(", "),
+                        bugs        : testIssue.bugs?.join(", "),
+                        steps       : testIssue.steps
                     ]
                 }, ["key"]),
                 acceptanceTests : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
                     [
-                        key        : testIssue.key,
-                        description: testIssue.description,
-                        techSpec   : testIssue.requirements.join(", "),
-                        location   : this.project.buildParams.targetEnvironmentToken
+                        key         : testIssue.key,
+                        description : testIssue.description,
+                        requirements: testIssue.requirements.join(", "),
+                        bugs        : testIssue.bugs?.join(", "),
+                        steps       : testIssue.steps
                     ]
                 }, ["key"])
             ]
@@ -850,7 +854,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def files = data.tests.installation.testReportFiles.collectEntries { file ->
             ["raw/${file.getName()}", file.getBytes()]
         }
-        this.steps.echo("nifl::createIVR() data_.data.tests is ${data_.data.tests}")
+
         def uri = this.createDocument(documentType, null, data_, files, null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri

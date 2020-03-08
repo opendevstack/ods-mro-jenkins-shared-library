@@ -185,7 +185,9 @@
                 "PLTFMDEV-1060",
                 "PLTFMDEV-1061",
                 "PLTFMDEV-1062",
-                "PLTFMDEV-1073"
+                "PLTFMDEV-1073",
+                "PLTFMDEV-1074",
+                "PLTFMDEV-1075"
             ],
             "mitigations": [
                 "DEMO-8",
