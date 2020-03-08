@@ -703,28 +703,50 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
         def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
 
+        def matchedHandler = { result ->
+            result.each { testIssue, testCase ->
+                testIssue.isSucess = !(testCase.error || testCase.failure || testCase.skipped)
+                testIssue.isMissing = false
+                testIssue.timestampe = testCase.timestamp
+            }
+        }
+
+        def unmatchedHandler = { result ->
+            result.each { testIssue ->
+                testIssue.isSuccess = false
+                testIssue.isMissing = true
+            }
+        }
+
+        this.jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, integrationTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+        this.jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, acceptanceTestData?.testResults ?: [:], matchedHandler, unmatchedHandler)
+
         def data_ = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
             data    : [
-                sections        : sections,
-                integrationTests: SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
+                sections           : sections,
+                integrationTests   : SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
                     [
                         key         : testIssue.key,
                         description : testIssue.description,
                         requirements: testIssue.requirements.join(", "),
+                        isSuccess   : testIssue.isSuccess,
                         bugs        : testIssue.bugs?.join(", "),
                         steps       : testIssue.steps
                     ]
                 }, ["key"]),
-                acceptanceTests : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
+                acceptanceTests    : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
                     [
                         key         : testIssue.key,
                         description : testIssue.description,
                         requirements: testIssue.requirements.join(", "),
+                        isSuccess   : testIssue.isSuccess,
                         bugs        : testIssue.bugs?.join(", "),
                         steps       : testIssue.steps
                     ]
-                }, ["key"])
+                }, ["key"]),
+                integrationTestData: integrationTestData,
+                acceptanceTestData : acceptanceTestData
             ]
         ]
         this.steps.echo("nifl::createTCR() data_ -> ${data_}")
