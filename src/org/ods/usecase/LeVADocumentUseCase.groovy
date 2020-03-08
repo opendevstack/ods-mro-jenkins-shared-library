@@ -707,7 +707,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             result.each { testIssue, testCase ->
                 testIssue.isSucess = !(testCase.error || testCase.failure || testCase.skipped)
                 testIssue.isMissing = false
-                testIssue.timestampe = testCase.timestamp
+                testIssue.timestamp = testCase.timestamp
             }
         }
 
