@@ -971,7 +971,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return metadata
     }
 
-    private List<String> getJiraTrackingIssueLabelForDocumentType(String documentType) {
+    private List<String> getJiraTrackingIssueLabelsForDocumentType(String documentType) {
         def environment = this.project.buildParams.targetEnvironmentToken
         def labels = []
 
@@ -1005,7 +1005,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!this.jiraUseCase) return
         if (!this.jiraUseCase.jira) return
 
-        def jiraDocumentLabels = this.getJiraTrackingIssueLabelForDocumentType(documentType)
+        def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
 
         def jqlQuery = [jql: "project = ${project.key} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels IN (${jiraDocumentLabels.join(',')})"]
 
