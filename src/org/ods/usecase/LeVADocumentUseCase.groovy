@@ -739,6 +739,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         techSpec   : testIssue.techSpecs.join(", ")
                     ]
                 }, ["key"]),
+                testxUnits   : this.getxUnitTestInfo(installationTestData),
                 testfiles                  : installationTestData.testReportFiles.collect { file ->
                     [name: file.getName(), path: file.getPath()]
                 },
