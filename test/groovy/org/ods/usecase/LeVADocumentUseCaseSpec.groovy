@@ -122,7 +122,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.CSD as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -152,7 +152,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DIL as String
 
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q" ]
+        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType}_Q)" ]
         def documentIssue = createJiraDocumentIssues().first()
         def uri = "http://nexus"
 
@@ -180,7 +180,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DTP as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -215,7 +215,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DTP as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -338,7 +338,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.CFTP as String
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})" ]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -392,7 +392,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.CFTR as String
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})" ]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -428,7 +428,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.IVP as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType}_Q)"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -476,7 +476,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.IVR as String
         def files = ["raw/${xmlFile.name}": xmlFile.bytes]
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -514,7 +514,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.SSDS as String
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})" ]
         def sqReportsPath = "sonarqube/${repo.id}"
         def sqReportsStashName = "scrr-report-${repo.id}-${steps.env.BUILD_ID}"
 
@@ -570,7 +570,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.RA as String
-        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}" ]
+        def jqlQuery = [ jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})" ]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -600,7 +600,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType}_Q)"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -631,7 +631,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}_Q"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType}_Q)"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -716,7 +716,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DTR as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_DTR as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def uri = "http://nexus"
@@ -740,7 +740,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIR as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def uri = "http://nexus"
@@ -789,7 +789,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = "myType"
         def message = "myMessage"
 
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
         def documentIssue = createJiraDocumentIssues().first()
 
         when:
@@ -800,7 +800,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * jiraUseCase.jira.appendCommentToIssue(documentIssue.key, message)
     }
 
-    def "notify LeVA document issue with query returning != 1 issue"() {
+    def "notify LeVA document issue with query returning 0 issues"() {
         given:
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
         usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
@@ -808,7 +808,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = "myType"
         def message = "myMessage"
 
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
         def documentIssues = createJiraDocumentIssues()
 
         when:
@@ -820,16 +820,25 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         def e = thrown(RuntimeException)
         e.message == "Error: Jira query returned 0 issues: '${jqlQuery}'."
+    }
+
+    def "notify LeVA document issue with query returning more than 1 issue"() {
+        given:
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+
+        def documentType = "myType"
+        def message = "myMessage"
+
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
+        def documentIssues = createJiraDocumentIssues()
 
         when:
         usecase.notifyJiraTrackingIssue(documentType, message)
 
         then:
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> documentIssues
-
-        then:
-        e = thrown(RuntimeException)
-        e.message == "Error: Jira query returned 3 issues: '${jqlQuery}'."
+        3 * jiraUseCase.jira.appendCommentToIssue(_, message)
     }
 
     def "docs with watermark text in DEV"() {

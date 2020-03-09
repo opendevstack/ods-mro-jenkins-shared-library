@@ -114,26 +114,26 @@ class LeVADocumentScheduler extends DocGenScheduler {
     // Document types per environment token and label to track with Jira
     public static Map ENVIRONMENT_TYPE = [
         "D": [
-            (LeVADocumentUseCase.DocumentType.DTP as String): "${LeVADocumentUseCase.DocumentType.DTP}",
-            (LeVADocumentUseCase.DocumentType.CFTP as String): "${LeVADocumentUseCase.DocumentType.CFTP}",
-            (LeVADocumentUseCase.DocumentType.RA as String): "${LeVADocumentUseCase.DocumentType.RA}",
-            (LeVADocumentUseCase.DocumentType.SSDS as String): "${LeVADocumentUseCase.DocumentType.SSDS}",
-            (LeVADocumentUseCase.DocumentType.DIL as String): "${LeVADocumentUseCase.DocumentType.DIL}_Q",
-            (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_Q",
-            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.TIP}_Q"
+            (LeVADocumentUseCase.DocumentType.DTP as String)    : ["${LeVADocumentUseCase.DocumentType.DTP}"],
+            (LeVADocumentUseCase.DocumentType.CFTP as String)   : ["${LeVADocumentUseCase.DocumentType.CFTP}"],
+            (LeVADocumentUseCase.DocumentType.RA as String)     : ["${LeVADocumentUseCase.DocumentType.RA}"],
+            (LeVADocumentUseCase.DocumentType.SSDS as String)   : ["${LeVADocumentUseCase.DocumentType.SSDS}"],
+            (LeVADocumentUseCase.DocumentType.DIL as String)    : ["${LeVADocumentUseCase.DocumentType.DIL}_Q"],
+            (LeVADocumentUseCase.DocumentType.IVP as String)    : ["${LeVADocumentUseCase.DocumentType.IVP}_Q"],
+            (LeVADocumentUseCase.DocumentType.TIP as String)    : ["${LeVADocumentUseCase.DocumentType.TIP}_Q"]
         ],
         "Q": [
-            (LeVADocumentUseCase.DocumentType.DTR as String): "${LeVADocumentUseCase.DocumentType.DTR}",
-            (LeVADocumentUseCase.DocumentType.CFTR as String): "${LeVADocumentUseCase.DocumentType.CFTR}",
-            (LeVADocumentUseCase.DocumentType.DIL as String): "${LeVADocumentUseCase.DocumentType.DIL}_P",
-            (LeVADocumentUseCase.DocumentType.IVR as String): "${LeVADocumentUseCase.DocumentType.IVR}_Q",
-            (LeVADocumentUseCase.DocumentType.TIR as String): "${LeVADocumentUseCase.DocumentType.TIR}_Q",
-            (LeVADocumentUseCase.DocumentType.IVP as String): "${LeVADocumentUseCase.DocumentType.IVP}_P",
-            (LeVADocumentUseCase.DocumentType.TIP as String): "${LeVADocumentUseCase.DocumentType.IVR}_P"
+            (LeVADocumentUseCase.DocumentType.DTR as String)    : ["${LeVADocumentUseCase.DocumentType.DTR}"],
+            (LeVADocumentUseCase.DocumentType.CFTR as String)   : ["${LeVADocumentUseCase.DocumentType.CFTR}"],
+            (LeVADocumentUseCase.DocumentType.DIL as String)    : ["${LeVADocumentUseCase.DocumentType.DIL}_P"],
+            (LeVADocumentUseCase.DocumentType.IVR as String)    : ["${LeVADocumentUseCase.DocumentType.IVR}_Q"],
+            (LeVADocumentUseCase.DocumentType.TIR as String)    : ["${LeVADocumentUseCase.DocumentType.TIR}_Q"],
+            (LeVADocumentUseCase.DocumentType.IVP as String)    : ["${LeVADocumentUseCase.DocumentType.IVP}_P"],
+            (LeVADocumentUseCase.DocumentType.TIP as String)    : ["${LeVADocumentUseCase.DocumentType.IVR}_P"]
         ],
         "P": [
-            (LeVADocumentUseCase.DocumentType.IVR as String): "${LeVADocumentUseCase.DocumentType.IVR}_P",
-            (LeVADocumentUseCase.DocumentType.TIR as String): "${LeVADocumentUseCase.DocumentType.TIR}_P"
+            (LeVADocumentUseCase.DocumentType.IVR as String)    : ["${LeVADocumentUseCase.DocumentType.IVR}_P"],
+            (LeVADocumentUseCase.DocumentType.TIR as String)    : ["${LeVADocumentUseCase.DocumentType.TIR}_P]"]
         ]
     ]
 
