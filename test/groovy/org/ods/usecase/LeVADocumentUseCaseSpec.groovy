@@ -904,7 +904,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         e.message == "Error: Jira query returned 0 issues: '${jqlQuery}'."
     }
 
-    def "notify LeVA document issue with query returning more than 1 issue"() {
+    def "notify LeVA document issue with query returning 3 issues"() {
         given:
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
         usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
