@@ -417,7 +417,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TCP as String
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
@@ -471,7 +471,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TCR as String
         def files = ["raw/${xmlFile.name}": xmlFile.bytes]
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
 
         // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
