@@ -744,7 +744,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         steps       : testIssue.steps,
                         timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A"
                     ]
-                }, ["key"])
+                }, ["key"]),
+                testIntegrationxUnits   : this.getxUnitTestInfo(integrationTestData),
+                testAcceptancexUnits    : this.getxUnitTestInfo(acceptanceTestData)
             ]
         ]
 
