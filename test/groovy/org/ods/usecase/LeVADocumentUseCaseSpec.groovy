@@ -882,6 +882,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result == null
 
         when:
+        result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.TRC as String)
+
+        then:
+        result == "Developer Preview"
+
+        when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.DTR as String)
 
         then:
