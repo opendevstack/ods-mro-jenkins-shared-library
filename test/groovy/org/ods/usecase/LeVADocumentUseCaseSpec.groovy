@@ -355,7 +355,6 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def xmlFile = Files.createTempFile("junit", ".xml").toFile()
         xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
 
-        def repo = project.repositories.first()
         def acceptanceTestIssues = project.getAutomatedTestsTypeAcceptance()
         def integrationTestIssues = project.getAutomatedTestsTypeIntegration()
         def testReportFiles = [xmlFile]
@@ -410,14 +409,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
         usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
-        // argument constraints
-        String documentType = LeVADocumentUseCase.DocumentType.TCP as String
-        Map jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
+        // Argument Constraints
+        def documentType = LeVADocumentUseCase.DocumentType.TCP as String
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
 
-        // stubbed method responses
-        Map chapterData = ["sec1": "myContent"]
-        String uri = "http://nexus"
-        Map documentIssue = createJiraDocumentIssues().first()
+        // Stubbed Method Responses
+        def chapterData = ["sec1": "myContent"]
+        def uri = "http://nexus"
+        def documentIssue = createJiraDocumentIssues().first()
 
 
         when:
@@ -425,7 +424,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
+        0 * levaFiles.getDocumentChapterData(documentType)
 
+        then:
+        1 * project.getAutomatedTestsTypeAcceptance()
+        1 * project.getAutomatedTestsTypeIntegration()
+        1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
+        1 * usecase.getWatermarkText(documentType)
         1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
@@ -436,9 +441,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
         usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
 
-        // prepare mock test data
+        // Test Parameters
         def xmlFile = Files.createTempFile("junit", ".xml").toFile()
-        // TODO add integration test results
         xmlFile << "<?xml version='1.0'?>\n" + createSockShopJUnitXmlTestResults()
 
         def integrationTestIssues = project.getAutomatedTestsTypeIntegration()
@@ -458,12 +462,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
             ]
         ]
 
-        // arguments constraints
+        // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TCR as String
         def files = ["raw/${xmlFile.name}": xmlFile.bytes]
         def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels = LeVA_Doc:${documentType}"]
 
-        // Stubbed method responses
+        // Stubbed Method Responses
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
         def documentIssue = createJiraDocumentIssues().first()
@@ -474,14 +478,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * usecase.getWatermarkText(documentType)
 
         then:
         1 * project.getAutomatedTestsTypeIntegration() >> integrationTestIssues
         1 * project.getAutomatedTestsTypeAcceptance() >> acceptanceTestIssues
         1 * usecase.createDocument(documentType, null, _, [:], null, null, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
+        1 * usecase.getWatermarkText(documentType)
         1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, testResults, _, _)
+        1 * jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, testResults, _, _)
 
         cleanup:
         xmlFile.delete()
