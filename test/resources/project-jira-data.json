@@ -1321,5 +1321,187 @@
                 "PLTFMDEV-554"
             ]
         }
+    },
+    "docs": {
+        "PLTFMDEV-1072": {
+            "key": "PLTFMDEV-1072",
+            "name": "Test Case Report",
+            "description": "TCR",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-1071": {
+            "key": "PLTFMDEV-1071",
+            "name": "Test Case Plan",
+            "description": "TCP",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-1066": {
+            "key": "PLTFMDEV-1066",
+            "name": "Discrepancy Log for P",
+            "description": "C-DIL for P",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-1064": {
+            "key": "PLTFMDEV-1064",
+            "name": "Discrepancy Log for Q",
+            "description": "C-DIL for Q",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-1013": {
+            "key": "PLTFMDEV-1013",
+            "name": "Combined Specification Document URS FS CS",
+            "description": "C-CSD",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-938": {
+            "key": "PLTFMDEV-938",
+            "name": "Traceability Matrix",
+            "description": "TC-CTR",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-937": {
+            "key": "PLTFMDEV-937",
+            "name": "System and Software Design Specification including Source Code Review Report",
+            "description": "C-SSDS",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-494": {
+            "key": "PLTFMDEV-494",
+            "name": "Configuration and Installation Testing Report for Dev",
+            "description": "C-IVR for DEV",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-433": {
+            "key": "PLTFMDEV-433",
+            "name": "Test Case Report_Manual",
+            "description": "TC-CTR_M",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-428": {
+            "key": "PLTFMDEV-428",
+            "name": "Functional / Requirements Testing Report_Manual",
+            "description": "C-FTR_M",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-427": {
+            "key": "PLTFMDEV-427",
+            "name": "Test Case Report",
+            "description": "TC-CTR",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-426": {
+            "key": "PLTFMDEV-426",
+            "name": "Test Case Plan",
+            "description": "TC-CTP",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-416": {
+            "key": "PLTFMDEV-416",
+            "name": "Configuration and Installation Testing Plan for DEV",
+            "description": "C-IVP for Dev",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-318": {
+            "key": "PLTFMDEV-318",
+            "name": "Technical Installation Plan",
+            "description": "C-TIP",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-317": {
+            "key": "PLTFMDEV-317",
+            "name": "Technical Installation Report",
+            "description": "C-TIR",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-24": {
+            "key": "PLTFMDEV-24",
+            "name": "Validation Summary Report",
+            "description": "C-VSR",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-23": {
+            "key": "PLTFMDEV-23",
+            "name": "Configuration and Installation Testing Report for P",
+            "description": "C-IVR for P",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-22": {
+            "key": "PLTFMDEV-22",
+            "name": "Technical Installation Report for P",
+            "description": "C-TIR for P",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-21": {
+            "key": "PLTFMDEV-21",
+            "name": "Configuration and Installation Testing Plan for P",
+            "description": "C-IVP for P",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-20": {
+            "key": "PLTFMDEV-20",
+            "name": "Technical Installation Plan for P",
+            "description": "C-TIP for P",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-19": {
+            "key": "PLTFMDEV-19",
+            "name": "Combined Integration / Acceptance Testing Report",
+            "description": "C-CFTR",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-18": {
+            "key": "PLTFMDEV-18",
+            "name": "Test Cases",
+            "description": "C-TC",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-17": {
+            "key": "PLTFMDEV-17",
+            "name": "Combined Integration / Acceptance Testing Plan",
+            "description": "C-CFTP",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-15": {
+            "key": "PLTFMDEV-15",
+            "name": "Development Test Report",
+            "description": "C-DTR",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-14": {
+            "key": "PLTFMDEV-14",
+            "name": "Configuration and Installation Testing Report for Q",
+            "description": "C-IVR for Q",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-13": {
+            "key": "PLTFMDEV-13",
+            "name": "Technical Installation Report for Q",
+            "description": "C-TIR for Q",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-12": {
+            "key": "PLTFMDEV-12",
+            "name": "Development Test Plan",
+            "description": "C-DTP",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-8": {
+            "key": "PLTFMDEV-8",
+            "name": "Configuration and Installation Testing Plan for Q",
+            "description": "C-IVP for Q",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-7": {
+            "key": "PLTFMDEV-7",
+            "name": "Technical Installation Plan for Q",
+            "description": "C-TIP for Q",
+            "status": "OPEN"
+        },
+        "PLTFMDEV-6": {
+            "key": "PLTFMDEV-6",
+            "name": "Risk Assessment",
+            "description": "C-RA",
+            "status": "OPEN"
+        }
     }
 }

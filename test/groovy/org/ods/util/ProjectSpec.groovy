@@ -368,6 +368,7 @@ class ProjectSpec extends SpecHelper {
         def techSpec1 = [ key: "TS-1", name: "Technical Specification 1" ]
         def test1 = [ key: "TST-1", name: "Test 1" ]
         def test2 = [ key: "TST-2", name: "Test 2" ]
+        def doc1 = [ key: "DOC-1", name: "Doc 1", status: "OPEN" ]
 
         // Define key-based references
         component1.epics = [epic1.key]
@@ -417,7 +418,8 @@ class ProjectSpec extends SpecHelper {
             requirements: [(requirement1.key): requirement1],
             risks: [(risk1.key): risk1],
             tests: [(test1.key): test1, (test2.key): test2],
-            techSpecs: [(techSpec1.key): techSpec1]
+            techSpecs: [(techSpec1.key): techSpec1],
+            docs: [(doc1.key): doc1]
         ]
 
         then:
@@ -732,7 +734,7 @@ class ProjectSpec extends SpecHelper {
         def e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'name' is undefined."
     }
-    
+
     def "load project metadata with invalid description"() {
         when:
         metadataFile.text = """
@@ -747,7 +749,7 @@ class ProjectSpec extends SpecHelper {
         then:
         result.description == ""
     }
-    
+
     def "load project metadata with undefined repositories"() {
         when:
         metadataFile.text = """
