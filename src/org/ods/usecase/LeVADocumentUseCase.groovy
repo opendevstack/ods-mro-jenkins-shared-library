@@ -407,6 +407,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         ]
                     ]
                 },
+                testxUnits   : this.getxUnitTestInfo(data),
                 discrepancies: discrepancies.discrepancies,
                 conclusion   : [
                     summary  : discrepancies.conclusion.summary,
@@ -745,7 +746,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         steps       : testIssue.steps,
                         timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A"
                     ]
-                }, ["key"])
+                }, ["key"]),
+                testIntegrationxUnits   : this.getxUnitTestInfo(integrationTestData),
+                testAcceptancexUnits    : this.getxUnitTestInfo(acceptanceTestData)
             ]
         ]
 
@@ -859,6 +862,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         techSpec   : testIssue.techSpecs.join(", ")
                     ]
                 }, ["key"]),
+                testxUnits   : this.getxUnitTestInfo(installationTestData),
                 testfiles                  : installationTestData.testReportFiles.collect { file ->
                     [name: file.getName(), path: file.getPath()]
                 },
@@ -1197,4 +1201,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return count
     }
 
+    protected List getxUnitTestInfo(Map tests) {
+        def data = tests.testReportFiles.collect { testReportFile ->
+            [
+                testReportFileName : testReportFile.name,
+                testReportFileRaw  : testReportFile.text
+            ]
+        }
+
+        data = SortUtil.sortIssuesByProperties(data ?: [], ["testReportFileName"])
+
+        return data
+    }
 }
