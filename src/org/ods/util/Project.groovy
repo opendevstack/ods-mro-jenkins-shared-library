@@ -1426,7 +1426,7 @@ class Project {
     protected IPipelineSteps steps
     protected GitUtil git
 
-    protected Map data = [:]
+    public Map data = [:]
 
     Project(IPipelineSteps steps, GitUtil git) {
         this.steps = steps
