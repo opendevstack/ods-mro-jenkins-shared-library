@@ -953,6 +953,25 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         3 * jiraUseCase.jira.appendCommentToIssue(_, message)
     }
 
+    def "notify LeVA document with issues not DONE yet"() {
+        given:
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+
+        def documentType = "myTypeNotDone"
+        def message = "myMessage"
+
+        def jqlQuery = [jql: "project = ${project.key} AND issuetype = 'LeVA Documentation' AND labels IN (LeVA_Doc:${documentType})"]
+        def documentIssue = createJiraDocumentIssues().first()
+
+        when:
+        usecase.notifyJiraTrackingIssue(documentType, message)
+
+        then:
+        1 * jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) >> [documentIssue]
+        1 * jiraUseCase.jira.appendCommentToIssue(documentIssue.key, message.concat(" Attention: this document is work in progress! See issues: DEMO-69,DEMO-70"))
+    }
+
     def "docs with watermark text in DEV"() {
         given:
         project.buildParams.targetEnvironment = "dev"

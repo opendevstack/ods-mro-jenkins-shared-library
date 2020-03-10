@@ -173,12 +173,13 @@ class FixtureHelper {
         return result
     }
 
-    static Map createJiraIssue(String id, String issuetype = "Story", String summary = null, String description = null) {
+    static Map createJiraIssue(String id, String issuetype = "Story", String summary = null, String description = null, String status = null) {
         def result = [
             id    : id,
             key   : "JIRA-${id}",
             fields: [:],
-            self  : "http://${id}"
+            self  : "http://${id}",
+            status: status
         ]
 
         result.fields.summary = summary ?: "${id}-summary"
@@ -260,9 +261,9 @@ class FixtureHelper {
     static List createJiraDocumentIssues() {
         def result = []
 
-        result << createJiraIssue("1", "my-doc-A", "Document A")
-        result << createJiraIssue("2", "my-doc-B", "Document B")
-        result << createJiraIssue("3", "my-doc-C", "Document C")
+        result << createJiraIssue("1", "my-doc-A", "Document A", null, "DONE")
+        result << createJiraIssue("2", "my-doc-B", "Document B", null, "DONE")
+        result << createJiraIssue("3", "my-doc-C", "Document C", null, "DONE")
 
         return result
     }
