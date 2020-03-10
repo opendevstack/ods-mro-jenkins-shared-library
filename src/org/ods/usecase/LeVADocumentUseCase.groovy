@@ -408,7 +408,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                             testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }.join(", ") : "N/A"
                     ]
                 },
-                numAdditionalTests: junit.getNumberOfTestCases(acceptanceTestData.testResults) - acceptanceTestIssues.count { !it.isMissing },
+                numAdditionalTests: junit.getNumberOfTestCases(unitTestData.testResults) - testIssues.count { !it.isMissing },
                 testFiles      : SortUtil.sortIssuesByProperties(unitTestData.testReportFiles.collect { file ->
                     [name: file.name, path: file.path, text: file.text]
                 } ?: [], ["name"]),
