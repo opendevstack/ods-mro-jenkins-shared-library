@@ -408,7 +408,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                             testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }.join(", ") : "N/A"
                     ]
                 },
-                testFiles                 : SortUtil.sortIssuesByProperties(unitTestData.testReportFiles.collect { file ->
+                numAdditionalTests: junit.getNumberOfTestCases(acceptanceTestData.testResults) - acceptanceTestIssues.count { !it.isMissing },
+                testFiles      : SortUtil.sortIssuesByProperties(unitTestData.testReportFiles.collect { file ->
                     [name: file.name, path: file.path, text: file.text]
                 } ?: [], ["name"]),
                 discrepancies  : discrepancies.discrepancies,
@@ -554,9 +555,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data : [
-                sections                  : sections,
-                additionalAcceptanceTests : junit.getNumberOfTestCases(acceptanceTestData.testResults) - acceptanceTestIssues.count { !it.isMissing }, 
-                additionalIntegrationTests: junit.getNumberOfTestCases(integrationTestData.testResults) - integrationTestIssues.count { !it.isMissing }, 
+                sections                     : sections,
+                numAdditionalAcceptanceTests : junit.getNumberOfTestCases(acceptanceTestData.testResults) - acceptanceTestIssues.count { !it.isMissing },
+                numAdditionalIntegrationTests: junit.getNumberOfTestCases(integrationTestData.testResults) - integrationTestIssues.count { !it.isMissing },
                 conclusion : [
                     summary  : discrepancies.conclusion.summary,
                     statement: discrepancies.conclusion.statement
@@ -803,7 +804,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data    : [
                 repositories               : this.project.repositories.collect { [id: it.id, type: it.type, data: [git: [url: it.data.git == null ? null : it.data.git.url]]] },
                 sections                   : sections,
-                additionalInstallationTests: junit.getNumberOfTestCases(installationTestData.testResults) - installationTestIssues.count { !it.isMissing },
                 tests                      : SortUtil.sortIssuesByProperties(installationTestIssues.collect { testIssue ->
                     [
                         key        : testIssue.key,
@@ -814,6 +814,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         techSpec   : testIssue.techSpecs.join(", ")
                     ]
                 }, ["key"]),
+                numAdditionalTests: junit.getNumberOfTestCases(installationTestData.testResults) - installationTestIssues.count { !it.isMissing },
                 testFiles                 : SortUtil.sortIssuesByProperties(installationTestData.testReportFiles.collect { file ->
                     [name: file.name, path: file.path, text: file.text]
                 } ?: [], ["name"]),
@@ -878,7 +879,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             component.requirements = component.requirements.collect { r ->
                 [key: r.key, name: r.name, gampTopic: r.gampTopic]
             }.groupBy { it.gampTopic.toLowerCase() }.collect { k, v -> [gampTopic: k, requirementsofTopic: v] }
-            
+
             return component
         }
 
