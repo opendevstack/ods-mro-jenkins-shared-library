@@ -1457,7 +1457,7 @@ class Project {
 
     protected Map cleanJiraDataItems(Map data) {
         // Bump test steps indizes from 0-based to 1-based counting
-        data.jira.tests.each { test ->
+        data.tests.each { test ->
             test.getValue().steps.each { step ->
                 step.index++
             }
