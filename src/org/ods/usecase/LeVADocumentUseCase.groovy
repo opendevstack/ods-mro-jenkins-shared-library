@@ -395,9 +395,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             data    : [
-                repo         : repo,
-                sections     : sections,
-                tests        : testIssues.collect { testIssue ->
+                repo           : repo,
+                sections       : sections,
+                tests          : testIssues.collect { testIssue ->
                     [
                         key               : testIssue.key,
                         description       : testIssue.description ?: "",
@@ -408,12 +408,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
                                             testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }.join(", ") : "N/A"
                     ]
                 },
-                testfiles    : unitTestData.testReportFiles.collect { file ->
-                    [name: file.getName(), path: file.getPath()]
-                },
-                testsuites   : unitTestData.testResults,
-                discrepancies: discrepancies.discrepancies,
-                conclusion   : [
+                testFiles                 : SortUtil.sortIssuesByProperties(unitTestData.testReportFiles.collect { file ->
+                    [name: file.name, path: file.path, text: file.text]
+                } ?: [], ["name"]),
+                discrepancies  : discrepancies.discrepancies,
+                conclusion     : [
                     summary  : discrepancies.conclusion.summary,
                     statement: discrepancies.conclusion.statement
                 ]
@@ -558,9 +557,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 sections                  : sections,
                 additionalAcceptanceTests : junit.getNumberOfTestCases(acceptanceTestData.testResults) - acceptanceTestIssues.count { !it.isMissing }, 
                 additionalIntegrationTests: junit.getNumberOfTestCases(integrationTestData.testResults) - integrationTestIssues.count { !it.isMissing }, 
-                testfiles                 : (acceptanceTestData.testReportFiles + integrationTestData.testReportFiles).collect { file ->
-                    [name: file.getName(), path: file.getPath()]
-                },
                 conclusion : [
                     summary  : discrepancies.conclusion.summary,
                     statement: discrepancies.conclusion.statement
@@ -571,13 +567,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!acceptanceTestIssues.isEmpty()) {
             data_.data.acceptanceTests = acceptanceTestIssues.collect { testIssue ->
                 [
-                        key        : testIssue.key,
-                        datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
-                        description: testIssue.description ?: "",
-                        remarks    : testIssue.isMissing ? "not executed" : "",
-                        risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
-                        success    : testIssue.isSuccess ? "Y" : "N",
-                        ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
+                    key        : testIssue.key,
+                    datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
+                    description: testIssue.description ?: "",
+                    remarks    : testIssue.isMissing ? "not executed" : "",
+                    risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
+                    success    : testIssue.isSuccess ? "Y" : "N",
+                    ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
                 ]
             }
         }
@@ -666,8 +662,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def integrationTestData = data.tests.integration
-        def acceptanceTestData = data.tests.acceptance
         def integrationTestIssues = this.project.getAutomatedTestsTypeIntegration()
+
+        def acceptanceTestData = data.tests.acceptance
         def acceptanceTestIssues = this.project.getAutomatedTestsTypeAcceptance()
 
         def matchedHandler = { result ->
@@ -713,7 +710,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         steps       : testIssue.steps,
                         timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A"
                     ]
-                }, ["key"])
+                }, ["key"]),
+                integrationTestFiles: SortUtil.sortIssuesByProperties(integrationTestData.testReportFiles.collect { file ->
+                    [name: file.name, path: file.path, text: file.text]
+                } ?: [], ["name"]),
+                acceptanceTestFiles: SortUtil.sortIssuesByProperties(acceptanceTestData.testReportFiles.collect { file ->
+                    [name: file.name, path: file.path, text: file.text]
+                } ?: [], ["name"]),
             ]
         ]
 
@@ -811,9 +814,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         techSpec   : testIssue.techSpecs.join(", ")
                     ]
                 }, ["key"]),
-                testfiles                  : installationTestData.testReportFiles.collect { file ->
-                    [name: file.getName(), path: file.getPath()]
-                },
+                testFiles                 : SortUtil.sortIssuesByProperties(installationTestData.testReportFiles.collect { file ->
+                    [name: file.name, path: file.path, text: file.text]
+                } ?: [], ["name"]),
                 discrepancies              : discrepancies.discrepancies,
                 conclusion                 : [
                     summary  : discrepancies.conclusion.summary,
@@ -1000,7 +1003,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
-
     }
 
     String createOverallDTR(Map repo = null, Map data = null) {
