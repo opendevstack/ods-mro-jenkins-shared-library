@@ -32,13 +32,12 @@ def call() {
         .connectTimeout(120000)
 
     def steps = new PipelineSteps(this)
-    def git = new GitUtil(steps)
-    def project = new Project(steps, git).init()
+    def project = new Project(steps).init()
     def util = new MROPipelineUtil(project, steps)
 
     // Register global services
     def registry = ServiceRegistry.instance
-    registry.add(GitUtil, git)
+    registry.add(GitUtil, new GitUtil(steps))
     registry.add(PDFUtil, new PDFUtil())
     registry.add(PipelineSteps, steps)
     registry.add(MROPipelineUtil, util)
@@ -67,8 +66,6 @@ def call() {
                     env.JIRA_PASSWORD
                 )
             )
-
-            project.setJiraService(registry.get(JiraService))
 
             if (project.hasCapability("Zephyr")) {
                 registry.add(JiraZephyrService,
@@ -160,7 +157,7 @@ def call() {
 
     def phase = MROPipelineUtil.PipelinePhases.INIT
 
-    project.load()
+    project.load(registry.get(GitUtil), registry.get(JiraService))
     def repos = project.repositories
 
     // Configure current build
