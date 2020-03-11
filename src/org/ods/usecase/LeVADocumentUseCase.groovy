@@ -384,7 +384,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             [
                 id: it.id,
                 description: it.metadata.description,
-                tests: componentTestMapping[it.id]?: "None defined"
+                tests: componentTestMapping[it.id]? componentTestMapping[it.id].join(", "): "None defined"
             ]
         }
 
