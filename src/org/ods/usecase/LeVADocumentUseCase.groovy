@@ -514,7 +514,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             r.requirements = requirements.collect { it.name }.join("<br/>")
             r.requirementsKey = requirements.collect { it.key }.join("<br/>")
 
-            r.gxpRelevance = (obtainEnumShort("gxprelevance", r.gxpRelevance).contains("N")) ? "No" : "Yes"
+            r.gxpRelevance = obtainEnumShort("gxprelevance", r.gxpRelevance)
             r.probabilityOfOccurrence = obtainEnumShort("ProbabilityOfOccurrence", r.probabilityOfOccurrence)
             r.severityOfImpact = obtainEnumShort("SeverityOfImpact", r.severityOfImpact)
             r.probabilityOfDetection = obtainEnumShort("ProbabilityOfDetection", r.probabilityOfDetection)
