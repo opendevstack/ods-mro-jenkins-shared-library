@@ -103,6 +103,10 @@ class Project {
         "key": "PLTFMDEV",
         "id": "12005",
         "jiraBaseUrl": "http://localhost:2990/jira/DEMO",
+        "version": {
+            "id": "11100",
+            "name": "0.3"
+        },
         "gampTopics": [
             "operational requirements",
             "functional requirements",
