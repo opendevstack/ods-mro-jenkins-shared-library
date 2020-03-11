@@ -34,6 +34,36 @@ class FakeProject extends Project {
         this.data.jira = this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id))
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
+        this.data.jira.docs = [
+            "PLTFMDEV-1072" : [
+                "key": "PLTFMDEV-1072",
+                "name": "Test Case Report",
+                "description": "TCR",
+                "status": "DONE",
+                "labels": [
+                    "LeVA_Doc:TCR"
+                ]
+            ],
+            "DEMO-69": [
+                "key": "DEMO-69",
+                "name": "Document Demo",
+                "description": "Demo",
+                "status": "PENDING",
+                "labels": [
+                    "LeVA_Doc:myTypeNotDone"
+                ]
+            ],
+            "DEMO-70": [
+                "key": "DEMO-70",
+                "name": "Document Demo",
+                "description": "Demo",
+                "status": "PENDING",
+                "labels": [
+                    "LeVA_Doc:myTypeNotDone"
+                ]
+            ]
+        ]
+
         return this
     }
 

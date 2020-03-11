@@ -72,6 +72,10 @@ def call() {
                 )
             )
 
+            // Add the Documents data from Jira
+            project.setJiraService(registry.get(JiraService))
+            project.addDocumentsDataFromJira()
+
             if (hasCapability(project.capabilities, "Zephyr")) {
                 registry.add(JiraZephyrService,
                     new JiraZephyrService(
