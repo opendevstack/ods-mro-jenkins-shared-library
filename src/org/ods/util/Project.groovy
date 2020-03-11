@@ -101,7 +101,7 @@ class Project {
         "name": "PLTFMDEV",
         "description": "Sample Project with 68 fictional Issues",
         "key": "PLTFMDEV",
-        "id": 4711,
+        "id": "4711",
         "jiraBaseUrl": "http://localhost:2990/jira/DEMO",
         "gampTopics": [
             "operational requirements",
