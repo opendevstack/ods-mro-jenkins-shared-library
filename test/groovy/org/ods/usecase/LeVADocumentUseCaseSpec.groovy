@@ -284,7 +284,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.discrepancies == "The following major discrepancies were found during testing. Failed tests: JIRA-1. Unexecuted tests: JIRA-2."
         result.conclusion.summary == "No success - major discrepancies found"
         result.conclusion.statement == "Some discrepancies found as tests did fail and others were not executed."
-    
+
         when:
         // an erroneous testIssue and a failing extraneous testcase
         testIssues = [
@@ -1157,7 +1157,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
     def "notify LeVA document with issues not DONE yet"() {
         given:
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, levaFiles, nexus, os, pdf, sq))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
 
         def documentType = "myTypeNotDone"
         def message = "myMessage"
