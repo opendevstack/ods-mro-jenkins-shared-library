@@ -1131,15 +1131,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!this.jiraUseCase.jira) return
 
         def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
-        def notDoneIssues = this.project.getDocumentTrackingIssuesNotDone(jiraDocumentLabels)
+        def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
 
-        def jqlQuery = [jql: "project = ${project.key} AND issuetype = '${IssueTypes.LEVA_DOCUMENTATION}' AND labels IN (${jiraDocumentLabels.join(',')})"]
-
-        // Search for the Jira issue associated with the document
-        def jiraIssues = this.jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery)
         if (jiraIssues.size() == 0) {
-            throw new RuntimeException("Error: Jira query returned ${jiraIssues.size()} issues: '${jqlQuery}'.")
+            throw new RuntimeException("Error: No Jira issues associated with document type '${documentType}'.")
         }
+
+        def notDoneIssues = this.project.getDocumentTrackingIssuesNotDone(jiraDocumentLabels)
 
         if(!notDoneIssues.isEmpty()) {
             message = message.concat(" ${this.WORK_IN_PROGRESS_DOCUMENT_MESSAGE} See issues: ${notDoneIssues.collect{ it.key }.join(',')}")
