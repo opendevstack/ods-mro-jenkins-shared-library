@@ -1456,38 +1456,15 @@ class Project {
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.metadata = this.loadMetadata(METADATA_FILE_NAME)
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
+        this.loadJiraDataDocs()
+
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
         return this
     }
 
-    protected setJiraService(JiraService jiraService) {
-        this.jira = jiraService
-    }
-
-    protected void addDocumentsDataFromJira() {
-        if (!this.jira) return
-
-        def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.LEVA_DOCUMENTATION}'"]
-
-        def jiraIssues = this.jira.getIssuesForJQLQuery(jqlQuery)
-
-        if (jiraIssues.isEmpty()) {
-            throw new IllegalArgumentException("Error: Jira data does not include references to items of type '${JiraDataItem.TYPE_DOCS}'.")
-        }
-
-        this.data.jira.docs = jiraIssues.collectEntries { jiraIssue ->
-            [
-                jiraIssue.key,
-                [
-                    key         : jiraIssue.key,
-                    name        : jiraIssue.fields.summary,
-                    description : jiraIssue.fields.description,
-                    status      : jiraIssue.fields.status.name,
-                    labels      : jiraIssue.fields.labels
-                ]
-            ]
-        } as Map
+    protected setJiraService(JiraService jira) {
+        this.jira = jira
     }
 
     protected Map cleanJiraDataItems(Map data) {
@@ -1592,6 +1569,28 @@ class Project {
 
     String getDescription() {
         return this.data.metadata.description
+    }
+
+    List<Map> getDocumentTrackingIssues() {
+        return this.data.jira.docs.values() as List
+    }
+
+    List<Map> getDocumentTrackingIssues(List<String> labels) {
+        def result = []
+
+        labels.each { label ->
+            this.getDocumentTrackingIssues().each { issue ->
+                if (issue.labels.collect{ it.toLowerCase() }.contains(label.toLowerCase())) {
+                    result << [key: issue.key, status: issue.status]
+                }
+            }
+        }
+
+        return result.unique()
+    }
+
+    List<Map> getDocumentTrackingIssuesNotDone(List<String> labels) {
+        return this.getDocumentTrackingIssues(labels).findAll { !it.status.equalsIgnoreCase("done") }
     }
 
     Map getGitData() {
@@ -1704,28 +1703,6 @@ class Project {
         return this.data.jira.tests.values() as List
     }
 
-    List<Map> getDocumentTrackingIssues() {
-        return this.data.jira.docs.values() as List
-    }
-
-    List<Map> getDocumentTrackingIssues(List<String> labels) {
-        def result = []
-
-        labels.each { label ->
-            this.data.jira.docs.values().each { issue ->
-                if (issue.labels.collect{ it.toLowerCase() }.contains(label.toLowerCase())) {
-                    result << [key: issue.key, status: issue.status]
-                }
-            }
-        }
-
-        return result.unique()
-    }
-
-    List<Map> getDocumentTrackingIssuesNotDone(List<String> labels) {
-        return this.getDocumentTrackingIssues(labels).findAll { !it.status.equals("DONE") }
-    }
-
     boolean hasFailingTests() {
         return this.data.build.hasFailingTests
     }
@@ -1759,6 +1736,30 @@ class Project {
 
     protected Map loadJiraData(String projectKey) {
         return new JsonSlurperClassic().parseText(TEMP_FAKE_JIRA_DATA)
+    }
+
+    protected void loadJiraDataDocs() {
+        if (!this.jira) return
+
+        def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.LEVA_DOCUMENTATION}'"]
+
+        def jiraIssues = this.jira.getIssuesForJQLQuery(jqlQuery)
+        if (jiraIssues.isEmpty()) {
+            throw new IllegalArgumentException("Error: Jira data does not include references to items of type '${JiraDataItem.TYPE_DOCS}'.")
+        }
+
+        this.data.jira.docs = jiraIssues.collectEntries { jiraIssue ->
+            [
+                jiraIssue.key,
+                [
+                    key         : jiraIssue.key,
+                    name        : jiraIssue.fields.summary,
+                    description : jiraIssue.fields.description,
+                    status      : jiraIssue.fields.status.name,
+                    labels      : jiraIssue.fields.labels
+                ]
+            ]
+        }
     }
 
     protected Map loadMetadata(String filename = METADATA_FILE_NAME) {

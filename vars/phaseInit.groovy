@@ -33,7 +33,7 @@ def call() {
 
     def steps = new PipelineSteps(this)
     def git = new GitUtil(steps)
-    def project = new Project(steps, git).load()
+    def project = new Project(steps, git)
     def repos = project.repositories
     def util = new MROPipelineUtil(project, steps)
 
@@ -72,9 +72,7 @@ def call() {
                 )
             )
 
-            // Add the Documents data from Jira
             project.setJiraService(registry.get(JiraService))
-            project.addDocumentsDataFromJira()
 
             if (hasCapability(project.capabilities, "Zephyr")) {
                 registry.add(JiraZephyrService,
@@ -165,6 +163,7 @@ def call() {
     )
 
     def phase = MROPipelineUtil.PipelinePhases.INIT
+    project.load()
 
     // Clean workspace from previous runs
     [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->

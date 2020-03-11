@@ -1117,9 +1117,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
-        def notDoneIssues = this.project.getDocumentTrackingIssuesNotDone(jiraDocumentLabels)
 
-        if(!notDoneIssues.isEmpty()) {
+        // The watermark applies when a tracking issue for the current document is not in status DONE
+        def notDoneIssues = this.project.getDocumentTrackingIssuesNotDone(jiraDocumentLabels)
+        if (!notDoneIssues.isEmpty()) {
             return this.WORK_IN_PROGRESS_WATERMARK
         }
 
@@ -1131,16 +1132,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!this.jiraUseCase.jira) return
 
         def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
-        def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
 
+        def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
         if (jiraIssues.size() == 0) {
             throw new RuntimeException("Error: No Jira issues associated with document type '${documentType}'.")
         }
 
+        // Append a warning message for documents which are considered work in progress
         def notDoneIssues = this.project.getDocumentTrackingIssuesNotDone(jiraDocumentLabels)
-
-        if(!notDoneIssues.isEmpty()) {
-            message = message.concat(" ${this.WORK_IN_PROGRESS_DOCUMENT_MESSAGE} See issues: ${notDoneIssues.collect{ it.key }.join(',')}")
+        if (!notDoneIssues.isEmpty()) {
+            message += " ${this.WORK_IN_PROGRESS_DOCUMENT_MESSAGE} See issues: ${notDoneIssues.collect{ it.key }.join(',')}"
         }
 
         // Add a comment to the Jira issue with a link to the report
