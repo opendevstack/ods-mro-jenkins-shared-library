@@ -348,34 +348,55 @@ class LeVADocumentUseCase extends DocGenUseCase {
         } else {
             watermarkText = this.getWatermarkText(documentType)
         }
+        def unitTests = this.project.getAutomatedTestsTypeUnit()
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             data    : [
-                repositories: this.project.repositories.collect { repo_ ->
-                    [
-                        id         : repo_.id,
-                        description: repo_.metadata.description,
-                        url        : repo_.url
-                    ]
-                },
                 sections: sections,
-                tests: this.project.getAutomatedTestsTypeUnit().collect { testIssue ->
-                    def techSpecsWithSoftwareDesignSpec = testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }
-
-                    [
-                        key: testIssue.key,
-                        description: testIssue.description ?: "",
-                        systemRequirement: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
-                        softwareDesignSpec: techSpecsWithSoftwareDesignSpec ? techSpecsWithSoftwareDesignSpec.join(", ") : "N/A"
-                    ]
-                }
+                tests: this.computeTestsWithRequirementsAndSpecs(unitTests),
+                modules: this.getReposWithUnitTestsInfo(unitTests)
             ]
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
+    }
+
+    protected List<Map> computeTestsWithRequirementsAndSpecs(List<Map> tests) {
+        tests.collect { testIssue ->
+            def techSpecsWithSoftwareDesignSpec = testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }
+
+            [
+                moduleName: testIssue.components.join(", "),
+                testKey: testIssue.key,
+                description: testIssue.description ?: "N/A",
+                systemRequirement: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
+                softwareDesignSpec: techSpecsWithSoftwareDesignSpec ? techSpecsWithSoftwareDesignSpec.join(", ") : "N/A"
+            ]
+        }
+    }
+
+    protected List<Map> getReposWithUnitTestsInfo(List<Map> unitTests) {
+        def componentTestMapping = computeComponentsUnitTests(unitTests)
+        this.project.repositories.collect{
+            [
+                id: it.id,
+                description: it.metadata.description,
+                tests: componentTestMapping[it.id]?: "None defined"
+            ]
+        }
+
+    }
+
+    protected Map computeComponentsUnitTests(List<Map> tests) {
+        def issueComponentMapping = tests.collect { test ->
+            test.getResolvedComponents().collect {[test: test.key, component: it.name] }
+        }.flatten()
+        issueComponentMapping.groupBy{ it.component }.collectEntries { c, v ->
+             [(c.replaceAll("Technology-", "")): v.collect{it.test}]
+        }
     }
 
     String createDTR(Map repo, Map data) {
@@ -402,10 +423,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 tests          : testIssues.collect { testIssue ->
                     [
                         key               : testIssue.key,
-                        description       : testIssue.description ?: "",
+                        description       : testIssue.description ?: "N/A",
                         systemRequirement : testIssue.requirements.join(", "),
                         success           : testIssue.isSuccess ? "Y" : "N",
-                        remarks           : testIssue.isMissing ? "not executed" : "",
+                        remarks           : testIssue.isMissing ? "Not executed" : "N/A",
                         softwareDesignSpec: testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec } ?
                                             testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }.join(", ") : "N/A"
                     ]
@@ -495,7 +516,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             r.requirements = requirements.collect { it.name }.join("<br/>")
             r.requirementsKey = requirements.collect { it.key }.join("<br/>")
 
-            r.gxpRelevance = (obtainEnumShort("gxprelevance", r.gxpRelevance).contains("N")) ? "No" : "Yes"
+            r.gxpRelevance = obtainEnumShort("gxprelevance", r.gxpRelevance)
             r.probabilityOfOccurrence = obtainEnumShort("ProbabilityOfOccurrence", r.probabilityOfOccurrence)
             r.severityOfImpact = obtainEnumShort("SeverityOfImpact", r.severityOfImpact)
             r.probabilityOfDetection = obtainEnumShort("ProbabilityOfDetection", r.probabilityOfDetection)
