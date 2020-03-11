@@ -1444,9 +1444,7 @@ class Project {
     Project(IPipelineSteps steps, GitUtil git) {
         this.steps = steps
         this.git = git
-    }
 
-    Project load() {
         this.data.build = [
             hasFailingTests: false,
             hasUnexecutedJiraTests: false
@@ -1455,6 +1453,9 @@ class Project {
         this.data.buildParams = loadBuildParams(steps)
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.metadata = this.loadMetadata(METADATA_FILE_NAME)
+    }
+
+    Project load() {
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
         this.loadJiraDataDocs()
 
@@ -1701,6 +1702,14 @@ class Project {
 
     List<Map> getTests() {
         return this.data.jira.tests.values() as List
+    }
+
+    boolean hasCapability(String name) {
+        def collector = {
+            return (it instanceof Map) ? it.keySet().first().toLowerCase() : it.toLowerCase()
+        }
+
+        return this.capabilities.collect(collector).contains(name.toLowerCase())
     }
 
     boolean hasFailingTests() {

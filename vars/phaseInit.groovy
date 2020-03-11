@@ -36,9 +36,6 @@ def call() {
     def project = new Project(steps, git)
     def util = new MROPipelineUtil(project, steps)
 
-    // Configure current build
-    currentBuild.description = "Build #${BUILD_NUMBER} - Change: ${env.RELEASE_PARAM_CHANGE_ID}, Project: ${project.key}, Target Environment: ${project.key}-${env.MULTI_REPO_ENV}"
-
     // Register global services
     def registry = ServiceRegistry.instance
     registry.add(GitUtil, git)
@@ -73,7 +70,7 @@ def call() {
 
             project.setJiraService(registry.get(JiraService))
 
-            if (hasCapability(project.capabilities, "Zephyr")) {
+            if (project.hasCapability("Zephyr")) {
                 registry.add(JiraZephyrService,
                     new JiraZephyrService(
                         env.JIRA_URL,
@@ -113,7 +110,7 @@ def call() {
     )
 
     jiraUseCase.setSupport(
-        hasCapability(project.capabilities, "Zephyr")
+        project.hasCapability("Zephyr")
             ? new JiraUseCaseZephyrSupport(project, steps, jiraUseCase, registry.get(JiraZephyrService), registry.get(MROPipelineUtil))
             : new JiraUseCaseSupport(project, steps, jiraUseCase)
     )
@@ -166,6 +163,9 @@ def call() {
     project.load()
     def repos = project.repositories
 
+    // Configure current build
+    currentBuild.description = "Build #${BUILD_NUMBER} - Change: ${env.RELEASE_PARAM_CHANGE_ID}, Project: ${project.key}, Target Environment: ${project.key}-${env.MULTI_REPO_ENV}"
+
     // Clean workspace from previous runs
     [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->
        echo "Cleaning workspace directory '${name}' from previous runs"
@@ -187,14 +187,6 @@ def call() {
     registry.get(LeVADocumentScheduler).run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
 
     return [ project: project, repos: repos ]
-}
-
-private boolean hasCapability(List capabilities, String name) {
-    def collector = {
-        return (it instanceof Map) ? it.keySet().first().toLowerCase() : it.toLowerCase()
-    }
-
-    return capabilities.collect(collector).contains(name.toLowerCase())
 }
 
 return this
