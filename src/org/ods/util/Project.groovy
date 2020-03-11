@@ -1476,7 +1476,7 @@ class Project {
             throw new IllegalArgumentException("Error: Jira data does not include references to items of type '${JiraDataItem.TYPE_DOCS}'.")
         }
 
-        this.data.jira.docs = jiraIssues.collect { jiraIssue ->
+        this.data.jira.docs = jiraIssues.collectEntries { jiraIssue ->
             [
                 jiraIssue.key,
                 [
@@ -1487,7 +1487,7 @@ class Project {
                     labels      : jiraIssue.fields.labels
                 ]
             ]
-        }
+        } as Map
     }
 
     protected Map cleanJiraDataItems(Map data) {
