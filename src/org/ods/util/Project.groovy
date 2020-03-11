@@ -675,7 +675,7 @@ class Project {
     "tests": {
         "PLTFMDEV-401": {
             "name": "verify database is correctly installed",
-            "description": "verify database is correctly setup. Outcome: Succeeded",
+            "description": "verify database is correctly setup.",
             "key": "PLTFMDEV-401",
             "version": "1.0",
             "status": "READY TO TEST",
@@ -900,7 +900,7 @@ class Project {
         },
         "PLTFMDEV-1046": {
             "name": "verify frontend is correctly installed",
-            "description": "verify frontend is correctly installed. Outcome: Succeeded",
+            "description": "verify frontend is correctly installed.",
             "key": "PLTFMDEV-1046",
             "version": "1.0",
             "status": "READY TO TEST",
@@ -1008,7 +1008,7 @@ class Project {
         },
         "PLTFMDEV-1073": {
             "name": "Cart gets processed correctly",
-            "description": "Cart gets processed correctly. Outcome: Succeeded",
+            "description": "Cart gets processed correctly.",
             "key": "PLTFMDEV-1073",
             "version": "1.0",
             "status": "READY TO TEST",
@@ -1035,7 +1035,7 @@ class Project {
         },
         "PLTFMDEV-1074": {
             "name": "Frontend retrieves cart data correctly",
-            "description": "Frontend retrieves cart data correctly. Outcome: Succeeded",
+            "description": "Frontend retrieves cart data correctly.",
             "key": "PLTFMDEV-1074",
             "version": "1.0",
             "status": "READY TO TEST",
@@ -1062,7 +1062,7 @@ class Project {
         },
         "PLTFMDEV-1075": {
             "name": "Frontend retrieves payment data correctly",
-            "description": "Frontend retrieves payment data correctly. Outcome: Succeeded",
+            "description": "Frontend retrieves payment data correctly.",
             "key": "PLTFMDEV-1075",
             "version": "1.0",
             "status": "READY TO TEST",
