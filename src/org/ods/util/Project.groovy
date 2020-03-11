@@ -1576,8 +1576,7 @@ class Project {
     }
 
     String getId() {
-        this.steps.echo("nifl::Project.getId() this.data.jira.id is ${this.data.jira.id} and this.data.jira.project.id is ${this.data.jira.project.id}")
-        return this.data.jira.id
+        return this.data.jira.project.id
     }
 
     String getKey() {
