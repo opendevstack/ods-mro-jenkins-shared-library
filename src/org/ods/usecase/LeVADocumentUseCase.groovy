@@ -508,8 +508,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             (r.getResolvedTests().collect {
                 if (!it) throw new IllegalArgumentException("Error: test for requirement ${r.key} could not be obtained. Check if all of ${r.tests.join(", ")} exist in JIRA")
                 [key: it.key, name: it.name, type: "test", referencesRisk: r.key]
-            } +
-                r.getResolvedMitigations().collect { [key: it?.key, name: it?.name, type: "mitigation", referencesRisk: r.key] })
+            } + r.getResolvedMitigations().collect { [key: it?.key, name: it?.name, type: "mitigation", referencesRisk: r.key] })
         }.flatten()
 
         if (!sections."sec4s2s2") sections."sec4s2s2" = [:]
@@ -527,8 +526,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
         sections."sec5".risks = SortUtil.sortIssuesByProperties(risks, ["key"])
         sections."sec5".proposedMeasures = SortUtil.sortIssuesByProperties(proposedMeasuresDesription, ["key"])
 
+        def metadata = this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType])
+        metadata.orientation = "Landscape"
+
         def data_ = [
-            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
+            metadata: metadata,
             data    : [
                 sections: sections
             ]
