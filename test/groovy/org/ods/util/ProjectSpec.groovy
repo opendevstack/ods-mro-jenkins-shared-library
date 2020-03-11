@@ -3,6 +3,7 @@ package org.ods.util
 import java.nio.file.Paths
 
 import org.apache.http.client.utils.URIBuilder
+import org.ods.service.*
 
 import spock.lang.*
 
@@ -11,6 +12,7 @@ import util.*
 class ProjectSpec extends SpecHelper {
 
     GitUtil git
+    JiraService jira
     File metadataFile
     Project project
     IPipelineSteps steps
@@ -19,7 +21,7 @@ class ProjectSpec extends SpecHelper {
         steps = Spy(util.PipelineSteps)
         git = Mock(GitUtil)
         metadataFile = createProjectMetadataFile(this.steps.env.WORKSPACE, steps)
-        project = Spy(new Project(this.steps, this.git)).load()
+        project = Spy(new Project(this.steps)).init().load(git, null)
     }
 
     def cleanup() {
@@ -357,7 +359,6 @@ class ProjectSpec extends SpecHelper {
         metadataFile.delete()
     }
 
-
     def "load"() {
         given:
         def component1 = [ key: "CMP-1", name: "Component 1" ]
@@ -406,7 +407,7 @@ class ProjectSpec extends SpecHelper {
         test2.risks = [risk1.key]
 
         when:
-        project.load()
+        project.load(this.git, this.jira)
 
         then:
         1 * project.loadJiraData(_) >> [
@@ -421,6 +422,9 @@ class ProjectSpec extends SpecHelper {
             techSpecs: [(techSpec1.key): techSpec1],
             docs: [(doc1.key): doc1]
         ]
+
+        1 * project.resolveJiraDataItemReferences(_)
+        1 * project.loadJiraDataDocs()
 
         then:
         def components = project.components

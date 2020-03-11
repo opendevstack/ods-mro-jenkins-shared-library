@@ -2,12 +2,12 @@ package util
 
 import groovy.json.JsonSlurper
 import groovy.transform.InheritConstructors
+
 import org.apache.http.client.utils.URIBuilder
 import org.junit.contrib.java.lang.system.EnvironmentVariables
-import org.ods.parser.JUnitParser
-import org.ods.util.GitUtil
-import org.ods.util.IPipelineSteps
-import org.ods.util.Project
+import org.ods.parser.*
+import org.ods.service.*
+import org.ods.util.*
 
 @InheritConstructors
 class FakeGitUtil extends GitUtil {
@@ -24,17 +24,89 @@ class FakeGitUtil extends GitUtil {
 class FakeProject extends Project {
 
     @Override
-    Project load() {
-        this.data.build = [:]
-        this.data.build.hasFailingTests = false
-
-        this.data.buildParams = loadBuildParams(steps)
-        this.data.git = [commit: git.getCommit(), url: git.getURL()]
+    Project init() {
+        this.data.buildParams = this.loadBuildParams(steps)
         this.data.metadata = this.loadMetadata(METADATA_FILE_NAME)
-        this.data.jira = this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id))
-        this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
+        return this
+    }
 
-        this.data.jira.docs = [
+    @Override
+    Project load(GitUtil git, JiraService jira) {
+        this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
+        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
+        this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
+        this.data.jira.docs = this.loadJiraDataDocs()
+        return this
+    }
+
+    static List<String> getBuildEnvironment(IPipelineSteps steps, boolean debug) {
+        def env = new EnvironmentVariables()
+        return FixtureHelper.createProjectBuildEnvironment(env)
+    }
+
+    protected URI getGitURLFromPath(String path, String remote) {
+        def url = "https://github.com/my-org/my-repo-A.git"
+        return new URIBuilder(url).build()
+    }
+
+    private File getResource(String path) {
+        path = path.startsWith('/') ? path : '/' + path
+        new File(getClass().getResource(path).toURI())
+    }
+
+    static Map loadBuildParams(IPipelineSteps steps) {
+        return FixtureHelper.createProjectBuildParams()
+    }
+
+    protected Map loadJiraData(String projectKey) {
+        def file = this.getResource("project-jira-data.json")
+        return new JsonSlurper().parse(file)
+    }
+
+    protected Map loadJiraDataDocs() {
+        return FixtureHelper.createProjectJiraDataDocs()
+    }
+
+    protected Map loadMetadata(String filename) {
+        return FixtureHelper.createProjectMetadata()
+    }
+
+    void setRepositories(List repos) {
+        this.data.metadata.repositories = repos
+    }
+}
+
+class FixtureHelper {
+    static Project createProject() {
+        def steps = new PipelineSteps()
+        return new FakeProject(steps).init()
+            .load(new FakeGitUtil(steps), null)
+    }
+
+    static Map createProjectBuildEnvironment(def env) {
+        def params = createProjectBuildParams()
+        params.each { key, value ->
+            env.set(key, value)
+        }
+
+        return params
+    }
+
+    static Map createProjectBuildParams() {
+        return [
+            changeDescription            : "The change I've wanted.",
+            changeId                     : "0815",
+            configItem                   : "myItem",
+            sourceEnvironmentToClone     : "dev",
+            sourceEnvironmentToCloneToken: "D",
+            targetEnvironment            : "dev",
+            targetEnvironmentToken       : "D",
+            version                      : "0.1"
+        ]
+    }
+
+    static Map createProjectJiraDataDocs() {
+        return [
             "PLTFMDEV-1072": [
                 "key": "PLTFMDEV-1072",
                 "name": "Test Case Report",
@@ -334,70 +406,6 @@ class FakeProject extends Project {
                     "LeVA_Doc:myType"
                 ]
             ]
-        ]
-
-        return this
-    }
-
-    static List<String> getBuildEnvironment(IPipelineSteps steps, boolean debug) {
-        def env = new EnvironmentVariables()
-        return FixtureHelper.createProjectBuildEnvironment(env)
-    }
-
-    protected URI getGitURLFromPath(String path, String remote) {
-        def url = "https://github.com/my-org/my-repo-A.git"
-        return new URIBuilder(url).build()
-    }
-
-    private File getResource(String path) {
-        path = path.startsWith('/') ? path : '/' + path
-        new File(getClass().getResource(path).toURI())
-    }
-
-    static Map loadBuildParams(IPipelineSteps steps) {
-        return FixtureHelper.createProjectBuildParams()
-    }
-
-    protected Map loadJiraData(String projectKey) {
-        def file = this.getResource("project-jira-data.json")
-        return new JsonSlurper().parse(file)
-    }
-
-    protected Map loadMetadata(String filename) {
-        return FixtureHelper.createProjectMetadata()
-    }
-
-    void setRepositories(List repos) {
-        this.data.metadata.repositories = repos
-    }
-}
-
-class FixtureHelper {
-    static Project createProject() {
-        def steps = new PipelineSteps()
-        def git = new FakeGitUtil(steps)
-        return new FakeProject(steps, git).load()
-    }
-
-    static Map createProjectBuildEnvironment(def env) {
-        def params = createProjectBuildParams()
-        params.each { key, value ->
-            env.set(key, value)
-        }
-
-        return params
-    }
-
-    static Map createProjectBuildParams() {
-        return [
-            changeDescription            : "The change I've wanted.",
-            changeId                     : "0815",
-            configItem                   : "myItem",
-            sourceEnvironmentToClone     : "dev",
-            sourceEnvironmentToCloneToken: "D",
-            targetEnvironment            : "dev",
-            targetEnvironmentToken       : "D",
-            version                      : "0.1"
         ]
     }
 

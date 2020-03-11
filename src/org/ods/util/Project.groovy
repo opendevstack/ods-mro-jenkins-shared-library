@@ -1441,31 +1441,30 @@ class Project {
 
     protected Map data = [:]
 
-    Project(IPipelineSteps steps, GitUtil git) {
+    Project(IPipelineSteps steps) {
         this.steps = steps
-        this.git = git
 
         this.data.build = [
             hasFailingTests: false,
             hasUnexecutedJiraTests: false
         ]
-
-        this.data.buildParams = loadBuildParams(steps)
-        this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
-        this.data.metadata = this.loadMetadata(METADATA_FILE_NAME)
     }
 
-    Project load() {
-        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
-        this.loadJiraDataDocs()
-
-        this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
-
+    Project init() {
+        this.data.buildParams = this.loadBuildParams(steps)
+        this.data.metadata = this.loadMetadata(METADATA_FILE_NAME)
         return this
     }
 
-    protected setJiraService(JiraService jira) {
+    Project load(GitUtil git, JiraService jira) {
+        this.git = git
         this.jira = jira
+
+        this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
+        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
+        this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
+        this.data.jira.docs = this.loadJiraDataDocs()
+        return this
     }
 
     protected Map cleanJiraDataItems(Map data) {
@@ -1747,7 +1746,7 @@ class Project {
         return new JsonSlurperClassic().parseText(TEMP_FAKE_JIRA_DATA)
     }
 
-    protected void loadJiraDataDocs() {
+    protected Map loadJiraDataDocs() {
         if (!this.jira) return
 
         def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.LEVA_DOCUMENTATION}'"]
@@ -1757,7 +1756,7 @@ class Project {
             throw new IllegalArgumentException("Error: Jira data does not include references to items of type '${JiraDataItem.TYPE_DOCS}'.")
         }
 
-        this.data.jira.docs = jiraIssues.collectEntries { jiraIssue ->
+        return jiraIssues.collectEntries { jiraIssue ->
             [
                 jiraIssue.key,
                 [

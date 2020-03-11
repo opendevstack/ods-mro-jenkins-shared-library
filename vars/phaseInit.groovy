@@ -33,7 +33,7 @@ def call() {
 
     def steps = new PipelineSteps(this)
     def git = new GitUtil(steps)
-    def project = new Project(steps, git)
+    def project = new Project(steps, git).init()
     def util = new MROPipelineUtil(project, steps)
 
     // Register global services
