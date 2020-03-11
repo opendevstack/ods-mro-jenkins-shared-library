@@ -724,6 +724,8 @@
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
+            "executionType": "Automated",
+            "steps": [],
             "components": [
                 "DEMO-2"
             ],
@@ -738,6 +740,8 @@
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
+            "executionType": "Automated",
+            "steps": [],
             "components": [
                 "DEMO-2"
             ],
@@ -753,6 +757,7 @@
             "status": "READY TO TEST",
             "testType": "Integration",
             "executionType": "Automated",
+            "steps": [],
             "components": [
                 "DEMO-2"
             ],
@@ -776,6 +781,8 @@
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Unit",
+            "executionType": "Automated",
+            "steps": [],
             "components": [
                 "DEMO-3"
             ],
