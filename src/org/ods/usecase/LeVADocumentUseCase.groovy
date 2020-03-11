@@ -1026,10 +1026,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def documentType = DocumentType.TIR as String
 
         def visitor = { data_ ->
-            // Append another section for the Jenkins build log
-            data_.sections << [
+            // Prepend a section for the Jenkins build log
+            data_.sections.add(0, [
                 heading: "Jenkins Build Log"
-            ]
+            ])
 
             // Add Jenkins build log data
             data_.jenkinsData = [
