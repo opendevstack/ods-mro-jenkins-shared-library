@@ -31,7 +31,6 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
             this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.buildParams -> ${this.project.buildParams}")
             this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.git -> ${this.project.git}")
             this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.name -> ${this.project.name}")
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.data -> ${this.project.data}")
 
             def versionId = this.getProjectVersion(this.project.key)?.id ?: "-1"
             def testCycles = this.zephyr.getTestCycles(this.project.id, versionId)
