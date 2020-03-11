@@ -34,7 +34,6 @@ def call() {
     def steps = new PipelineSteps(this)
     def git = new GitUtil(steps)
     def project = new Project(steps, git)
-    def repos = project.repositories
     def util = new MROPipelineUtil(project, steps)
 
     // Configure current build
@@ -163,7 +162,9 @@ def call() {
     )
 
     def phase = MROPipelineUtil.PipelinePhases.INIT
+
     project.load()
+    def repos = project.repositories
 
     // Clean workspace from previous runs
     [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->
