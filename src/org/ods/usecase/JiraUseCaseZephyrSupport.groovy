@@ -48,6 +48,9 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
         testIssues.each { testIssue ->
             // Create a new execution with status UNEXECUTED
+            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii calling ZephyrService.createTestExecutionForIssue(testIssue.id: ${testIssue.id}; project.id: ${project.id}; testCycleId: ${testCycleId})")
+            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii testIssue -> ${testIssue}")
+
             def testExecutionId = this.zephyr.createTestExecutionForIssue(testIssue.id, this.project.id, testCycleId).keySet().first()
 
             testResults.testsuites.each { testSuite ->
