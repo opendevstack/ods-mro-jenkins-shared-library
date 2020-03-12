@@ -1,28 +1,31 @@
 package org.ods.usecase
 
-import org.ods.service.*
-import org.ods.util.*
 
-import spock.lang.*
+import org.ods.service.JiraService
+import org.ods.util.GitUtil
+import org.ods.util.IPipelineSteps
+import org.ods.util.MROPipelineUtil
+import org.ods.util.Project
+import spock.lang.Ignore
+import util.FakeProject
+import util.SpecHelper
 
 import static util.FixtureHelper.*
 
-import util.*
-
 class JiraUseCaseSpec extends SpecHelper {
 
+    GitUtil git
     JiraService jira
-    Project project
     IPipelineSteps steps
-    JiraUseCase usecase
     MROPipelineUtil util
+    JiraUseCase usecase
+    Project project
 
     def setup() {
-        project = Spy(createProject())
         steps = Spy(util.PipelineSteps)
+        git = Mock(GitUtil)
         util = Mock(MROPipelineUtil)
         jira = Mock(JiraService)
-        usecase = new JiraUseCase(project, steps, util, jira)
     }
 
     def "apply test results as test issue labels"() {
@@ -104,7 +107,7 @@ class JiraUseCaseSpec extends SpecHelper {
         def comment = "myComment"
 
         // Stubbed Method Responses
-        def bug = [ key: "JIRA-BUG" ]
+        def bug = [key: "JIRA-BUG"]
 
         when:
         usecase.createBugsForFailedTestIssues(testIssues, failures, comment)
@@ -129,8 +132,8 @@ class JiraUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def jqlQuery = [
-            jql: "project = ${project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENT_CHAPTER}' AND labels = LeVA_Doc:${documentType}",
-            expand: [ "names", "renderedFields" ]
+            jql   : "project = ${project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENT_CHAPTER}' AND labels = LeVA_Doc:${documentType}",
+            expand: ["names", "renderedFields"]
         ]
 
         // Stubbed Method Responses
@@ -153,8 +156,8 @@ class JiraUseCaseSpec extends SpecHelper {
         jiraIssue3.renderedFields.description = "<html>3-description</html>"
 
         def jiraResult = [
-            issues: [ jiraIssue1, jiraIssue2, jiraIssue3 ],
-            names: [
+            issues: [jiraIssue1, jiraIssue2, jiraIssue3],
+            names : [
                 "0": JiraUseCase.CustomIssueFields.HEADING_NUMBER,
                 "1": JiraUseCase.CustomIssueFields.CONTENT
             ]
@@ -169,17 +172,17 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         def expected = [
             "sec1s0": [
-                number: "1.0",
+                number : "1.0",
                 heading: "1-summary",
                 content: "<html>myContent1</html>"
             ],
             "sec2s0": [
-                number: "2.0",
+                number : "2.0",
                 heading: "2-summary",
                 content: "<html>myContent2</html>"
             ],
             "sec3s0": [
-                number: "3.0",
+                number : "3.0",
                 heading: "3-summary",
                 content: "<html>myContent3</html>"
             ]
@@ -197,18 +200,18 @@ class JiraUseCaseSpec extends SpecHelper {
 
         when:
         def jiraResult = [
-            "total": 0,
-            "maxResults":1000,
-            "issues":[]
+            "total"     : 0,
+            "maxResults": 1000,
+            "issues"    : []
         ]
 
-        then: 
+        then:
         // Expect an error
         def msg = shouldFail IllegalStateException, {
             usecase.getDocumentChapterData(documentType)
         }
         assert msg.contains('No documents found') && msg.contains("JIRA")
-        
+
     }
 
     def "match Jira test issues against test results"() {
@@ -219,7 +222,7 @@ class JiraUseCaseSpec extends SpecHelper {
         def matched = [:]
         def matchedHandler = { result ->
             matched = result.collectEntries { jiraTestIssue, testcase ->
-                [ (jiraTestIssue.key.toString()), testcase.name ]
+                [(jiraTestIssue.key.toString()), testcase.name]
             }
         }
 
@@ -249,10 +252,8 @@ class JiraUseCaseSpec extends SpecHelper {
 
     def "report test results for component in DEV"() {
         given:
-        project.buildParams.targetEnvironmentToken = "D"
 
         def support = Mock(JiraUseCaseSupport)
-        usecase.setSupport(support)
 
         // Test Parameters
         def componentName = "myComponent"
@@ -263,6 +264,11 @@ class JiraUseCaseSpec extends SpecHelper {
         def testIssues = createJiraTestIssues()
 
         when:
+        project = Spy(new FakeProject(this.steps)).init().load(git, jira)
+        project.buildParams.targetEnvironmentToken = "D"
+        JiraUseCase usecase = new JiraUseCase(project, steps, util, jira)
+        usecase.setSupport(support)
+
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
 
         then:
@@ -314,8 +320,8 @@ class JiraUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def testIssues = createJiraTestIssues()
-        def errorBug = [ key: "JIRA-BUG-1" ]
-        def failureBug = [ key: "JIRA-BUG-2" ]
+        def errorBug = [key: "JIRA-BUG-1"]
+        def failureBug = [key: "JIRA-BUG-2"]
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
@@ -372,8 +378,8 @@ class JiraUseCaseSpec extends SpecHelper {
         def failure = createTestResultFailures().first()
 
         // Stubbed Method Responses
-        def errorBug = [ key: "JIRA-BUG-1" ]
-        def failureBug = [ key: "JIRA-BUG-2" ]
+        def errorBug = [key: "JIRA-BUG-1"]
+        def failureBug = [key: "JIRA-BUG-2"]
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
