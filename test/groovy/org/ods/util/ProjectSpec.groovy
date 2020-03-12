@@ -1,27 +1,23 @@
 package org.ods.util
 
+import org.ods.service.JiraService
+import util.SpecHelper
+
 import java.nio.file.Paths
-
-import org.apache.http.client.utils.URIBuilder
-import org.ods.service.*
-
-import spock.lang.*
-
-import util.*
 
 class ProjectSpec extends SpecHelper {
 
     GitUtil git
     JiraService jira
     File metadataFile
-    Project project
+    // Project project
     IPipelineSteps steps
 
     def setup() {
         steps = Spy(util.PipelineSteps)
         git = Mock(GitUtil)
+        jira = Mock(JiraService)
         metadataFile = createProjectMetadataFile(this.steps.env.WORKSPACE, steps)
-        project = Spy(new Project(this.steps)).init().load(git, null)
     }
 
     def cleanup() {
@@ -127,7 +123,7 @@ class ProjectSpec extends SpecHelper {
         steps.env.changeId = null
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
-        def result = Project.getBuildEnvironment(steps, )
+        def result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_ID=0.1-myEnv" }
@@ -136,7 +132,7 @@ class ProjectSpec extends SpecHelper {
         steps.env.changeId = ""
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_ID=0.1-myEnv" }
@@ -145,7 +141,7 @@ class ProjectSpec extends SpecHelper {
         steps.env.changeId = "myId"
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_ID=myId" }
@@ -154,21 +150,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for RELEASE_PARAM_CHANGE_DESC"() {
         when:
         steps.env.changeDescription = null
-        def result = Project.getBuildEnvironment(steps, )
+        def result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_DESC=UNDEFINED" }
 
         when:
         steps.env.changeDescription = ""
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_DESC=UNDEFINED" }
 
         when:
         steps.env.changeDescription = "myDescription"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_DESC=myDescription" }
@@ -177,21 +173,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for RELEASE_PARAM_CONFIG_ITEM"() {
         when:
         steps.env.configItem = null
-        def result = Project.getBuildEnvironment(steps, )
+        def result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CONFIG_ITEM=UNDEFINED" }
 
         when:
         steps.env.configItem = ""
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CONFIG_ITEM=UNDEFINED" }
 
         when:
         steps.env.configItem = "myItem"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_CONFIG_ITEM=myItem" }
@@ -200,21 +196,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for RELEASE_PARAM_VERSION"() {
         when:
         steps.env.version = null
-        def result = Project.getBuildEnvironment(steps, )
+        def result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_VERSION=WIP" }
 
         when:
         steps.env.version = ""
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_VERSION=WIP" }
 
         when:
         steps.env.version = "0.1"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "RELEASE_PARAM_VERSION=0.1" }
@@ -224,7 +220,7 @@ class ProjectSpec extends SpecHelper {
         when:
         steps.env.environment = "myEnv"
         steps.env.sourceEnvironmentToClone = null
-        def result = Project.getBuildEnvironment(steps, )
+        def result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV=myEnv" }
@@ -232,7 +228,7 @@ class ProjectSpec extends SpecHelper {
         when:
         steps.env.environment = "myEnv"
         steps.env.sourceEnvironmentToClone = ""
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV=myEnv" }
@@ -240,7 +236,7 @@ class ProjectSpec extends SpecHelper {
         when:
         steps.env.environment = "mvEnv"
         steps.env.sourceEnvironmentToClone = "mySourceEnv"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV=mySourceEnv" }
@@ -249,21 +245,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for SOURCE_CLONE_ENV_TOKEN"() {
         when:
         steps.env.sourceEnvironmentToClone = "dev"
-        def result = Project.getBuildEnvironment(steps, )
+        def result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV_TOKEN=D" }
 
         when:
         steps.env.sourceEnvironmentToClone = "qa"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV_TOKEN=Q" }
 
         when:
         steps.env.sourceEnvironmentToClone = "prod"
-        result = Project.getBuildEnvironment(steps, )
+        result = Project.getBuildEnvironment(steps,)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV_TOKEN=P" }
@@ -275,7 +271,12 @@ class ProjectSpec extends SpecHelper {
         def origin = "upstream"
 
         when:
+        def project = Spy(new Project(this.steps)).init().load(git, jira)
         def result = project.getGitURLFromPath(path, origin)
+
+        then:
+        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
+        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
 
         then:
         1 * steps.dir(path, _)
@@ -295,15 +296,18 @@ class ProjectSpec extends SpecHelper {
         def path = "${steps.env.WORKSPACE}/a/b/c"
 
         when:
+        def project = Spy(new Project(this.steps)).init().load(git, jira)
         def result = project.getGitURLFromPath(path)
 
         then:
+        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
+        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
+
         1 * steps.dir(path, _)
 
-        then:
-        1 * steps.sh({ it.script == "git config --get remote.origin.url" && it.returnStdout }) >> new URI("https://github.com/my-org/my-repo.git").toString()
+        // gets called 3 times, during project initialization and during the actual test.
+        3 * steps.sh({ it.script == "git config --get remote.origin.url" && it.returnStdout }) >> new URI("https://github.com/my-org/my-repo.git").toString()
 
-        then:
         result == new URI("https://github.com/my-org/my-repo.git")
 
         cleanup:
@@ -312,7 +316,12 @@ class ProjectSpec extends SpecHelper {
 
     def "get Git URL from path with invalid path"() {
         when:
+        def project = Spy(new Project(this.steps)).init().load(git, jira)
         project.getGitURLFromPath(null)
+
+        then:
+        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
+        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -342,7 +351,12 @@ class ProjectSpec extends SpecHelper {
         def path = "${steps.env.WORKSPACE}/a/b/c"
 
         when:
+        def project = Spy(new Project(this.steps)).init().load(git, jira)
         project.getGitURLFromPath(path, null)
+
+        then:
+        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
+        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -361,15 +375,15 @@ class ProjectSpec extends SpecHelper {
 
     def "load"() {
         given:
-        def component1 = [ key: "CMP-1", name: "Component 1" ]
-        def epic1 = [ key: "EPC-1", name: "Epic 1" ]
-        def mitigation1 = [ key: "MTG-1", name: "Mitigation 1" ]
-        def requirement1 = [ key: "REQ-1", name: "Requirement 1" ]
-        def risk1 = [ key: "RSK-1", name: "Risk 1" ]
-        def techSpec1 = [ key: "TS-1", name: "Technical Specification 1" ]
-        def test1 = [ key: "TST-1", name: "Test 1" ]
-        def test2 = [ key: "TST-2", name: "Test 2" ]
-        def doc1 = [ key: "DOC-1", name: "Doc 1", status: "OPEN" ]
+        def component1 = [key: "CMP-1", name: "Component 1"]
+        def epic1 = [key: "EPC-1", name: "Epic 1"]
+        def mitigation1 = [key: "MTG-1", name: "Mitigation 1"]
+        def requirement1 = [key: "REQ-1", name: "Requirement 1"]
+        def risk1 = [key: "RSK-1", name: "Risk 1"]
+        def techSpec1 = [key: "TS-1", name: "Technical Specification 1"]
+        def test1 = [key: "TST-1", name: "Test 1"]
+        def test2 = [key: "TST-2", name: "Test 2"]
+        def doc1 = [key: "DOC-1", name: "Doc 1", status: "OPEN"]
 
         // Define key-based references
         component1.epics = [epic1.key]
@@ -411,16 +425,16 @@ class ProjectSpec extends SpecHelper {
 
         then:
         1 * project.loadJiraData(_) >> [
-            project: [ name: "my-project" ],
-            bugs: [],
-            components: [(component1.key): component1],
-            epics: [(epic1.key): epic1],
-            mitigations: [(mitigation1.key): mitigation1],
+            project     : [name: "my-project"],
+            bugs        : [],
+            components  : [(component1.key): component1],
+            epics       : [(epic1.key): epic1],
+            mitigations : [(mitigation1.key): mitigation1],
             requirements: [(requirement1.key): requirement1],
-            risks: [(risk1.key): risk1],
-            tests: [(test1.key): test1, (test2.key): test2],
-            techSpecs: [(techSpec1.key): techSpec1],
-            docs: [(doc1.key): doc1]
+            risks       : [(risk1.key): risk1],
+            tests       : [(test1.key): test1, (test2.key): test2],
+            techSpecs   : [(techSpec1.key): techSpec1],
+            docs        : [(doc1.key): doc1]
         ]
 
         1 * project.resolveJiraDataItemReferences(_)
@@ -656,34 +670,34 @@ class ProjectSpec extends SpecHelper {
 
         then:
         def expected = [
-            id: "myId",
-            name: "myName",
-            description: "myDescription",
+            id          : "myId",
+            name        : "myName",
+            description : "myDescription",
             repositories: [
                 [
-                    id: "A",
-                    url: "https://github.com/my-org/my-repo-A.git",
+                    id    : "A",
+                    url   : "https://github.com/my-org/my-repo-A.git",
                     branch: "master",
-                    type: MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data: [
+                    type  : MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
+                    data  : [
                         documents: [:]
                     ]
                 ],
                 [
-                    id: "B",
-                    url: "https://github.com/my-org/my-repo-B.git",
+                    id    : "B",
+                    url   : "https://github.com/my-org/my-repo-B.git",
                     branch: "master",
-                    type: MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data: [
+                    type  : MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
+                    data  : [
                         documents: [:]
                     ]
                 ],
                 [
-                    id: "C",
-                    url: "https://github.com/my-org/myid-C.git",
+                    id    : "C",
+                    url   : "https://github.com/my-org/myid-C.git",
                     branch: "master",
-                    type: MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data: [
+                    type  : MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
+                    data  : [
                         documents: [:]
                     ]
                 ]
@@ -827,5 +841,28 @@ class ProjectSpec extends SpecHelper {
         then:
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'repositories[1].id' is undefined."
+    }
+
+    protected def getIssuesForJQLQuery() {
+        return [
+            [
+                key   : "TESTCAL-20",
+                fields: [
+                    summary    : "DevOps Epic for Test",
+                    description: "Some issue descripion",
+                    status     : [
+                        name: "Open"
+                    ],
+                    labels     : ["LeVA_Doc:CSD"]
+                ]
+            ]
+        ]
+    }
+
+    protected def getProjectVersion() {
+        return [
+            "id"  : "11100",
+            "name": "0.3"
+        ]
     }
 }

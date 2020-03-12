@@ -1,17 +1,13 @@
 package org.ods.util
 
 import com.cloudbees.groovy.cps.NonCPS
-
 import groovy.json.JsonSlurperClassic
-
-import java.nio.file.Paths
-
 import org.apache.http.client.utils.URIBuilder
-
 import org.ods.service.JiraService
 import org.ods.usecase.LeVADocumentUseCase
-
 import org.yaml.snakeyaml.Yaml
+
+import java.nio.file.Paths
 
 class Project {
 
@@ -1455,7 +1451,7 @@ class Project {
         this.steps = steps
 
         this.data.build = [
-            hasFailingTests: false,
+            hasFailingTests       : false,
             hasUnexecutedJiraTests: false
         ]
     }
@@ -1470,8 +1466,9 @@ class Project {
         this.git = git
         this.jira = jira
 
-        this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
+        this.data.git = [commit: git.getCommit(), url: git.getURL()]
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
+        this.data.jira.project.version = this.jira.getVersionForProject(this.data.jira.project.key)
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
         this.data.jira.docs = this.loadJiraDataDocs()
         return this
@@ -1507,11 +1504,11 @@ class Project {
             def result = testIssue.status.toLowerCase() == "ready to test" && testIssue.executionType?.toLowerCase() == "automated"
 
             if (result && componentName) {
-                result = testIssue.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
+                result = testIssue.getResolvedComponents().collect { it.name.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
             if (result && testTypes) {
-                result = testTypes.collect{ it.toLowerCase() }.contains(testIssue.testType.toLowerCase())
+                result = testTypes.collect { it.toLowerCase() }.contains(testIssue.testType.toLowerCase())
             }
 
             return result
@@ -1590,7 +1587,7 @@ class Project {
 
         labels.each { label ->
             this.getDocumentTrackingIssues().each { issue ->
-                if (issue.labels.collect{ it.toLowerCase() }.contains(label.toLowerCase())) {
+                if (issue.labels.collect { it.toLowerCase() }.contains(label.toLowerCase())) {
                     result << [key: issue.key, status: issue.status]
                 }
             }
@@ -1624,7 +1621,7 @@ class Project {
 
         this.steps.dir(path) {
             result = this.steps.sh(
-                label : "Get Git URL for repository at path '${path}' and origin '${remote}'",
+                label: "Get Git URL for repository at path '${path}' and origin '${remote}'",
                 script: "git config --get remote.${remote}.url",
                 returnStdout: true
             ).trim()
@@ -1670,11 +1667,11 @@ class Project {
             def result = true
 
             if (result && componentName) {
-                result = req.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
+                result = req.getResolvedComponents().collect { it.name.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
             if (result && gampTopics) {
-                result = gampTopics.collect{ it.toLowerCase() }.contains(req.gampTopic.toLowerCase())
+                result = gampTopics.collect { it.toLowerCase() }.contains(req.gampTopic.toLowerCase())
             }
 
             return result
@@ -1702,7 +1699,7 @@ class Project {
             def result = true
 
             if (result && componentName) {
-                result = techSpec.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
+                result = techSpec.getResolvedComponents().collect { it.name.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
             return result
@@ -1741,14 +1738,14 @@ class Project {
         def changeDescription = steps.env.changeDescription?.trim() ?: "UNDEFINED"
 
         return [
-            changeDescription: changeDescription,
-            changeId: changeId,
-            configItem: configItem,
-            sourceEnvironmentToClone: sourceEnvironmentToClone,
+            changeDescription            : changeDescription,
+            changeId                     : changeId,
+            configItem                   : configItem,
+            sourceEnvironmentToClone     : sourceEnvironmentToClone,
             sourceEnvironmentToCloneToken: sourceEnvironmentToCloneToken,
-            targetEnvironment: targetEnvironment,
-            targetEnvironmentToken: targetEnvironmentToken,
-            version: version
+            targetEnvironment            : targetEnvironment,
+            targetEnvironmentToken       : targetEnvironmentToken,
+            version                      : version
         ]
     }
 
@@ -1770,11 +1767,11 @@ class Project {
             [
                 jiraIssue.key,
                 [
-                    key         : jiraIssue.key,
-                    name        : jiraIssue.fields.summary,
-                    description : jiraIssue.fields.description,
-                    status      : jiraIssue.fields.status.name,
-                    labels      : jiraIssue.fields.labels
+                    key        : jiraIssue.key,
+                    name       : jiraIssue.fields.summary,
+                    description: jiraIssue.fields.description,
+                    status     : jiraIssue.fields.status.name,
+                    labels     : jiraIssue.fields.labels
                 ]
             ]
         }
