@@ -1,5 +1,7 @@
 package org.ods.service
 
+@Grab(group="com.konghq", module="unirest-java", version="2.4.03", classifier="standalone")
+
 import com.cloudbees.groovy.cps.NonCPS
 
 import groovy.json.JsonOutput
@@ -272,7 +274,6 @@ class JiraService {
             }
 
             throw new RuntimeException(message)
-
         }
 
         Map jiraVersion = new JsonSlurperClassic().parseText(response.getBody()).last()
