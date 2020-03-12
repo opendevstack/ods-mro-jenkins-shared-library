@@ -695,9 +695,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def matchedHandler = { result ->
             result.each { testIssue, testCase ->
-                testIssue.isSucess = !(testCase.error || testCase.failure || testCase.skipped)
+                testIssue.isSuccess = !(testCase.error || testCase.failure || testCase.skipped ||
+                                        !testIssue.getResolvedBugs().findAll{ bug -> bug.status?.toLowerCase() != "done"}.isEmpty() ||
+                                        testIssue.isUnexecuted)
+                testIssue.comment = testIssue.isUnexecuted ? "This Test Case has not been executed" : ""
+                testIssue.timestamp = testIssue.isUnexecuted ? "N/A" : testCase.timestamp
                 testIssue.isMissing = false
-                testIssue.timestamp = testCase.timestamp
             }
         }
 
@@ -705,6 +708,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             result.each { testIssue ->
                 testIssue.isSuccess = false
                 testIssue.isMissing = true
+                testIssue.comment = testIssue.isUnexecuted ? "This Test Case has not been executed" : ""
             }
         }
 
@@ -721,9 +725,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         description : testIssue.description,
                         requirements: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
                         isSuccess   : testIssue.isSuccess,
-                        bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : "N/A",
+                        bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : (testIssue.comment ? "": "N/A"),
                         steps       : testIssue.steps,
-                        timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A"
+                        timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A",
+                        comment     : testIssue.comment
                     ]
                 }, ["key"]),
                 acceptanceTests    : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
@@ -732,9 +737,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         description : testIssue.description,
                         requirements: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
                         isSuccess   : testIssue.isSuccess,
-                        bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : "N/A",
+                        bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : (testIssue.comment ? "": "N/A"),
                         steps       : testIssue.steps,
-                        timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A"
+                        timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A",
+                        comment     : testIssue.comment
                     ]
                 }, ["key"]),
                 integrationTestFiles: SortUtil.sortIssuesByProperties(integrationTestData.testReportFiles.collect { file ->
