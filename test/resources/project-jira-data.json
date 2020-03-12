@@ -833,6 +833,7 @@
             "name": "verify payment service is correctly installed",
             "description": "verify payment service is correctly setup. Outcome: Error",
             "key": "PLTFMDEV-1060",
+            "id": "27041",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",

@@ -377,11 +377,7 @@ class Project {
                 "DEMO-7",
                 "DEMO-11"
             ],
-            "tests": [
-                "PLTFMDEV-401",
-                "PLTFMDEV-550",
-                "PLTFMDEV-549"
-            ],
+            "tests": [],
             "mitigations": [
                 "DEMO-8",
                 "DEMO-12"
@@ -508,9 +504,7 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "tests": [
-                "PLTFMDEV-550"
-            ]
+            "tests": []
         },
         "DEMO-27": {
             "name": "Risk-1 on TechSpec DEMO-26",
@@ -678,6 +672,7 @@ class Project {
             "name": "verify database is correctly installed",
             "description": "verify database is correctly setup. Outcome: Succeeded",
             "key": "PLTFMDEV-401",
+            "id": "24888",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -717,6 +712,7 @@ class Project {
             "name": "User interacts with the cart",
             "description": "User interacts with the cart",
             "key": "PLTFMDEV-549",
+            "id": "26201",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -752,6 +748,7 @@ class Project {
             "name": "User shows catalogue",
             "description": "User shows catalogue",
             "key": "PLTFMDEV-550",
+            "id": "26202",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -781,6 +778,7 @@ class Project {
             "name": "User buys some socks",
             "description": "User buys some socks",
             "key": "PLTFMDEV-551",
+            "id": "26203",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -827,6 +825,7 @@ class Project {
             "name": "Home page looks sexy",
             "description": "Home page looks sexy",
             "key": "PLTFMDEV-552",
+            "id": "26204",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -843,6 +842,7 @@ class Project {
             "name": "User logs in",
             "description": "User logs in",
             "key": "PLTFMDEV-553",
+            "id": "26205",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -859,6 +859,7 @@ class Project {
             "name": "User exists in system",
             "description": "User exists in system",
             "key": "PLTFMDEV-554",
+            "id": "26206",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
@@ -884,6 +885,7 @@ class Project {
             "name": "FirstResultOrDefault returns the default for an empty list",
             "description": "FirstResultOrDefault returns the default for an empty list",
             "key": "PLTFMDEV-1045",
+            "id": "26800",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Unit",
@@ -903,6 +905,7 @@ class Project {
             "name": "verify frontend is correctly installed",
             "description": "verify frontend is correctly installed. Outcome: Succeeded",
             "key": "PLTFMDEV-1046",
+            "id": "26999",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -930,6 +933,7 @@ class Project {
             "name": "verify payment service is correctly installed",
             "description": "verify payment service is correctly setup. Outcome: Error",
             "key": "PLTFMDEV-1060",
+            "id": "27041",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -957,6 +961,7 @@ class Project {
             "name": "verify order service is correctly installed",
             "description": "verify order service is correctly installed. Outcome: Failed",
             "key": "PLTFMDEV-1061",
+            "id": "27042",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -984,6 +989,7 @@ class Project {
             "name": "verify shipping service is correctly installed",
             "description": "verify shipping service is correctly installed. Outcome: Missing",
             "key": "PLTFMDEV-1062",
+            "id": "27043",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -1011,6 +1017,7 @@ class Project {
             "name": "Cart gets processed correctly",
             "description": "Cart gets processed correctly. Outcome: Succeeded",
             "key": "PLTFMDEV-1073",
+            "id": "27105",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
@@ -1038,6 +1045,7 @@ class Project {
             "name": "Frontend retrieves cart data correctly",
             "description": "Frontend retrieves cart data correctly. Outcome: Succeeded",
             "key": "PLTFMDEV-1074",
+            "id": "27106",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
@@ -1065,6 +1073,7 @@ class Project {
             "name": "Frontend retrieves payment data correctly",
             "description": "Frontend retrieves payment data correctly. Outcome: Succeeded",
             "key": "PLTFMDEV-1075",
+            "id": "27107",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
