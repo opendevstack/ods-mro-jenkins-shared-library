@@ -104,7 +104,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
                     nameOfSoftware    : metadata.name,
                     references        : metadata.references ?: "N/A",
                     supplier          : metadata.supplier,
-                    version           : metadata.version,
+                    version           : (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) ?
+                                        this.project.buildParams.version :
+                                        metadata.version,
                     requirements      : component.getResolvedSystemRequirements(),
                     softwareDesignSpec: component.getResolvedTechnicalSpecifications().findAll {
                         it.softwareDesignSpec
