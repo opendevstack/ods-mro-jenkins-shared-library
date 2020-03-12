@@ -706,7 +706,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-549": {
             "name": "User interacts with the cart",
@@ -742,7 +743,8 @@ class Project {
             ],
             "requirements": [
                 "DEMO-6"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-550": {
             "name": "User shows catalogue",
@@ -772,7 +774,8 @@ class Project {
             ],
             "requirements": [
                 "DEMO-6"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-551": {
             "name": "User buys some socks",
@@ -815,11 +818,7 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": [
-                "PLTFMDEV-658",
-                "PLTFMDEV-674",
-                "PLTFMDEV-690"
-            ]
+            "bugs": []
         },
         "PLTFMDEV-552": {
             "name": "Home page looks sexy",
@@ -836,7 +835,8 @@ class Project {
             ],
             "requirements": [
                 "DEMO-6"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-553": {
             "name": "User logs in",
@@ -853,7 +853,8 @@ class Project {
             ],
             "requirements": [
                 "DEMO-6"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-554": {
             "name": "User exists in system",
@@ -875,11 +876,7 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [
-                "PLTFMDEV-10658",
-                "PLTFMDEV-10674",
-                "PLTFMDEV-10690"
-            ]
+            "bugs": []
         },
         "PLTFMDEV-1045": {
             "name": "FirstResultOrDefault returns the default for an empty list",
@@ -899,7 +896,8 @@ class Project {
             ],
             "techSpecs": [
                 "DEMO-15"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-1046": {
             "name": "verify frontend is correctly installed",
@@ -927,7 +925,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-1060": {
             "name": "verify payment service is correctly installed",
@@ -955,7 +954,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-1061": {
             "name": "verify order service is correctly installed",
@@ -983,7 +983,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-1062": {
             "name": "verify shipping service is correctly installed",
@@ -1011,7 +1012,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-1073": {
             "name": "Cart gets processed correctly",
@@ -1039,7 +1041,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-1074": {
             "name": "Frontend retrieves cart data correctly",
@@ -1067,7 +1070,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         },
         "PLTFMDEV-1075": {
             "name": "Frontend retrieves payment data correctly",
@@ -1095,7 +1099,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ]
+            ],
+            "bugs": []
         }
     },
     "mitigations": {
