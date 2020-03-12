@@ -2,22 +2,38 @@ package org.ods.util
 
 import org.ods.service.JiraService
 import util.SpecHelper
+import groovy.json.JsonSlurperClassic
 
 import java.nio.file.Paths
+import org.yaml.snakeyaml.Yaml
+
+import static util.FixtureHelper.createProjectMetadata
+import static util.FixtureHelper.createIssuesForJQLQuery
+import static util.FixtureHelper.createProjectVersion
 
 class ProjectSpec extends SpecHelper {
 
     GitUtil git
     JiraService jira
     File metadataFile
-    // Project project
+    Project project
     IPipelineSteps steps
 
     def setup() {
         steps = Spy(util.PipelineSteps)
         git = Mock(GitUtil)
-        jira = Mock(JiraService)
         metadataFile = createProjectMetadataFile(this.steps.env.WORKSPACE, steps)
+        jira = Mock(JiraService) {
+            getVersionForProject(_) >> {
+                return createProjectVersion()
+            }
+
+            getIssuesForJQLQuery(_) >> {
+                return createIssuesForJQLQuery()
+            }
+        }
+
+        project = Spy(new Project(steps)).init().load(git, jira)
     }
 
     def cleanup() {
@@ -27,19 +43,7 @@ class ProjectSpec extends SpecHelper {
     File createProjectMetadataFile(String path, IPipelineSteps steps) {
         def file = Paths.get(path, "metadata.yml").toFile()
 
-        file << """
-            id: myId
-            name: myName
-            description: myDescription
-            repositories:
-              - id: A
-                url: https://github.com/my-org/my-repo-A.git
-                branch: master
-              - id: B
-                name: my-repo-B
-                branch: master
-              - id: C
-        """
+        file << new Yaml().dump(createProjectMetadata())
 
         return file
     }
@@ -123,7 +127,7 @@ class ProjectSpec extends SpecHelper {
         steps.env.changeId = null
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
-        def result = Project.getBuildEnvironment(steps,)
+        def result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_ID=0.1-myEnv" }
@@ -132,7 +136,7 @@ class ProjectSpec extends SpecHelper {
         steps.env.changeId = ""
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_ID=0.1-myEnv" }
@@ -141,7 +145,7 @@ class ProjectSpec extends SpecHelper {
         steps.env.changeId = "myId"
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_ID=myId" }
@@ -150,21 +154,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for RELEASE_PARAM_CHANGE_DESC"() {
         when:
         steps.env.changeDescription = null
-        def result = Project.getBuildEnvironment(steps,)
+        def result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_DESC=UNDEFINED" }
 
         when:
         steps.env.changeDescription = ""
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_DESC=UNDEFINED" }
 
         when:
         steps.env.changeDescription = "myDescription"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CHANGE_DESC=myDescription" }
@@ -173,21 +177,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for RELEASE_PARAM_CONFIG_ITEM"() {
         when:
         steps.env.configItem = null
-        def result = Project.getBuildEnvironment(steps,)
+        def result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CONFIG_ITEM=UNDEFINED" }
 
         when:
         steps.env.configItem = ""
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CONFIG_ITEM=UNDEFINED" }
 
         when:
         steps.env.configItem = "myItem"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_CONFIG_ITEM=myItem" }
@@ -196,21 +200,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for RELEASE_PARAM_VERSION"() {
         when:
         steps.env.version = null
-        def result = Project.getBuildEnvironment(steps,)
+        def result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_VERSION=WIP" }
 
         when:
         steps.env.version = ""
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_VERSION=WIP" }
 
         when:
         steps.env.version = "0.1"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "RELEASE_PARAM_VERSION=0.1" }
@@ -220,7 +224,7 @@ class ProjectSpec extends SpecHelper {
         when:
         steps.env.environment = "myEnv"
         steps.env.sourceEnvironmentToClone = null
-        def result = Project.getBuildEnvironment(steps,)
+        def result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV=myEnv" }
@@ -228,7 +232,7 @@ class ProjectSpec extends SpecHelper {
         when:
         steps.env.environment = "myEnv"
         steps.env.sourceEnvironmentToClone = ""
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV=myEnv" }
@@ -236,7 +240,7 @@ class ProjectSpec extends SpecHelper {
         when:
         steps.env.environment = "mvEnv"
         steps.env.sourceEnvironmentToClone = "mySourceEnv"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV=mySourceEnv" }
@@ -245,21 +249,21 @@ class ProjectSpec extends SpecHelper {
     def "get build environment for SOURCE_CLONE_ENV_TOKEN"() {
         when:
         steps.env.sourceEnvironmentToClone = "dev"
-        def result = Project.getBuildEnvironment(steps,)
+        def result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV_TOKEN=D" }
 
         when:
         steps.env.sourceEnvironmentToClone = "qa"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV_TOKEN=Q" }
 
         when:
         steps.env.sourceEnvironmentToClone = "prod"
-        result = Project.getBuildEnvironment(steps,)
+        result = Project.getBuildEnvironment(steps)
 
         then:
         result.find { it == "SOURCE_CLONE_ENV_TOKEN=P" }
@@ -271,12 +275,7 @@ class ProjectSpec extends SpecHelper {
         def origin = "upstream"
 
         when:
-        def project = Spy(new Project(this.steps)).init().load(git, jira)
         def result = project.getGitURLFromPath(path, origin)
-
-        then:
-        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
-        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
 
         then:
         1 * steps.dir(path, _)
@@ -296,18 +295,15 @@ class ProjectSpec extends SpecHelper {
         def path = "${steps.env.WORKSPACE}/a/b/c"
 
         when:
-        def project = Spy(new Project(this.steps)).init().load(git, jira)
         def result = project.getGitURLFromPath(path)
 
         then:
-        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
-        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
-
         1 * steps.dir(path, _)
 
-        // gets called 3 times, during project initialization and during the actual test.
-        3 * steps.sh({ it.script == "git config --get remote.origin.url" && it.returnStdout }) >> new URI("https://github.com/my-org/my-repo.git").toString()
+        then:
+        1 * steps.sh({ it.script == "git config --get remote.origin.url" && it.returnStdout }) >> new URI("https://github.com/my-org/my-repo.git").toString()
 
+        then:
         result == new URI("https://github.com/my-org/my-repo.git")
 
         cleanup:
@@ -316,12 +312,7 @@ class ProjectSpec extends SpecHelper {
 
     def "get Git URL from path with invalid path"() {
         when:
-        def project = Spy(new Project(this.steps)).init().load(git, jira)
         project.getGitURLFromPath(null)
-
-        then:
-        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
-        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -351,12 +342,7 @@ class ProjectSpec extends SpecHelper {
         def path = "${steps.env.WORKSPACE}/a/b/c"
 
         when:
-        def project = Spy(new Project(this.steps)).init().load(git, jira)
         project.getGitURLFromPath(path, null)
-
-        then:
-        1 * jira.getVersionForProject("PLTFMDEV") >> getProjectVersion()
-        1 * jira.getIssuesForJQLQuery(_) >> getIssuesForJQLQuery()
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -669,41 +655,103 @@ class ProjectSpec extends SpecHelper {
         def result = project.loadMetadata()
 
         then:
-        def expected = [
-            id          : "myId",
-            name        : "myName",
-            description : "myDescription",
-            repositories: [
-                [
-                    id    : "A",
-                    url   : "https://github.com/my-org/my-repo-A.git",
-                    branch: "master",
-                    type  : MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data  : [
-                        documents: [:]
-                    ]
-                ],
-                [
-                    id    : "B",
-                    url   : "https://github.com/my-org/my-repo-B.git",
-                    branch: "master",
-                    type  : MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data  : [
-                        documents: [:]
-                    ]
-                ],
-                [
-                    id    : "C",
-                    url   : "https://github.com/my-org/myid-C.git",
-                    branch: "master",
-                    type  : MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data  : [
-                        documents: [:]
-                    ]
-                ]
-            ],
-            capabilities: []
-        ]
+        def expected = new JsonSlurperClassic().parseText("""
+{
+    "capabilities": [
+
+    ],
+    "repositories": [
+        {
+            "metadata": {
+                "supplier": "https://github.com/microservices-demo/",
+                "name": "Sock Shop: demo-app-carts",
+                "description": "Some description for demo-app-carts",
+                "version": "1.0"
+            },
+            "data": {
+                "documents": {
+
+                }
+            },
+            "id": "demo-app-carts",
+            "type": "ods-service",
+            "branch": "master",
+            "url": "https://github.com/my-org/pltfmdev-demo-app-carts.git"
+        },
+        {
+            "metadata": {
+                "supplier": "https://github.com/microservices-demo/",
+                "name": "Sock Shop: demo-app-catalogue",
+                "description": "Some description for demo-app-catalogue",
+                "version": "1.0"
+            },
+            "data": {
+                "documents": {
+
+                }
+            },
+            "id": "demo-app-catalogue",
+            "type": "ods",
+            "branch": "master",
+            "url": "https://github.com/my-org/pltfmdev-demo-app-catalogue.git"
+        },
+        {
+            "metadata": {
+                "supplier": "https://github.com/microservices-demo/",
+                "name": "Sock Shop: demo-app-front-end",
+                "description": "Some description for demo-app-front-end",
+                "version": "1.0"
+            },
+            "data": {
+                "documents": {
+
+                }
+            },
+            "id": "demo-app-front-end",
+            "type": "ods",
+            "branch": "master",
+            "url": "https://github.com/my-org/pltfmdev-demo-app-front-end.git"
+        },
+        {
+            "metadata": {
+                "supplier": "https://github.com/microservices-demo/",
+                "name": "Sock Shop: demo-app-test",
+                "description": "Some description for demo-app-test",
+                "version": "1.0"
+            },
+            "data": {
+                "documents": {
+
+                }
+            },
+            "id": "demo-app-test",
+            "type": "ods-test",
+            "branch": "master",
+            "url": "https://github.com/my-org/pltfmdev-demo-app-test.git"
+        }
+    ],
+    "name": "Sock Shop",
+    "description": "A socks-selling e-commerce demo application.",
+    "id": "pltfmdev",
+    "services": {
+        "nexus": {
+            "repository": {
+                "name": "leva-documentation"
+            }
+        },
+        "bitbucket": {
+            "credentials": {
+                "id": "pltfmdev-cd-cd-user-with-password"
+            }
+        },
+        "jira": {
+            "credentials": {
+                "id": "pltfmdev-cd-cd-user-with-password"
+            }
+        }
+    }
+}
+""")
 
         result == expected
     }
@@ -841,28 +889,5 @@ class ProjectSpec extends SpecHelper {
         then:
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'repositories[1].id' is undefined."
-    }
-
-    protected def getIssuesForJQLQuery() {
-        return [
-            [
-                key   : "TESTCAL-20",
-                fields: [
-                    summary    : "DevOps Epic for Test",
-                    description: "Some issue descripion",
-                    status     : [
-                        name: "Open"
-                    ],
-                    labels     : ["LeVA_Doc:CSD"]
-                ]
-            ]
-        ]
-    }
-
-    protected def getProjectVersion() {
-        return [
-            "id"  : "11100",
-            "name": "0.3"
-        ]
     }
 }

@@ -1,6 +1,7 @@
 package org.ods.util
 
 import com.cloudbees.groovy.cps.NonCPS
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurperClassic
 import org.apache.http.client.utils.URIBuilder
 import org.ods.service.JiraService
@@ -1846,7 +1847,7 @@ class Project {
         if (result.capabilities == null) {
             result.capabilities = []
         }
-
+        println(JsonOutput.toJson(result))
         return result
     }
 

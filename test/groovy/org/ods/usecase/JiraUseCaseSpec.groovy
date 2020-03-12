@@ -1,31 +1,34 @@
 package org.ods.usecase
 
+import org.ods.service.*
+import org.ods.util.*
 
-import org.ods.service.JiraService
-import org.ods.util.GitUtil
-import org.ods.util.IPipelineSteps
-import org.ods.util.MROPipelineUtil
-import org.ods.util.Project
-import spock.lang.Ignore
-import util.FakeProject
-import util.SpecHelper
+import spock.lang.*
 
 import static util.FixtureHelper.*
 
+import util.*
+
 class JiraUseCaseSpec extends SpecHelper {
 
-    GitUtil git
     JiraService jira
-    IPipelineSteps steps
-    MROPipelineUtil util
-    JiraUseCase usecase
     Project project
+    IPipelineSteps steps
+    JiraUseCase usecase
+    MROPipelineUtil util
 
     def setup() {
+        project = Spy(createProject())
         steps = Spy(util.PipelineSteps)
-        git = Mock(GitUtil)
         util = Mock(MROPipelineUtil)
-        jira = Mock(JiraService)
+        jira = Mock(JiraService) {
+            createIssueTypeBug(_, _, _) >> {
+                return [
+                    key: "value"
+                ]
+            }
+        }
+        usecase = new JiraUseCase(project, steps, util, jira)
     }
 
     def "apply test results as test issue labels"() {
@@ -252,8 +255,10 @@ class JiraUseCaseSpec extends SpecHelper {
 
     def "report test results for component in DEV"() {
         given:
+        project.buildParams.targetEnvironmentToken = "D"
 
         def support = Mock(JiraUseCaseSupport)
+        usecase.setSupport(support)
 
         // Test Parameters
         def componentName = "myComponent"
@@ -264,11 +269,6 @@ class JiraUseCaseSpec extends SpecHelper {
         def testIssues = createJiraTestIssues()
 
         when:
-        project = Spy(new FakeProject(this.steps)).init().load(git, jira)
-        project.buildParams.targetEnvironmentToken = "D"
-        JiraUseCase usecase = new JiraUseCase(project, steps, util, jira)
-        usecase.setSupport(support)
-
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
 
         then:
