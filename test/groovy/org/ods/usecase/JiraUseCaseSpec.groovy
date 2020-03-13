@@ -24,7 +24,7 @@ class JiraUseCaseSpec extends SpecHelper {
         util = Mock(MROPipelineUtil)
         jira = Mock(JiraService) {
             createIssueTypeBug(_, _, _) >> {
-                return [
+                [
                     key   : "PLTFMDEV-29651",
                     fields: [
                         summary: "bug summary / name"

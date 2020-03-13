@@ -97,6 +97,7 @@ class Project {
 
     protected static final String METADATA_FILE_NAME = "metadata.yml"
 
+    // TODO testissue.id will be loaded during Project.load() method.
     private static final TEMP_FAKE_JIRA_DATA = """
 {
     "project": {
@@ -1867,7 +1868,6 @@ class Project {
         if (result.capabilities == null) {
             result.capabilities = []
         }
-        println(JsonOutput.toJson(result))
         return result
     }
 
