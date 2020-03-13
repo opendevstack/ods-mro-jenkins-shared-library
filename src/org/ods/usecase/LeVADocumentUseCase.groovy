@@ -266,6 +266,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def watermarkText = this.getWatermarkText(documentType)
 
+
         def bugs = this.project.getBugs().each { bug ->
             bug.tests = bug.getResolvedTests()
         }
@@ -281,6 +282,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 test.testType == Project.TestType.INTEGRATION
             }
         }
+
+        SortUtil.sortIssuesByProperties(acceptanceTestBugs, ["key"])
+        SortUtil.sortIssuesByProperties(integrationTestBugs, ["key"])
+
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
