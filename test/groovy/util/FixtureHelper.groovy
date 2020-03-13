@@ -1,6 +1,7 @@
 package util
 
 import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 import groovy.transform.InheritConstructors
 
 import org.apache.http.client.utils.URIBuilder
@@ -715,12 +716,26 @@ class FixtureHelper {
         )
     }
 
+    static Map createSockShopTestResults() {
+        return JUnitParser.parseJUnitXML(
+            createSockShopJUnitXmlTestResults()
+        )
+    }
+
     static Set createTestResultErrors() {
         return JUnitParser.Helper.getErrors(createTestResults())
     }
 
+    static Set createSockShopTestResultErrors() {
+        return JUnitParser.Helper.getErrors(createSockShopTestResults())
+    }
+
     static Set createTestResultFailures() {
         return JUnitParser.Helper.getFailures(createTestResults())
+    }
+
+    static Set createSockShopTestResultFailures() {
+        return JUnitParser.Helper.getFailures(createSockShopTestResults())
     }
 
     static List createIssuesForJQLQuery() {
@@ -744,5 +759,447 @@ class FixtureHelper {
             "id"  : "11100",
             "name": "0.3"
         ]
+    }
+
+    static List createSockShopJiraTestIssues(){
+        return new JsonSlurperClassic().parseText(
+"""
+[
+    {
+        "name": "verify database is correctly installed",
+        "description": "verify database is correctly setup. Outcome: Succeeded",
+        "key": "PLTFMDEV-401",
+        "id": "24888",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Installation",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to database",
+                "data": "database credentials",
+                "expectedResult": "Connection to database is available and user is authenticated"
+            },
+            {
+                "index": 1,
+                "step": "List and verify databases",
+                "data": "database credentials; Sock Shop DB",
+                "expectedResult": "authenticated user sees all required databases"
+            },
+            {
+                "index": 2,
+                "step": "Use Sock Shop database",
+                "data": "SockShopDB",
+                "expectedResult": "Authenticated user can switch to Sock Shop DB and see tables"
+            }
+        ],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "User interacts with the cart",
+        "description": "User interacts with the cart",
+        "key": "PLTFMDEV-549",
+        "id": "26201",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Acceptance",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "User logs into web shop",
+                "data": "N/A",
+                "expectedResult": "Webshop Landing Page gets displayed"
+            },
+            {
+                "index": 1,
+                "step": "User adds item to shopping cart",
+                "data": "N/A",
+                "expectedResult": "One item added to shopping cart"
+            },
+            {
+                "index": 2,
+                "step": "User follows link to shopping cart",
+                "data": "N/A",
+                "expectedResult": "Shopping cart is displayed, containing one item."
+            }
+        ],
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "User shows catalogue",
+        "description": "User shows catalogue",
+        "key": "PLTFMDEV-550",
+        "id": "26202",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Acceptance",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "User logs into web shop",
+                "data": "N/A",
+                "expectedResult": "Webshop Landing Page gets displayed"
+            },
+            {
+                "index": 1,
+                "step": "User follows link to catalogue",
+                "data": "N/A",
+                "expectedResult": "Catalogue is displayed in web page."
+            }
+        ],
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "User buys some socks",
+        "description": "User buys some socks",
+        "key": "PLTFMDEV-551",
+        "id": "26203",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Acceptance",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "User logs into web shop",
+                "data": "N/A",
+                "expectedResult": "Webshop Landing Page gets displayed"
+            },
+            {
+                "index": 1,
+                "step": "User adds item to shopping cart",
+                "data": "N/A",
+                "expectedResult": "One item added to shopping cart"
+            },
+            {
+                "index": 2,
+                "step": "User follows link to shopping cart",
+                "data": "N/A",
+                "expectedResult": "Shopping cart is displayed, containing one item."
+            },
+            {
+                "index": 3,
+                "step": "User clicks 'buy now' button",
+                "data": "N/A",
+                "expectedResult": "Shipping details are displayed."
+            }
+        ],
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "Home page looks sexy",
+        "description": "Home page looks sexy",
+        "key": "PLTFMDEV-552",
+        "id": "26204",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Acceptance",
+        "executionType": "Automated",
+        "steps": [],
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "User logs in",
+        "description": "User logs in",
+        "key": "PLTFMDEV-553",
+        "id": "26205",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Acceptance",
+        "executionType": "Automated",
+        "steps": [],
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "User exists in system",
+        "description": "User exists in system",
+        "key": "PLTFMDEV-554",
+        "id": "26206",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Integration",
+        "executionType": "Automated",
+        "steps": [],
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "FirstResultOrDefault returns the default for an empty list",
+        "description": "FirstResultOrDefault returns the default for an empty list",
+        "key": "PLTFMDEV-1045",
+        "id": "26800",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Unit",
+        "executionType": "Automated",
+        "steps": [],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "verify frontend is correctly installed",
+        "description": "verify frontend is correctly installed. Outcome: Succeeded",
+        "key": "PLTFMDEV-1046",
+        "id": "26999",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Installation",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to the service on :80/health via HTTP",
+                "data": "N/A",
+                "expectedResult": "Connection to the service is established and the service returns 'OK'"
+            }
+        ],
+        "components": [
+            "DEMO-2"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "verify payment service is correctly installed",
+        "description": "verify payment service is correctly setup. Outcome: Error",
+        "key": "PLTFMDEV-1060",
+        "id": "27041",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Installation",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to the service on :80/health via HTTP",
+                "data": "N/A",
+                "expectedResult": "Connection to the service is established and the service returns 'OK'"
+            }
+        ],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "verify order service is correctly installed",
+        "description": "verify order service is correctly installed. Outcome: Failed",
+        "key": "PLTFMDEV-1061",
+        "id": "27042",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Installation",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to the service on :80/health via HTTP",
+                "data": "N/A",
+                "expectedResult": "Connection to the service is established and the service returns 'OK'"
+            }
+        ],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "verify shipping service is correctly installed",
+        "description": "verify shipping service is correctly installed. Outcome: Missing",
+        "key": "PLTFMDEV-1062",
+        "id": "27043",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Installation",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to the service on :80/health via HTTP",
+                "data": "N/A",
+                "expectedResult": "Connection to the service is established and the service returns 'OK'"
+            }
+        ],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "Cart gets processed correctly",
+        "description": "Cart gets processed correctly. Outcome: Succeeded",
+        "key": "PLTFMDEV-1073",
+        "id": "27105",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Integration",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to the service on :80/carts via HTTP",
+                "data": "N/A",
+                "expectedResult": "Connection to the service is established and the service returns correct cart data"
+            }
+        ],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "Frontend retrieves cart data correctly",
+        "description": "Frontend retrieves cart data correctly. Outcome: Succeeded",
+        "key": "PLTFMDEV-1074",
+        "id": "27106",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Integration",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to the service on :80/carts via HTTP",
+                "data": "N/A",
+                "expectedResult": "Connection to the service is established and the service returns correct cart data"
+            }
+        ],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    },
+    {
+        "name": "Frontend retrieves payment data correctly",
+        "description": "Frontend retrieves payment data correctly. Outcome: Succeeded",
+        "key": "PLTFMDEV-1075",
+        "id": "27107",
+        "version": "1.0",
+        "status": "READY TO TEST",
+        "testType": "Integration",
+        "executionType": "Automated",
+        "steps": [
+            {
+                "index": 0,
+                "step": "Connect to the service on :80/payment via HTTP",
+                "data": "N/A",
+                "expectedResult": "Connection to the service is established and the service returns correct payment data"
+            }
+        ],
+        "components": [
+            "DEMO-3"
+        ],
+        "requirements": [
+            "DEMO-6"
+        ],
+        "techSpecs": [
+            "DEMO-15",
+            "DEMO-26"
+        ],
+        "bugs": []
+    }
+]"""
+        )
     }
 }

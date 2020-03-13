@@ -107,7 +107,10 @@ class JiraUseCase {
             def bug = this.jira.createIssueTypeBug(this.project.key, failure.type, failure.text)
 
             this.walkTestIssuesAndTestResults(testIssues, failure) { testIssue, testCase, isMatch ->
-                if (isMatch) this.jira.createIssueLinkTypeBlocks(bug, testIssue)
+                if (isMatch) {
+                    testIssue.bugs << bug.key
+                    this.jira.createIssueLinkTypeBlocks(bug, testIssue)
+                }
             }
 
             this.jira.appendCommentToIssue(bug.key, comment)

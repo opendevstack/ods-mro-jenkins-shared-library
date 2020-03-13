@@ -105,12 +105,12 @@ class JiraUseCaseSpec extends SpecHelper {
     def "create bugs and block impacted test cases"() {
         given:
         // Test Parameters
-        def testIssues = createJiraTestIssues()
-        def failures = createTestResultFailures()
+        def testIssues = createSockShopJiraTestIssues()
+        def failures = createSockShopTestResultFailures()
         def comment = "myComment"
 
         // Stubbed Method Responses
-        def bug = [key: "JIRA-BUG"]
+        def bug = [key: "PLTFMDEV-29651"]
 
         when:
         usecase.createBugsForFailedTestIssues(testIssues, failures, comment)
@@ -121,7 +121,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * jira.createIssueLinkTypeBlocks(bug, {
             // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-3"
+            it.key == "PLTFMDEV-1061"
         })
 
         then:
@@ -263,10 +263,10 @@ class JiraUseCaseSpec extends SpecHelper {
         // Test Parameters
         def componentName = "myComponent"
         def testTypes = ["myTestType"]
-        def testResults = createTestResults()
+        def testResults = createSockShopTestResults()
 
         // Stubbed Method Responses
-        def testIssues = createJiraTestIssues()
+        def testIssues = createSockShopJiraTestIssues()
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
@@ -312,14 +312,14 @@ class JiraUseCaseSpec extends SpecHelper {
         // Test Parameters
         def componentName = "myComponent"
         def testTypes = ["myTestType"]
-        def testResults = createTestResults()
+        def testResults = createSockShopTestResults()
 
         // Argument Constraints
-        def error = createTestResultErrors().first()
-        def failure = createTestResultFailures().first()
+        def error = createSockShopTestResultErrors().first()
+        def failure = createSockShopTestResultFailures().first()
 
         // Stubbed Method Responses
-        def testIssues = createJiraTestIssues()
+        def testIssues = createSockShopJiraTestIssues()
         def errorBug = [key: "JIRA-BUG-1"]
         def failureBug = [key: "JIRA-BUG-2"]
 
@@ -340,7 +340,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * jira.createIssueLinkTypeBlocks(errorBug, {
             // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-2"
+            it.key == "PLTFMDEV-1060"
         })
 
         then:
@@ -353,7 +353,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * jira.createIssueLinkTypeBlocks(failureBug, {
             // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-3"
+            it.key == "PLTFMDEV-1061"
         })
 
         then:
@@ -370,12 +370,12 @@ class JiraUseCaseSpec extends SpecHelper {
         // Test Parameters
         def componentName = "myComponent"
         def testTypes = ["myTestType"]
-        def testResults = createTestResults()
+        def testResults = createSockShopTestResults()
 
         // Argument Constraints
-        def testIssues = createJiraTestIssues()
-        def error = createTestResultErrors().first()
-        def failure = createTestResultFailures().first()
+        def testIssues = createSockShopJiraTestIssues()
+        def error = createSockShopTestResultErrors().first()
+        def failure = createSockShopTestResultFailures().first()
 
         // Stubbed Method Responses
         def errorBug = [key: "JIRA-BUG-1"]
@@ -398,7 +398,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * jira.createIssueLinkTypeBlocks(errorBug, {
             // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-2"
+            it.key == "PLTFMDEV-1060"
         })
 
         then:
@@ -411,7 +411,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * jira.createIssueLinkTypeBlocks(failureBug, {
             // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-3"
+            it.key == "PLTFMDEV-1061"
         })
 
         then:
