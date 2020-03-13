@@ -109,6 +109,15 @@ class JiraUseCase {
             this.walkTestIssuesAndTestResults(testIssues, failure) { testIssue, testCase, isMatch ->
                 if (isMatch) {
                     testIssue.bugs << bug.key
+                    // add newly created bug into the Jira data structure on the current project for referential integrity
+                    this.project.data.jira.bugs[bug.key] = [
+                        key     : bug.key,
+                        name    : bug.fields.summary,
+                        assignee: "Unassigned",
+                        dueDate : "",
+                        status  : "TO DO",
+                        tests   : [testIssue.key]
+                    ]
                     this.jira.createIssueLinkTypeBlocks(bug, testIssue)
                 }
             }

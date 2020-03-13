@@ -1,13 +1,14 @@
 package org.ods.usecase
 
-import org.ods.service.*
-import org.ods.util.*
 
-import spock.lang.*
+import org.ods.service.JiraService
+import org.ods.util.IPipelineSteps
+import org.ods.util.MROPipelineUtil
+import org.ods.util.Project
+import spock.lang.Ignore
+import util.SpecHelper
 
 import static util.FixtureHelper.*
-
-import util.*
 
 class JiraUseCaseSpec extends SpecHelper {
 
@@ -24,7 +25,10 @@ class JiraUseCaseSpec extends SpecHelper {
         jira = Mock(JiraService) {
             createIssueTypeBug(_, _, _) >> {
                 return [
-                    key: "value"
+                    key   : "PLTFMDEV-29651",
+                    fields: [
+                        summary: "bug summary / name"
+                    ]
                 ]
             }
         }
@@ -110,7 +114,12 @@ class JiraUseCaseSpec extends SpecHelper {
         def comment = "myComment"
 
         // Stubbed Method Responses
-        def bug = [key: "PLTFMDEV-29651"]
+        def bug = [
+            key   : "PLTFMDEV-29651",
+            fields: [
+                summary: "bug summary / name"
+            ]
+        ]
 
         when:
         usecase.createBugsForFailedTestIssues(testIssues, failures, comment)
@@ -320,8 +329,18 @@ class JiraUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def testIssues = createSockShopJiraTestIssues()
-        def errorBug = [key: "JIRA-BUG-1"]
-        def failureBug = [key: "JIRA-BUG-2"]
+        def errorBug = [
+            key   : "JIRA-BUG-1",
+            fields: [
+                summary: "bug summary / name"
+            ]
+        ]
+        def failureBug = [
+            key   : "JIRA-BUG-2",
+            fields: [
+                summary: "bug summary / name"
+            ]
+        ]
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
@@ -378,8 +397,18 @@ class JiraUseCaseSpec extends SpecHelper {
         def failure = createSockShopTestResultFailures().first()
 
         // Stubbed Method Responses
-        def errorBug = [key: "JIRA-BUG-1"]
-        def failureBug = [key: "JIRA-BUG-2"]
+        def errorBug = [
+            key   : "JIRA-BUG-1",
+            fields: [
+                summary: "bug summary / name"
+            ]
+        ]
+        def failureBug = [
+            key   : "JIRA-BUG-2",
+            fields: [
+                summary: "bug summary / name"
+            ]
+        ]
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
