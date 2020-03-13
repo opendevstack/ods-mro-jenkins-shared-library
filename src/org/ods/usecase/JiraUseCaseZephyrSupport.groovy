@@ -26,11 +26,6 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
         def testCycleId = "-1"
         if (!testIssues?.isEmpty()) {
             def buildParams = this.project.buildParams
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() buildParams -> ${buildParams}")
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.id -> ${this.project.id}")
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.buildParams -> ${this.project.buildParams}")
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.git -> ${this.project.git}")
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii() project.name -> ${this.project.name}")
 
             def versionId = this.getProjectVersion(this.project.key)?.id ?: "-1"
             def testCycles = this.zephyr.getTestCycles(this.project.id, versionId)
@@ -48,9 +43,6 @@ class JiraUseCaseZephyrSupport extends AbstractJiraUseCaseSupport {
 
         testIssues.each { testIssue ->
             // Create a new execution with status UNEXECUTED
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii calling ZephyrService.createTestExecutionForIssue(testIssue.id: ${testIssue.id}; project.id: ${project.id}; testCycleId: ${testCycleId})")
-            this.steps.echo("nifl::applyXunitTestResultsAsTestExecutionStatii testIssue -> ${testIssue}")
-
             def testExecutionId = this.zephyr.createTestExecutionForIssue(testIssue.id, this.project.id, testCycleId).keySet().first()
 
             testResults.testsuites.each { testSuite ->
