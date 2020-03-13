@@ -231,17 +231,17 @@ class Project {
         }
     },
     "components": {
-        "DEMO-2": {
+        "TECHNOLOGY-DEMO-2": {
             "name": "Technology-demo-app-front-end",
             "description": "Technology component demo-app-front-end stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-front-end/browse",
-            "key": "DEMO-2",
+            "key": "TECHNOLOGY-DEMO-2",
             "epics": [
                 "DEMO-5",
                 "DEMO-39"
             ],
             "requirements": [
-                "DEMO-40",
-                "DEMO-6"
+                "DEMO-6",
+                "DEMO-40"
             ],
             "techSpecs": [
                 "DEMO-60",
@@ -255,21 +255,25 @@ class Project {
                 "PLTFMDEV-552",
                 "PLTFMDEV-553",
                 "PLTFMDEV-554",
-                "PLTFMDEV-1046",
-                "PLTFMDEV-1074",
-                "PLTFMDEV-1075"
+                "PLTFMDEV-1046"
             ],
             "mitigations": [
                 "DEMO-8",
-                "DEMO-46",
                 "DEMO-12",
-                "DEMO-42"
+                "DEMO-17",
+                "DEMO-21",
+                "DEMO-28",
+                "DEMO-32",
+                "DEMO-51",
+                "DEMO-55",
+                "DEMO-62",
+                "DEMO-66"
             ]
         },
-        "DEMO-3": {
+        "TECHNOLOGY-DEMO-3": {
             "name": "Technology-demo-app-carts",
             "description": "Technology component demo-app-carts stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-carts/browse",
-            "key": "DEMO-3",
+            "key": "TECHNOLOGY-DEMO-3",
             "epics": [
                 "DEMO-5",
                 "DEMO-39"
@@ -300,10 +304,10 @@ class Project {
                 "DEMO-42"
             ]
         },
-        "DEMO-4": {
+        "TECHNOLOGY-DEMO-4": {
             "name": "Technology-demo-app-catalogue",
             "description": "Technology component demo-app-catalogue stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-catalogue/browse",
-            "key": "DEMO-4",
+            "key": "TECHNOLOGY-DEMO-4",
             "epics": [
                 "DEMO-5",
                 "DEMO-39"
@@ -368,7 +372,7 @@ class Project {
                 "acceptanceCriteria": "Func.Spec accepted only, if Req-1 works as described here."
             },
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "epics": [
                 "DEMO-5"
@@ -405,7 +409,7 @@ class Project {
                 "acceptanceCriteria": "Func.Spec accepted only, if Req-2 works as described here."
             },
             "components": [
-                "DEMO-4"
+                "TECHNOLOGY-DEMO-4"
             ],
             "epics": [
                 "DEMO-39"
@@ -698,7 +702,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -739,7 +743,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -770,7 +774,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -813,7 +817,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -831,7 +835,7 @@ class Project {
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -849,7 +853,7 @@ class Project {
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -867,7 +871,7 @@ class Project {
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -889,7 +893,7 @@ class Project {
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -917,7 +921,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -946,7 +950,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -975,7 +979,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1004,7 +1008,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1033,7 +1037,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1062,7 +1066,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1091,7 +1095,7 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1111,7 +1115,7 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1127,7 +1131,7 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1143,9 +1147,9 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1161,9 +1165,9 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1179,8 +1183,8 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1196,8 +1200,8 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1213,7 +1217,7 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4"
+                "TECHNOLOGY-DEMO-4"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1229,7 +1233,7 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4"
+                "TECHNOLOGY-DEMO-4"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1245,9 +1249,9 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1263,9 +1267,9 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1281,8 +1285,8 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4",
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1298,8 +1302,8 @@ class Project {
             "version": "1.0",
             "status": "TO DO",
             "components": [
-                "DEMO-4",
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1319,8 +1323,8 @@ class Project {
             "systemDesignSpec": "Some system design specification.",
             "softwareDesignSpec": "Some software design specification.",
             "components": [
-                "DEMO-4",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1340,8 +1344,8 @@ class Project {
             "version": "1.0",
             "status": "IN DESIGN",
             "components": [
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-6"
@@ -1359,8 +1363,8 @@ class Project {
             "version": "1.0",
             "status": "IN DESIGN",
             "components": [
-                "DEMO-2",
-                "DEMO-3"
+                "TECHNOLOGY-DEMO-2",
+                "TECHNOLOGY-DEMO-3"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1378,8 +1382,8 @@ class Project {
             "version": "1.0",
             "status": "IN DESIGN",
             "components": [
-                "DEMO-4",
-                "DEMO-2"
+                "TECHNOLOGY-DEMO-4",
+                "TECHNOLOGY-DEMO-2"
             ],
             "requirements": [
                 "DEMO-40"
@@ -1519,7 +1523,9 @@ class Project {
             def result = testIssue.status.toLowerCase() == "ready to test" && testIssue.executionType?.toLowerCase() == "automated"
 
             if (result && componentName) {
-                result = testIssue.getResolvedComponents().collect { it.name.toLowerCase() }.contains(componentName.toLowerCase())
+                result = testIssue.getResolvedComponents()
+                    .collect { it.name.toLowerCase() }.
+                    contains(componentName.toLowerCase())
             }
 
             if (result && testTypes) {
