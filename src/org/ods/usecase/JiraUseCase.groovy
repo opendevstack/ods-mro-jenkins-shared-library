@@ -163,7 +163,7 @@ class JiraUseCase {
     }
 
     private String getDocumentChapterIssueLabelForDocumentType(String documentType) {
-        return "LeVA_Doc:${documentType}"
+        return "Doc:${documentType}"
     }
 
     void matchTestIssuesAgainstTestResults(List testIssues, Map testResults, Closure matchedHandler, Closure unmatchedHandler = null) {

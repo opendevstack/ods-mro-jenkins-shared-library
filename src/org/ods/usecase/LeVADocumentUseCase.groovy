@@ -1094,11 +1094,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def labels = []
 
         LeVADocumentScheduler.ENVIRONMENT_TYPE[environment].get(documentType).each { label ->
-            labels.add("LeVA_Doc:${label}")
+            labels.add("Doc:${label}")
         }
 
         if (labels.isEmpty() && environment.equals('D')) {
-            labels.add("LeVA_Doc:${documentType}")
+            labels.add("Doc:${documentType}")
         }
 
         return labels

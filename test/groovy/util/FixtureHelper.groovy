@@ -119,7 +119,7 @@ class FixtureHelper {
                 "description": "TCR",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TCR"
+                    "Doc:TCR"
                 ]
             ],
             "PLTFMDEV-1071": [
@@ -128,7 +128,7 @@ class FixtureHelper {
                 "description": "TCP",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TCP"
+                    "Doc:TCP"
                 ]
             ],
             "PLTFMDEV-1066": [
@@ -137,7 +137,7 @@ class FixtureHelper {
                 "description": "C-DIL for P",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:DIL_P"
+                    "Doc:DIL_P"
                 ]
             ],
             "PLTFMDEV-1064": [
@@ -146,7 +146,7 @@ class FixtureHelper {
                 "description": "C-DIL for Q",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:DIL_Q"
+                    "Doc:DIL_Q"
                 ]
             ],
             "PLTFMDEV-1013": [
@@ -155,7 +155,7 @@ class FixtureHelper {
                 "description": "C-CSD",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:CSD"
+                    "Doc:CSD"
                 ]
             ],
             "PLTFMDEV-938": [
@@ -164,7 +164,7 @@ class FixtureHelper {
                 "description": "TC-CTR",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TRC"
+                    "Doc:TRC"
                 ]
             ],
             "PLTFMDEV-937": [
@@ -173,7 +173,7 @@ class FixtureHelper {
                 "description": "C-SSDS",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:SSDS"
+                    "Doc:SSDS"
                 ]
             ],
             "PLTFMDEV-494": [
@@ -182,7 +182,7 @@ class FixtureHelper {
                 "description": "C-IVR for DEV",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:IVR"
+                    "Doc:IVR"
                 ]
             ],
             "PLTFMDEV-433": [
@@ -191,7 +191,7 @@ class FixtureHelper {
                 "description": "TC-CTR_M",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TC_CTR_M"
+                    "Doc:TC_CTR_M"
                 ]
             ],
             "PLTFMDEV-428": [
@@ -200,7 +200,7 @@ class FixtureHelper {
                 "description": "C-FTR_M",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:FTR_M"
+                    "Doc:FTR_M"
                 ]
             ],
             "PLTFMDEV-427": [
@@ -209,7 +209,7 @@ class FixtureHelper {
                 "description": "TC-CTR",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TC_CTR"
+                    "Doc:TC_CTR"
                 ]
             ],
             "PLTFMDEV-426": [
@@ -218,7 +218,7 @@ class FixtureHelper {
                 "description": "TC-CTP",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TC_CTP"
+                    "Doc:TC_CTP"
                 ]
             ],
             "PLTFMDEV-416": [
@@ -227,7 +227,7 @@ class FixtureHelper {
                 "description": "C-IVP for Dev",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:IVP"
+                    "Doc:IVP"
                 ]
             ],
             "PLTFMDEV-318": [
@@ -236,7 +236,7 @@ class FixtureHelper {
                 "description": "C-TIP",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TIP"
+                    "Doc:TIP"
                 ]
             ],
             "PLTFMDEV-317": [
@@ -245,7 +245,7 @@ class FixtureHelper {
                 "description": "C-TIR",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TIR"
+                    "Doc:TIR"
                 ]
             ],
             "PLTFMDEV-24": [
@@ -254,7 +254,7 @@ class FixtureHelper {
                 "description": "C-VSR",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:VSR"
+                    "Doc:VSR"
                 ]
             ],
             "PLTFMDEV-23": [
@@ -263,7 +263,7 @@ class FixtureHelper {
                 "description": "C-IVR for P",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:IVR_P"
+                    "Doc:IVR_P"
                 ]
             ],
             "PLTFMDEV-22": [
@@ -272,7 +272,7 @@ class FixtureHelper {
                 "description": "C-TIR for P",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TIR_P"
+                    "Doc:TIR_P"
                 ]
             ],
             "PLTFMDEV-21": [
@@ -281,7 +281,7 @@ class FixtureHelper {
                 "description": "C-IVP for P",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:IVP_P"
+                    "Doc:IVP_P"
                 ]
             ],
             "PLTFMDEV-20": [
@@ -290,7 +290,7 @@ class FixtureHelper {
                 "description": "C-TIP for P",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TIP_P"
+                    "Doc:TIP_P"
                 ]
             ],
             "PLTFMDEV-19": [
@@ -299,8 +299,8 @@ class FixtureHelper {
                 "description": "C-CFTR",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:CFTR",
-                    "LeVA_Doc:FTR"
+                    "Doc:CFTR",
+                    "Doc:FTR"
                 ]
             ],
             "PLTFMDEV-18": [
@@ -309,7 +309,7 @@ class FixtureHelper {
                 "description": "C-TC",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TC"
+                    "Doc:TC"
                 ]
             ],
             "PLTFMDEV-17": [
@@ -318,8 +318,8 @@ class FixtureHelper {
                 "description": "C-CFTP",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:CFTP",
-                    "LeVA_Doc:FTP"
+                    "Doc:CFTP",
+                    "Doc:FTP"
                 ]
             ],
             "PLTFMDEV-15": [
@@ -328,7 +328,7 @@ class FixtureHelper {
                 "description": "C-DTR",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:DTR"
+                    "Doc:DTR"
                 ]
             ],
             "PLTFMDEV-14": [
@@ -337,7 +337,7 @@ class FixtureHelper {
                 "description": "C-IVR for Q",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:IVR_Q"
+                    "Doc:IVR_Q"
                 ]
             ],
             "PLTFMDEV-13": [
@@ -346,7 +346,7 @@ class FixtureHelper {
                 "description": "C-TIR for Q",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TIR_Q"
+                    "Doc:TIR_Q"
                 ]
             ],
             "PLTFMDEV-12": [
@@ -355,7 +355,7 @@ class FixtureHelper {
                 "description": "C-DTP",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:DTP"
+                    "Doc:DTP"
                 ]
             ],
             "PLTFMDEV-8": [
@@ -364,7 +364,7 @@ class FixtureHelper {
                 "description": "C-IVP for Q",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:IVP_Q"
+                    "Doc:IVP_Q"
                 ]
             ],
             "PLTFMDEV-7": [
@@ -373,7 +373,7 @@ class FixtureHelper {
                 "description": "C-TIP for Q",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:TIP_Q"
+                    "Doc:TIP_Q"
                 ]
             ],
             "PLTFMDEV-6": [
@@ -382,7 +382,7 @@ class FixtureHelper {
                 "description": "C-RA",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:RA"
+                    "Doc:RA"
                 ]
             ],
             "DEMO-69": [
@@ -391,7 +391,7 @@ class FixtureHelper {
                 "description": "Demo",
                 "status": "PENDING",
                 "labels": [
-                    "LeVA_Doc:myTypeNotDone"
+                    "Doc:myTypeNotDone"
                 ]
             ],
             "DEMO-70": [
@@ -400,7 +400,7 @@ class FixtureHelper {
                 "description": "Demo",
                 "status": "PENDING",
                 "labels": [
-                    "LeVA_Doc:myTypeNotDone"
+                    "Doc:myTypeNotDone"
                 ]
             ],
             "DEMO-71": [
@@ -409,7 +409,7 @@ class FixtureHelper {
                 "description": "Demo",
                 "status": "DONE",
                 "labels": [
-                    "LeVA_Doc:myType"
+                    "Doc:myType"
                 ]
             ]
         ]
