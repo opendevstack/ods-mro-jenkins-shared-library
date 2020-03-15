@@ -677,7 +677,7 @@ class Project {
             "description": "verify database is correctly setup. Outcome: Succeeded",
             "key": "PLTFMDEV-401",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -716,7 +716,7 @@ class Project {
             "description": "User interacts with the cart",
             "key": "PLTFMDEV-549",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [
@@ -751,7 +751,7 @@ class Project {
             "description": "User shows catalogue",
             "key": "PLTFMDEV-550",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [
@@ -780,7 +780,7 @@ class Project {
             "description": "User buys some socks",
             "key": "PLTFMDEV-551",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [
@@ -826,7 +826,7 @@ class Project {
             "description": "Home page looks sexy",
             "key": "PLTFMDEV-552",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [],
@@ -842,7 +842,7 @@ class Project {
             "description": "User logs in",
             "key": "PLTFMDEV-553",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [],
@@ -858,7 +858,7 @@ class Project {
             "description": "User exists in system",
             "key": "PLTFMDEV-554",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [],
@@ -883,7 +883,7 @@ class Project {
             "description": "FirstResultOrDefault returns the default for an empty list",
             "key": "PLTFMDEV-1045",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Unit",
             "executionType": "Automated",
             "steps": [],
@@ -902,7 +902,7 @@ class Project {
             "description": "verify frontend is correctly installed. Outcome: Succeeded",
             "key": "PLTFMDEV-1046",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -929,7 +929,7 @@ class Project {
             "description": "verify payment service is correctly setup. Outcome: Error",
             "key": "PLTFMDEV-1060",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -956,7 +956,7 @@ class Project {
             "description": "verify order service is correctly installed. Outcome: Failed",
             "key": "PLTFMDEV-1061",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -983,7 +983,7 @@ class Project {
             "description": "verify shipping service is correctly installed. Outcome: Missing",
             "key": "PLTFMDEV-1062",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -1010,7 +1010,7 @@ class Project {
             "description": "Cart gets processed correctly. Outcome: Succeeded",
             "key": "PLTFMDEV-1073",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [
@@ -1037,7 +1037,7 @@ class Project {
             "description": "Frontend retrieves cart data correctly. Outcome: Succeeded",
             "key": "PLTFMDEV-1074",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [
@@ -1064,7 +1064,7 @@ class Project {
             "description": "Frontend retrieves payment data correctly. Outcome: Succeeded",
             "key": "PLTFMDEV-1075",
             "version": "1.0",
-            "status": "READY TO TEST",
+            "status": "DONE",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [
@@ -1501,7 +1501,7 @@ class Project {
 
     List<Map> getAutomatedTests(String componentName = null, List<String> testTypes = []) {
         return this.data.jira.tests.findAll { key, testIssue ->
-            def result = testIssue.status.toLowerCase() == "ready to test" && testIssue.executionType?.toLowerCase() == "automated"
+            def result = testIssue.status.toLowerCase() == "done" && testIssue.executionType?.toLowerCase() == "automated"
 
             if (result && componentName) {
                 result = testIssue.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
