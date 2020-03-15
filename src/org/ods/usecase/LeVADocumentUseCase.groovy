@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 class LeVADocumentUseCase extends DocGenUseCase {
 
     class IssueTypes {
-        static final String LEVA_DOCUMENTATION = "LeVA Documentation"
+        static final String LEVA_DOCUMENTATION = "Documentation"
     }
 
     enum DocumentType {
