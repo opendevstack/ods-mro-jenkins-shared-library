@@ -1,6 +1,6 @@
 package org.ods.util
 
-import groovy.json.JsonSlurperClassic
+
 import org.ods.service.JiraService
 import org.yaml.snakeyaml.Yaml
 import util.SpecHelper
@@ -666,103 +666,91 @@ class ProjectSpec extends SpecHelper {
         def result = project.loadMetadata()
 
         then:
-        def expected = new JsonSlurperClassic().parseText("""
-{
-    "capabilities": [
-
-    ],
-    "repositories": [
-        {
-            "metadata": {
-                "supplier": "https://github.com/microservices-demo/",
-                "name": "Sock Shop: demo-app-carts",
-                "description": "Some description for demo-app-carts",
-                "version": "1.0"
-            },
-            "data": {
-                "documents": {
-
-                }
-            },
-            "id": "demo-app-carts",
-            "type": "ods-service",
-            "branch": "master",
-            "url": "https://github.com/my-org/pltfmdev-demo-app-carts.git"
-        },
-        {
-            "metadata": {
-                "supplier": "https://github.com/microservices-demo/",
-                "name": "Sock Shop: demo-app-catalogue",
-                "description": "Some description for demo-app-catalogue",
-                "version": "1.0"
-            },
-            "data": {
-                "documents": {
-
-                }
-            },
-            "id": "demo-app-catalogue",
-            "type": "ods",
-            "branch": "master",
-            "url": "https://github.com/my-org/pltfmdev-demo-app-catalogue.git"
-        },
-        {
-            "metadata": {
-                "supplier": "https://github.com/microservices-demo/",
-                "name": "Sock Shop: demo-app-front-end",
-                "description": "Some description for demo-app-front-end",
-                "version": "1.0"
-            },
-            "data": {
-                "documents": {
-
-                }
-            },
-            "id": "demo-app-front-end",
-            "type": "ods",
-            "branch": "master",
-            "url": "https://github.com/my-org/pltfmdev-demo-app-front-end.git"
-        },
-        {
-            "metadata": {
-                "supplier": "https://github.com/microservices-demo/",
-                "name": "Sock Shop: demo-app-test",
-                "description": "Some description for demo-app-test",
-                "version": "1.0"
-            },
-            "data": {
-                "documents": {
-
-                }
-            },
-            "id": "demo-app-test",
-            "type": "ods-test",
-            "branch": "master",
-            "url": "https://github.com/my-org/pltfmdev-demo-app-test.git"
-        }
-    ],
-    "name": "Sock Shop",
-    "description": "A socks-selling e-commerce demo application.",
-    "id": "pltfmdev",
-    "services": {
-        "nexus": {
-            "repository": {
-                "name": "leva-documentation"
-            }
-        },
-        "bitbucket": {
-            "credentials": {
-                "id": "pltfmdev-cd-cd-user-with-password"
-            }
-        },
-        "jira": {
-            "credentials": {
-                "id": "pltfmdev-cd-cd-user-with-password"
-            }
-        }
-    }
-}
-""")
+        def expected = [
+            id          : "pltfmdev",
+            name        : "Sock Shop",
+            description : "A socks-selling e-commerce demo application.",
+            services    : [
+                bitbucket: [
+                    credentials: [
+                        id: "pltfmdev-cd-cd-user-with-password"
+                    ]
+                ],
+                jira     : [
+                    credentials: [
+                        id: "pltfmdev-cd-cd-user-with-password"
+                    ]
+                ],
+                nexus    : [
+                    repository: [
+                        name: "leva-documentation"
+                    ]
+                ]
+            ],
+            repositories: [
+                [
+                    id      : "demo-app-carts",
+                    type    : "ods-service",
+                    data    : [
+                        "documents": [:]
+                    ],
+                    metadata: [
+                        name       : "Sock Shop: demo-app-carts",
+                        description: "Some description for demo-app-carts",
+                        supplier   : "https://github.com/microservices-demo/",
+                        version    : "1.0"
+                    ],
+                    url     : "https://github.com/my-org/pltfmdev-demo-app-carts.git",
+                    branch  : "master"
+                ],
+                [
+                    id      : "demo-app-catalogue",
+                    type    : "ods",
+                    data    : [
+                        "documents": [:]
+                    ],
+                    metadata: [
+                        supplier   : "https://github.com/microservices-demo/",
+                        name       : "Sock Shop: demo-app-catalogue",
+                        description: "Some description for demo-app-catalogue",
+                        version    : "1.0"
+                    ],
+                    branch  : "master",
+                    url     : "https://github.com/my-org/pltfmdev-demo-app-catalogue.git"
+                ],
+                [
+                    "metadata": [
+                        supplier   : "https://github.com/microservices-demo/",
+                        name       : "Sock Shop: demo-app-front-end",
+                        description: "Some description for demo-app-front-end",
+                        version    : "1.0"
+                    ],
+                    data      : [
+                        "documents": [:]
+                    ],
+                    id        : "demo-app-front-end",
+                    type      : "ods",
+                    branch    : "master",
+                    url       : "https://github.com/my-org/pltfmdev-demo-app-front-end.git"
+                ],
+                [
+                    metadata: [
+                        supplier   : "https://github.com/microservices-demo/",
+                        name       : "Sock Shop: demo-app-test",
+                        description: "Some description for demo-app-test",
+                        version    : "1.0"
+                    ],
+                    data    : [
+                        documents: [:]
+                    ],
+                    id      : "demo-app-test",
+                    type    : "ods-test",
+                    branch  : "master",
+                    url     : "https://github.com/my-org/pltfmdev-demo-app-test.git"
+                ]
+            ],
+            capabilities: []
+        ]
 
         result == expected
     }
