@@ -804,7 +804,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def chapterData = ["sec1": "myContent"]
         def uri = "http://nexus"
         def documentIssue = createJiraDocumentIssues().first()
-        def sqReportFiles = [getResource("Test.docx")]
+        def sqReportFiles = [new FixtureHelper().getResource("Test.docx")]
         def requirement = [key: "REQ-1", name: "This is the req 1", gampTopic: "roles"]
         def techSpec = [key: "TS-1", softwareDesignSpec: "This is the software design spec for TS-1", name: "techSpec 1"]
         def compMetadata = [

@@ -1,51 +1,51 @@
 package org.ods.util
 
-import java.nio.file.Paths
+import java.nio.file.Files
 
 import org.apache.http.client.utils.URIBuilder
 import org.ods.service.*
+import org.yaml.snakeyaml.Yaml
 
 import spock.lang.*
+
+import static util.FixtureHelper.*
 
 import util.*
 
 class ProjectSpec extends SpecHelper {
 
     GitUtil git
-    JiraService jira
-    File metadataFile
-    Project project
     IPipelineSteps steps
+    JiraService jira
+    Project project
 
     def setup() {
-        steps = Spy(util.PipelineSteps)
         git = Mock(GitUtil)
-        metadataFile = createProjectMetadataFile(this.steps.env.WORKSPACE, steps)
-        project = Spy(new Project(this.steps)).init().load(git, null)
-    }
+        jira = Mock(JiraService)
+        steps = Spy(util.PipelineSteps)
+        steps.env.WORKSPACE = ""
 
-    def cleanup() {
-        metadataFile.delete()
-    }
+        Project.METADATA_FILE_NAME = new FixtureHelper().getResource("/project-metadata.yml").getAbsolutePath()
 
-    File createProjectMetadataFile(String path, IPipelineSteps steps) {
-        def file = Paths.get(path, "metadata.yml").toFile()
+        project = Spy(constructorArgs: [steps], {
+            getGitURLFromPath(*_) >> {
+                return new URIBuilder("https://github.com/my-org/my-pipeline-repo.git").build()
+            }
 
-        file << """
-            id: myId
-            name: myName
-            description: myDescription
-            repositories:
-              - id: A
-                url: https://github.com/my-org/my-repo-A.git
-                branch: master
-              - id: B
-                name: my-repo-B
-                branch: master
-              - id: C
-        """
+            loadJiraDataBugs(_) >> {
+                return createProjectJiraDataBugs()
+            }
 
-        return file
+            loadJiraDataDocs() >> {
+                return createProjectJiraDataDocs()
+            }
+
+            loadJiraDataIssueTypes() >> {
+                return createProjectJiraDataIssueTypes()
+            }
+        })
+
+        project.init().load(git, jira)
     }
 
     def "get build environment for DEBUG"() {
@@ -271,6 +271,8 @@ class ProjectSpec extends SpecHelper {
 
     def "get Git URL from path"() {
         given:
+        def project = new Project(steps)
+
         def path = "${steps.env.WORKSPACE}/a/b/c"
         def origin = "upstream"
 
@@ -285,13 +287,12 @@ class ProjectSpec extends SpecHelper {
 
         then:
         result == new URI("https://github.com/my-org/my-repo.git")
-
-        cleanup:
-        metadataFile.delete()
     }
 
     def "get Git URL from path without origin"() {
         given:
+        def project = new Project(steps)
+
         def path = "${steps.env.WORKSPACE}/a/b/c"
 
         when:
@@ -305,12 +306,12 @@ class ProjectSpec extends SpecHelper {
 
         then:
         result == new URI("https://github.com/my-org/my-repo.git")
-
-        cleanup:
-        metadataFile.delete()
     }
 
     def "get Git URL from path with invalid path"() {
+        given:
+        def project = new Project(steps)
+
         when:
         project.getGitURLFromPath(null)
 
@@ -326,19 +327,19 @@ class ProjectSpec extends SpecHelper {
         e.message == "Error: unable to get Git URL. 'path' is undefined."
 
         when:
+        steps.env.WORKSPACE = "myWorkspace"
         def path = "myPath"
         project.getGitURLFromPath(path)
 
         then:
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to get Git URL. 'path' must be inside the Jenkins workspace: ${path}"
-
-        cleanup:
-        metadataFile.delete()
     }
 
     def "get Git URL from path with invalid remote"() {
         given:
+        def project = new Project(steps)
+
         def path = "${steps.env.WORKSPACE}/a/b/c"
 
         when:
@@ -354,9 +355,6 @@ class ProjectSpec extends SpecHelper {
         then:
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to get Git URL. 'remote' is undefined."
-
-        cleanup:
-        metadataFile.delete()
     }
 
     def "load"() {
@@ -423,9 +421,12 @@ class ProjectSpec extends SpecHelper {
             docs: [(doc1.key): doc1]
         ]
 
+        1 * project.convertJiraDataToJiraDataItems(_)
+        1 * project.cleanJiraDataItems(_)
         1 * project.resolveJiraDataItemReferences(_)
-        1 * project.loadJiraDataDocs()
-        1 * project.loadJiraDataIssueTypes()
+        1 * project.loadJiraDataBugs(_) >> createProjectJiraDataBugs()
+        1 * project.loadJiraDataDocs() >> createProjectJiraDataDocs()
+        1 * project.loadJiraDataIssueTypes() >> createProjectJiraDataIssueTypes()
 
         then:
         def components = project.components
@@ -649,48 +650,16 @@ class ProjectSpec extends SpecHelper {
     }
 
     def "load metadata"() {
-        given:
-        steps.sh(_) >> "https://github.com/my-org/my-pipeline-repo.git"
-
         when:
         def result = project.loadMetadata()
 
         then:
-        def expected = [
-            id: "myId",
-            name: "myName",
-            description: "myDescription",
-            repositories: [
-                [
-                    id: "A",
-                    url: "https://github.com/my-org/my-repo-A.git",
-                    branch: "master",
-                    type: MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data: [
-                        documents: [:]
-                    ]
-                ],
-                [
-                    id: "B",
-                    url: "https://github.com/my-org/my-repo-B.git",
-                    branch: "master",
-                    type: MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data: [
-                        documents: [:]
-                    ]
-                ],
-                [
-                    id: "C",
-                    url: "https://github.com/my-org/myid-C.git",
-                    branch: "master",
-                    type: MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE,
-                    data: [
-                        documents: [:]
-                    ]
-                ]
-            ],
-            capabilities: []
-        ]
+        def expected = new Yaml().load(new File(Project.METADATA_FILE_NAME).text)
+        expected.repositories.each { repo ->
+            repo.branch = "master"
+            repo.data = [ documents: [:] ]
+            repo.url = "https://github.com/my-org/pltfmdev-${repo.id}.git"
+        }
 
         result == expected
     }
@@ -715,32 +684,47 @@ class ProjectSpec extends SpecHelper {
     }
 
     def "load project metadata with invalid id"() {
+        given:
+        def metadataFile = Files.createTempFile("metadata", ".yml").toFile()
+
         when:
         metadataFile.text = """
             name: myName
         """
 
-        project.loadMetadata()
+        project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'id' is undefined."
+
+        cleanup:
+        metadataFile.delete()
     }
 
     def "load project metadata with invalid name"() {
+        given:
+        def metadataFile = Files.createTempFile("metadata", ".yml").toFile()
+
         when:
         metadataFile.text = """
             id: myId
         """
 
-        project.loadMetadata()
+        project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'name' is undefined."
+
+        cleanup:
+        metadataFile.delete()
     }
 
     def "load project metadata with invalid description"() {
+        given:
+        def metadataFile = Files.createTempFile("metadata", ".yml").toFile()
+
         when:
         metadataFile.text = """
             id: myId
@@ -749,26 +733,38 @@ class ProjectSpec extends SpecHelper {
               - id: A
         """
 
-        def result = project.loadMetadata()
+        def result = project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         result.description == ""
+
+        cleanup:
+        metadataFile.delete()
     }
 
     def "load project metadata with undefined repositories"() {
+        given:
+        def metadataFile = Files.createTempFile("metadata", ".yml").toFile()
+
         when:
         metadataFile.text = """
             id: myId
             name: myName
         """
 
-        def result = project.loadMetadata()
+        def result = project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         result.repositories == []
+
+        cleanup:
+        metadataFile.delete()
     }
 
     def "load project metadata with invalid repository id"() {
+        given:
+        def metadataFile = Files.createTempFile("metadata", ".yml").toFile()
+
         when:
         metadataFile.text = """
             id: myId
@@ -777,7 +773,7 @@ class ProjectSpec extends SpecHelper {
               - name: A
         """
 
-        project.loadMetadata()
+        project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -792,14 +788,20 @@ class ProjectSpec extends SpecHelper {
               - name: B
         """
 
-        project.loadMetadata()
+        project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'repositories[1].id' is undefined."
+
+        cleanup:
+        metadataFile.delete()
     }
 
     def "load project metadata with invalid repository url"() {
+        given:
+        def metadataFile = Files.createTempFile("metadata", ".yml").toFile()
+
         when:
         metadataFile.text = """
             id: myId
@@ -808,7 +810,7 @@ class ProjectSpec extends SpecHelper {
               - name: A
         """
 
-        project.loadMetadata()
+        project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -823,10 +825,13 @@ class ProjectSpec extends SpecHelper {
               - name: B
         """
 
-        project.loadMetadata()
+        project.loadMetadata(metadataFile.getAbsolutePath())
 
         then:
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'repositories[1].id' is undefined."
+
+        cleanup:
+        metadataFile.delete()
     }
 }

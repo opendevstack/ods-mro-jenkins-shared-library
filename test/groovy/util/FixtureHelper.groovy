@@ -8,6 +8,7 @@ import org.junit.contrib.java.lang.system.EnvironmentVariables
 import org.ods.parser.*
 import org.ods.service.*
 import org.ods.util.*
+import org.yaml.snakeyaml.Yaml
 
 @InheritConstructors
 class FakeGitUtil extends GitUtil {
@@ -23,17 +24,31 @@ class FakeGitUtil extends GitUtil {
 @InheritConstructors
 class FakeProject extends Project {
 
+    protected static String METADATA_FILE_NAME = new FixtureHelper().getResource("/project-metadata.yml").getAbsolutePath()
+
     @Override
     Project init() {
         this.data.buildParams = this.loadBuildParams(steps)
         this.data.metadata = this.loadMetadata(METADATA_FILE_NAME)
+
+        this.data.metadata.repositories.each { repo ->
+            repo.metadata = [
+                name       : "Sock Shop: ${repo.id}",
+                description: "Some description for ${repo.id}",
+                supplier   : "https://github.com/microservices-demo/",
+                version    : "1.0"
+            ]
+        }
+
         return this
     }
 
     @Override
     Project load(GitUtil git, JiraService jira) {
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
-        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
+        this.data.jira = this.loadJiraData(this.data.metadata.id)
+        this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
+        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
         this.data.jira.docs = this.loadJiraDataDocs()
@@ -51,18 +66,30 @@ class FakeProject extends Project {
         return new URIBuilder(url).build()
     }
 
-    private File getResource(String path) {
-        path = path.startsWith('/') ? path : '/' + path
-        new File(getClass().getResource(path).toURI())
-    }
-
     static Map loadBuildParams(IPipelineSteps steps) {
         return FixtureHelper.createProjectBuildParams()
     }
 
     protected Map loadJiraData(String projectKey) {
-        def file = this.getResource("project-jira-data.json")
+        def file = new FixtureHelper().getResource("project-jira-data.json")
         return new JsonSlurper().parse(file)
+    }
+
+    protected Map loadJiraDataBugs(Map tests) {
+        def bugs = FixtureHelper.createProjectJiraDataBugs()
+
+        // Add relations from tests to bug
+        bugs.each { key, bug ->
+            bug.tests.each { testKey ->
+                if (!tests[testKey].bugs) {
+                    tests[testKey].bugs = []
+                }
+
+                tests[testKey].bugs << bug.key
+            }
+        }
+
+        return bugs
     }
 
     protected Map loadJiraDataDocs() {
@@ -73,10 +100,6 @@ class FakeProject extends Project {
         return FixtureHelper.createProjectJiraDataIssueTypes()
     }
 
-    protected Map loadMetadata(String filename) {
-        return FixtureHelper.createProjectMetadata()
-    }
-
     void setRepositories(List repos) {
         this.data.metadata.repositories = repos
     }
@@ -85,6 +108,8 @@ class FakeProject extends Project {
 class FixtureHelper {
     static Project createProject() {
         def steps = new PipelineSteps()
+        steps.env.WORKSPACE = ""
+
         return new FakeProject(steps).init()
             .load(new FakeGitUtil(steps), null)
     }
@@ -108,6 +133,71 @@ class FixtureHelper {
             targetEnvironment            : "dev",
             targetEnvironmentToken       : "D",
             version                      : "0.1"
+        ]
+    }
+
+    static Map createProjectJiraDataBugs() {
+        return [
+            "PLTFMDEV-658": [
+                "key": "PLTFMDEV-658",
+                "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
+                "assignee": "Unassigned",
+                "dueDate": "",
+                "status": "TO DO",
+                "tests": [
+                    "PLTFMDEV-551"
+                ]
+            ],
+            "PLTFMDEV-674": [
+                "key": "PLTFMDEV-674",
+                "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
+                "assignee": "Unassigned",
+                "dueDate": "",
+                "status": "TO DO",
+                "tests": [
+                    "PLTFMDEV-551"
+                ]
+            ],
+            "PLTFMDEV-690": [
+                "key": "PLTFMDEV-690",
+                "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
+                "assignee": "Unassigned",
+                "dueDate": "",
+                "status": "TO DO",
+                "tests": [
+                    "PLTFMDEV-551"
+                ]
+            ],
+            "PLTFMDEV-10658": [
+                "key": "PLTFMDEV-10658",
+                "name": "One org.spockframework.runtime. ConditionFailedWithExceptionError",
+                "assignee": "Unassigned",
+                "dueDate": "",
+                "status": "TO DO",
+                "tests": [
+                    "PLTFMDEV-554"
+                ]
+            ],
+            "PLTFMDEV-10674": [
+                "key": "PLTFMDEV-10674",
+                "name": "Two org.spockframework.runtime. ConditionFailedWithExceptionError",
+                "assignee": "Unassigned",
+                "dueDate": "",
+                "status": "TO DO",
+                "tests": [
+                    "PLTFMDEV-554"
+                ]
+            ],
+            "PLTFMDEV-10690":[
+                "key": "PLTFMDEV-10690",
+                "name": "Three org.spockframework.runtime. ConditionFailedWithExceptionError",
+                "assignee": "Unassigned",
+                "dueDate": "",
+                "status": "TO DO",
+                "tests": [
+                    "PLTFMDEV-554"
+                ]
+            ]
         ]
     }
 
@@ -471,77 +561,8 @@ class FixtureHelper {
     }
 
     static Map createProjectMetadata() {
-        def result = [
-            id          : "pltfmdev",
-            name        : "Sock Shop",
-            description : "A socks-selling e-commerce demo application.",
-            services    : [
-                bitbucket: [
-                    credentials: [
-                        id: "pltfmdev-cd-cd-user-with-password"
-                    ]
-                ],
-                jira     : [
-                    credentials: [
-                        id: "pltfmdev-cd-cd-user-with-password"
-                    ]
-                ],
-                nexus    : [
-                    repository: [
-                        name: "leva-documentation"
-                    ]
-                ]
-            ],
-            repositories: [
-                [
-                    id  : "demo-app-carts",
-                    type: "ods-service",
-                    data: [
-                        documents: [:]
-                    ]
-                ],
-                [
-                    id  : "demo-app-catalogue",
-                    type: "ods",
-                    data: [
-                        documents: [:]
-                    ]
-                ],
-                [
-                    id  : "demo-app-front-end",
-                    type: "ods",
-                    data: [
-                        documents: [:]
-                    ]
-                ],
-                [
-                    id  : "demo-app-test",
-                    type: "ods-test",
-                    data: [
-                        documents: [:]
-                    ]
-                ]
-            ],
-            capabilities: []
-        ]
-
-        result.repositories.each { repo ->
-            repo.data?.git = [
-                branch                 : "origin/master",
-                commit                 : UUID.randomUUID().toString().replaceAll("-", ""),
-                previousCommit         : UUID.randomUUID().toString().replaceAll("-", ""),
-                previousSucessfulCommit: UUID.randomUUID().toString().replaceAll("-", ""),
-                url                    : "https://cd_user@somescm.com/scm/someproject/${repo.id}.git"
-            ]
-            repo.metadata = [
-                name       : "Sock Shop: ${repo.id}",
-                description: "Some description for ${repo.id}",
-                supplier   : "https://github.com/microservices-demo/",
-                version    : "1.0"
-            ]
-        }
-
-        return result
+        def file = new FixtureHelper().getResource("project-metadata.yml")
+        return new Yaml().load(file.text)
     }
 
     static Map createJiraIssue(String id, String issuetype = "Story", String summary = null, String description = null, String status = null) {
@@ -782,5 +803,10 @@ class FixtureHelper {
 
     static Set createTestResultFailures() {
         return JUnitParser.Helper.getFailures(createTestResults())
+    }
+
+    File getResource(String path) {
+        path = path.startsWith('/') ? path : '/' + path
+        new File(this.getClass().getResource(path).toURI())
     }
 }

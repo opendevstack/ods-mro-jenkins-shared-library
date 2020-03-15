@@ -97,7 +97,7 @@ class Project {
         static final String INTERFACE_REQUIREMENT = "Interface Requirement"
     }
 
-    protected static final String METADATA_FILE_NAME = "metadata.yml"
+    protected static String METADATA_FILE_NAME = "metadata.yml"
 
     private static final TEMP_FAKE_JIRA_DATA = """
 {
@@ -814,11 +814,6 @@ class Project {
             ],
             "requirements": [
                 "DEMO-6"
-            ],
-            "bugs": [
-                "PLTFMDEV-658",
-                "PLTFMDEV-674",
-                "PLTFMDEV-690"
             ]
         },
         "PLTFMDEV-552": {
@@ -871,11 +866,6 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
-            ],
-            "bugs": [
-                "PLTFMDEV-10658",
-                "PLTFMDEV-10674",
-                "PLTFMDEV-10690"
             ]
         },
         "PLTFMDEV-1045": {
@@ -1374,68 +1364,6 @@ class Project {
             ],
             "tests": []
         }
-    },
-    "bugs": {
-        "PLTFMDEV-658": {
-            "key": "PLTFMDEV-658",
-            "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
-            "assignee": "Unassigned",
-            "dueDate": "",
-            "status": "TO DO",
-            "tests": [
-                "PLTFMDEV-551"
-            ]
-        },
-        "PLTFMDEV-674": {
-            "key": "PLTFMDEV-674",
-            "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
-            "assignee": "Unassigned",
-            "dueDate": "",
-            "status": "TO DO",
-            "tests": [
-                "PLTFMDEV-551"
-            ]
-        },
-        "PLTFMDEV-690": {
-            "key": "PLTFMDEV-690",
-            "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
-            "assignee": "Unassigned",
-            "dueDate": "",
-            "status": "TO DO",
-            "tests": [
-                "PLTFMDEV-551"
-            ]
-        },
-        "PLTFMDEV-10658": {
-            "key": "PLTFMDEV-10658",
-            "name": "One org.spockframework.runtime. ConditionFailedWithExceptionError",
-            "assignee": "Unassigned",
-            "dueDate": "",
-            "status": "TO DO",
-            "tests": [
-                "PLTFMDEV-554"
-            ]
-        },
-        "PLTFMDEV-10674": {
-            "key": "PLTFMDEV-10674",
-            "name": "Two org.spockframework.runtime. ConditionFailedWithExceptionError",
-            "assignee": "Unassigned",
-            "dueDate": "",
-            "status": "TO DO",
-            "tests": [
-                "PLTFMDEV-554"
-            ]
-        },
-        "PLTFMDEV-10690": {
-            "key": "PLTFMDEV-10690",
-            "name": "Three org.spockframework.runtime. ConditionFailedWithExceptionError",
-            "assignee": "Unassigned",
-            "dueDate": "",
-            "status": "TO DO",
-            "tests": [
-                "PLTFMDEV-554"
-            ]
-        }
     }
 }
 """
@@ -1466,7 +1394,9 @@ class Project {
         this.jira = jira
 
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
-        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
+        this.data.jira = this.loadJiraData(this.data.metadata.id)
+        this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
+        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
         this.data.jira.docs = this.loadJiraDataDocs()
@@ -1757,6 +1687,46 @@ class Project {
         return new JsonSlurperClassic().parseText(TEMP_FAKE_JIRA_DATA)
     }
 
+    protected Map loadJiraDataBugs(Map tests) {
+        if (!this.jira) return
+
+        def jqlQuery = [
+            jql: "project = ${this.data.jira.project.key} AND issuetype = Bug AND status != Done",
+            expand: [],
+            fields: ["assignee", "duedate", "issuelinks", "status", "summary"]
+        ]
+
+        def jiraBugs = this.jira.getIssuesForJQLQuery(jqlQuery) ?: []
+        return jiraBugs.collectEntries { jiraBug ->
+            def bug = [
+                key      : jiraBug.key,
+                name     : jiraBug.fields.summary,
+                assignee : jiraBug.fields.assignee ? [jiraBug.fields.assignee.displayName, jiraBug.fields.assignee.name, jiraBug.fields.assignee.emailAddress].find { it != null } : "Unassigned",
+                dueDate  : "", // TODO: currently unsupported for not being enabled on a Bug issue
+                status   : jiraBug.fields.status.name
+            ]
+
+            def testKeys = []
+            if (jiraBug.fields.issuelinks) {
+                testKeys = jiraBug.fields.issuelinks.findAll { it.type.name == "Blocks" && it.outwardIssue && it.outwardIssue.fields.issuetype.name == "Test" }.collect { it.outwardIssue.key }
+            }
+
+            // Add relations from bug to tests
+            bug.tests = testKeys
+
+            // Add relations from tests to bug
+            testKeys.each { testKey ->
+                if (!tests[testKey].bugs) {
+                    tests[testKey].bugs = []
+                }
+
+                tests[testKey].bugs << bug.key
+            }
+
+            return [jiraBug.key, bug]
+        }
+    }
+
     protected Map loadJiraDataDocs() {
         if (!this.jira) return
 
@@ -1923,6 +1893,6 @@ class Project {
             repo.data.documents = [:]
         }
 
-        return result.toString()
+        return JsonOutput.toJson(result)
     }
 }

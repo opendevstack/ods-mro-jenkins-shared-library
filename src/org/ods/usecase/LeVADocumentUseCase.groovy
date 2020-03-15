@@ -1052,7 +1052,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 }
 
                 if (!repository) {
-                    throw new IllegalArgumentException("Error: unable to create ${documentType}. Could not find a repository definition with id or name equal to '${normalizedComponentName}' for Jira component '${component.name}' in project '${this.project.id}'.")
+                    throw new IllegalArgumentException("Error: unable to find a repository definition with id or name equal to '${normalizedComponentName}' for Jira component '${component.name}' in project '${this.project.id}'.")
                 }
 
                 return repository.type
