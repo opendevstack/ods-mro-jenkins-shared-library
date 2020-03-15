@@ -471,11 +471,11 @@ class FixtureHelper {
                 commit                 : "3a2ea1a79a134ebcb871fa8b8d6d91cf",
                 previousCommit         : "2ffb2df6aeb349ba81f5597bc0d3a087",
                 previousSucessfulCommit: "a7ff3fdbd79f456d985ff0c0fa9f4754",
-                url                    : "https://cd_user@somescm.com/scm/someproject/" + repo.id + ".git"
+                url                    : "https://cd_user@somescm.com/scm/someproject/${repo.id}.git".toString()
             ]
             repo.metadata = [
-                name       : "Sock Shop: " + repo.id,
-                description: "Some description for " + repo.id,
+                name       : "Sock Shop: ${repo.id}".toString(),
+                description: "Some description for ${repo.id}".toString(),
                 supplier   : "https://github.com/microservices-demo/",
                 version    : "1.0"
             ]
