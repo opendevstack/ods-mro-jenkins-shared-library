@@ -2,15 +2,14 @@ package org.ods.util
 
 import com.cloudbees.groovy.cps.NonCPS
 
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurperClassic
 
 import java.nio.file.Paths
 
 import org.apache.http.client.utils.URIBuilder
-
 import org.ods.service.JiraService
 import org.ods.usecase.LeVADocumentUseCase
-
 import org.yaml.snakeyaml.Yaml
 
 class Project {
@@ -1469,7 +1468,9 @@ class Project {
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
+
         this.data.jira.docs = this.loadJiraDataDocs()
+        this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
         return this
     }
 
@@ -1637,6 +1638,10 @@ class Project {
         return this.data.jira.id
     }
 
+    List getJiraFieldsForIssueType(String issueTypeName) {
+        return this.data.jira.issueTypes[issueTypeName]?.fields ?: []
+    }
+
     String getKey() {
         return this.data.metadata.id
     }
@@ -1771,6 +1776,30 @@ class Project {
                     description : jiraIssue.fields.description,
                     status      : jiraIssue.fields.status.name,
                     labels      : jiraIssue.fields.labels
+                ]
+            ]
+        }
+    }
+
+    protected Map loadJiraDataIssueTypes() {
+        if (!this.jira) return
+
+        def jiraIssueTypes = this.jira.getIssueTypes(this.data.jira.project.key)
+        return jiraIssueTypes.values.collectEntries { jiraIssueType ->
+            [
+                jiraIssueType.name,
+                [
+                    id     : jiraIssueType.id,
+                    name   : jiraIssueType.name,
+                    fields : this.jira.getIssueTypeMetadata(this.data.jira.project.key, jiraIssueType.id).values.collectEntries { value ->
+                        [
+                            value.fieldId,
+                            [
+                                id:   value.fieldId,
+                                name: value.name
+                            ]
+                        ]
+                    }
                 ]
             ]
         }

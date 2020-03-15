@@ -425,6 +425,7 @@ class ProjectSpec extends SpecHelper {
 
         1 * project.resolveJiraDataItemReferences(_)
         1 * project.loadJiraDataDocs()
+        1 * project.loadJiraDataIssueTypes()
 
         then:
         def components = project.components

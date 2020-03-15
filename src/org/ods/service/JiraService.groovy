@@ -255,6 +255,61 @@ class JiraService {
     }
 
     @NonCPS
+    Map getIssueTypeMetadata(String projectKey, String issueTypeId) {
+        if (!projectKey?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get Jira issue type metadata. 'projectKey' is undefined.")
+        }
+
+        if (!issueTypeId?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get Jira issue type metadata. 'issueTypeId' is undefined.")
+        }
+
+        def response = Unirest.get("${this.baseURL}/rest/api/2/issue/createmeta/{projectKey}/issuetypes/{issueTypeId}")
+            .routeParam("projectKey", projectKey)
+            .routeParam("issueTypeId", issueTypeId)
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .asString()
+
+        response.ifFailure {
+            def message = "Error: unable to get Jira issue type metadata. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to get Jira issue type metadata. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody())
+    }
+
+    @NonCPS
+    Map getIssueTypes(String projectKey) {
+        if (!projectKey?.trim()) {
+            throw new IllegalArgumentException("Error: unable to get Jira issue types. 'projectKey' is undefined.")
+        }
+
+        def response = Unirest.get("${this.baseURL}/rest/api/2/issue/createmeta/{projectKey}/issuetypes")
+            .routeParam("projectKey", projectKey)
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .asString()
+
+        response.ifFailure {
+            def message = "Error: unable to get Jira issue types. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to get Jira issue types. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+
+        return new JsonSlurperClassic().parseText(response.getBody())
+    }
+
+    @NonCPS
     Map getProject(String projectKey) {
         if (!projectKey?.trim()) {
             throw new IllegalArgumentException("Error: unable to get project from Jira. 'projectKey' is undefined.")

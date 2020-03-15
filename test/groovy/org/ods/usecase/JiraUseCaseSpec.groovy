@@ -202,13 +202,13 @@ class JiraUseCaseSpec extends SpecHelper {
             "issues":[]
         ]
 
-        then: 
+        then:
         // Expect an error
         def msg = shouldFail IllegalStateException, {
             usecase.getDocumentChapterData(documentType)
         }
         assert msg.contains('No documents found') && msg.contains("JIRA")
-        
+
     }
 
     def "match Jira test issues against test results"() {

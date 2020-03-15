@@ -35,7 +35,9 @@ class FakeProject extends Project {
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
+
         this.data.jira.docs = this.loadJiraDataDocs()
+        this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
         return this
     }
 
@@ -65,6 +67,10 @@ class FakeProject extends Project {
 
     protected Map loadJiraDataDocs() {
         return FixtureHelper.createProjectJiraDataDocs()
+    }
+
+    protected Map loadJiraDataIssueTypes() {
+        return FixtureHelper.createProjectJiraDataIssueTypes()
     }
 
     protected Map loadMetadata(String filename) {
@@ -404,6 +410,61 @@ class FixtureHelper {
                 "status": "DONE",
                 "labels": [
                     "LeVA_Doc:myType"
+                ]
+            ]
+        ]
+    }
+
+    static Map createProjectJiraDataIssueTypes() {
+        return [
+            "Epic": [
+                id: "1",
+                name: "Epic",
+                fields: [
+                    "customfield_1": [
+                        id: "customfield_1",
+                        name: "Issue Status"
+                    ],
+                   "issuelinks": [
+                       id: "issuelinks",
+                       name: "Linked Issues"
+                    ]
+                ]
+            ],
+            "Story": [
+                id: "2",
+                name: "Story",
+                fields: [
+                    "customfield_1": [
+                        id: "customfield_1",
+                        name: "Issue Status"
+                    ],
+                    "customfield_2": [
+                        id: "customfield_2",
+                        name: "Epic Link"
+                    ],
+                   "issuelinks": [
+                       id: "issuelinks",
+                       name: "Linked Issues"
+                    ]
+                ]
+            ],
+            "Test": [
+                id: "3",
+                name: "Test",
+                fields: [
+                    "customfield_1": [
+                        id: "customfield_1",
+                        name: "Issue Status"
+                    ],
+                    "customfield_2": [
+                        id: "customfield_2",
+                        name: "Epic Link"
+                    ],
+                   "issuelinks": [
+                       id: "issuelinks",
+                       name: "Linked Issues"
+                    ]
                 ]
             ]
         ]
