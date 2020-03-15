@@ -1,14 +1,13 @@
 package org.ods.util
 
-import org.ods.service.JiraService
-import util.SpecHelper
 import groovy.json.JsonSlurperClassic
+import org.ods.service.JiraService
+import org.yaml.snakeyaml.Yaml
+import util.SpecHelper
 
 import java.nio.file.Paths
-import org.yaml.snakeyaml.Yaml
 
 import static util.FixtureHelper.createProjectMetadata
-import static util.FixtureHelper.createIssuesForJQLQuery
 import static util.FixtureHelper.createProjectVersion
 
 class ProjectSpec extends SpecHelper {
@@ -29,7 +28,19 @@ class ProjectSpec extends SpecHelper {
             }
 
             getIssuesForJQLQuery(_) >> {
-                return createIssuesForJQLQuery()
+                return [
+                    [
+                        key   : "PLTFMDEV-20",
+                        fields: [
+                            summary    : "issue summary",
+                            description: "issue descripion",
+                            status     : [
+                                name: "Open"
+                            ],
+                            labels     : ["LeVA_Doc:CSD"]
+                        ]
+                    ]
+                ]
             }
         }
 

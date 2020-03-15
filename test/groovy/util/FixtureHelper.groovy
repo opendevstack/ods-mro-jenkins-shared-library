@@ -738,22 +738,6 @@ class FixtureHelper {
         return JUnitParser.Helper.getFailures(createSockShopTestResults())
     }
 
-    static List createIssuesForJQLQuery() {
-        return [
-            [
-                key   : "TESTCAL-20",
-                fields: [
-                    summary    : "DevOps Epic for Test",
-                    description: "Some issue descripion",
-                    status     : [
-                        name: "Open"
-                    ],
-                    labels     : ["LeVA_Doc:CSD"]
-                ]
-            ]
-        ]
-    }
-
     static Map createProjectVersion() {
         return [
             "id"  : "11100",
