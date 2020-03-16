@@ -698,8 +698,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         description : testIssue.description,
                         requirements: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
                         isSuccess   : testIssue.isSuccess,
-                        bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : "N/A",
-                        newBugs     : testIssue.newBugs ? testIssue.newBugs.join(", ") : "",
+                        bugs        : (testIssue.bugs + testIssue.newBugs) ? (testIssue.bugs + testIssue.newBugs).join(", ") : "N/A",
                         steps       : testIssue.steps,
                         timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A"
                     ]
@@ -710,8 +709,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         description : testIssue.description,
                         requirements: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
                         isSuccess   : testIssue.isSuccess,
-                        bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : "N/A",
-                        newBugs     : testIssue.newBugs ? testIssue.newBugs.join(", ") : "",
+                        bugs        : (testIssue.bugs + testIssue.newBugs) ? (testIssue.bugs + testIssue.newBugs).join(", ") : "N/A",
                         steps       : testIssue.steps,
                         timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A"
                     ]
