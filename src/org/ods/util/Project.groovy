@@ -1771,7 +1771,7 @@ class Project {
 
     protected Map loadJiraDataProjectVersion() {
         return this.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
-            this.buildParams.version == version.name
+            this.buildParams.version == version.value
         }
     }
 
