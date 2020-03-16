@@ -464,8 +464,8 @@ class Project {
             "mitigations": [
                 "DEMO-62"
             ],
-            "requirements": [
-                "DEMO-40"
+            "techSpecs": [
+                "DEMO-60"
             ],
             "tests": []
         },
@@ -484,8 +484,8 @@ class Project {
             "mitigations": [
                 "DEMO-51"
             ],
-            "requirements": [
-                "DEMO-40"
+            "techSpecs": [
+                "DEMO-49"
             ],
             "tests": []
         },
@@ -526,8 +526,8 @@ class Project {
             "mitigations": [
                 "DEMO-28"
             ],
-            "requirements": [
-                "DEMO-6"
+            "techSpecs": [
+                "DEMO-26"
             ],
             "tests": []
         },
@@ -546,8 +546,8 @@ class Project {
             "mitigations": [
                 "DEMO-17"
             ],
-            "requirements": [
-                "DEMO-6"
+            "techSpecs": [
+                "DEMO-15"
             ],
             "tests": []
         },
@@ -606,8 +606,8 @@ class Project {
             "mitigations": [
                 "DEMO-66"
             ],
-            "requirements": [
-                "DEMO-40"
+            "techSpecs": [
+                "DEMO-60"
             ],
             "tests": []
         },
@@ -626,8 +626,8 @@ class Project {
             "mitigations": [
                 "DEMO-55"
             ],
-            "requirements": [
-                "DEMO-40"
+            "techSpecs": [
+                "DEMO-49"
             ],
             "tests": []
         },
@@ -646,8 +646,8 @@ class Project {
             "mitigations": [
                 "DEMO-32"
             ],
-            "requirements": [
-                "DEMO-6"
+            "techSpecs": [
+                "DEMO-26"
             ],
             "tests": []
         },
@@ -666,8 +666,8 @@ class Project {
             "mitigations": [
                 "DEMO-21"
             ],
-            "requirements": [
-                "DEMO-6"
+            "techSpecs": [
+                "DEMO-15"
             ],
             "tests": []
         }
