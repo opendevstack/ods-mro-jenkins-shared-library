@@ -6,7 +6,7 @@ import util.SpecHelper
 
 import java.nio.file.Paths
 
-import static util.FixtureHelper.createProjectMetadata
+import static util.FixtureHelper.*
 
 class ProjectSpec extends SpecHelper {
 
@@ -20,25 +20,14 @@ class ProjectSpec extends SpecHelper {
         steps = Spy(util.PipelineSteps)
         git = Mock(GitUtil)
         metadataFile = createProjectMetadataFile(this.steps.env.WORKSPACE, steps)
-        jira = Mock(JiraService) {
-            getIssuesForJQLQuery(_) >> {
-                return [
-                    [
-                        key   : "PLTFMDEV-20",
-                        fields: [
-                            summary    : "issue summary",
-                            description: "issue descripion",
-                            status     : [
-                                name: "Open"
-                            ],
-                            labels     : ["LeVA_Doc:CSD"]
-                        ]
-                    ]
-                ]
-            }
-        }
+        jira = Mock(JiraService)
 
-        project = Spy(new Project(steps)).init().load(git, jira)
+        project = Spy(constructorArgs: [steps], {
+            loadJiraDataDocs() >> {
+                return createProjectJiraDataDocs()
+            }
+        })
+        project.init().load(git, jira)
     }
 
     def cleanup() {
@@ -411,6 +400,8 @@ class ProjectSpec extends SpecHelper {
         test2.requirements = [requirement1.key]
         test2.risks = [risk1.key]
 
+
+
         when:
         project.load(this.git, this.jira)
 
@@ -429,7 +420,7 @@ class ProjectSpec extends SpecHelper {
         ]
 
         1 * project.resolveJiraDataItemReferences(_)
-        1 * project.loadJiraDataDocs()
+        1 * project.loadJiraDataDocs() >> createProjectJiraDataDocs()
 
         then:
         def components = project.components

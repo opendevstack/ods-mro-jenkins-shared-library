@@ -1773,7 +1773,7 @@ class Project {
         List versions = this.jira.getVersionForProject(this.data.jira.project.key)
 
         return versions.find { version ->
-            this.project.buildParams?.version == version.name
+            this.buildParams.version == version.name
         }
     }
 

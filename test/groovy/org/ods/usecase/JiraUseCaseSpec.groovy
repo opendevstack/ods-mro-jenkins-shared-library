@@ -381,7 +381,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * jira.appendCommentToIssue(failureBug.key, _)
 
-        expect:
+        then:
         this.project.data.jira.bugs.keySet().contains("JIRA-BUG-1")
         this.project.data.jira.bugs.keySet().contains("JIRA-BUG-2")
     }

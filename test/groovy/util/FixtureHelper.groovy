@@ -36,7 +36,7 @@ class FakeProject extends Project {
     Project load(GitUtil git, JiraService jira) {
         this.data.git = [commit: git.getCommit(), url: git.getURL()]
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
-        this.data.jira.project.version = loadProjectVersion()
+        this.data.jira.project.version = loadJiraDataProjectVersion()
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
         this.data.jira.docs = this.loadJiraDataDocs()
         return this
@@ -66,8 +66,7 @@ class FakeProject extends Project {
         return new JsonSlurper().parse(file)
     }
 
-    protected Map loadProjectVersion() {
-        println("load project Version")
+    protected Map loadJiraDataProjectVersion() {
         return [
             "id"  : "11100",
             "name": "0.3"
