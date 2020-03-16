@@ -358,7 +358,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 modules: this.getReposWithUnitTestsInfo(unitTests)
             ]
         ]
-        this.steps.echo("??? data " + data_)
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
