@@ -670,6 +670,26 @@ class Project {
                 "DEMO-6"
             ],
             "tests": []
+        },
+        "DEMO-1020": {
+            "name": "Risk-1 on TechSpec DEMO-6",
+            "description": "Risk-1 on TechSpec DEMO-6 is described here...",
+            "key": "DEMO-20",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "R2",
+            "probabilityOfOccurrence": 2,
+            "severityOfImpact": 2,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 16,
+            "riskPriority": 2,
+            "mitigations": [
+                "DEMO-21"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "tests": [""]
         }
     },
     "tests": {
@@ -896,6 +916,9 @@ class Project {
             ],
             "techSpecs": [
                 "DEMO-15"
+            ],
+            "risks": [
+                "DEMO-1020"
             ]
         },
         "PLTFMDEV-1046": {

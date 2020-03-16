@@ -358,6 +358,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 modules: this.getReposWithUnitTestsInfo(unitTests)
             ]
         ]
+        this.steps.echo("??? data " + data_)
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
@@ -365,15 +366,19 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     protected List<Map> computeTestsWithRequirementsAndSpecs(List<Map> tests) {
+        def obtainEnumText = { category, value -> this.project.getEnumDictionary(category)[value as String].text }
+
         tests.collect { testIssue ->
             def techSpecsWithSoftwareDesignSpec = testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }
+            def risks =  testIssue.getResolvedRisks().collect{ obtainEnumText("SeverityOfImpact", it.severityOfImpact)}
 
             [
                 moduleName: testIssue.components.join(", "),
                 testKey: testIssue.key,
                 description: testIssue.description ?: "N/A",
                 systemRequirement: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
-                softwareDesignSpec: techSpecsWithSoftwareDesignSpec ? techSpecsWithSoftwareDesignSpec.join(", ") : "N/A"
+                softwareDesignSpec: techSpecsWithSoftwareDesignSpec ? techSpecsWithSoftwareDesignSpec.join(", ") : "N/A",
+                riskLevel: risks ? risks.join(", ") : "N/A"
             ]
         }
     }
