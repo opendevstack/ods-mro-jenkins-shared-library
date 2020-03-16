@@ -512,7 +512,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             def testsText = r.tests ? r.tests.join(", ") : "None"
             r.proposedMeasures = "Mitigations: ${mitigationsText}<br/>Tests: ${testsText}"
 
-            def requirements = r.getResolvedSystemRequirements()
+            def requirements = (r.getResolvedSystemRequirements() + r.getResolvedTechnicalSpecifications())
             r.requirements = requirements.collect { it.name }.join("<br/>")
             r.requirementsKey = requirements.collect { it.key }.join("<br/>")
 
