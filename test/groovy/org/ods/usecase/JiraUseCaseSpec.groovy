@@ -25,7 +25,7 @@ class JiraUseCaseSpec extends SpecHelper {
         jira = Mock(JiraService) {
             createIssueTypeBug(_, _, _) >> {
                 [
-                    key   : "PLTFMDEV-29651",
+                    key   : "BUG-3",
                     fields: [
                         summary: "bug summary / name"
                     ]

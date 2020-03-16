@@ -106,10 +106,6 @@ class Project {
         "key": "PLTFMDEV",
         "id": "12005",
         "jiraBaseUrl": "http://localhost:2990/jira/DEMO",
-        "version": {
-            "id": "11100",
-            "name": "0.3"
-        },
         "gampTopics": [
             "operational requirements",
             "functional requirements",
@@ -712,7 +708,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-549": {
             "name": "User interacts with the cart",
@@ -749,7 +746,8 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-550": {
             "name": "User shows catalogue",
@@ -780,7 +778,8 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-551": {
             "name": "User buys some socks",
@@ -823,7 +822,8 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-552": {
             "name": "Home page looks sexy",
@@ -841,7 +841,8 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-553": {
             "name": "User logs in",
@@ -859,7 +860,8 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-554": {
             "name": "User exists in system",
@@ -881,7 +883,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1045": {
             "name": "FirstResultOrDefault returns the default for an empty list",
@@ -902,7 +905,8 @@ class Project {
             "techSpecs": [
                 "DEMO-15"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1046": {
             "name": "verify frontend is correctly installed",
@@ -931,7 +935,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1060": {
             "name": "verify payment service is correctly installed",
@@ -960,7 +965,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1061": {
             "name": "verify order service is correctly installed",
@@ -989,7 +995,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1062": {
             "name": "verify shipping service is correctly installed",
@@ -1018,7 +1025,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1073": {
             "name": "Cart gets processed correctly",
@@ -1047,7 +1055,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1074": {
             "name": "Frontend retrieves cart data correctly",
@@ -1076,7 +1085,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         },
         "PLTFMDEV-1075": {
             "name": "Frontend retrieves payment data correctly",
@@ -1105,7 +1115,8 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": []
+            "bugs": [],
+            "newBugs": []
         }
     },
     "mitigations": {
@@ -1488,7 +1499,7 @@ class Project {
 
         this.data.git = [commit: git.getCommit(), url: git.getURL()]
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
-        this.data.jira.project.version = this.jira.getVersionForProject(this.data.jira.project.key)
+        this.data.jira.project.version = loadProjectVersion()
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
         this.data.jira.docs = this.loadJiraDataDocs()
         return this
@@ -1773,6 +1784,10 @@ class Project {
 
     protected Map loadJiraData(String projectKey) {
         return new JsonSlurperClassic().parseText(TEMP_FAKE_JIRA_DATA)
+    }
+
+    protected Map loadProjectVersion() {
+        return this.jira.getVersionForProject(this.data.jira.project.key)
     }
 
     protected Map loadJiraDataDocs() {

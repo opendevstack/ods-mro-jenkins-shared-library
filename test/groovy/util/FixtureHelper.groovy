@@ -3,12 +3,13 @@ package util
 import groovy.json.JsonSlurper
 import groovy.json.JsonSlurperClassic
 import groovy.transform.InheritConstructors
-
 import org.apache.http.client.utils.URIBuilder
 import org.junit.contrib.java.lang.system.EnvironmentVariables
-import org.ods.parser.*
-import org.ods.service.*
-import org.ods.util.*
+import org.ods.parser.JUnitParser
+import org.ods.service.JiraService
+import org.ods.util.GitUtil
+import org.ods.util.IPipelineSteps
+import org.ods.util.Project
 
 @InheritConstructors
 class FakeGitUtil extends GitUtil {
@@ -35,6 +36,7 @@ class FakeProject extends Project {
     Project load(GitUtil git, JiraService jira) {
         this.data.git = [commit: git.getCommit(), url: git.getURL()]
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.loadJiraData(this.data.metadata.id)))
+        this.data.jira.project.version = loadProjectVersion()
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
         this.data.jira.docs = this.loadJiraDataDocs()
         return this
@@ -62,6 +64,14 @@ class FakeProject extends Project {
     protected Map loadJiraData(String projectKey) {
         def file = this.getResource("project-jira-data.json")
         return new JsonSlurper().parse(file)
+    }
+
+    protected Map loadProjectVersion() {
+        println("load project Version")
+        return [
+            "id"  : "11100",
+            "name": "0.3"
+        ]
     }
 
     protected Map loadJiraDataDocs() {
@@ -736,13 +746,6 @@ class FixtureHelper {
 
     static Set createSockShopTestResultFailures() {
         return JUnitParser.Helper.getFailures(createSockShopTestResults())
-    }
-
-    static Map createProjectVersion() {
-        return [
-            "id"  : "11100",
-            "name": "0.3"
-        ]
     }
 
     static List createSockShopJiraTestIssues() {

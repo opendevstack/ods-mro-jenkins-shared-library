@@ -1,6 +1,5 @@
 package org.ods.util
 
-
 import org.ods.service.JiraService
 import org.yaml.snakeyaml.Yaml
 import util.SpecHelper
@@ -8,7 +7,6 @@ import util.SpecHelper
 import java.nio.file.Paths
 
 import static util.FixtureHelper.createProjectMetadata
-import static util.FixtureHelper.createProjectVersion
 
 class ProjectSpec extends SpecHelper {
 
@@ -23,10 +21,6 @@ class ProjectSpec extends SpecHelper {
         git = Mock(GitUtil)
         metadataFile = createProjectMetadataFile(this.steps.env.WORKSPACE, steps)
         jira = Mock(JiraService) {
-            getVersionForProject(_) >> {
-                return createProjectVersion()
-            }
-
             getIssuesForJQLQuery(_) >> {
                 return [
                     [
