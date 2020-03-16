@@ -1743,7 +1743,7 @@ class Project {
     protected Map loadJiraDataDocs() {
         if (!this.jira) return
 
-        def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.LEVA_DOCUMENTATION}'"]
+        def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.DOCUMENTATION_TRACKING}'"]
 
         def jiraIssues = this.jira.getIssuesForJQLQuery(jqlQuery)
         if (jiraIssues.isEmpty()) {
@@ -1776,7 +1776,7 @@ class Project {
                     name   : jiraIssueType.name,
                     fields : this.jira.getIssueTypeMetadata(this.data.jira.project.key, jiraIssueType.id).values.collectEntries { value ->
                         [
-                            value.fieldId,
+                            value.name,
                             [
                                 id:   value.fieldId,
                                 name: value.name

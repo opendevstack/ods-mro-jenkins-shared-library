@@ -511,11 +511,11 @@ class FixtureHelper {
                 id: "1",
                 name: "Epic",
                 fields: [
-                    "customfield_1": [
+                    "Issue Status": [
                         id: "customfield_1",
                         name: "Issue Status"
                     ],
-                   "issuelinks": [
+                    "Linked Issues": [
                        id: "issuelinks",
                        name: "Linked Issues"
                     ]
@@ -525,15 +525,15 @@ class FixtureHelper {
                 id: "2",
                 name: "Story",
                 fields: [
-                    "customfield_1": [
+                    "Issue Status": [
                         id: "customfield_1",
                         name: "Issue Status"
                     ],
-                    "customfield_2": [
+                    "Epic Link": [
                         id: "customfield_2",
                         name: "Epic Link"
                     ],
-                   "issuelinks": [
+                    "Linked Issues": [
                        id: "issuelinks",
                        name: "Linked Issues"
                     ]
@@ -543,15 +543,15 @@ class FixtureHelper {
                 id: "3",
                 name: "Test",
                 fields: [
-                    "customfield_1": [
+                    "Issue Status": [
                         id: "customfield_1",
                         name: "Issue Status"
                     ],
-                    "customfield_2": [
+                    "Epic Link": [
                         id: "customfield_2",
                         name: "Epic Link"
                     ],
-                   "issuelinks": [
+                    "Linked Issues": [
                        id: "issuelinks",
                        name: "Linked Issues"
                     ]

@@ -1793,4 +1793,161 @@ class JiraServiceSpec extends SpecHelper {
         cleanup:
         stopServer(server)
     }
+
+
+    Map updateFieldsOnIssueRequestData(Map mixins = [:]) {
+        def result = [
+            data: [
+                issueIdOrKey: "JIRA-123",
+                fields: [
+                    "customfield_1": "1.0",
+                    "customfield_2": "Success"
+                ]
+            ],
+            headers: [
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            ],
+            password: "password",
+            username: "username"
+        ]
+
+        result.body = JsonOutput.toJson([
+            update: [
+                "customfield_1": [
+                    [
+                        set: [
+                            value: "1.0"
+                        ]
+                    ]
+                ],
+                "customfield_2": [
+                    [
+                        set: [
+                            value: "Success"
+                        ]
+                    ]
+                ]
+            ]
+        ])
+
+        result.path = "/rest/api/2/issue/${result.data.issueIdOrKey}"
+
+        return result << mixins
+    }
+
+    Map updateFieldsOnIssueResponseData(Map mixins = [:]) {
+        def result = [
+            status: 204
+        ]
+
+        return result << mixins
+    }
+
+    def "update fields on issue with invalid issueIdOrKey"() {
+        given:
+        def request = updateFieldsOnIssueRequestData()
+        def response = updateFieldsOnIssueResponseData()
+
+        def server = createServer(WireMock.&put, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.updateFieldsOnIssue(null, request.data.fields)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to update fields on Jira issue. 'issueIdOrKey' is undefined."
+
+        when:
+        service.updateFieldsOnIssue(" ", request.data.fields)
+
+        then:
+        e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to update fields on Jira issue. 'issueIdOrKey' is undefined."
+    }
+
+    def "update fields on issue with invalid fields"() {
+        given:
+        def request = updateFieldsOnIssueRequestData()
+        def response = updateFieldsOnIssueResponseData()
+
+        def server = createServer(WireMock.&put, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.updateFieldsOnIssue(request.data.issueIdOrKey, null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to update fields on Jira issue. 'fields' is undefined."
+
+        when:
+        service.updateFieldsOnIssue(request.data.issueIdOrKey, [:])
+
+        then:
+        e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to update fields on Jira issue. 'fields' is undefined."
+    }
+
+    def "update fields on issue"() {
+        given:
+        def request = updateFieldsOnIssueRequestData()
+        def response = updateFieldsOnIssueResponseData()
+
+        def server = createServer(WireMock.&put, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.updateFieldsOnIssue(request.data.issueIdOrKey, request.data.fields)
+
+        then:
+        noExceptionThrown()
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "update fields on issue with HTTP 404 failure"() {
+        given:
+        def request = updateFieldsOnIssueRequestData()
+        def response = updateFieldsOnIssueResponseData([
+            status: 404
+        ])
+
+        def server = createServer(WireMock.&put, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.updateFieldsOnIssue(request.data.issueIdOrKey, request.data.fields)
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to update fields on Jira issue. Jira could not be found at: 'http://localhost:${server.port()}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "update fields on issue with HTTP 500 failure"() {
+        given:
+        def request = updateFieldsOnIssueRequestData()
+        def response = updateFieldsOnIssueResponseData([
+            body: "Sorry, doesn't work!",
+            status: 500
+        ])
+
+        def server = createServer(WireMock.&put, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.updateFieldsOnIssue(request.data.issueIdOrKey, request.data.fields)
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to update fields on Jira issue. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
+
+        cleanup:
+        stopServer(server)
+    }
 }

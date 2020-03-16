@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 class LeVADocumentUseCase extends DocGenUseCase {
 
     class IssueTypes {
-        static final String LEVA_DOCUMENTATION = "Documentation"
+        static final String DOCUMENTATION_TRACKING = "Documentation"
     }
 
     enum DocumentType {
@@ -1138,14 +1138,18 @@ class LeVADocumentUseCase extends DocGenUseCase {
             throw new RuntimeException("Error: no Jira tracking issue associated with document type '${documentType}'.")
         }
 
-        // Append a warning message for documents which are considered work in progress
         def notDoneIssues = this.project.getDocumentTrackingIssuesNotDone(jiraDocumentLabels)
         if (!notDoneIssues.isEmpty()) {
+            // Append a warning message for documents which are considered work in progress
             message += " ${this.WORK_IN_PROGRESS_DOCUMENT_MESSAGE} See issues: ${notDoneIssues.collect{ it.key }.join(',')}"
         }
 
-        // Add a comment to the Jira issue with a link to the report
+        def metadata = this.getDocumentMetadata(documentType)
+        def documentationTrackingIssueFields = this.project.getJiraFieldsForIssueType(IssueTypes.DOCUMENTATION_TRACKING)
+        def documentationTrackingIssueDocumentVersionField = documentationTrackingIssueFields["Document Version"]
+
         jiraIssues.each { jiraIssue ->
+            this.jiraUseCase.jira.updateFieldsOnIssue(jiraIssue.key, [id: documentationTrackingIssueDocumentVersionField.id, value: "${metadata.version}-${metadata.jenkins.buildNumber}"])
             this.jiraUseCase.jira.appendCommentToIssue(jiraIssue.key, message)
         }
     }

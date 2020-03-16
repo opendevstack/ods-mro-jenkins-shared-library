@@ -434,4 +434,54 @@ class JiraService {
 
         return new JsonSlurperClassic().parseText(response.getBody())
     }
+
+    @NonCPS
+    void updateFieldsOnIssue(String issueIdOrKey, Map fields) {
+        if (!issueIdOrKey?.trim()) {
+            throw new IllegalArgumentException("Error: unable to update fields on Jira issue. 'issueIdOrKey' is undefined.")
+        }
+
+        if (!fields) {
+            throw new IllegalArgumentException("Error: unable to update fields on Jira issue. 'fields' is undefined.")
+        }
+
+        def response = Unirest.put("${this.baseURL}/rest/api/2/issue/{issueIdOrKey}")
+            .routeParam("issueIdOrKey", issueIdOrKey)
+            .basicAuth(this.username, this.password)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .body(JsonOutput.toJson(
+                [
+                    update: fields.collectEntries { id, value ->
+                        [
+                            id,
+                            [
+                                [
+                                    set: [
+                                        value: value
+                                    ]
+                                ]
+                            ]
+                        ]
+                    }
+                ]
+            ))
+            .asString()
+
+        response.ifSuccess {
+            if (response.getStatus() != 204) {
+                throw new RuntimeException("Error: unable to update fields on Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'.")
+            }
+        }
+
+        response.ifFailure {
+            def message = "Error: unable to update fields on Jira issue. Jira responded with code: '${response.getStatus()}' and message: '${response.getBody()}'."
+
+            if (response.getStatus() == 404) {
+                message = "Error: unable to update fields on Jira issue. Jira could not be found at: '${this.baseURL}'."
+            }
+
+            throw new RuntimeException(message)
+        }
+    }
 }
