@@ -607,8 +607,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-549": {
             "name": "User interacts with the cart",
@@ -645,8 +644,7 @@
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-550": {
             "name": "User shows catalogue",
@@ -677,8 +675,7 @@
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-551": {
             "name": "User buys some socks",
@@ -721,8 +718,7 @@
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-552": {
             "name": "Home page looks sexy",
@@ -740,8 +736,7 @@
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-553": {
             "name": "User logs in",
@@ -759,8 +754,7 @@
             "requirements": [
                 "DEMO-6"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-554": {
             "name": "User exists in system",
@@ -782,8 +776,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1045": {
             "name": "FirstResultOrDefault returns the default for an empty list",
@@ -804,8 +797,7 @@
             "techSpecs": [
                 "DEMO-15"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1046": {
             "name": "verify frontend is correctly installed",
@@ -834,8 +826,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1060": {
             "name": "verify payment service is correctly installed",
@@ -864,8 +855,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1061": {
             "name": "verify order service is correctly installed",
@@ -894,8 +884,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1062": {
             "name": "verify shipping service is correctly installed",
@@ -924,8 +913,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1073": {
             "name": "Cart gets processed correctly",
@@ -954,8 +942,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1074": {
             "name": "Frontend retrieves cart data correctly",
@@ -984,8 +971,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         },
         "PLTFMDEV-1075": {
             "name": "Frontend retrieves payment data correctly",
@@ -1014,8 +1000,7 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
-            "bugs": [],
-            "newBugs": []
+            "bugs": []
         }
     },
     "mitigations": {
