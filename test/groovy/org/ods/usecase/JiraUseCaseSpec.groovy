@@ -359,8 +359,9 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * jira.createIssueLinkTypeBlocks(errorBug, {
-            // the Jira issue that shall be linked to the bug
-            it.key == "PLTFMDEV-1060"
+            // the Jira issue that shall be linked to the error bug
+            it.key == "PLTFMDEV-1060" &&
+                it.newBugs == ["JIRA-BUG-1"]
         })
 
         then:
@@ -372,12 +373,17 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * jira.createIssueLinkTypeBlocks(failureBug, {
-            // the Jira issue that shall be linked to the bug
-            it.key == "PLTFMDEV-1061"
+            // the Jira issue that shall be linked to the failure bug
+            it.key == "PLTFMDEV-1061" &&
+                it.newBugs == ["JIRA-BUG-2"]
         })
 
         then:
         1 * jira.appendCommentToIssue(failureBug.key, _)
+
+        expect:
+        this.project.data.jira.bugs.keySet().contains("JIRA-BUG-1")
+        this.project.data.jira.bugs.keySet().contains("JIRA-BUG-2")
     }
 
     def "report test results for component in PROD"() {
