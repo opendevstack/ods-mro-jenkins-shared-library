@@ -115,7 +115,7 @@ class JiraUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def bug = [
-            key   : "PLTFMDEV-29651",
+            key   : "BUG-29651",
             fields: [
                 summary: "bug summary / name"
             ]
@@ -286,6 +286,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * support.applyXunitTestResults(testIssues, testResults)
         1 * util.warnBuildIfTestResultsContainFailure(testResults)
+        1 * util.warnBuildAboutUnexecutedJiraTests(_)
     }
 
     def "report test results for component with unexecuted Jira tests"() {
