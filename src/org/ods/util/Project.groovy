@@ -1487,6 +1487,7 @@ class Project {
             "RELEASE_PARAM_CHANGE_DESC=${params.changeDescription}",
             "RELEASE_PARAM_CONFIG_ITEM=${params.configItem}",
             "RELEASE_PARAM_VERSION=${params.version}",
+            "RELEASE_STATUS_JIRA_ISSUE_KEY=${params.releaseStatusJiraIssueKey}",
             "SOURCE_CLONE_ENV=${params.sourceEnvironmentToClone}",
             "SOURCE_CLONE_ENV_TOKEN=${params.sourceEnvironmentToCloneToken}"
         ]
@@ -1660,7 +1661,18 @@ class Project {
         return this.data.build.hasUnexecutedJiraTests
     }
 
+    static boolean isTriggeredByChangeManagementProcess(steps) {
+        def changeId = steps.env.changeId?.trim()
+        def configItem = steps.env.configItem?.trim()
+        return changeId && configItem
+    }
+
     static Map loadBuildParams(IPipelineSteps steps) {
+        def releaseStatusJiraIssueKey = steps.env.releaseStatusJiraIssueKey?.trim()
+        if (isTriggeredByChangeManagementProcess(steps) && !releaseStatusJiraIssueKey) {
+            throw new IllegalArgumentException("Error: unable to load build param 'releaseStatusJiraIssueKey': undefined")
+        }
+
         def version = steps.env.version?.trim() ?: "WIP"
         def targetEnvironment = steps.env.environment?.trim() ?: "dev"
         def targetEnvironmentToken = targetEnvironment[0].toUpperCase()
@@ -1675,6 +1687,7 @@ class Project {
             changeDescription: changeDescription,
             changeId: changeId,
             configItem: configItem,
+            releaseStatusJiraIssueKey: releaseStatusJiraIssueKey,
             sourceEnvironmentToClone: sourceEnvironmentToClone,
             sourceEnvironmentToCloneToken: sourceEnvironmentToCloneToken,
             targetEnvironment: targetEnvironment,

@@ -357,6 +357,40 @@ class ProjectSpec extends SpecHelper {
         e.message == "Error: unable to get Git URL. 'remote' is undefined."
     }
 
+    def "is triggered by change management process"() {
+        when:
+        steps.env.changeId = "0815"
+        steps.env.configItem = "myItem"
+        def result = Project.isTriggeredByChangeManagementProcess(steps)
+
+        then:
+        result
+
+        when:
+        steps.env.changeId = "0815"
+        steps.env.configItem = null
+        result = Project.isTriggeredByChangeManagementProcess(steps)
+
+        then:
+        !result
+
+        when:
+        steps.env.changeId = null
+        steps.env.configItem = "myItem"
+        result = Project.isTriggeredByChangeManagementProcess(steps)
+
+        then:
+        !result
+
+        when:
+        steps.env.changeId = null
+        steps.env.configItem = null
+        result = Project.isTriggeredByChangeManagementProcess(steps)
+
+        then:
+        !result
+    }
+
     def "load"() {
         given:
         def component1 = [ key: "CMP-1", name: "Component 1" ]
@@ -531,6 +565,41 @@ class ProjectSpec extends SpecHelper {
         result.configItem == "myItem"
     }
 
+    def "load build param releaseStatusJiraIssueKey"() {
+        when:
+        steps.env.releaseStatusJiraIssueKey = "JIRA-1"
+        def result = Project.loadBuildParams(steps)
+
+        then:
+        result.releaseStatusJiraIssueKey == "JIRA-1"
+
+        when:
+        steps.env.releaseStatusJiraIssueKey = " JIRA-1 "
+        result = Project.loadBuildParams(steps)
+
+        then:
+        result.releaseStatusJiraIssueKey == "JIRA-1"
+
+        when:
+        steps.env.changeId = "1"
+        steps.env.configItem = "my-config-item"
+        steps.env.releaseStatusJiraIssueKey = null
+        result = Project.loadBuildParams(steps)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to load build param 'releaseStatusJiraIssueKey': undefined"
+
+        when:
+        steps.env.changeId = null
+        steps.env.configItem = null
+        steps.env.releaseStatusJiraIssueKey = null
+        result = Project.loadBuildParams(steps)
+
+        then:
+        result.releaseStatusJiraIssueKey == null
+    }
+
     def "load build param sourceEnvironmentToClone"() {
         when:
         steps.env.environment = "myEnv"
@@ -655,6 +724,8 @@ class ProjectSpec extends SpecHelper {
 
         then:
         def expected = new Yaml().load(new File(Project.METADATA_FILE_NAME).text)
+
+        // Verify annotations to the metadata.yml file are made
         expected.repositories.each { repo ->
             repo.branch = "master"
             repo.data = [ documents: [:] ]

@@ -1135,7 +1135,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
         if (jiraIssues.size() == 0) {
-            throw new RuntimeException("Error: No Jira issues associated with document type '${documentType}'.")
+            throw new RuntimeException("Error: no Jira tracking issue associated with document type '${documentType}'.")
         }
 
         // Append a warning message for documents which are considered work in progress

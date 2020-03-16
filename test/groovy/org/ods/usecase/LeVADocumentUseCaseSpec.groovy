@@ -1071,7 +1071,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         def e = thrown(RuntimeException)
-        e.message == "Error: No Jira issues associated with document type '${documentType}'."
+        e.message == "Error: no Jira tracking issue associated with document type '${documentType}'."
     }
 
     def "notify LeVA document with 2 issues not DONE yet"() {
