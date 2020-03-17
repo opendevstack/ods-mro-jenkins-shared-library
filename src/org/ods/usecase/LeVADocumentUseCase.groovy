@@ -44,7 +44,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.IVP as String)        : "Configuration and Installation Testing Plan",
         (DocumentType.IVR as String)        : "Configuration and Installation Testing Report",
         (DocumentType.RA as String)         : "Risk Assessment",
-        (DocumentType.TRC as String)         : "Traceability Matrix",
+        (DocumentType.TRC as String)        : "Traceability Matrix",
         (DocumentType.SSDS as String)       : "Software Design Specification",
         (DocumentType.TCP as String)        : "Test Case Plan",
         (DocumentType.TCR as String)        : "Test Case Report",
@@ -55,8 +55,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.OVERALL_TIR as String): "Overall Technical Installation Report"
     ]
 
-    private static String DEVELOPER_PREVIEW_WATERMARK       = "Developer Preview"
-    private static String WORK_IN_PROGRESS_WATERMARK        = "Work in Progress"
+    private static String DEVELOPER_PREVIEW_WATERMARK = "Developer Preview"
+    private static String WORK_IN_PROGRESS_WATERMARK = "Work in Progress"
     private static String WORK_IN_PROGRESS_DOCUMENT_MESSAGE = "Attention: this document is work in progress!"
 
     private JenkinsService jenkins
@@ -298,21 +298,21 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data_.data.integrationTests = integrationTestBugs.collect { bug ->
                 [
                     //Discrepancy ID -> BUG Issue ID
-                    discrepancyID: bug.key,
+                    discrepancyID        : bug.key,
                     //Test Case No. -> JIRA (Test Case Key)
-                    testcaseID: bug.tests.first().key,
+                    testcaseID           : bug.tests.collect{ it.key }.join(", "),
                     //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                    level: "Integration",
+                    level                : "Integration",
                     //Description of Failure or Discrepancy -> Bug Issue Summary
-                    description: bug.name,
+                    description          : bug.name,
                     //Remediation Action -> "To be fixed"
-                    remediation: "To be fixed",
+                    remediation          : "To be fixed",
                     //Responsible / Due Date -> JIRA (assignee, Due date)
                     responsibleAndDueDate: "${bug.assignee ? bug.assignee : 'N/A'} / ${bug.dueDate ? bug.dueDate : 'N/A'}",
                     //Outcome of the Resolution -> Bug Status
-                    outcomeResolution: bug.status,
+                    outcomeResolution    : bug.status,
                     //Resolved Y/N -> JIRA Status -> Done = Yes
-                    resolved: bug.status == "Done" ? "Yes" : "No"
+                    resolved             : bug.status == "Done" ? "Yes" : "No"
                 ]
             }
         }
@@ -321,21 +321,21 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data_.data.acceptanceTests = acceptanceTestBugs.collect { bug ->
                 [
                     //Discrepancy ID -> BUG Issue ID
-                    discrepancyID: bug.key,
+                    discrepancyID        : bug.key,
                     //Test Case No. -> JIRA (Test Case Key)
-                    testcaseID: bug.tests.first().key,
+                    testcaseID           : bug.tests.collect{ it.key }.join(", "),
                     //-	Level of Test Case = Unit / Integration / Acceptance / Installation
-                    level: "Acceptance",
+                    level                : "Acceptance",
                     //Description of Failure or Discrepancy -> Bug Issue Summary
-                    description: bug.name,
+                    description          : bug.name,
                     //Remediation Action -> "To be fixed"
-                    remediation: "To be fixed",
+                    remediation          : "To be fixed",
                     //Responsible / Due Date -> JIRA (assignee, Due date)
                     responsibleAndDueDate: "${bug.assignee ? bug.assignee : 'N/A'} / ${bug.dueDate ? bug.dueDate : 'N/A'}",
                     //Outcome of the Resolution -> Bug Status
-                    outcomeResolution: bug.status,
+                    outcomeResolution    : bug.status,
                     //Resolved Y/N -> JIRA Status -> Done = Yes
-                    resolved: bug.status == "Done" ? "Yes" : "No"
+                    resolved             : bug.status == "Done" ? "Yes" : "No"
                 ]
             }
         }
@@ -394,7 +394,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 tests: componentTestMapping[it.id]? componentTestMapping[it.id].join(", "): "None defined"
             ]
         }
-
     }
 
     protected Map computeComponentsUnitTests(List<Map> tests) {
@@ -425,9 +424,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             data    : [
-                repo           : repo,
-                sections       : sections,
-                tests          : testIssues.collect { testIssue ->
+                repo              : repo,
+                sections          : sections,
+                tests             : testIssues.collect { testIssue ->
                     [
                         key               : testIssue.key,
                         description       : testIssue.description ?: "N/A",
@@ -439,11 +438,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
                     ]
                 },
                 numAdditionalTests: junit.getNumberOfTestCases(unitTestData.testResults) - testIssues.count { !it.isMissing },
-                testFiles      : SortUtil.sortIssuesByProperties(unitTestData.testReportFiles.collect { file ->
+                testFiles         : SortUtil.sortIssuesByProperties(unitTestData.testReportFiles.collect { file ->
                     [name: file.name, path: file.path, text: file.text]
                 } ?: [], ["name"]),
-                discrepancies  : discrepancies.discrepancies,
-                conclusion     : [
+                discrepancies     : discrepancies.discrepancies,
+                conclusion        : [
                     summary  : discrepancies.conclusion.summary,
                     statement: discrepancies.conclusion.statement
                 ]
@@ -586,11 +585,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
-            data : [
+            data    : [
                 sections                     : sections,
                 numAdditionalAcceptanceTests : junit.getNumberOfTestCases(acceptanceTestData.testResults) - acceptanceTestIssues.count { !it.isMissing },
                 numAdditionalIntegrationTests: junit.getNumberOfTestCases(integrationTestData.testResults) - integrationTestIssues.count { !it.isMissing },
-                conclusion : [
+                conclusion                   : [
                     summary  : discrepancies.conclusion.summary,
                     statement: discrepancies.conclusion.statement
                 ]
@@ -614,13 +613,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!integrationTestIssues.isEmpty()) {
             data_.data.integrationTests = integrationTestIssues.collect { testIssue ->
                 [
-                        key        : testIssue.key,
-                        datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
-                        description: testIssue.description ?: "",
-                        remarks    : testIssue.isMissing ? "not executed" : "",
-                        risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
-                        success    : testIssue.isSuccess ? "Y" : "N",
-                        ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
+                    key        : testIssue.key,
+                    datetime   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", "</br>") : "N/A",
+                    description: testIssue.description ?: "",
+                    remarks    : testIssue.isMissing ? "not executed" : "",
+                    risk_key   : testIssue.risks ? testIssue.risks.join(", ") : "N/A",
+                    success    : testIssue.isSuccess ? "Y" : "N",
+                    ur_key     : testIssue.requirements ? testIssue.requirements.join(", ") : "N/A"
                 ]
             }
         }
@@ -702,9 +701,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def matchedHandler = { result ->
             result.each { testIssue, testCase ->
-                testIssue.isSuccess = !(testCase.error || testCase.failure || testCase.skipped ||
-                                        !testIssue.getResolvedBugs().findAll{ bug -> bug.status?.toLowerCase() != "done"}.isEmpty() ||
-                                        testIssue.isUnexecuted)
+                testIssue.isSuccess = !(testCase.error || testCase.failure || testCase.skipped
+                    || !testIssue.getResolvedBugs().findAll{ bug -> bug.status?.toLowerCase() != "done"}.isEmpty()
+                    || testIssue.isUnexecuted)
                 testIssue.comment = testIssue.isUnexecuted ? "This Test Case has not been executed" : ""
                 testIssue.timestamp = testIssue.isUnexecuted ? "N/A" : testCase.timestamp
                 testIssue.isMissing = false
@@ -725,8 +724,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata: this.getDocumentMetadata(DOCUMENT_TYPE_NAMES[documentType]),
             data    : [
-                sections           : sections,
-                integrationTests   : SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
+                sections            : sections,
+                integrationTests    : SortUtil.sortIssuesByProperties(integrationTestIssues.collect { testIssue ->
                     [
                         key         : testIssue.key,
                         description : testIssue.description,
@@ -738,7 +737,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         comment     : testIssue.comment
                     ]
                 }, ["key"]),
-                acceptanceTests    : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
+                acceptanceTests     : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
                     [
                         key         : testIssue.key,
                         description : testIssue.description,
@@ -753,7 +752,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 integrationTestFiles: SortUtil.sortIssuesByProperties(integrationTestData.testReportFiles.collect { file ->
                     [name: file.name, path: file.path, text: file.text]
                 } ?: [], ["name"]),
-                acceptanceTestFiles: SortUtil.sortIssuesByProperties(acceptanceTestData.testReportFiles.collect { file ->
+                acceptanceTestFiles : SortUtil.sortIssuesByProperties(acceptanceTestData.testReportFiles.collect { file ->
                     [name: file.name, path: file.path, text: file.text]
                 } ?: [], ["name"]),
             ]
@@ -840,9 +839,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType]),
             data    : [
-                repositories               : this.project.repositories.collect { [id: it.id, type: it.type, data: [git: [url: it.data.git == null ? null : it.data.git.url]]] },
-                sections                   : sections,
-                tests                      : SortUtil.sortIssuesByProperties(installationTestIssues.collect { testIssue ->
+                repositories      : this.project.repositories.collect { [id: it.id, type: it.type, data: [git: [url: it.data.git == null ? null : it.data.git.url]]] },
+                sections          : sections,
+                tests             : SortUtil.sortIssuesByProperties(installationTestIssues.collect { testIssue ->
                     [
                         key        : testIssue.key,
                         description: testIssue.description ?: "",
@@ -853,16 +852,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
                     ]
                 }, ["key"]),
                 numAdditionalTests: junit.getNumberOfTestCases(installationTestData.testResults) - installationTestIssues.count { !it.isMissing },
-                testFiles                 : SortUtil.sortIssuesByProperties(installationTestData.testReportFiles.collect { file ->
+                testFiles         : SortUtil.sortIssuesByProperties(installationTestData.testReportFiles.collect { file ->
                     [name: file.name, path: file.path, text: file.text]
                 } ?: [], ["name"]),
-                discrepancies              : discrepancies.discrepancies,
-                conclusion                 : [
+                discrepancies     : discrepancies.discrepancies,
+                conclusion        : [
                     summary  : discrepancies.conclusion.summary,
                     statement: discrepancies.conclusion.statement
                 ],
-                testsOdsService            : testsOfRepoTypeOdsService,
-                testsOdsCode               : testsOfRepoTypeOdsCode
+                testsOdsService   : testsOfRepoTypeOdsService,
+                testsOdsCode      : testsOfRepoTypeOdsCode
             ]
         ]
 
@@ -1021,11 +1020,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def systemRequirements = this.project.getSystemRequirements().collect { r ->
             [
-                key: r.key,
-                name: r.name,
+                key        : r.key,
+                name       : r.name,
                 description: r.description,
-                risks: r.risks.join(", "),
-                tests: r.tests.join(", ")
+                risks      : r.risks.join(", "),
+                tests      : r.tests.join(", ")
             ]
         }
 
@@ -1033,10 +1032,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
         sections."sec4".systemRequirements = SortUtil.sortIssuesByProperties(systemRequirements, ["key"])
 
         def data_ = [
-                metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
-                data    : [
-                        sections: sections
-                ]
+            metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
+            data    : [
+                sections: sections
+            ]
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
@@ -1177,7 +1176,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         // Append a warning message for documents which are considered work in progress
         def notDoneIssues = this.project.getDocumentTrackingIssuesNotDone(jiraDocumentLabels)
         if (!notDoneIssues.isEmpty()) {
-            message += " ${this.WORK_IN_PROGRESS_DOCUMENT_MESSAGE} See issues: ${notDoneIssues.collect{ it.key }.join(',')}"
+            message += " ${this.WORK_IN_PROGRESS_DOCUMENT_MESSAGE} See issues: ${notDoneIssues.collect { it.key }.join(',')}"
         }
 
         // Add a comment to the Jira issue with a link to the report
