@@ -483,7 +483,10 @@ class Project {
             "techSpecs": [
                 "DEMO-49"
             ],
-            "tests": []
+            "tests": [
+                "PLTFMDEV-401",
+                "PLTFMDEV-1046"
+            ]
         },
         "DEMO-7": {
             "name": "Risk-1 on Req DEMO-6",
