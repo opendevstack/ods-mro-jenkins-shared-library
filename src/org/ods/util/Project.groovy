@@ -689,7 +689,7 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "tests": [""]
+            "tests": ["PLTFMDEV-1046"]
         }
     },
     "tests": {
