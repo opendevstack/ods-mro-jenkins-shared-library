@@ -668,7 +668,7 @@ class Project {
         "DEMO-1020": {
             "name": "Risk-1 on TechSpec DEMO-6",
             "description": "Risk-1 on TechSpec DEMO-6 is described here...",
-            "key": "DEMO-20",
+            "key": "DEMO-1020",
             "version": "1.0",
             "status": "TO DO",
             "gxpRelevance": "R2",
