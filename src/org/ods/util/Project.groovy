@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.Yaml
 
 import java.nio.file.Paths
 
-class Project {
+class Project implements Serializable {
 
     class JiraDataItem extends HashMap {
         static final String TYPE_BUGS = "bugs"
@@ -41,41 +41,53 @@ class Project {
         }
 
         @NonCPS
+        JiraDataItem clone() {
+            def bos = new ByteArrayOutputStream()
+            def os = new ObjectOutputStream(bos)
+            os.writeObject(this)
+            def ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()))
+
+            def result = ois.readObject() as JiraDataItem
+            result.type = this.type
+            return result
+        }
+
+        @NonCPS
         // FIXME: why can we not invoke derived methods in short form, e.g. .resolvedBugs?
-        private List<Map> getResolvedReferences(String type) {
+        private List<JiraDataItem> getResolvedReferences(String type) {
             def item = Project.this.data.jiraResolved[this.type][this.getAt("key")]
             return item[type] ?: []
         }
 
-        List<Map> getResolvedBugs() {
+        List<JiraDataItem> getResolvedBugs() {
             return this.getResolvedReferences("bugs")
         }
 
-        List<Map> getResolvedComponents() {
+        List<JiraDataItem> getResolvedComponents() {
             return this.getResolvedReferences("components")
         }
 
-        List<Map> getResolvedEpics() {
+        List<JiraDataItem> getResolvedEpics() {
             return this.getResolvedReferences("epics")
         }
 
-        List<Map> getResolvedMitigations() {
+        List<JiraDataItem> getResolvedMitigations() {
             return this.getResolvedReferences("mitigations")
         }
 
-        List<Map> getResolvedSystemRequirements() {
+        List<JiraDataItem> getResolvedSystemRequirements() {
             return this.getResolvedReferences("requirements")
         }
 
-        List<Map> getResolvedRisks() {
+        List<JiraDataItem> getResolvedRisks() {
             return this.getResolvedReferences("risks")
         }
 
-        List<Map> getResolvedTechnicalSpecifications() {
+        List<JiraDataItem> getResolvedTechnicalSpecifications() {
             return this.getResolvedReferences("techSpecs")
         }
 
-        List<Map> getResolvedTests() {
+        List<JiraDataItem> getResolvedTests() {
             return this.getResolvedReferences("tests")
         }
     }
@@ -1464,9 +1476,9 @@ class Project {
 }
 """
 
-    protected IPipelineSteps steps
-    protected GitUtil git
-    protected JiraService jira
+    transient IPipelineSteps steps
+    transient GitUtil git
+    transient JiraService jira
 
     protected Map data = [:]
 
@@ -1522,7 +1534,7 @@ class Project {
         return data
     }
 
-    List<Map> getAutomatedTests(String componentName = null, List<String> testTypes = []) {
+    List<JiraDataItem> getAutomatedTests(String componentName = null, List<String> testTypes = []) {
         return this.data.jira.tests.findAll { key, testIssue ->
             def result = testIssue.status.toLowerCase() == "ready to test" && testIssue.executionType?.toLowerCase() == "automated"
 
@@ -1550,19 +1562,19 @@ class Project {
         return this.data.jira.project.projectProperties
     }
 
-    List<Map> getAutomatedTestsTypeAcceptance(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeAcceptance(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.ACCEPTANCE])
     }
 
-    List<Map> getAutomatedTestsTypeInstallation(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeInstallation(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.INSTALLATION])
     }
 
-    List<Map> getAutomatedTestsTypeIntegration(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeIntegration(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.INTEGRATION])
     }
 
-    List<Map> getAutomatedTestsTypeUnit(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeUnit(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.UNIT])
     }
 
@@ -1591,11 +1603,11 @@ class Project {
         return this.data.metadata.capabilities
     }
 
-    List<Map> getBugs() {
+    List<JiraDataItem> getBugs() {
         return this.data.jira.bugs.values() as List
     }
 
-    List<Map> getComponents() {
+    List<JiraDataItem> getComponents() {
         return this.data.jira.components.values() as List
     }
 
@@ -1655,7 +1667,7 @@ class Project {
         return new URIBuilder(result).build()
     }
 
-    List<Map> getEpics() {
+    List<JiraDataItem> getEpics() {
         return this.data.jira.epics.values() as List
     }
 
@@ -1667,7 +1679,7 @@ class Project {
         return this.data.metadata.id
     }
 
-    List<Map> getMitigations() {
+    List<JiraDataItem> getMitigations() {
         return this.data.jira.mitigations.values() as List
     }
 
@@ -1679,7 +1691,7 @@ class Project {
         return this.data.metadata.repositories
     }
 
-    List<Map> getRisks() {
+    List<JiraDataItem> getRisks() {
         return this.data.jira.risks.values() as List
     }
 
@@ -1687,7 +1699,7 @@ class Project {
         return this.data.metadata.services
     }
 
-    List<Map> getSystemRequirements(String componentName = null, List<String> gampTopics = []) {
+    List<JiraDataItem> getSystemRequirements(String componentName = null, List<String> gampTopics = []) {
         return this.data.jira.requirements.findAll { key, req ->
             def result = true
 
@@ -1703,23 +1715,23 @@ class Project {
         }.values() as List
     }
 
-    List<Map> getSystemRequirementsTypeAvailability(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeAvailability(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.AVAILABILITY_REQUIREMENT])
     }
 
-    List<Map> getSystemRequirementsTypeConstraints(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeConstraints(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.CONSTRAINT])
     }
 
-    List<Map> getSystemRequirementsTypeFunctional(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeFunctional(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.FUNCTIONAL_REQUIREMENT])
     }
 
-    List<Map> getSystemRequirementsTypeInterfaces(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeInterfaces(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.INTERFACE_REQUIREMENT])
     }
 
-    List<Map> getTechnicalSpecifications(String componentName = null) {
+    List<JiraDataItem> getTechnicalSpecifications(String componentName = null) {
         return this.data.jira.techSpecs.findAll { key, techSpec ->
             def result = true
 
@@ -1731,7 +1743,7 @@ class Project {
         }.values() as List
     }
 
-    List<Map> getTests() {
+    List<JiraDataItem> getTests() {
         return this.data.jira.tests.values() as List
     }
 

@@ -1,6 +1,5 @@
 package org.ods.usecase
 
-
 import org.ods.parser.JUnitParser
 import org.ods.service.JiraService
 import org.ods.util.IPipelineSteps
@@ -106,29 +105,57 @@ class JiraUseCase {
         testFailures.each { failure ->
             def bug = this.jira.createIssueTypeBug(this.project.key, failure.type, failure.text)
 
+            // Maintain a list of all Jira test issues affected by the current bug
+            def bugAffectedTestIssues = [:]
             this.walkTestIssuesAndTestResults(testIssues, failure) { testIssue, testCase, isMatch ->
+                // Find the testcases within the current failure that corresponds to a Jira test issue
                 if (isMatch) {
+                    // Add a reference to the current bug to the Jira test issue
                     testIssue.bugs << bug.key
 
-                    // add newly created bug into the Jira data structure
-                    this.project.data.jira.bugs[bug.key] = new JiraDataItem(project, [
-                        key     : bug.key,
-                        name    : failure.type,
-                        assignee: "Unassigned",
-                        dueDate : "",
-                        status  : "TO DO",
-                        tests   : [testIssue.key] // FIXME: a bug may represent multiple test cases
-                    ], Project.JiraDataItem.TYPE_BUGS)
-
-                    // add newly created bug into the Jira data structure of resolved items
-                    this.project.data.jiraResolved.bugs[bug.key] = this.project.data.jira.bugs[bug.key]
-                    this.project.data.jiraResolved.bugs[bug.key].tests[0] = this.project.data.jira.tests[testIssue.key]
-
+                    // Add a link to the current bug on the Jira test issue (within Jira)
                     this.jira.createIssueLinkTypeBlocks(bug, testIssue)
+
+                    bugAffectedTestIssues << [(testIssue.key): testIssue]
                 }
             }
 
+            // Create a JiraDataItem from the newly created bug
+            def bugJiraDataItem = new JiraDataItem(project, [ // add project reference for access to Project.JiraDataItem
+                key     : bug.key,
+                name    : failure.type,
+                assignee: "Unassigned",
+                dueDate : "",
+                status  : "TO DO",
+                tests   : bugAffectedTestIssues.keySet() as List
+            ], Project.JiraDataItem.TYPE_BUGS)
+
+            // Add JiraDataItem into the Jira data structure
+            this.project.data.jira.bugs[bug.key] = bugJiraDataItem
+
+            // Add the resolved JiraDataItem into the Jira data structure
+            this.project.data.jiraResolved.bugs[bug.key] = bugJiraDataItem.clone()
+            this.project.data.jiraResolved.bugs[bug.key].tests = bugAffectedTestIssues.values() as List
+
             this.jira.appendCommentToIssue(bug.key, comment)
+
+            /*
+            // Add JiraDataItem into the Jira data structure
+            this.project.data.jira.bugs[bug.key] = bugJiraDataItem
+
+            // Resolve the keys within the JiraDataItem into other JiraDataItem references
+            def testMap = [
+                bugs: [(bug.key): bugJiraDataItem],
+                tests: bugAffectedTestIssues.collect { it.subMap(["key", "bugs"]) }
+            ]
+
+            def resolvedJiraDataItems = this.project.resolveJiraDataItemReferences(testMap)
+
+            // Add the resolved JiraDataItem into the Jira data structure
+            this.project.data.jiraResolved.bugs[bug.key] = resolvedJiraDataItems.bugs[bug.key]
+
+            this.jira.appendCommentToIssue(bug.key, comment)
+            */
         }
     }
 
@@ -224,7 +251,7 @@ class JiraUseCase {
         }
 
         this.support.applyXunitTestResults(testIssues, testResults)
-        if (["Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
+        if (["D", "Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
             // Create bugs for erroneous test issues
             def errors = JUnitParser.Helper.getErrors(testResults)
             this.createBugsForFailedTestIssues(testIssues, errors, this.steps.env.RUN_DISPLAY_URL)
