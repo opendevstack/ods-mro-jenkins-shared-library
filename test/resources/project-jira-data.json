@@ -560,7 +560,27 @@
             "requirements": [
                 "DEMO-6"
             ],
-            "tests": []
+            "tests": [""]
+        },
+        "DEMO-1020": {
+            "name": "Risk-1 on TechSpec DEMO-6",
+            "description": "Risk-1 on TechSpec DEMO-6 is described here...",
+            "key": "DEMO-20",
+            "version": "1.0",
+            "status": "TO DO",
+            "gxpRelevance": "R2",
+            "probabilityOfOccurrence": 2,
+            "severityOfImpact": 2,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 16,
+            "riskPriority": 2,
+            "mitigations": [
+                "DEMO-21"
+            ],
+            "requirements": [
+                "DEMO-6"
+            ],
+            "tests": ["PLTFMDEV-1046"]
         }
     },
     "tests": {
@@ -814,6 +834,9 @@
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
+            ],
+            "risks": [
+                "DEMO-1020"
             ]
         },
         "PLTFMDEV-1060": {
