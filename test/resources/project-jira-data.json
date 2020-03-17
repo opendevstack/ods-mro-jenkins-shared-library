@@ -610,6 +610,9 @@
                 "DEMO-15",
                 "DEMO-26"
             ],
+            "risks": [
+                "DEMO-50"
+            ],
             "bugs": []
         },
         "PLTFMDEV-549": {
@@ -828,6 +831,9 @@
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
+            ],
+            "risks": [
+                "DEMO-50"
             ],
             "bugs": []
         },

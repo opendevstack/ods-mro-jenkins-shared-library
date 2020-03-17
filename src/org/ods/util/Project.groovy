@@ -709,6 +709,9 @@ class Project {
                 "DEMO-15",
                 "DEMO-26"
             ],
+            "risks": [
+                "DEMO-50"
+            ],
             "bugs": []
         },
         "PLTFMDEV-549": {
@@ -927,6 +930,9 @@ class Project {
             "techSpecs": [
                 "DEMO-15",
                 "DEMO-26"
+            ],
+            "risks": [
+                "DEMO-50"
             ],
             "bugs": []
         },
