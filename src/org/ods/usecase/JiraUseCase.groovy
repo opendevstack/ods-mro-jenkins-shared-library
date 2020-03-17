@@ -6,6 +6,7 @@ import org.ods.service.JiraService
 import org.ods.util.IPipelineSteps
 import org.ods.util.MROPipelineUtil
 import org.ods.util.Project
+import org.ods.util.Project.JiraDataItem
 
 class JiraUseCase {
 
@@ -112,7 +113,7 @@ class JiraUseCase {
                     testIssue.bugs << bug.key
 
                     // add newly created bug into the Jira data structure on the current project for referential integrity
-                    this.project.data.jira.bugs[bug.key] = new Project.JiraDataItem([
+                    this.project.data.jira.bugs[bug.key] = new JiraDataItem(project, [
                         key     : bug.key,
                         name    : failure.type,
                         assignee: "Unassigned",
