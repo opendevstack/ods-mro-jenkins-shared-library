@@ -714,16 +714,16 @@ class FixtureHelper {
                 <properties>
                     <property name="my-property-a" value="my-property-a-value"/>
                 </properties>
-                <testcase name="JIRA1_my-testcase-1" classname="app.MyTestCase1" status="Succeeded" time="1"/>
-                <testcase name="JIRA2_my-testcase-2" classname="app.MyTestCase2" status="Error" time="2">
+                <testcase name="1_my-testcase-1" classname="app.MyTestCase1" status="Succeeded" time="1"/>
+                <testcase name="2_my-testcase-2" classname="app.MyTestCase2" status="Error" time="2">
                     <error type="my-error-type" message="my-error-message">This is an error.</error>
                 </testcase>
             </testsuite>
             <testsuite name="my-suite-2" tests="2" failures="1" errors="0" skipped="1" timestamp="2020-03-08T20:50:53Z">
-                <testcase name="JIRA3_my-testcase-3" classname="app.MyTestCase3" status="Failed" time="3">
+                <testcase name="3_my-testcase-3" classname="app.MyTestCase3" status="Failed" time="3">
                     <failure type="my-failure-type" message="my-failure-message">This is a failure.</failure>
                 </testcase>
-                <testcase name="JIRA4_my-testcase-4" classname="app.MyTestCase4" status="Missing" time="4">
+                <testcase name="4_my-testcase-4" classname="app.MyTestCase4" status="Missing" time="4">
                     <skipped/>
                 </testcase>
             </testsuite>

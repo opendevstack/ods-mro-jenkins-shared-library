@@ -82,9 +82,8 @@ class JiraUseCase {
     }
 
     boolean checkTestsIssueMatchesTestCase(Map testIssue, Map testCase) {
-        // FIXME: the contents of this method have been duplicated below to allow the execution of tests
-        def testIssueKeyClean = testIssue.key.replaceAll("-", "")
-        return testCase.name.startsWith("${testIssueKeyClean} ") || testCase.name.startsWith("${testIssueKeyClean}-") || testCase.name.startsWith("${testIssueKeyClean}_")
+        def testIssueKeyNumber = testIssue.key.substring(testIssue.key.indexOf("-") + 1)
+        return testCase.name.startsWith("${testIssueKeyNumber} ") || testCase.name.startsWith("${testIssueKeyNumber}-") || testCase.name.startsWith("${testIssueKeyNumber}_")
     }
 
     private String convertHTMLImageSrcIntoBase64Data(String html) {
@@ -224,10 +223,7 @@ class JiraUseCase {
         testResults.testsuites.each { testSuite ->
             testSuite.testcases.each { testCase ->
                 def testIssue = testIssues.find { testIssue ->
-                    // FIXME: invoking checkTestsIssueMatchesTestCase results in failing tests (presumably be a bug in a test dependency)
-                    // this.checkTestsIssueMatchesTestCase(testIssue, testCase)
-                    def testIssueKeyClean = testIssue.key.replaceAll("-", "")
-                    return testCase.name.startsWith("${testIssueKeyClean} ") || testCase.name.startsWith("${testIssueKeyClean}-") || testCase.name.startsWith("${testIssueKeyClean}_")
+                    this.checkTestsIssueMatchesTestCase(testIssue, testCase)
                 }
 
                 def isMatch = testIssue != null
