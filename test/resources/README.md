@@ -10,7 +10,7 @@ The mock data is aligned with
 - JUnit XML mock data as provided in FixtureHelper
 - Unit tests in pltfmdev-demo-app-test
 
-Note: if mock Jira test cases are changed, these changes also need to be reflected in all other system listed above!
+Note: if mock Jira test cases are changed, these changes also need to be reflected in all other systems listed above!
 
 The test cases support different success scenarios:
 - Succeeded
