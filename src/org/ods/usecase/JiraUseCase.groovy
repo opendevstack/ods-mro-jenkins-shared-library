@@ -104,6 +104,8 @@ class JiraUseCase {
 
         testFailures.each { failure ->
             def bug = this.jira.createIssueTypeBug(this.project.key, failure.type, failure.text)
+
+
             // TODO how to map bugs and failures to test issues
             this.walkTestIssuesAndTestResults(testIssues, failure) { testIssue, testCase, isMatch ->
                 if (isMatch) {
@@ -112,7 +114,7 @@ class JiraUseCase {
                     // add newly created bug into the Jira data structure on the current project for referential integrity
                     this.project.data.jira.bugs[bug.key] = [
                         key     : bug.key,
-                        name    : bug.fields.summary,
+                        name    : failure.type,
                         assignee: "Unassigned",
                         dueDate : "",
                         status  : "TO DO",
