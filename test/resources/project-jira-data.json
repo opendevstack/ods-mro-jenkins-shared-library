@@ -560,7 +560,7 @@
             "requirements": [
                 "DEMO-6"
             ],
-            "tests": [""]
+            "tests": []
         },
         "DEMO-1020": {
             "name": "Risk-1 on TechSpec DEMO-6",
