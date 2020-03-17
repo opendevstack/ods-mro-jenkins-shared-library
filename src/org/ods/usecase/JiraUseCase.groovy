@@ -112,7 +112,7 @@ class JiraUseCase {
                 if (isMatch) {
                     testIssue.bugs << bug.key
 
-                    // add newly created bug into the Jira data structure on the current project for referential integrity
+                    // add newly created bug into the Jira data structure
                     this.project.data.jira.bugs[bug.key] = new JiraDataItem(project, [
                         key     : bug.key,
                         name    : failure.type,
@@ -121,6 +121,10 @@ class JiraUseCase {
                         status  : "TO DO",
                         tests   : [testIssue.key]
                     ], Project.JiraDataItem.TYPE_BUGS)
+
+                    // add newly created bug into the Jira data structure of resolved items
+                    this.project.data.jiraResolved.bugs[bug.key] = this.project.data.jira.bugs[bug.key]
+                    this.project.data.jiraResolved.bugs[bug.key].tests[0] = this.project.data.jira.tests[testIssue.key]
 
                     this.jira.createIssueLinkTypeBlocks(bug, testIssue)
                 }
