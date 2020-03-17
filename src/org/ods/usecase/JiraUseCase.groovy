@@ -218,7 +218,7 @@ class JiraUseCase {
         }
 
         this.support.applyXunitTestResults(testIssues, testResults)
-        if (["Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
+        if (["D", "Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
             // Create bugs for erroneous test issues
             def errors = JUnitParser.Helper.getErrors(testResults)
             this.createBugsForFailedTestIssues(testIssues, errors, this.steps.env.RUN_DISPLAY_URL)
