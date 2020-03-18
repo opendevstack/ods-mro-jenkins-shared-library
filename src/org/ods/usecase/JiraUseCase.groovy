@@ -122,12 +122,12 @@ class JiraUseCase {
 
             // Create a JiraDataItem from the newly created bug
             def bugJiraDataItem = new JiraDataItem(project, [ // add project reference for access to Project.JiraDataItem
-                key     : bug.key,
-                name    : failure.type,
-                assignee: "Unassigned",
-                dueDate : "",
-                status  : "TO DO",
-                tests   : bugAffectedTestIssues.keySet() as List
+              key     : bug.key,
+              name    : failure.type,
+              assignee: "Unassigned",
+              dueDate : "",
+              status  : "TO DO",
+              tests   : bugAffectedTestIssues.keySet() as List
             ], Project.JiraDataItem.TYPE_BUGS)
 
             // Add JiraDataItem into the Jira data structure
@@ -233,7 +233,7 @@ class JiraUseCase {
         }
 
         this.support.applyXunitTestResults(testIssues, testResults)
-        if (["D", "Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
+        if (["Q", "P"].contains(this.project.buildParams.targetEnvironmentToken)) {
             // Create bugs for erroneous test issues
             def errors = JUnitParser.Helper.getErrors(testResults)
             this.createBugsForFailedTestIssues(testIssues, errors, this.steps.env.RUN_DISPLAY_URL)
