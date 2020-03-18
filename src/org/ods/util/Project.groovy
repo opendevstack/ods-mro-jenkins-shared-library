@@ -117,7 +117,7 @@ class Project {
             os.writeObject(this.delegate)
             def ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()))
 
-            def newDelegate = ois.readObject() //as JiraDataItem
+            def newDelegate = ois.readObject()
             JiraDataItem result = new JiraDataItem(newDelegate, type)
             return result
         }
