@@ -373,15 +373,18 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     protected List<Map> computeTestsWithRequirementsAndSpecs(List<Map> tests) {
+        def obtainEnumText = { category, value -> this.project.getEnumDictionary(category)[value as String].text }
+
         tests.collect { testIssue ->
             def techSpecsWithSoftwareDesignSpec = testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }
-
+			def risks = testIssue.getResolvedRisks().collect{ obtainEnumText("SeverityOfImpact", it.severityOfImpact)}
             [
                 moduleName: testIssue.components.join(", "),
                 testKey: testIssue.key,
                 description: testIssue.description ?: "N/A",
                 systemRequirement: testIssue.requirements ? testIssue.requirements.join(", ") : "N/A",
-                softwareDesignSpec: techSpecsWithSoftwareDesignSpec ? techSpecsWithSoftwareDesignSpec.join(", ") : "N/A"
+                softwareDesignSpec: techSpecsWithSoftwareDesignSpec ? techSpecsWithSoftwareDesignSpec.join(", ") : "N/A",
+                riskLevel: risks ? risks.join(", ") : "N/A"
             ]
         }
     }
@@ -423,12 +426,15 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def testIssues = this.project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         def discrepancies = this.computeTestDiscrepancies("Development Tests", testIssues, unitTestData.testResults)
 
+        def obtainEnumText = { category, value -> this.project.getEnumDictionary(category)[value as String].text }
+
         def data_ = [
             metadata: this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             data    : [
                 repo              : repo,
                 sections          : sections,
                 tests             : testIssues.collect { testIssue ->
+                    def risks = testIssue.getResolvedRisks().collect{ obtainEnumText("SeverityOfImpact", it.severityOfImpact)}
                     [
                         key               : testIssue.key,
                         description       : testIssue.description ?: "N/A",
@@ -436,7 +442,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         success           : testIssue.isSuccess ? "Y" : "N",
                         remarks           : testIssue.isMissing ? "Not executed" : "N/A",
                         softwareDesignSpec: testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec } ?
-                                            testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }.join(", ") : "N/A"
+                                            testIssue.getTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }.join(", ") : "N/A",
+                        riskLevel         : risks ? risks.join(", ") : "N/A"
                     ]
                 },
                 numAdditionalTests: junit.getNumberOfTestCases(unitTestData.testResults) - testIssues.count { !it.isMissing },
@@ -714,6 +721,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 testIssue.comment = testIssue.isUnexecuted ? "This Test Case has not been executed" : ""
                 testIssue.timestamp = testIssue.isUnexecuted ? "N/A" : testCase.timestamp
                 testIssue.isMissing = false
+                testIssue.actualResult = testIssue.isSuccess ? "expected result verified by automated test" :
+                                         !testIssue.isUnexecuted ? "test failed. Correction will be tracked by Jira issue task \"bug\" listed below (\"" + this.project.key.toUpperCase() +"\")." : "not executed"
             }
         }
 
@@ -722,6 +731,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 testIssue.isSuccess = false
                 testIssue.isMissing = true
                 testIssue.comment = testIssue.isUnexecuted ? "This Test Case has not been executed" : ""
+                testIssue.actualResult = !testIssue.isUnexecuted ? "test failed. Correction will be tracked by Jira issue task \"bug\" listed below (\"" + this.project.key.toUpperCase() +"\")." : "not executed"
             }
         }
 
@@ -741,7 +751,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : (testIssue.comment ? "": "N/A"),
                         steps       : testIssue.steps,
                         timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A",
-                        comment     : testIssue.comment
+                        comment     : testIssue.comment,
+                        actualResult: testIssue.actualResult
                     ]
                 }, ["key"]),
                 acceptanceTests     : SortUtil.sortIssuesByProperties(acceptanceTestIssues.collect { testIssue ->
@@ -753,7 +764,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         bugs        : testIssue.bugs ? testIssue.bugs.join(", ") : (testIssue.comment ? "": "N/A"),
                         steps       : testIssue.steps,
                         timestamp   : testIssue.timestamp ? testIssue.timestamp.replaceAll("T", " ") : "N/A",
-                        comment     : testIssue.comment
+                        comment     : testIssue.comment,
+                        actualResult: testIssue.actualResult
                     ]
                 }, ["key"]),
                 integrationTestFiles: SortUtil.sortIssuesByProperties(integrationTestData.testReportFiles.collect { file ->

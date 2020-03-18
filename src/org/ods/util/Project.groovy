@@ -506,7 +506,9 @@ class Project {
             "requirements": [
                 "DEMO-6"
             ],
-            "tests": []
+            "tests": [
+                "PLTFMDEV-1045"
+            ]
         },
         "DEMO-27": {
             "name": "Risk-1 on TechSpec DEMO-26",
@@ -901,6 +903,9 @@ class Project {
             ],
             "techSpecs": [
                 "DEMO-15"
+            ],
+            "risks": [
+                "DEMO-7"
             ],
             "bugs": []
         },
@@ -1779,13 +1784,15 @@ class Project {
     }
 
     protected Map loadJiraDataProjectVersion() {
+        if (!this.jira) return [:]
+
         return this.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
             this.buildParams.version == version.value
         }
     }
 
     protected Map loadJiraDataDocs() {
-        if (!this.jira) return
+        if (!this.jira) return [:]
 
         def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.LEVA_DOCUMENTATION}'"]
 
