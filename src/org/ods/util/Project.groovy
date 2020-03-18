@@ -35,6 +35,13 @@ class Project {
 
         private HashMap delegate
 
+        private final String type
+
+        JiraDataItem(Map map, String type) {
+            delegate = new HashMap(map)
+            this.type = type
+        }
+
         @Override
         int size() {
             return delegate.size()
@@ -93,13 +100,6 @@ class Project {
         @Override
         Set<Entry> entrySet() {
             return delegate.entrySet()
-        }
-
-        private final String type
-
-        JiraDataItem(Map map, String type) {
-            delegate = new HashMap(map)
-            this.type = type
         }
 
         public String getType() {
@@ -1546,9 +1546,9 @@ class Project {
 }
 """
 
-    IPipelineSteps steps
-    GitUtil git
-    JiraService jira
+    protected IPipelineSteps steps
+    protected GitUtil git
+    protected JiraService jira
 
     protected Map data = [:]
 
