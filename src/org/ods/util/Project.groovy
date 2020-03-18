@@ -95,37 +95,6 @@ class Project {
             return delegate.entrySet()
         }
 
-        static class JiraDataItemSerializationProxy implements Serializable {
-            final Map data
-            final String type
-            final String wildHackKey
-            final static Map wildHackMap = new HashMap()
-
-            JiraDataItemSerializationProxy(JiraDataItem jiraDataItem, String wildHackKey) {
-                this.data = jiraDataItem.getDelegate()
-                this.type = jiraDataItem.getType()
-                this.wildHackKey = wildHackKey
-            }
-
-            private static final long serialVersionUID = -76
-
-            Object readResolve() {
-                Project project = wildHackMap[wildHackKey]
-                wildHackMap.remove(wildHackKey)
-                return new Project.JiraDataItem(project, data, type)
-            }
-        }
-
-        private void readObject(ObjectInputStream ois) throws InvalidObjectException {
-            throw new InvalidObjectException("Proxy of undisclosed class required.")
-        }
-
-        private Object writeReplace() {
-            String wildHackKey = UUID.randomUUID().toString()
-            JiraDataItemSerializationProxy.wildHackMap[wildHackKey] = this$0
-            return new JiraDataItemSerializationProxy(this, wildHackKey)
-        }
-
         private final String type
 
         JiraDataItem(Map map, String type) {
