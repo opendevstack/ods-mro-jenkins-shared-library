@@ -136,7 +136,7 @@ class JiraUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def jqlQuery = [
-            jql: "project = ${project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENT_CHAPTER}' AND labels = Doc:${documentType}",
+            jql: "project = ${project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENTATION_CHAPTER}' AND labels = Doc:${documentType}",
             expand: [ "names", "renderedFields" ]
         ]
 
@@ -417,6 +417,67 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * jira.appendCommentToIssue(failureBug.key, _)
+    }
+
+    def "update Jira release status issue"() {
+        given:
+        project.buildParams.releaseStatusJiraIssueKey = "JIRA-4711"
+        project.buildParams.version = "1.0"
+        project.buildParams.jenkins = [buildNumber: "0815"]
+
+        def error = new RuntimeException("Oh no!")
+
+        when:
+        usecase.updateJiraReleaseStatusIssue(error)
+
+        then:
+        1 * project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.RELEASE_STATUS) >> [
+            "Release Manager Status": [
+                id: "customfield_1"
+            ],
+            "Build Number": [
+                id: "customfield_2"
+            ]
+        ]
+
+        then:
+        1 * jira.updateFieldsOnIssue("JIRA-4711", [
+            "customfield_2": "1.0-0815",
+            "customfield_1": "Failed",
+        ])
+
+        then:
+        1 * jira.appendCommentToIssue("JIRA-4711", error.message)
+    }
+
+    def "update Jira release status issue without error"() {
+        given:
+        project.buildParams.releaseStatusJiraIssueKey = "JIRA-4711"
+        project.buildParams.version = "1.0"
+        project.buildParams.jenkins = [buildNumber: "0815"]
+
+        def error = null
+
+        when:
+        usecase.updateJiraReleaseStatusIssue(error)
+
+        then:
+        1 * project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.RELEASE_STATUS) >> {
+            return [
+                "Release Manager Status": [
+                    id: "customfield_1"
+                ],
+                "Build Number": [
+                    id: "customfield_2"
+                ]
+            ]
+        }
+
+        then:
+        1 * jira.updateFieldsOnIssue("JIRA-4711", [
+            "customfield_2": "1.0-0815",
+            "customfield_1": "Successful",
+        ])
     }
 
     def "walk test issues and test results"() {

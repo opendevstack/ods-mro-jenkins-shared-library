@@ -8,8 +8,7 @@ import groovy.json.JsonSlurperClassic
 import java.nio.file.Paths
 
 import org.apache.http.client.utils.URIBuilder
-import org.ods.service.JiraService
-import org.ods.usecase.LeVADocumentUseCase
+import org.ods.usecase.*
 import org.yaml.snakeyaml.Yaml
 
 class Project {
@@ -1370,7 +1369,7 @@ class Project {
 
     protected IPipelineSteps steps
     protected GitUtil git
-    protected JiraService jira
+    protected JiraUseCase jiraUseCase
 
     protected Map data = [:]
 
@@ -1389,9 +1388,9 @@ class Project {
         return this
     }
 
-    Project load(GitUtil git, JiraService jira) {
+    Project load(GitUtil git, JiraUseCase jiraUseCase) {
         this.git = git
-        this.jira = jira
+        this.jiraUseCase = jiraUseCase
 
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.jira = this.loadJiraData(this.data.metadata.id)
@@ -1569,8 +1568,8 @@ class Project {
         return this.data.jira.id
     }
 
-    List getJiraFieldsForIssueType(String issueTypeName) {
-        return this.data.jira.issueTypes[issueTypeName]?.fields ?: []
+    Map getJiraFieldsForIssueType(String issueTypeName) {
+        return this.data.jira.issueTypes[issueTypeName]?.fields ?: [:]
     }
 
     String getKey() {
@@ -1701,7 +1700,8 @@ class Project {
     }
 
     protected Map loadJiraDataBugs(Map tests) {
-        if (!this.jira) return [:]
+        if (!this.jiraUseCase) return [:]
+        if (!this.jiraUseCase.jira) return [:]
 
         def jqlQuery = [
             jql: "project = ${this.data.jira.project.key} AND issuetype = Bug AND status != Done",
@@ -1709,7 +1709,7 @@ class Project {
             fields: ["assignee", "duedate", "issuelinks", "status", "summary"]
         ]
 
-        def jiraBugs = this.jira.getIssuesForJQLQuery(jqlQuery) ?: []
+        def jiraBugs = this.jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery) ?: []
         return jiraBugs.collectEntries { jiraBug ->
             def bug = [
                 key      : jiraBug.key,
@@ -1741,11 +1741,12 @@ class Project {
     }
 
     protected Map loadJiraDataDocs() {
-        if (!this.jira) return [:]
+        if (!this.jiraUseCase) return [:]
+        if (!this.jiraUseCase.jira) return [:]
 
-        def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.DOCUMENTATION_TRACKING}'"]
+        def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENTATION_TRACKING}'"]
 
-        def jiraIssues = this.jira.getIssuesForJQLQuery(jqlQuery)
+        def jiraIssues = this.jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery)
         if (jiraIssues.isEmpty()) {
             throw new IllegalArgumentException("Error: Jira data does not include references to items of type '${JiraDataItem.TYPE_DOCS}'.")
         }
@@ -1765,16 +1766,17 @@ class Project {
     }
 
     protected Map loadJiraDataIssueTypes() {
-        if (!this.jira) return [:]
+        if (!this.jiraUseCase) return [:]
+        if (!this.jiraUseCase.jira) return [:]
 
-        def jiraIssueTypes = this.jira.getIssueTypes(this.data.jira.project.key)
+        def jiraIssueTypes = this.jiraUseCase.jira.getIssueTypes(this.data.jira.project.key)
         return jiraIssueTypes.values.collectEntries { jiraIssueType ->
             [
                 jiraIssueType.name,
                 [
                     id     : jiraIssueType.id,
                     name   : jiraIssueType.name,
-                    fields : this.jira.getIssueTypeMetadata(this.data.jira.project.key, jiraIssueType.id).values.collectEntries { value ->
+                    fields : this.jiraUseCase.jira.getIssueTypeMetadata(this.data.jira.project.key, jiraIssueType.id).values.collectEntries { value ->
                         [
                             value.name,
                             [
@@ -1859,6 +1861,11 @@ class Project {
         }
 
         return result
+    }
+
+    public void reportPipelineStatus(Throwable error) {
+        if (!this.jiraUseCase) return
+        this.jiraUseCase.updateJiraReleaseStatusIssue(error)
     }
 
     protected Map resolveJiraDataItemReferences(Map data) {

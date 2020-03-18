@@ -7,6 +7,7 @@ import org.apache.http.client.utils.URIBuilder
 import org.junit.contrib.java.lang.system.EnvironmentVariables
 import org.ods.parser.*
 import org.ods.service.*
+import org.ods.usecase.*
 import org.ods.util.*
 import org.yaml.snakeyaml.Yaml
 
@@ -44,7 +45,7 @@ class FakeProject extends Project {
     }
 
     @Override
-    Project load(GitUtil git, JiraService jira) {
+    Project load(GitUtil git, JiraUseCase jira) {
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.jira = this.loadJiraData(this.data.metadata.id)
         this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
@@ -554,6 +555,30 @@ class FixtureHelper {
                     "Linked Issues": [
                        id: "issuelinks",
                        name: "Linked Issues"
+                    ]
+                ]
+            ],
+            "Documentation": [
+                id: "4",
+                name: "Documentation",
+                fields: [
+                    "Document Version": [
+                        id: "customfield_3",
+                        name: "Document Version"
+                    ]
+                ]
+            ],
+            "Release Status": [
+                id: "5",
+                name: "Release Status",
+                fields: [
+                    "Build Number": [
+                        id: "customfield_4",
+                        name: "Build Number"
+                    ],
+                    "Release Manager Status": [
+                        id: "customfield_5",
+                        name: "Release Manager Status"
                     ]
                 ]
             ]

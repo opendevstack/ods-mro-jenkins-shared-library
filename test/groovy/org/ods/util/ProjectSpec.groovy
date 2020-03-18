@@ -4,6 +4,7 @@ import java.nio.file.Files
 
 import org.apache.http.client.utils.URIBuilder
 import org.ods.service.*
+import org.ods.usecase.*
 import org.yaml.snakeyaml.Yaml
 
 import spock.lang.*
@@ -16,12 +17,12 @@ class ProjectSpec extends SpecHelper {
 
     GitUtil git
     IPipelineSteps steps
-    JiraService jira
+    JiraUseCase jiraUseCase
     Project project
 
     def setup() {
         git = Mock(GitUtil)
-        jira = Mock(JiraService)
+        jiraUseCase = Mock(JiraUseCase)
         steps = Spy(util.PipelineSteps)
         steps.env.WORKSPACE = ""
 
@@ -45,7 +46,7 @@ class ProjectSpec extends SpecHelper {
             }
         })
 
-        project.init().load(git, jira)
+        project.init().load(git, jiraUseCase)
     }
 
     def "get build environment for DEBUG"() {
@@ -439,7 +440,7 @@ class ProjectSpec extends SpecHelper {
         test2.risks = [risk1.key]
 
         when:
-        project.load(this.git, this.jira)
+        project.load(this.git, this.jiraUseCase)
 
         then:
         1 * project.loadJiraData(_) >> [

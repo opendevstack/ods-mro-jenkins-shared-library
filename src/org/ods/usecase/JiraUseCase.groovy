@@ -11,7 +11,9 @@ import org.ods.util.Project
 class JiraUseCase {
 
     class IssueTypes {
-        static final String DOCUMENT_CHAPTER = "Documentation Chapter"
+        static final String DOCUMENTATION_TRACKING = "Documentation"
+        static final String DOCUMENTATION_CHAPTER = "Documentation Chapter"
+        static final String RELEASE_STATUS = "Release Status"
     }
 
     class CustomIssueFields {
@@ -119,7 +121,7 @@ class JiraUseCase {
         def jiraDocumentChapterLabel = this.getDocumentChapterIssueLabelForDocumentType(documentType)
 
         def jqlQuery = [
-            jql   : "project = ${this.project.key} AND issuetype = '${IssueTypes.DOCUMENT_CHAPTER}' AND labels = ${jiraDocumentChapterLabel}",
+            jql   : "project = ${this.project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENTATION_CHAPTER}' AND labels = ${jiraDocumentChapterLabel}",
             expand: ["names", "renderedFields"]
         ]
 
@@ -216,6 +218,25 @@ class JiraUseCase {
             // Create bugs for failed test issues
             def failures = JUnitParser.Helper.getFailures(testResults)
             this.createBugsForFailedTestIssues(testIssues, failures, this.steps.env.RUN_DISPLAY_URL)
+        }
+    }
+
+    void updateJiraReleaseStatusIssue(Throwable error) {
+        def status = error ? "Failed" : "Successful"
+
+        def releaseStatusIssueKey = this.project.buildParams.releaseStatusJiraIssueKey
+        def releaseStatusIssueFields = this.project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.RELEASE_STATUS)
+
+        def releaseStatusIssueReleaseManagerStatusField = releaseStatusIssueFields["Release Manager Status"]
+        def releaseStatusIssueBuildNumberField = releaseStatusIssueFields["Build Number"]
+
+        this.jira.updateFieldsOnIssue(releaseStatusIssueKey, [
+            (releaseStatusIssueBuildNumberField.id): "${this.project.buildParams.version}-${this.project.buildParams.jenkins.buildNumber}",
+            (releaseStatusIssueReleaseManagerStatusField.id): status,
+        ])
+
+        if (error) {
+            this.jira.appendCommentToIssue(releaseStatusIssueKey, error.message)
         }
     }
 

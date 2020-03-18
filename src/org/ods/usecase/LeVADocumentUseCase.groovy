@@ -9,10 +9,6 @@ import java.time.LocalDateTime
 
 class LeVADocumentUseCase extends DocGenUseCase {
 
-    class IssueTypes {
-        static final String DOCUMENTATION_TRACKING = "Documentation"
-    }
-
     enum DocumentType {
         CSD,
         DIL,
@@ -257,7 +253,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -334,7 +330,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -374,7 +370,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -432,7 +428,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def uri = this.createDocument(documentType, repo, data_, files, modifier, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -471,7 +467,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -535,7 +531,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -600,7 +596,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def uri = this.createDocument(documentType, null, data_, files, null, null, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -649,7 +645,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -724,7 +720,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -768,7 +764,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -835,7 +831,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def uri = this.createDocument(documentType, null, data_, files, null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -905,7 +901,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, files, null, null, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -930,7 +926,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, watermarkText)
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1004,7 +1000,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         ]
 
         def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1015,7 +1011,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def documentType = DocumentType.DTR as String
 
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1038,7 +1034,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, visitor, this.getWatermarkText(documentType))
-        this.notifyJiraTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
         return uri
     }
 
@@ -1127,7 +1123,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return null
     }
 
-    protected void notifyJiraTrackingIssue(String documentType, String message) {
+    void updateJiraDocumentationTrackingIssue(String documentType, String message) {
         if (!this.jiraUseCase) return
         if (!this.jiraUseCase.jira) return
 
@@ -1145,11 +1141,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         def metadata = this.getDocumentMetadata(documentType)
-        def documentationTrackingIssueFields = this.project.getJiraFieldsForIssueType(IssueTypes.DOCUMENTATION_TRACKING)
+        def documentationTrackingIssueFields = this.project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.DOCUMENTATION_TRACKING)
         def documentationTrackingIssueDocumentVersionField = documentationTrackingIssueFields["Document Version"]
 
         jiraIssues.each { jiraIssue ->
-            this.jiraUseCase.jira.updateFieldsOnIssue(jiraIssue.key, [id: documentationTrackingIssueDocumentVersionField.id, value: "${metadata.version}-${metadata.jenkins.buildNumber}"])
+            this.jiraUseCase.jira.updateFieldsOnIssue(jiraIssue.key, [(documentationTrackingIssueDocumentVersionField.id): "${metadata.version}-${metadata.jenkins.buildNumber}"])
             this.jiraUseCase.jira.appendCommentToIssue(jiraIssue.key, message)
         }
     }

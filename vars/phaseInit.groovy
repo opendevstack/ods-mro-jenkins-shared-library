@@ -157,7 +157,7 @@ def call() {
 
     def phase = MROPipelineUtil.PipelinePhases.INIT
 
-    project.load(registry.get(GitUtil), registry.get(JiraService))
+    project.load(registry.get(GitUtil), registry.get(JiraUseCase))
     def repos = project.repositories
 
     // Configure current build
