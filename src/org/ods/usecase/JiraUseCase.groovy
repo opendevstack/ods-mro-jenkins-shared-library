@@ -138,24 +138,6 @@ class JiraUseCase {
             this.project.data.jiraResolved.bugs[bug.key].tests = bugAffectedTestIssues.values() as List
 
             this.jira.appendCommentToIssue(bug.key, comment)
-
-            /*
-            // Add JiraDataItem into the Jira data structure
-            this.project.data.jira.bugs[bug.key] = bugJiraDataItem
-
-            // Resolve the keys within the JiraDataItem into other JiraDataItem references
-            def testMap = [
-                bugs: [(bug.key): bugJiraDataItem],
-                tests: bugAffectedTestIssues.collect { it.subMap(["key", "bugs"]) }
-            ]
-
-            def resolvedJiraDataItems = this.project.resolveJiraDataItemReferences(testMap)
-
-            // Add the resolved JiraDataItem into the Jira data structure
-            this.project.data.jiraResolved.bugs[bug.key] = resolvedJiraDataItems.bugs[bug.key]
-
-            this.jira.appendCommentToIssue(bug.key, comment)
-            */
         }
     }
 
