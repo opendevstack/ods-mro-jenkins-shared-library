@@ -9,9 +9,9 @@ import org.yaml.snakeyaml.Yaml
 
 import java.nio.file.Paths
 
-class Project implements Serializable {
+class Project {
 
-    class JiraDataItem extends HashMap {
+    class JiraDataItem implements Map, Serializable {
         static final String TYPE_BUGS = "bugs"
         static final String TYPE_COMPONENTS = "components"
         static final String TYPE_EPICS = "epics"
@@ -33,22 +33,123 @@ class Project implements Serializable {
             TYPE_TESTS
         ]
 
+        private HashMap delegate
+
+        @Override
+        int size() {
+            return delegate.size()
+        }
+
+        @Override
+        boolean isEmpty() {
+            return delegate.isEmpty()
+        }
+
+        @Override
+        boolean containsKey(Object key) {
+            return delegate.containsKey(key)
+        }
+
+        @Override
+        boolean containsValue(Object value) {
+            return delegate.containsValue(value)
+        }
+
+        @Override
+        Object get(Object key) {
+            return delegate.get(key)
+        }
+
+        @Override
+        Object put(Object key, Object value) {
+            return delegate.put(key, value)
+        }
+
+        @Override
+        Object remove(Object key) {
+            return delegate.remove(key)
+        }
+
+        @Override
+        void putAll(Map m) {
+            delegate.putAll(m)
+        }
+
+        @Override
+        void clear() {
+            delegate.clear()
+        }
+
+        @Override
+        Set keySet() {
+            return delegate.keySet()
+        }
+
+        @Override
+        Collection values() {
+            return delegate.values()
+        }
+
+        @Override
+        Set<Entry> entrySet() {
+            return delegate.entrySet()
+        }
+
+        static class JiraDataItemSerializationProxy implements Serializable {
+            final Map data
+            final String type
+            final String wildHackKey
+            final static Map wildHackMap = new HashMap()
+
+            JiraDataItemSerializationProxy(JiraDataItem jiraDataItem, String wildHackKey) {
+                this.data = jiraDataItem.getDelegate()
+                this.type = jiraDataItem.getType()
+                this.wildHackKey = wildHackKey
+            }
+
+            private static final long serialVersionUID = -76
+
+            Object readResolve() {
+                Project project = wildHackMap[wildHackKey]
+                wildHackMap.remove(wildHackKey)
+                return new Project.JiraDataItem(project, data, type)
+            }
+        }
+
+        private void readObject(ObjectInputStream ois) throws InvalidObjectException {
+            throw new InvalidObjectException("Proxy of undisclosed class required.")
+        }
+
+        private Object writeReplace() {
+            String wildHackKey = UUID.randomUUID().toString()
+            JiraDataItemSerializationProxy.wildHackMap[wildHackKey] = this$0
+            return new JiraDataItemSerializationProxy(this, wildHackKey)
+        }
+
         private final String type
 
         JiraDataItem(Map map, String type) {
-            super(map)
+            delegate = new HashMap(map)
             this.type = type
         }
 
+        public String getType() {
+            return type
+        }
+
+        public Map getDelegate() {
+            return delegate
+        }
+
         @NonCPS
-        JiraDataItem clone() {
+        JiraDataItem cloneIt() {
             def bos = new ByteArrayOutputStream()
             def os = new ObjectOutputStream(bos)
-            os.writeObject(this)
+            os.writeObject(this.delegate)
             def ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()))
 
-            def result = ois.readObject() as JiraDataItem
-            result.type = this.type
+            def newDelegate = ois.readObject() //as JiraDataItem
+            JiraDataItem result = new JiraDataItem(newDelegate, type)
             return result
         }
 
@@ -1476,9 +1577,9 @@ class Project implements Serializable {
 }
 """
 
-    transient IPipelineSteps steps
-    transient GitUtil git
-    transient JiraService jira
+    IPipelineSteps steps
+    GitUtil git
+    JiraService jira
 
     protected Map data = [:]
 

@@ -134,7 +134,7 @@ class JiraUseCase {
             this.project.data.jira.bugs[bug.key] = bugJiraDataItem
 
             // Add the resolved JiraDataItem into the Jira data structure
-            this.project.data.jiraResolved.bugs[bug.key] = bugJiraDataItem.clone()
+            this.project.data.jiraResolved.bugs[bug.key] = bugJiraDataItem.cloneIt()
             this.project.data.jiraResolved.bugs[bug.key].tests = bugAffectedTestIssues.values() as List
 
             this.jira.appendCommentToIssue(bug.key, comment)
