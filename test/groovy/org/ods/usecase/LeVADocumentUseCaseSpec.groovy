@@ -1088,7 +1088,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
             ]
 
         when:
-        def chapterIssuesNotDone = usecase.getNotDoneIssues(chapterData)
+        def chapterIssuesNotDone = usecase.getSectionsNotDone(chapterData)
 
         then:
         chapterIssuesNotDone == [[content: "myContent", status: "NOT DONE", key:"DEMO-1"], [content: "myContent", status: "NOT DONE", key:"DEMO-3"]]
