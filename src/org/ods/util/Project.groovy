@@ -1701,7 +1701,7 @@ class Project {
     }
 
     protected Map loadJiraDataBugs(Map tests) {
-        if (!this.jira) return
+        if (!this.jira) return [:]
 
         def jqlQuery = [
             jql: "project = ${this.data.jira.project.key} AND issuetype = Bug AND status != Done",
@@ -1741,7 +1741,7 @@ class Project {
     }
 
     protected Map loadJiraDataDocs() {
-        if (!this.jira) return
+        if (!this.jira) return [:]
 
         def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${LeVADocumentUseCase.IssueTypes.DOCUMENTATION_TRACKING}'"]
 
@@ -1765,7 +1765,7 @@ class Project {
     }
 
     protected Map loadJiraDataIssueTypes() {
-        if (!this.jira) return
+        if (!this.jira) return [:]
 
         def jiraIssueTypes = this.jira.getIssueTypes(this.data.jira.project.key)
         return jiraIssueTypes.values.collectEntries { jiraIssueType ->
