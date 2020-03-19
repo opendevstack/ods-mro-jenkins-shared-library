@@ -1,0 +1,161 @@
+{
+    "project": {
+        "name": "Sock Shop",
+        "description": "Sock Shop: A Microservice Demo Application",
+        "key": "SOCKSHOP",
+        "id": "${#####}",
+        "jiraBaseUrl": "https://jira.example.com:2990/jira/SOCKSHOP",
+        "gampTopics": [
+            "operational requirements",
+            "functional requirements",
+            "data requirements",
+            "technical requirements",
+            "interface requirements",
+            "environment requirements",
+            "performance requirements",
+            "availability requirements",
+            "security requirements",
+            "maintenance requirements",
+            "regulatory requirements",
+            "roles",
+            "compatibility",
+            "procedural constraints",
+            "overarching requirements"
+        ],
+        "projectProperties": {
+            "PROJECT.POO_CAT.HIGH": "Frequency of the usage of the related function is >10 times per week.",
+            "PROJECT.POO_CAT.LOW": "Frequency of the usage of the related function is <10 times per year.",
+            "PROJECT.POO_CAT.MEDIUM": "Frequency of the usage of the related function is <10 times per week.",
+            "PROJECT.USES_POO": "true"
+        }
+    },
+    "enumDictionary": {
+        "ProbabilityOfDetection": {
+            "1": {
+                "value": 1,
+                "text": "Immediate",
+                "short": "I"
+            },
+            "2": {
+                "value": 2,
+                "text": "Before Impact",
+                "short": "B"
+            },
+            "3": {
+                "value": 3,
+                "text": "After Impact",
+                "short": "A"
+            }
+        },
+        "SeverityOfImpact": {
+            "1": {
+                "value": 1,
+                "text": "Low",
+                "short": "L"
+            },
+            "2": {
+                "value": 2,
+                "text": "Medium",
+                "short": "M"
+            },
+            "3": {
+                "value": 3,
+                "text": "High",
+                "short": "H"
+            }
+        },
+        "ProbabilityOfOccurrence": {
+            "1": {
+                "value": 1,
+                "text": "LOW",
+                "short": "L"
+            },
+            "2": {
+                "value": 2,
+                "text": "MEDIUM",
+                "short": "M"
+            },
+            "3": {
+                "value": 3,
+                "text": "HIGH",
+                "short": "H"
+            }
+        },
+        "RiskPriority": {
+            "0": {
+                "value": 0,
+                "text": "N/A",
+                "short": "N"
+            },
+            "1": {
+                "value": 1,
+                "text": "HIGH",
+                "short": "H"
+            },
+            "2": {
+                "value": 2,
+                "text": "MEDIUM",
+                "short": "M"
+            },
+            "3": {
+                "value": 3,
+                "text": "LOW",
+                "short": "L"
+            }
+        },
+        "GxPRelevance": {
+            "R2": {
+                "value": 2,
+                "text": "Relevant",
+                "short": "R2"
+            },
+            "N0": {
+                "value": 0,
+                "text": "Not relevant/ZERO",
+                "short": "N0"
+            },
+            "N1": {
+                "value": 1,
+                "text": "Not relevant/LESS",
+                "short": "N1"
+            },
+            "N2": {
+                "value": 2,
+                "text": "Not relevant/EQUAL",
+                "short": "N2"
+            }
+        }
+    },
+    "epics": {
+        "SOCKSHOP-1": {
+            "name": "Payments",
+            "description": "Implement a payment service that integrates with Payment Service Providers and allows a secure and reliable payment for merchandise offered in the Sock Shop.",
+            "key": "SOCKSHOP-4",
+            "status": "Open",
+            "requirements": [
+
+            ],
+            "tests":
+
+        },
+        "SOCKSHOP-2": {
+        },
+        "SOCKSHOP-3": {
+
+        }
+    },
+    "tests": {
+        "SOCKSHOP-5": {
+            "name": "Verify payment service installation",
+            "description": "verify payment service is running and responsive",
+            "key": "SOCKSHOP-5",
+            "id": "${#####}",
+            "status": "READY TO TEST",
+            "testType": "Installation",
+            "executionType": "Automated",
+            "steps": [
+
+            ]
+        }
+    }
+}
