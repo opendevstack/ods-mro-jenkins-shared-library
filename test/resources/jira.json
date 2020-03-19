@@ -126,31 +126,176 @@
             }
         }
     },
-    "epics": {
-        "SOCKSHOP-1": {
-            "name": "Payments !!!-CLARIFICATION-NEEDED-!!! name vs epicName",
-            "description": "Implement a payment service that integrates with Payment Service Providers and allows a secure and reliable payment for merchandise offered in the Sock Shop.",
-            "key": "SOCKSHOP-4",
-            "version": "CLARIFICATION-NEEDED-!!! version is a list of version objects in Jira. How to map this here. Similar to project version?",
-            "status": "Open",
-            "epicName": "requirements",
-            requirements: [
+    "bugs": {
+        "SOCKSHOP-17": {
+            "key": "SOCKSHOP-17",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Payment takes 183 seconds instead of allowed 3 seconds.",
+            "assignee": "Unassigned",
+            "dueDate": "",
+            "status": "TO DO",
+            "tests": [
+                "SOCKSHOP-15"
+            ]
+        }
+    },
+    "components": {
+        "SOCKSHOP-11": {
+            "key": "SOCKSHOP-11",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Technology-demo-app-payment",
+            "description": "Technology component demo-app-paymnent stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-payment/browse",
+            "epics": [
+                "SOCKSHOP-1"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
+            "techSpecs": [
+                "SOCKSHOP-16"
             ],
             "tests": [
-                "SOCKSHOP-5"
+                "SOCKSHOP-15"
+            ],
+            "risks": [
+                "SOCKSHOP-13"
+            ],
+            "mitigations": [
+                "SOCKSHOP-14"
             ]
-        },
-        "SOCKSHOP-2": {
-        },
-        "SOCKSHOP-3": {
+        }
+    },
+    "epics": {
+        "SOCKSHOP-1": {
+            "key": "SOCKSHOP-1",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "As a user I want to be able to do payments",
+            "description": "Implement a payment service that integrates with Payment Service Providers and allows a secure and reliable payment for merchandise offered in the Sock Shop.",
+            "status": "Open",
+            "epicName": "Payments",
+            "requirements": [
+                "SOCKSHOP-8"
+            ]
+        }
+    },
+    "mitigations": {
+        "SOCKSHOP-14": {
+            "key": "SOCKSHOP-14",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Provide discount for the next purchase",
+            "description": "If a payment cannot be processed within the required time provide a discount for the next purchase for the same customer to make them come back.",
+            "status": "TO DO",
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
+            "risks": [
+                "SOCKSHOP-13"
+            ]
+        }
+    },
+    "requirements": {
+        "SOCKSHOP-8": {
+            "key": "SOCKSHOP-8",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "As a user I want my payments to be processed quickly",
+            "description": "Req-1 is described here...",
+            "status": "IN DESIGN",
+            "gampTopic": "performance requirements",
+            "acceptanceCriteria": "acceptance of Req-1 only if ...",
+            "configSpec": {
+                "name": "Less than 3 seconds for a payment",
+                "description": "The payment must be accepted in less than 3 seconds in 99.99% of payments"
+            },
+            "funcSpec": {
+                "name": "The payment must be confirmed in less than a set interval",
+                "description": "A payment must be completed with the Payment Service Provider within the given time interval",
+                "acceptanceCriteria": "The desired payment interval can be configured on system level."
+            },
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "epics": [
+                "SOCKSHOP-1"
+            ],
+            "risks": [
+                "SOCKSHOP-13"
+            ],
+            "tests": [
+                "SOCKSHOP-15"
+            ],
+            "mitigations": [
+                "SOCKSHOP-14"
+            ],
+            "techSpecs": [
+                "SOCKSHOP-16"
+            ]
+        }
+    },
+    "risks": {
+        "SOCKSHOP-13": {
+            "key": "SOCKSHOP-13",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "1.0",
+            "name": "If payments take too long we can loose business and customers",
+            "description": "We have discovered that our competitors lost customers if payments take too long, so we should avoid payments taking too long./",
+            "status": "TO DO",
+            "gxpRelevance": "N0",
+            "probabilityOfOccurrence": 1,
+            "severityOfImpact": 3,
+            "probabilityOfDetection": 2,
+            "riskPriorityNumber": 0,
+            "riskPriority": 0,
+            "mitigations": [
+                "DEMO-42"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
+            "tests": [
+                "SOCKSHOP-15"
+            ]
+        }
+    },
+    "techSpecs": {
+        "SOCKSHOP-16": {
+            "key": "DEMO-15",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "1.0",
+            "name": "TechSpec-1",
+            "description": "TechSpec-1 is described here...",
+            "status": "IN DESIGN",
+            "systemDesignSpec": "Use containerized infrastructure to support quick and easy provisioning of a multitude of micro services that do one thing only and one thing right and fast.",
+            "softwareDesignSpec": "Implement the system using a loosely coupled micro services architecture for improved extensibility and maintainability.",
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
+            "risks": [
+                "SOCKSHOP-13"
+            ],
+            "tests": [
+                "SOCKSHOP-5",
+                "SOCKSHOP-15"
+            ]
         }
     },
     "tests": {
         "SOCKSHOP-5": {
-            "name": "Verify payment service installation",
-            "description": "verify payment service is running and responsive",
             "key": "SOCKSHOP-5",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Verify payment service installation",
+            "description": "verify payment service is running and responsive",
             "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
@@ -162,15 +307,99 @@
                     "expectedResult": "Connection to the service is established and the service returns 'OK'"
                 }
             ],
-            "components": [],
-            "requiremens": [],
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "requirements": ["SOCKSHOP-8"],
+            "bugs": []
+        },
+        "SOCKSHOP-9": {
+            "key": "SOCKSHOP-5",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Verify total payment sum",
+            "description": "verify payment sums up correclty",
+            "status": "READY TO TEST",
+            "testType": "Unit",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
+            "bugs": []
+        },
+        "SOCKSHOP-10": {
+            "key": "SOCKSHOP-5",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Verify payment service's usability",
+            "description": "verify payment service is intuitive",
+            "status": "READY TO TEST",
+            "testType": "Acceptance",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
+            "bugs": []
+        },
+        "SOCKSHOP-15": {
+            "key": "SOCKSHOP-15",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Stress test for the payment duration SLAs",
+            "description": "verify payments are executed within the payment SLAs",
+            "status": "READY TO TEST",
+            "testType": "Acceptance",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                },
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
             "bugs": []
         },
         "SOCKSHOP-6": {
-            "name": "Verify card payments",
-            "description": "verify payment service executes card payments agains PSP interface",
             "key": "SOCKSHOP-6",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "version": "!!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Verify card payments",
+            "description": "verify payment service executes card payments agains PSP interface",
             "status": "READY TO TEST",
             "testType": "Integration",
             "executionType": "Automated",
@@ -194,9 +423,13 @@
                     "expectedResult": "Receive OK/NOK from PSP."
                 }
             ],
-            "components": [],
-            "requiremens": [],
+            "components": [
+                "SOCKSHOP-11"
+            ],
+            "requirements": [
+                "SOCKSHOP-8"
+            ],
             "bugs": []
-        },
+        }
     }
 }
