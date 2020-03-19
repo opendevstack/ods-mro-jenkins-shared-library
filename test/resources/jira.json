@@ -128,24 +128,21 @@
     },
     "epics": {
         "SOCKSHOP-1": {
-            "name": "Payments !!!-CLARIFICATION-NEEDED-!!!",
+            "name": "Payments !!!-CLARIFICATION-NEEDED-!!! name vs epicName",
             "description": "Implement a payment service that integrates with Payment Service Providers and allows a secure and reliable payment for merchandise offered in the Sock Shop.",
             "key": "SOCKSHOP-4",
-            "version": "CLARIFICATION-NEEDED-!!!",
+            "version": "CLARIFICATION-NEEDED-!!! version is a list of version objects in Jira. How to map this here. Similar to project version?",
             "status": "Open",
-            "epicName":
-            "requirements": [
-
+            "epicName": "requirements",
+            requirements: [
             ],
             "tests": [
-
+                "SOCKSHOP-5"
             ]
-
         },
         "SOCKSHOP-2": {
         },
         "SOCKSHOP-3": {
-
         }
     },
     "tests": {
@@ -153,13 +150,53 @@
             "name": "Verify payment service installation",
             "description": "verify payment service is running and responsive",
             "key": "SOCKSHOP-5",
-            "id": "${#####}",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
-
-            ]
-        }
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
+            "components": [],
+            "requiremens": [],
+            "bugs": []
+        },
+        "SOCKSHOP-6": {
+            "name": "Verify card payments",
+            "description": "verify payment service executes card payments agains PSP interface",
+            "key": "SOCKSHOP-6",
+            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "status": "READY TO TEST",
+            "testType": "Integration",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Select cart payment for sample order",
+                    "data": "N/A",
+                    "expectedResult": "Card payment gets accepted"
+                },
+                {
+                    "index": 1,
+                    "step": "Enter card details",
+                    "data": "N/A",
+                    "expectedResult": "Card details are sent to PSP"
+                },
+                {
+                    "index": 2,
+                    "step": "PSP acknowledges card details",
+                    "data": "N/A",
+                    "expectedResult": "Receive OK/NOK from PSP."
+                }
+            ],
+            "components": [],
+            "requiremens": [],
+            "bugs": []
+        },
     }
 }
