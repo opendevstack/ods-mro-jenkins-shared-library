@@ -29,6 +29,7 @@ class PDFUtilSpec extends SpecHelper {
         doc.getPage(0).getContents().text.contains(text)
         doc.close()
     }
+
     def "convert from mardkdown document"() {
         given:
         def util = new PDFUtil()

@@ -138,9 +138,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
             def name = this.getDocumentBasename("SCRR", this.project.buildParams.version, this.steps.env.BUILD_ID, r)
             def sqReportFile = sqReportFiles.first()
 
-            def pdfReport = this.pdf.convertFromMarkdown(sqReportFile, true)
-            return pdfReport
+            return this.pdf.convertFromMarkdown(sqReportFile, true)
         }
+
         return this.pdf.merge(reports)
     }
 
@@ -944,12 +944,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!sections."sec10") sections."sec10" = [:]
         sections."sec10".modules = modules
 
-        // Code review part
+        // Code review report
         def codeRepos = this.project.repositories.findAll{ it.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE.toLowerCase() }
-        def report = obtainCodeReviewReport(codeRepos)
+        def codeReviewReport = obtainCodeReviewReport(codeRepos)
+
         def modifier = { document ->
-            // Merge the current document with the SonarQube report
-            return this.pdf.merge([ document, report])
+            // Merge the current document with the code review report
+            return this.pdf.merge([ document, codeReviewReport])
         }
 
         def data_ = [
