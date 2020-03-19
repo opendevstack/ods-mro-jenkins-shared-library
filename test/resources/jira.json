@@ -127,8 +127,8 @@
         }
     },
     "bugs": {
-        "SOCKSHOP-17": {
-            "key": "SOCKSHOP-17",
+        "SOCKSHOP-129": {
+            "key": "SOCKSHOP-129",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "!!!-CLARIFICATION-NEEDED-!!!",
             "name": "Payment takes 183 seconds instead of allowed 3 seconds.",
@@ -136,40 +136,40 @@
             "dueDate": "",
             "status": "TO DO",
             "tests": [
-                "SOCKSHOP-15"
+                "SOCKSHOP-127"
             ]
         }
     },
     "components": {
-        "SOCKSHOP-11": {
-            "key": "SOCKSHOP-11",
+        "Technology-demo-app-payment": {
+            "key": "Technology-demo-app-payment",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "!!!-CLARIFICATION-NEEDED-!!!",
             "name": "Technology-demo-app-payment",
             "description": "Technology component demo-app-paymnent stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-payment/browse",
             "epics": [
-                "SOCKSHOP-1"
+                "SOCKSHOP-124"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "techSpecs": [
-                "SOCKSHOP-16"
+                "SOCKSHOP-128"
             ],
             "tests": [
-                "SOCKSHOP-15"
+                "SOCKSHOP-127"
             ],
             "risks": [
-                "SOCKSHOP-13"
+                "SOCKSHOP-126"
             ],
             "mitigations": [
-                "SOCKSHOP-14"
+                "SOCKSHOP-123"
             ]
         }
     },
     "epics": {
-        "SOCKSHOP-1": {
-            "key": "SOCKSHOP-1",
+        "SOCKSHOP-124": {
+            "key": "SOCKSHOP-124",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "!!!-CLARIFICATION-NEEDED-!!!",
             "name": "As a user I want to be able to do payments",
@@ -177,32 +177,32 @@
             "status": "Open",
             "epicName": "Payments",
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ]
         }
     },
     "mitigations": {
-        "SOCKSHOP-14": {
-            "key": "SOCKSHOP-14",
+        "SOCKSHOP-123": {
+            "key": "SOCKSHOP-123",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "!!!-CLARIFICATION-NEEDED-!!!",
             "name": "Provide discount for the next purchase",
             "description": "If a payment cannot be processed within the required time provide a discount for the next purchase for the same customer to make them come back.",
             "status": "TO DO",
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "risks": [
-                "SOCKSHOP-13"
+                "SOCKSHOP-126"
             ]
         }
     },
     "requirements": {
-        "SOCKSHOP-8": {
-            "key": "SOCKSHOP-8",
+        "SOCKSHOP-125": {
+            "key": "SOCKSHOP-125",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "!!!-CLARIFICATION-NEEDED-!!!",
             "name": "As a user I want my payments to be processed quickly",
@@ -220,28 +220,28 @@
                 "acceptanceCriteria": "The desired payment interval can be configured on system level."
             },
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
             "epics": [
-                "SOCKSHOP-1"
+                "SOCKSHOP-124"
             ],
             "risks": [
-                "SOCKSHOP-13"
+                "SOCKSHOP-126"
             ],
             "tests": [
-                "SOCKSHOP-15"
+                "SOCKSHOP-127"
             ],
             "mitigations": [
-                "SOCKSHOP-14"
+                "SOCKSHOP-123"
             ],
             "techSpecs": [
-                "SOCKSHOP-16"
+                "SOCKSHOP-128"
             ]
         }
     },
     "risks": {
-        "SOCKSHOP-13": {
-            "key": "SOCKSHOP-13",
+        "SOCKSHOP-126": {
+            "key": "SOCKSHOP-126",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "1.0",
             "name": "If payments take too long we can loose business and customers",
@@ -257,35 +257,35 @@
                 "DEMO-42"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "tests": [
-                "SOCKSHOP-15"
+                "SOCKSHOP-127"
             ]
         }
     },
     "techSpecs": {
-        "SOCKSHOP-16": {
-            "key": "DEMO-15",
+        "SOCKSHOP-128": {
+            "key": "SOCKSHOP-128",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "1.0",
-            "name": "TechSpec-1",
-            "description": "TechSpec-1 is described here...",
+            "name": "Containerized Infrastructure",
+            "description": "The system should be set up as containerized infrastructure in the openshift cluster.",
             "status": "IN DESIGN",
             "systemDesignSpec": "Use containerized infrastructure to support quick and easy provisioning of a multitude of micro services that do one thing only and one thing right and fast.",
             "softwareDesignSpec": "Implement the system using a loosely coupled micro services architecture for improved extensibility and maintainability.",
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "risks": [
-                "SOCKSHOP-13"
+                "SOCKSHOP-126"
             ],
             "tests": [
                 "SOCKSHOP-5",
-                "SOCKSHOP-15"
+                "SOCKSHOP-127"
             ]
         }
     },
@@ -308,9 +308,9 @@
                 }
             ],
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
-            "requirements": ["SOCKSHOP-8"],
+            "requirements": ["SOCKSHOP-125"],
             "bugs": []
         },
         "SOCKSHOP-9": {
@@ -322,19 +322,12 @@
             "status": "READY TO TEST",
             "testType": "Unit",
             "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to the service on :80/health via HTTP",
-                    "data": "N/A",
-                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
-                }
-            ],
+            "steps": [],
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "bugs": []
         },
@@ -356,15 +349,15 @@
                 }
             ],
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "bugs": []
         },
-        "SOCKSHOP-15": {
-            "key": "SOCKSHOP-15",
+        "SOCKSHOP-127": {
+            "key": "SOCKSHOP-127",
             "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
             "version": "!!!-CLARIFICATION-NEEDED-!!!",
             "name": "Stress test for the payment duration SLAs",
@@ -387,10 +380,10 @@
                 }
             ],
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "bugs": []
         },
@@ -424,10 +417,10 @@
                 }
             ],
             "components": [
-                "SOCKSHOP-11"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-8"
+                "SOCKSHOP-125"
             ],
             "bugs": []
         }
