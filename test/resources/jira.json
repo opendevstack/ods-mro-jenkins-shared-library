@@ -128,14 +128,18 @@
     },
     "epics": {
         "SOCKSHOP-1": {
-            "name": "Payments",
+            "name": "Payments !!!-CLARIFICATION-NEEDED-!!!",
             "description": "Implement a payment service that integrates with Payment Service Providers and allows a secure and reliable payment for merchandise offered in the Sock Shop.",
             "key": "SOCKSHOP-4",
+            "version": "CLARIFICATION-NEEDED-!!!",
             "status": "Open",
+            "epicName":
             "requirements": [
 
             ],
-            "tests":
+            "tests": [
+
+            ]
 
         },
         "SOCKSHOP-2": {
