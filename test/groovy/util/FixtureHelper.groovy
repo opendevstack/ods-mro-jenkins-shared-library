@@ -63,7 +63,7 @@ class FakeProject extends Project {
 
     protected Map loadJiraData(String projectKey) {
         def file = this.getResource("project-jira-data.json")
-        return new JsonSlurper().parse(file)
+        return new JsonSlurperClassic().parse(file)
     }
 
     protected Map loadJiraDataProjectVersion() {
@@ -498,8 +498,7 @@ class FixtureHelper {
             id    : id,
             key   : "JIRA-${id}",
             fields: [:],
-            self  : "http://${id}",
-            status: status
+            self  : "http://${id}"
         ]
 
         result.fields.summary = summary ?: "${id}-summary"
@@ -509,6 +508,9 @@ class FixtureHelper {
         result.fields.issuelinks = []
         result.fields.issuetype = [
             name: issuetype
+        ]
+        result.fields.status = [
+            name: status
         ]
 
         return result
