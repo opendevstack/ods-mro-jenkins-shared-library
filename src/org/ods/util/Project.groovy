@@ -1692,6 +1692,14 @@ class Project {
         return this.data.metadata.capabilities
     }
 
+    String getGAMPCategory() {
+        return this.data.metadata.GAMPCategory
+    }
+
+    void setGAMPCategory(String gampCategory) {
+        this.data.metadata.GAMPCategory = gampCategory
+    }
+
     List<JiraDataItem> getBugs() {
         return this.data.jira.bugs.values() as List
     }
@@ -1984,6 +1992,19 @@ class Project {
         if (result.capabilities == null) {
             result.capabilities = []
         }
+
+        // Check for GAMP category
+        def levaDocsCapability = result.capabilities.findAll { it instanceof Map && it.containsKey("LeVADocs") }
+        if(levaDocsCapability) {
+            if (levaDocsCapability.size() > 1) {
+                throw new IllegalArgumentException("Error: unable to parse project metadata. More than one LeVADocs items is defined in capabilities")
+            }
+            def category = levaDocsCapability.first().LeVADocs.GAMPCategory
+            if (category) {
+                result.GAMPCategory = category.toString()
+            }
+        }
+
         return result
     }
 

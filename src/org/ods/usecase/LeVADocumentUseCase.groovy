@@ -55,6 +55,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
         (DocumentType.OVERALL_TIR as String): "Overall Technical Installation Report"
     ]
 
+    static GAMP_CATEGORY_SENSITIVE_DOCS = [
+        DocumentType.SSDS as String,
+        DocumentType.CSD as String,
+        DocumentType.CFTP as String,
+        DocumentType.CFTR as String
+    ]
+
     private static String DEVELOPER_PREVIEW_WATERMARK = "Developer Preview"
     private static String WORK_IN_PROGRESS_WATERMARK = "Work in Progress"
     private static String WORK_IN_PROGRESS_DOCUMENT_MESSAGE = "Attention: this document is work in progress!"
@@ -234,7 +241,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def requirements = this.project.getSystemRequirements().groupBy { it.gampTopic.toLowerCase() }.collectEntries { gampTopic, reqs ->
             [
-                gampTopic.replaceAll(" ", "").toLowerCase(), // TODO: why is trimming necessary?
+                gampTopic.replaceAll(" ", "").toLowerCase(),
                 SortUtil.sortIssuesByProperties(reqs.collect { req ->
                     [
                         key          : req.key,
@@ -255,7 +262,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType, sectionsNotDone))
+        def documentTemplate = getDocumentTemplate(documentType)
+        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -506,7 +514,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def uri = this.createDocument(documentType, null, data_, [:], null, null, this.getWatermarkText(documentType, sectionsNotDone))
+        def documentTemplate = getDocumentTemplate(documentType)
+        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -639,7 +648,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ["raw/${file.getName()}", file.getBytes()]
         }
 
-        def uri = this.createDocument(documentType, null, data_, files, null, null, this.getWatermarkText(documentType, sectionsNotDone))
+        def documentTemplate = getDocumentTemplate(documentType)
+        def uri = this.createDocument(documentTemplate, null, data_, files, null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -960,9 +970,25 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def uri = this.createDocument(documentType, null, data_, [:], modifier, null, this.getWatermarkText(documentType, sectionsNotDone))
+        def documentTemplate = getDocumentTemplate(documentType)
+        def uri = this.createDocument(documentTemplate, null, data_, [:], modifier, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
+    }
+
+    String getDocumentTemplate(String documentType) {
+        if (this.GAMP_CATEGORY_SENSITIVE_DOCS.contains(documentType)) {
+            documentType + "-" + obtainGampCategory()
+        } else {
+            documentType
+        }
+    }
+
+    String obtainGampCategory() {
+        if (!this.project.GAMPCategory) {
+            throw new IllegalArgumentException("Error: Project is enabled for LeVADocs but contains no GAMPCategory.")
+        }
+        return this.project.GAMPCategory
     }
 
     String createTIP(Map repo = null, Map data = null) {
@@ -1192,7 +1218,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
         if (jiraIssues.size() == 0) {
-            throw new RuntimeException("Error: No Jira issues associated with document type '${documentType}'.")
+            throw new RuntimeException("Error: No Jira issues associated with document type '${documentType}' for labels (${jiraDocumentLabels.join(",")}).")
         }
 
         // Append a warning message for documents which are considered work in progress

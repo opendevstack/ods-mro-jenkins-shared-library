@@ -874,4 +874,64 @@ class ProjectSpec extends SpecHelper {
         e = thrown(IllegalArgumentException)
         e.message == "Error: unable to parse project meta data. Required attribute 'repositories[1].id' is undefined."
     }
+
+    def "load project metadata with multiple LeVADocs in capabilities"() {
+        when:
+        metadataFile.text = """
+            id: myId
+            name: myName
+            repositories:
+              - id: A
+                name: A
+                url: http://git.com
+            capabilities:
+              - LeVADocs:
+                GAMPCategory: 2
+              - LeVADocs:
+                GAMPCategory: 3
+        """
+
+        project.loadMetadata()
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to parse project metadata. More than one LeVADocs items is defined in capabilities"
+    }
+
+    def "does not set-up GAMPCategory when loading project metadata if LeVADocs is not enabled" () {
+         when:
+         metadataFile.text = """
+            id: myId
+            name: myName
+            repositories:
+              - id: A
+                name: A
+                url: http://git.com
+        """
+
+        def result = project.loadMetadata()
+
+        then:
+        result.GAMPCategory == null
+    }
+
+    def "sets-up GAMPCategory when loading project metadata" () {
+         when:
+         metadataFile.text = """
+            id: myId
+            name: myName
+            repositories:
+              - id: A
+                name: A
+                url: http://git.com
+            capabilities:
+              - LeVADocs:
+                  GAMPCategory: 99
+        """
+
+        def result = project.loadMetadata()
+
+        then:
+        result.GAMPCategory == "99"
+    }
 }

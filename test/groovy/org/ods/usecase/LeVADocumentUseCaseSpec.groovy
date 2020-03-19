@@ -4,6 +4,8 @@ import groovy.json.JsonOutput
 
 import java.nio.file.Files
 
+import static groovy.test.GroovyAssert.shouldFail
+
 import org.ods.service.*
 import org.ods.util.*
 
@@ -319,6 +321,54 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.conclusion.statement == "Some discrepancies found as tests did fail."
     }
 
+    def "obtain GAMP category"() {
+        given:
+        def categoryToTest = "999"
+        project.GAMPCategory = categoryToTest
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+
+        when:
+        def result = usecase.obtainGampCategory()
+
+        then:
+        result == categoryToTest as String
+
+    }
+
+    def "throw error if GAMP category is not set for project"() {
+        given:
+        when:
+        project.GAMPCategory = null
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+
+        then:
+        def msg = shouldFail IllegalArgumentException, {
+            usecase.obtainGampCategory()
+        }
+        msg.toString().contains("Error: Project is enabled for LeVADocs but contains no GAMPCategory")
+
+    }
+
+    def "get correct templates for GAMP category sensitive documents"() {
+        given:
+        project.GAMPCategory = "999"
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+
+        expect:
+        usecase.getDocumentTemplate(documentType) == template
+
+        where:
+        documentType                                        || template
+        LeVADocumentUseCase.DocumentType.CSD as String      || (LeVADocumentUseCase.DocumentType.CSD as String) + "-999"
+        LeVADocumentUseCase.DocumentType.SSDS as String     || (LeVADocumentUseCase.DocumentType.SSDS as String) + "-999"
+        LeVADocumentUseCase.DocumentType.CFTP as String     || (LeVADocumentUseCase.DocumentType.CFTP as String) + "-999"
+        LeVADocumentUseCase.DocumentType.CFTR as String     || (LeVADocumentUseCase.DocumentType.CFTR as String) + "-999"
+        LeVADocumentUseCase.DocumentType.RA as String       || (LeVADocumentUseCase.DocumentType.RA as String)
+    }
+
     def "create CSD"() {
         given:
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
@@ -330,6 +380,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def chapterData = ["sec1": [content: "myContent", status: "DONE", key:"DEMO-1"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createCSD()
@@ -339,9 +390,10 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
+        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
         1 * project.getSystemRequirements()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
@@ -555,6 +607,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createCFTP()
@@ -564,11 +617,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
+        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeAcceptance()
         1 * project.getAutomatedTestsTypeIntegration()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.getWatermarkText(documentType, [])
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(*_)
     }
 
@@ -605,6 +659,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Stubbed Method Responses
         def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createCFTR(null, data)
@@ -619,7 +674,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.computeTestDiscrepancies("Integration and Acceptance Tests", SortUtil.sortIssuesByProperties(acceptanceTestIssues + integrationTestIssues, ["key"]), junit.combineTestResults([data.tests.acceptance.testResults, data.tests.integration.testResults]))
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.getWatermarkText(documentType, [])
-        1 * usecase.createDocument(documentType, null, _, files, null, null, _) >> uri
+        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, files, null, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
 
         cleanup:
@@ -823,6 +879,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                 techSpecs     : [techSpec]
             ]
         ]
+        def documentTemplate = "template"
+
         when:
         usecase.createSSDS()
 
@@ -837,9 +895,10 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         sq.loadReportsFromPath(_) >> sqReportFiles
 
         then:
+        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], null)
         1 * usecase.getWatermarkText(documentType, [])
-        1 * usecase.createDocument(documentType, null, _, _, _, null, _) >> uri
+        1 * usecase.createDocument(documentTemplate, null, _, _, _, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
@@ -1071,7 +1130,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         def e = thrown(RuntimeException)
-        e.message == "Error: No Jira issues associated with document type '${documentType}'."
+        e.message.contains("Error: No Jira issues associated with document type '${documentType}'")
     }
 
     def "notify LeVA document with 2 chapters issue not DONE yet"() {
@@ -1109,7 +1168,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.CSD as String)
 
         then:
-        result == "Developer Preview"
+        result == null
 
         when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.DTP as String)
