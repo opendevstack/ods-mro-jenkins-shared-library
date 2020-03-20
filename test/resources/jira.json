@@ -127,64 +127,64 @@
         }
     },
     "bugs": {
-        "SOCKSHOP-129": {
-            "key": "SOCKSHOP-129",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+        "NET-129": {
+            "key": "NET-129",
+            "id": "${#####}",
             "version": "1.0",
             "name": "Payment takes 183 seconds instead of allowed 3 seconds.",
             "assignee": "Unassigned",
             "dueDate": "",
             "status": "TO DO",
             "tests": [
-                "SOCKSHOP-127"
+                "NET-127"
             ]
         }
     },
     "components": {
         "Technology-demo-app-payment": {
             "key": "Technology-demo-app-payment",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+            "id": "${#####}",
             "version": "1.0",
             "name": "Technology-demo-app-payment",
             "description": "Technology component demo-app-paymnent stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-payment/browse",
             "epics": [
-                "SOCKSHOP-124"
+                "NET-124"
             ],
             "requirements": [
-                "SOCKSHOP-125"
+                "NET-125"
             ],
             "techSpecs": [
-                "SOCKSHOP-128"
+                "NET-128"
             ],
             "tests": [
-                "SOCKSHOP-127"
+                "NET-127"
             ],
             "risks": [
-                "SOCKSHOP-126"
+                "NET-126"
             ],
             "mitigations": [
-                "SOCKSHOP-123"
+                "NET-123"
             ]
         }
     },
     "epics": {
-        "SOCKSHOP-124": {
-            "key": "SOCKSHOP-124",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+        "NET-124": {
+            "key": "NET-124",
+            "id": "${#####}",
             "version": "1.0",
             "name": "As a user I want to be able to do payments",
             "description": "Implement a payment service that integrates with Payment Service Providers and allows a secure and reliable payment for merchandise offered in the Sock Shop.",
             "status": "Open",
             "epicName": "Payments",
             "requirements": [
-                "SOCKSHOP-125"
+                "NET-125"
             ]
         }
     },
     "mitigations": {
-        "SOCKSHOP-123": {
-            "key": "SOCKSHOP-123",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+        "NET-123": {
+            "key": "NET-123",
+            "id": "${#####}",
             "version": "1.0",
             "name": "Provide discount for the next purchase",
             "description": "If a payment cannot be processed within the required time provide a discount for the next purchase for the same customer to make them come back.",
@@ -193,17 +193,17 @@
                 "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-125"
+                "NET-125"
             ],
             "risks": [
-                "SOCKSHOP-126"
+                "NET-126"
             ]
         }
     },
     "requirements": {
-        "SOCKSHOP-125": {
-            "key": "SOCKSHOP-125",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+        "NET-125": {
+            "key": "NET-125",
+            "id": "${#####}",
             "version": "1.0",
             "name": "As a user I want my payments to be processed quickly",
             "description": "Payments have to be conducted quickly to keep up with the elevated expectations of customers",
@@ -223,26 +223,26 @@
                 "Technology-demo-app-payment"
             ],
             "epics": [
-                "SOCKSHOP-124"
+                "NET-124"
             ],
             "risks": [
-                "SOCKSHOP-126"
+                "NET-126"
             ],
             "tests": [
-                "SOCKSHOP-127"
+                "NET-127"
             ],
             "mitigations": [
-                "SOCKSHOP-123"
+                "NET-123"
             ],
             "techSpecs": [
-                "SOCKSHOP-128"
+                "NET-128"
             ]
         }
     },
     "risks": {
-        "SOCKSHOP-126": {
-            "key": "SOCKSHOP-126",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+        "NET-126": {
+            "key": "NET-126",
+            "id": "${#####}",
             "version": "1.0",
             "name": "If payments take too long we can loose business and customers",
             "description": "Adverse Event: Payments take too long. Impact: User will take their business elsewhere.",
@@ -254,20 +254,20 @@
             "riskPriorityNumber": 0,
             "riskPriority": 0,
             "mitigations": [
-                "SOCKSHOP-123"
+                "NET-123"
             ],
             "requirements": [
-                "SOCKSHOP-125"
+                "NET-125"
             ],
             "tests": [
-                "SOCKSHOP-127"
+                "NET-127"
             ]
         }
     },
     "techSpecs": {
-        "SOCKSHOP-128": {
-            "key": "SOCKSHOP-128",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+        "NET-128": {
+            "key": "NET-128",
+            "id": "${#####}",
             "version": "1.0",
             "name": "Containerized Infrastructure",
             "description": "The system should be set up as containerized infrastructure in the openshift cluster.",
@@ -278,89 +278,38 @@
                 "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-125"
+                "NET-125"
             ],
             "risks": [
-                "SOCKSHOP-126"
+                "NET-126"
             ],
             "tests": [
-                "SOCKSHOP-5",
-                "SOCKSHOP-127"
+                "NET-5",
+                "NET-9",
+                "NET-10",
+                "NET-127",
+                "NET-130",
+                "NET-131",
+                "NET-132",
+                "NET-133",
+                "NET-134",
+                "NET-135",
+                "NET-136",
+                "NET-137",
+                "NET-138",
+                "NET-139",
+                "NET-140",
+                "NET-141",
+                "NET-142",
+                "NET-143",
+                "NET-144"
             ]
         }
     },
     "tests": {
-        "SOCKSHOP-5": {
-            "key": "SOCKSHOP-5",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
-            "version": "1.0",
-            "name": "Verify payment service installation",
-            "description": "verify payment service is running and responsive",
-            "status": "DONE",
-            "testType": "Installation",
-            "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to the service on :80/health via HTTP",
-                    "data": "N/A",
-                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
-                }
-            ],
-            "components": [
-                "Technology-demo-app-payment"
-            ],
-            "requirements": [
-                "SOCKSHOP-125"
-            ],
-            "bugs": []
-        },
-        "SOCKSHOP-9": {
-            "key": "SOCKSHOP-5",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
-            "version": "1.0",
-            "name": "Verify total payment sum",
-            "description": "verify payment sums up correclty",
-            "status": "DONE",
-            "testType": "Unit",
-            "executionType": "Automated",
-            "steps": [],
-            "components": [
-                "Technology-demo-app-payment"
-            ],
-            "requirements": [
-                "SOCKSHOP-125"
-            ],
-            "bugs": []
-        },
-        "SOCKSHOP-10": {
-            "key": "SOCKSHOP-5",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
-            "version": "1.0",
-            "name": "Verify payment service's usability",
-            "description": "verify payment service is intuitive",
-            "status": "DONE",
-            "testType": "Acceptance",
-            "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Connect to the service on :80/health via HTTP",
-                    "data": "N/A",
-                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
-                }
-            ],
-            "components": [
-                "Technology-demo-app-payment"
-            ],
-            "requirements": [
-                "SOCKSHOP-125"
-            ],
-            "bugs": []
-        },
-        "SOCKSHOP-127": {
-            "key": "SOCKSHOP-127",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
+        "NET-127": {
+            "key": "NET-127",
+            "id": "${#####}",
             "version": "1.0",
             "name": "Stress test for the payment duration SLAs",
             "description": "verify payments are executed within the payment SLAs",
@@ -385,52 +334,18 @@
                 "Technology-demo-app-payment"
             ],
             "requirements": [
-                "SOCKSHOP-125"
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
             ],
             "bugs": []
         },
-        "SOCKSHOP-6": {
-            "key": "SOCKSHOP-6",
-            "id": "${#####} !!!-CLARIFICATION-NEEDED-!!! we assume this will be provided by the unified REST endpoint",
-            "version": "1.0",
-            "name": "Verify card payments",
-            "description": "Verify payment service executes card payments against PSP interface",
-            "status": "DONE",
-            "testType": "Integration",
-            "executionType": "Automated",
-            "steps": [
-                {
-                    "index": 0,
-                    "step": "Select cart payment for sample order",
-                    "data": "N/A",
-                    "expectedResult": "Card payment gets accepted"
-                },
-                {
-                    "index": 1,
-                    "step": "Enter card details",
-                    "data": "N/A",
-                    "expectedResult": "Card details are sent to PSP"
-                },
-                {
-                    "index": 2,
-                    "step": "PSP acknowledges card details",
-                    "data": "N/A",
-                    "expectedResult": "Receive OK/NOK from PSP."
-                }
-            ],
-            "components": [
-                "Technology-demo-app-payment"
-            ],
-            "requirements": [
-                "SOCKSHOP-125"
-            ],
-            "bugs": []
-        },
-        "PLTFMDEV-401": {
-            "name": "verify database is correctly installed",
-            "description": "verify database is correctly setup.",
-            "key": "PLTFMDEV-401",
-            "id": "24888",
+        "NET-130": {
+            "name": "Verify database is correctly installed",
+            "description": "Verify database is correctly setup.",
+            "key": "NET-130",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -456,25 +371,24 @@
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "risks": [
                 "DEMO-50"
             ],
             "bugs": []
         },
-        "PLTFMDEV-549": {
+        "NET-131": {
             "name": "User interacts with the cart",
             "description": "User interacts with the cart",
-            "key": "PLTFMDEV-549",
-            "id": "26201",
+            "key": "NET-131",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -500,18 +414,21 @@
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-550": {
+        "NET-132": {
             "name": "User shows catalogue",
             "description": "User shows catalogue",
-            "key": "PLTFMDEV-550",
-            "id": "26202",
+            "key": "NET-132",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -531,18 +448,21 @@
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-551": {
+        "NET-133": {
             "name": "User buys some socks",
             "description": "User buys some socks",
-            "key": "PLTFMDEV-551",
-            "id": "26203",
+            "key": "NET-133",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
@@ -574,97 +494,105 @@
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-552": {
+        "NET-134": {
             "name": "Home page looks sexy",
             "description": "Home page looks sexy",
-            "key": "PLTFMDEV-552",
-            "id": "26204",
+            "key": "NET-134",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-553": {
+        "NET-135": {
             "name": "User logs in",
             "description": "User logs in",
-            "key": "PLTFMDEV-553",
-            "id": "26205",
+            "key": "NET-135",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-554": {
+        "NET-136": {
             "name": "User exists in system",
             "description": "User exists in system",
-            "key": "PLTFMDEV-554",
-            "id": "26206",
+            "key": "NET-136",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1045": {
+        "NET-137": {
             "name": "FirstResultOrDefault returns the default for an empty list",
             "description": "FirstResultOrDefault returns the default for an empty list",
-            "key": "PLTFMDEV-1045",
-            "id": "26800",
+            "key": "NET-137",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Unit",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
                 "DEMO-15"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1046": {
-            "name": "verify frontend is correctly installed",
-            "description": "verify frontend is correctly installed.",
-            "key": "PLTFMDEV-1046",
-            "id": "26999",
+        "NET-138": {
+            "name": "Verify frontend is correctly installed",
+            "description": "Verify frontend is correctly installed.",
+            "key": "NET-138",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -678,25 +606,24 @@
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "risks": [
                 "DEMO-50"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1060": {
-            "name": "verify payment service is correctly installed",
-            "description": "verify payment service is correctly setup.",
-            "key": "PLTFMDEV-1060",
-            "id": "27041",
+        "NET-139": {
+            "name": "Verify payment service is correctly installed",
+            "description": "Verify payment service is correctly setup.",
+            "key": "NET-139",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -710,22 +637,21 @@
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1061": {
-            "name": "verify order service is correctly installed",
-            "description": "verify order service is correctly installed.",
-            "key": "PLTFMDEV-1061",
-            "id": "27042",
+        "NET-140": {
+            "name": "Verify order service is correctly installed",
+            "description": "Verify order service is correctly installed.",
+            "key": "NET-140",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -739,22 +665,21 @@
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1062": {
-            "name": "verify shipping service is correctly installed",
-            "description": "verify shipping service is correctly installed.",
-            "key": "PLTFMDEV-1062",
-            "id": "27043",
+        "NET-141": {
+            "name": "Verify shipping service is correctly installed",
+            "description": "Verify shipping service is correctly installed.",
+            "key": "NET-141",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Installation",
@@ -768,22 +693,21 @@
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1073": {
+        "NET-142": {
             "name": "Cart gets processed correctly",
             "description": "Cart gets processed correctly.",
-            "key": "PLTFMDEV-1073",
-            "id": "27105",
+            "key": "NET-142",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
@@ -797,22 +721,21 @@
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1074": {
+        "NET-143": {
             "name": "Frontend retrieves cart data correctly",
             "description": "Frontend retrieves cart data correctly.",
-            "key": "PLTFMDEV-1074",
-            "id": "27106",
+            "key": "NET-143",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
@@ -826,22 +749,21 @@
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "bugs": []
         },
-        "PLTFMDEV-1075": {
+        "NET-144": {
             "name": "Frontend retrieves payment data correctly",
             "description": "Frontend retrieves payment data correctly.",
-            "key": "PLTFMDEV-1075",
-            "id": "27107",
+            "key": "NET-144",
+            "id": "${#####}",
             "version": "1.0",
             "status": "READY TO TEST",
             "testType": "Integration",
@@ -855,14 +777,13 @@
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
+                "NET-128"
             ],
             "bugs": []
         }
