@@ -886,9 +886,9 @@ class ProjectSpec extends SpecHelper {
                 url: http://git.com
             capabilities:
               - LeVADocs:
-                GAMPCategory: 2
+                  GAMPCategory: 2
               - LeVADocs:
-                GAMPCategory: 3
+                  GAMPCategory: 3
         """
 
         project.loadMetadata()
@@ -915,6 +915,44 @@ class ProjectSpec extends SpecHelper {
         result.GAMPCategory == null
     }
 
+    def "fails when we have LeVADocs capabilities with no GAMPCategory " () {
+         when:
+         metadataFile.text = """
+            id: myId
+            name: myName
+            repositories:
+              - id: A
+                name: A
+                url: http://git.com
+            capabilities:
+              - LeVADocs:
+        """
+
+        def result = project.loadMetadata()
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: Project is enabled for LeVADocs but contains no GAMPCategory."
+
+        when:
+         metadataFile.text = """
+            id: myId
+            name: myName
+            repositories:
+              - id: A
+                name: A
+                url: http://git.com
+            capabilities:
+              - LeVADocs:
+                GAMPCategory: 99
+        """
+
+        result = project.loadMetadata()
+
+        then:
+        e = thrown(IllegalArgumentException)
+        e.message == "Error: Project is enabled for LeVADocs but contains no GAMPCategory."
+    }
     def "sets-up GAMPCategory when loading project metadata" () {
          when:
          metadataFile.text = """

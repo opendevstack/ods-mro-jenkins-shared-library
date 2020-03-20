@@ -246,7 +246,7 @@ class LeVADocumentScheduler extends DocGenScheduler {
     }
 
     protected boolean isDocumentApplicable(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map repo = null) {
-        if (!this.project.GAMPCategory) {
+        if (!this.project.hasCapability('LeVADocs')) {
             return false
         }
         def gampCategory = this.project.GAMPCategory

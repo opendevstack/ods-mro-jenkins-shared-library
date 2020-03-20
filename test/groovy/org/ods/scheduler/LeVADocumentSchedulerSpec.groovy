@@ -36,23 +36,29 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
         REPO_ODS_TEST.type = MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST
 
         PROJECT_GAMP_1 = createProject()
+        PROJECT_GAMP_1.capabilities << [ LeVADocs: [ GAMPCategory: "1" ] ]
         PROJECT_GAMP_1.GAMPCategory = "1"
 
         PROJECT_GAMP_3 = createProject()
+        PROJECT_GAMP_3.capabilities << [ LeVADocs: [ GAMPCategory: "3" ] ]
         PROJECT_GAMP_3.GAMPCategory = "3"
 
         PROJECT_GAMP_4 = createProject()
+        PROJECT_GAMP_4.capabilities << [ LeVADocs: [ GAMPCategory: "4" ] ]
         PROJECT_GAMP_4.GAMPCategory = "4"
 
         PROJECT_GAMP_5 = createProject()
+        PROJECT_GAMP_5.capabilities << [ LeVADocs: [ GAMPCategory: "5" ] ]
         PROJECT_GAMP_5.GAMPCategory = "5"
 
         PROJECT_GAMP_5_WITHOUT_JIRA = createProject()
-        PROJECT_GAMP_5.GAMPCategory = "5"
+        PROJECT_GAMP_5_WITHOUT_JIRA.capabilities << [ LeVADocs: [ GAMPCategory: "5" ] ]
+        PROJECT_GAMP_5_WITHOUT_JIRA.GAMPCategory = "5"
         PROJECT_GAMP_5_WITHOUT_JIRA.services.jira = null
 
         PROJECT_GAMP_5_WITHOUT_REPOS = createProject()
-        PROJECT_GAMP_5.GAMPCategory = "5"
+        PROJECT_GAMP_5_WITHOUT_REPOS.capabilities << [ LeVADocs: [ GAMPCategory: "5" ] ]
+        PROJECT_GAMP_5_WITHOUT_REPOS.GAMPCategory = "5"
         PROJECT_GAMP_5_WITHOUT_REPOS.repositories = []
     }
 
@@ -5667,6 +5673,7 @@ class LeVADocumentSchedulerSpec extends SpecHelper {
     def "is document applicable with invalid GAMP category"() {
         given:
         def project = createProject()
+        project.capabilities << [ LeVADocs: [ GAMPCategory: "0" ] ]
         project.GAMPCategory = "0"
 
         def steps = Spy(util.PipelineSteps)

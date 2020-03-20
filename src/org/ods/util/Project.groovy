@@ -1692,14 +1692,6 @@ class Project {
         return this.data.metadata.capabilities
     }
 
-    String getGAMPCategory() {
-        return this.data.metadata.GAMPCategory
-    }
-
-    void setGAMPCategory(String gampCategory) {
-        this.data.metadata.GAMPCategory = gampCategory
-    }
-
     List<JiraDataItem> getBugs() {
         return this.data.jira.bugs.values() as List
     }
@@ -1993,19 +1985,33 @@ class Project {
             result.capabilities = []
         }
 
-        // Check for GAMP category
+        // Check that LeVADocs capabilities in metadata.yml are well set-up
+        // TODO move me to the LeVA documents plugin
         def levaDocsCapability = result.capabilities.findAll { it instanceof Map && it.containsKey("LeVADocs") }
         if(levaDocsCapability) {
             if (levaDocsCapability.size() > 1) {
                 throw new IllegalArgumentException("Error: unable to parse project metadata. More than one LeVADocs items is defined in capabilities")
             }
-            def category = levaDocsCapability.first().LeVADocs.GAMPCategory
-            if (category) {
-                result.GAMPCategory = category.toString()
+            def category = levaDocsCapability.first().LeVADocs?.GAMPCategory
+            if (!category) {
+                throw new IllegalArgumentException("Error: Project is enabled for LeVADocs but contains no GAMPCategory.")
             }
+            result.GAMPCategory = category.toString()
         }
 
         return result
+    }
+
+	/**
+	 * Handy reference to easily get the GAMP category obtained through the LeVADocs Capability
+	 * TODO move me to the LeVA document plugin
+	 */
+    String getGAMPCategory() {
+        return this.data.metadata.GAMPCategory
+    }
+
+    void setGAMPCategory(String gampCategory) {
+        this.data.metadata.GAMPCategory = gampCategory
     }
 
     @NonCPS
