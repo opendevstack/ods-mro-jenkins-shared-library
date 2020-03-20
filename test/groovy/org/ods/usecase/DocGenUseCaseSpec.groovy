@@ -22,7 +22,7 @@ class DocGenUseCaseSpec extends SpecHelper {
 
         List<String> getSupportedDocuments() {}
 
-        String getDocumentsVersion() {
+        String getDocumentTemplatesVersion() {
             return "0.1"
         }
     }

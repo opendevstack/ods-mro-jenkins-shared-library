@@ -25,7 +25,7 @@ class DocGenSchedulerSpec extends SpecHelper {
             return ["A", "B", "C"]
         }
 
-        String getDocumentsVersion() {
+        String getDocumentTemplatesVersion() {
             return "0.1"
         }
     }

@@ -1211,8 +1211,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return issues.values().findAll { !it.status.equalsIgnoreCase("done") }
     }
 
-    String getDocumentsVersion() {
+    String getDocumentTemplatesVersion() {
         def version
+
         this.project.getCapabilities().each { capability ->
             if (capability instanceof Map && capability.containsKey("LeVADocs")) {
                 version = capability.LeVADocs.templatesVersion
