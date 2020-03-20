@@ -21,6 +21,10 @@ class DocGenUseCaseSpec extends SpecHelper {
         }
 
         List<String> getSupportedDocuments() {}
+
+        String getDocumentsVersion() {
+            return "0.1"
+        }
     }
 
     DocGenService docGen

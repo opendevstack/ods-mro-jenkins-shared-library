@@ -1195,4 +1195,23 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         result == "Developer Preview"
     }
+
+   def "get documents version from LeVADocs metadata"() {
+        given:
+        project.capabilities << [
+            LeVADocs: [
+                GAMPCategory: 5,
+                templatesVersion: "3.0"
+            ]
+        ] as List
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+
+        when:
+        def result = usecase.getDocumentsVersion()
+
+        then:
+        result == "3.0"
+    }
+
 }
