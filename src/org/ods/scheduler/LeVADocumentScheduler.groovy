@@ -246,10 +246,12 @@ class LeVADocumentScheduler extends DocGenScheduler {
     }
 
     protected boolean isDocumentApplicable(String documentType, String phase, MROPipelineUtil.PipelinePhaseLifecycleStage stage, Map repo = null) {
-        if (!this.project.hasCapability('LeVADocs')) {
+        def capability = this.project.getCapability('LeVADocs')
+        if (!capability) {
             return false
         }
-        def gampCategory = this.project.GAMPCategory
+
+        def gampCategory = capability.GAMPCategory as String
         return !repo
           ? isDocumentApplicableForProject(documentType, gampCategory, phase, stage)
           : isDocumentApplicableForRepo(documentType, gampCategory, phase, stage, repo)

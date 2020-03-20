@@ -262,8 +262,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -343,8 +342,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             }
         }
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
         return uri
     }
@@ -372,8 +370,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -476,8 +473,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             return document
         }
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, repo, data_, files, modifier, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), repo, data_, files, modifier, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -517,8 +513,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -585,8 +580,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -652,8 +646,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ["raw/${file.getName()}", file.getBytes()]
         }
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, files, null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, files, null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -703,8 +696,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -791,8 +783,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -837,8 +828,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -906,8 +896,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ["raw/${file.getName()}", file.getBytes()]
         }
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, files, null, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, files, null, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -978,18 +967,18 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], modifier, documentType, this.getWatermarkText(documentType, sectionsNotDone))
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], modifier, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
 
-    String getDocumentTemplate(String documentType) {
-        if (this.GAMP_CATEGORY_SENSITIVE_DOCS.contains(documentType)) {
-            documentType + "-" + this.project.GAMPCategory
-        } else {
-            documentType
+    String getDocumentTemplateName(String documentType) {
+        def capability = this.project.getCapability("LeVADocs")
+        if (!capability) {
+            return documentType
         }
+
+        return this.GAMP_CATEGORY_SENSITIVE_DOCS.contains(documentType) ? documentType + "-" + capability.GAMPCategory : documentType
     }
 
     String createTIP(Map repo = null, Map data = null) {
@@ -1013,8 +1002,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, watermarkText)
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, watermarkText)
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -1058,8 +1046,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             return document
         }
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        return this.createDocument(documentTemplate, repo, data_, [:], modifier, documentType, watermarkText)
+        return this.createDocument(getDocumentTemplateName(documentType), repo, data_, [:], modifier, documentType, watermarkText)
     }
 
     String createTRC(Map repo = null, Map data = null) {
@@ -1091,8 +1078,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
-        def documentTemplate = getDocumentTemplate(documentType)
-        def uri = this.createDocument(documentTemplate, null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
+        def uri = this.createDocument(getDocumentTemplateName(documentType), null, data_, [:], null, documentType, this.getWatermarkText(documentType, sectionsNotDone))
         this.notifyJiraTrackingIssue(documentType, "A new ${DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
@@ -1239,5 +1225,10 @@ class LeVADocumentUseCase extends DocGenUseCase {
     protected List<Map> getSectionsNotDone (Map issues = [:]) {
         if (!issues) return []
         return issues.values().findAll { !it.status.equalsIgnoreCase("done") }
+    }
+
+    String getDocumentTemplatesVersion() {
+        def capability = this.project.getCapability("LeVADocs")
+        return capability.templatesVersion
     }
 }

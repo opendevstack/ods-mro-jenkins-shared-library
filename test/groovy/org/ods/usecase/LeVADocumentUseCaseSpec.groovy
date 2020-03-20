@@ -323,12 +323,10 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
     def "get correct templates for GAMP category sensitive documents"() {
         given:
-        project.GAMPCategory = "999"
-        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+        project.getCapability("LeVADocs").GAMPCategory = "999"
 
         expect:
-        usecase.getDocumentTemplate(documentType) == template
+        usecase.getDocumentTemplateName(documentType) == template
 
         where:
         documentType                                        || template
@@ -360,7 +358,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getSystemRequirements()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
@@ -388,7 +386,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getSystemRequirements()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], _)
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
@@ -412,7 +410,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getWatermarkText(documentType)
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getBugs()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
@@ -444,7 +442,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getWatermarkText(documentType, [])
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
@@ -475,7 +473,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * usecase.getWatermarkText(documentType, [])
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
@@ -520,7 +518,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getWatermarkText(documentType, [])
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         1 * usecase.computeTestDiscrepancies("Development Tests", testIssues, testResults)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
@@ -571,7 +569,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * usecase.getWatermarkText(documentType, [])
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit("Technology-${repo.id}") >> testIssues
         1 * usecase.computeTestDiscrepancies("Development Tests", testIssues, testResults)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
@@ -599,7 +597,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeAcceptance()
         1 * project.getAutomatedTestsTypeIntegration()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
@@ -656,7 +654,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.computeTestDiscrepancies("Integration and Acceptance Tests", SortUtil.sortIssuesByProperties(acceptanceTestIssues + integrationTestIssues, ["key"]), junit.combineTestResults([data.tests.acceptance.testResults, data.tests.integration.testResults]))
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.getWatermarkText(documentType, [])
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, null, _, files, null, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
 
@@ -687,7 +685,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * project.getAutomatedTestsTypeAcceptance()
         1 * project.getAutomatedTestsTypeIntegration()
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.getWatermarkText(documentType, [])
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
@@ -739,7 +737,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * project.getAutomatedTestsTypeIntegration() >> integrationTestIssues
         1 * project.getAutomatedTestsTypeAcceptance() >> acceptanceTestIssues
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, null, _, [:], null, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
@@ -775,7 +773,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * project.getAutomatedTestsTypeInstallation()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
         1 * usecase.getWatermarkText(documentType, [])
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
@@ -823,7 +821,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * project.getAutomatedTestsTypeInstallation() >> testIssues
         1 * usecase.computeTestDiscrepancies("Installation Tests", testIssues, testResults)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, null, _, files, null, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
 
@@ -885,7 +883,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         sq.loadReportsFromPath(_) >> sqReportFiles
 
         then:
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], null)
         1 * usecase.getWatermarkText(documentType, [])
         1 * usecase.createDocument(documentTemplate, null, _, _, _, documentType, _) >> uri
@@ -916,7 +914,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         2 * project.getRisks()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], null)
         1 * usecase.getWatermarkText(documentType, [])
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
@@ -944,7 +942,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
@@ -971,7 +969,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.notifyJiraTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
@@ -999,7 +997,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * os.getPodDataForComponent(repo.id) >> createOpenShiftPodDataForComponent()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, repo, _, [:], _, documentType, _)
     }
 
@@ -1028,7 +1026,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * os.getPodDataForComponent(repo.id) >> createOpenShiftPodDataForComponent()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.getDocumentTemplate(documentType) >> documentTemplate
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.createDocument(documentTemplate, repo, _, [:], _, documentType, _)
     }
 
@@ -1253,5 +1251,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         result == "Developer Preview"
+    }
+
+    def "get document templates version"() {
+        when:
+        def result = usecase.getDocumentTemplatesVersion()
+
+        then:
+        result == "1.0"
     }
 }

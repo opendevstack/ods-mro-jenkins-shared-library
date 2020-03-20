@@ -190,7 +190,7 @@ class Project {
         static final String INTERFACE_REQUIREMENT = "Interface Requirement"
     }
 
-    protected static final String METADATA_FILE_NAME = "metadata.yml"
+    protected static String METADATA_FILE_NAME = "metadata.yml"
 
     private static final TEMP_FAKE_JIRA_DATA = """
 {
@@ -1692,6 +1692,15 @@ class Project {
         return this.data.metadata.capabilities
     }
 
+    Object getCapability(String name) {
+        def entry = this.getCapabilities().find { it instanceof Map ? it.find { it.key == name } : it == name }
+        if (entry) {
+            return entry instanceof Map ? entry[name] : true
+        }
+
+        return null
+    }
+
     List<JiraDataItem> getBugs() {
         return this.data.jira.bugs.values() as List
     }
@@ -1985,33 +1994,27 @@ class Project {
             result.capabilities = []
         }
 
-        // Check that LeVADocs capabilities in metadata.yml are well set-up
         // TODO move me to the LeVA documents plugin
-        def levaDocsCapability = result.capabilities.findAll { it instanceof Map && it.containsKey("LeVADocs") }
-        if(levaDocsCapability) {
-            if (levaDocsCapability.size() > 1) {
-                throw new IllegalArgumentException("Error: unable to parse project metadata. More than one LeVADocs items is defined in capabilities")
+        def levaDocsCapabilities = result.capabilities.findAll { it instanceof Map && it.containsKey("LeVADocs") }
+        if (levaDocsCapabilities) {
+            if (levaDocsCapabilities.size() > 1) {
+                throw new IllegalArgumentException("Error: unable to parse project metadata. More than one LeVADoc capability has been defined.")
             }
-            def category = levaDocsCapability.first().LeVADocs?.GAMPCategory
-            if (!category) {
-                throw new IllegalArgumentException("Error: Project is enabled for LeVADocs but contains no GAMPCategory.")
+
+            def levaDocsCapability = levaDocsCapabilities.first()
+
+            def gampCategory = levaDocsCapability.LeVADocs?.GAMPCategory
+            if (!gampCategory) {
+                throw new IllegalArgumentException("Error: LeVADocs capability has been defined but contains no GAMPCategory.")
             }
-            result.GAMPCategory = category.toString()
+
+            def templatesVersion = levaDocsCapability.LeVADocs?.templatesVersion
+            if (!templatesVersion) {
+                levaDocsCapability.LeVADocs.templatesVersion = "1.0"
+            }
         }
 
         return result
-    }
-
-	/**
-	 * Handy reference to easily get the GAMP category obtained through the LeVADocs Capability
-	 * TODO move me to the LeVA document plugin
-	 */
-    String getGAMPCategory() {
-        return this.data.metadata.GAMPCategory
-    }
-
-    void setGAMPCategory(String gampCategory) {
-        this.data.metadata.GAMPCategory = gampCategory
     }
 
     @NonCPS

@@ -507,7 +507,14 @@ class FixtureHelper {
                     ]
                 ]
             ],
-            capabilities: []
+            capabilities: [
+                [
+                    LeVADocs: [
+                        GAMPCategory: "5",
+                        templatesVersion: "1.0"
+                    ]
+                ]
+            ]
         ]
 
         result.repositories.each { repo ->
