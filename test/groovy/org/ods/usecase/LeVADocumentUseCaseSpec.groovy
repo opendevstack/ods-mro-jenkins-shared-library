@@ -4,6 +4,8 @@ import groovy.json.JsonOutput
 
 import java.nio.file.Files
 
+import static groovy.test.GroovyAssert.shouldFail
+
 import org.ods.service.*
 import org.ods.util.*
 
@@ -319,6 +321,22 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.conclusion.statement == "Some discrepancies found as tests did fail."
     }
 
+    def "get correct templates for GAMP category sensitive documents"() {
+        given:
+        project.getCapability("LeVADocs").GAMPCategory = "999"
+
+        expect:
+        usecase.getDocumentTemplateName(documentType) == template
+
+        where:
+        documentType                                        || template
+        LeVADocumentUseCase.DocumentType.CSD as String      || (LeVADocumentUseCase.DocumentType.CSD as String) + "-999"
+        LeVADocumentUseCase.DocumentType.SSDS as String     || (LeVADocumentUseCase.DocumentType.SSDS as String) + "-999"
+        LeVADocumentUseCase.DocumentType.CFTP as String     || (LeVADocumentUseCase.DocumentType.CFTP as String) + "-999"
+        LeVADocumentUseCase.DocumentType.CFTR as String     || (LeVADocumentUseCase.DocumentType.CFTR as String) + "-999"
+        LeVADocumentUseCase.DocumentType.RA as String       || (LeVADocumentUseCase.DocumentType.RA as String)
+    }
+
     def "create CSD"() {
         given:
         jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
@@ -328,8 +346,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.CSD as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE", key:"DEMO-1"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createCSD()
@@ -339,10 +358,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getSystemRequirements()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create TRC"() {
@@ -354,8 +374,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.TRC as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE", key:"DEMO-1"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createTRC()
@@ -365,10 +386,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getSystemRequirements()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], _)
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create DIL"() {
@@ -379,6 +401,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DIL as String
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createDIL()
@@ -387,9 +410,10 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * usecase.getWatermarkText(documentType)
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getBugs()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
     }
 
@@ -405,8 +429,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.DTP as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createDTP(repo)
@@ -414,13 +439,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * usecase.getWatermarkText(documentType)
+        1 * usecase.getWatermarkText(documentType, [])
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create DTP without Jira"() {
@@ -434,8 +460,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.DTP as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createDTP(repo)
@@ -443,20 +470,21 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType)
         1 * levaFiles.getDocumentChapterData(documentType) >> chapterData
-        0 * usecase.getWatermarkText(documentType)
+        0 * usecase.getWatermarkText(documentType, [])
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create DTR"() {
         given:
         // Test Parameters
         def xmlFile = Files.createTempFile("junit", ".xml").toFile()
-        xmlFile << "<?xml version='1.0' ?>\n" + createJUnitXMLTestResults()
+        xmlFile << "<?xml version='1.0' ?>\n" + createSockShopJUnitXmlTestResults()
 
         def repo = project.repositories.first()
         repo.id = "demo-app-carts"
@@ -478,7 +506,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def files = ["raw/${xmlFile.name}": xmlFile.bytes]
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
+        def documentTemplate = "template"
 
         when:
         usecase.createDTR(repo, data)
@@ -486,13 +515,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * usecase.getWatermarkText(documentType)
+        1 * usecase.getWatermarkText(documentType, [])
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         1 * usecase.computeTestDiscrepancies("Development Tests", testIssues, testResults)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.createDocument(documentType, repo, _, files, _, null, _)
+        1 * usecase.createDocument(documentTemplate, repo, _, files, _, documentType, _)
 
         cleanup:
         xmlFile.delete()
@@ -527,7 +557,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def buildParams = createProjectBuildEnvironment(env)
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
+        def documentTemplate = "template"
 
         when:
         usecase.createDTR(repo, data)
@@ -535,13 +566,14 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType)
         1 * levaFiles.getDocumentChapterData(documentType) >> chapterData
-        0 * usecase.getWatermarkText(documentType)
+        0 * usecase.getWatermarkText(documentType, [])
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeUnit("Technology-${repo.id}") >> testIssues
         1 * usecase.computeTestDiscrepancies("Development Tests", testIssues, testResults)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.createDocument(documentType, repo, _, files, _, null, _)
+        1 * usecase.createDocument(documentTemplate, repo, _, files, _, documentType, _)
     }
 
     def "create CFTP"() {
@@ -553,8 +585,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.CFTP as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createCFTP()
@@ -564,11 +597,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         0 * levaFiles.getDocumentChapterData(documentType)
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * project.getAutomatedTestsTypeAcceptance()
         1 * project.getAutomatedTestsTypeIntegration()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getWatermarkText(documentType)
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
+        1 * usecase.getWatermarkText(documentType, [])
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
         1 * usecase.updateJiraDocumentationTrackingIssue(*_)
     }
 
@@ -603,8 +637,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def files = [ "raw/${xmlFile.name}": xmlFile.bytes ]
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createCFTR(null, data)
@@ -616,11 +651,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * project.getAutomatedTestsTypeAcceptance() >> acceptanceTestIssues
         1 * project.getAutomatedTestsTypeIntegration() >> integrationTestIssues
-        1 * usecase.computeTestDiscrepancies("Integration and Acceptance Tests", (acceptanceTestIssues + integrationTestIssues), junit.combineTestResults([data.tests.acceptance.testResults, data.tests.integration.testResults]))
+        1 * usecase.computeTestDiscrepancies("Integration and Acceptance Tests", SortUtil.sortIssuesByProperties(acceptanceTestIssues + integrationTestIssues, ["key"]), junit.combineTestResults([data.tests.acceptance.testResults, data.tests.integration.testResults]))
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getWatermarkText(documentType)
-        1 * usecase.createDocument(documentType, null, _, files, null, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getWatermarkText(documentType, [])
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, files, null, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
 
         cleanup:
         xmlFile.delete()
@@ -635,8 +671,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.TCP as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createTCP()
@@ -648,10 +685,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * project.getAutomatedTestsTypeAcceptance()
         1 * project.getAutomatedTestsTypeIntegration()
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getWatermarkText(documentType)
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getWatermarkText(documentType, [])
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create TCR"() {
@@ -685,8 +723,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def files = ["raw/${xmlFile.name}": xmlFile.bytes]
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createTCR(null, data)
@@ -698,10 +737,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * project.getAutomatedTestsTypeIntegration() >> integrationTestIssues
         1 * project.getAutomatedTestsTypeAcceptance() >> acceptanceTestIssues
-        1 * usecase.createDocument(documentType, null, _, [:], null, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, [:], null, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getWatermarkText(documentType)
+        1 * usecase.getWatermarkText(documentType, [])
         1 * jiraUseCase.matchTestIssuesAgainstTestResults(acceptanceTestIssues, testResults, _, _)
         1 * jiraUseCase.matchTestIssuesAgainstTestResults(integrationTestIssues, testResults, _, _)
 
@@ -718,8 +758,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.IVP as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createIVP()
@@ -731,9 +772,10 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * project.getAutomatedTestsTypeInstallation()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.getWatermarkText(documentType)
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getWatermarkText(documentType, [])
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create IVR"() {
@@ -763,8 +805,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def files = ["raw/${xmlFile.name}": xmlFile.bytes]
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createIVR(null, data)
@@ -772,14 +815,15 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * usecase.getWatermarkText(documentType)
+        1 * usecase.getWatermarkText(documentType, [])
 
         then:
         1 * project.getAutomatedTestsTypeInstallation() >> testIssues
         1 * usecase.computeTestDiscrepancies("Installation Tests", testIssues, testResults)
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.createDocument(documentType, null, _, files, null, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, files, null, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
 
         cleanup:
         xmlFile.delete()
@@ -801,7 +845,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def sqReportsStashName = "scrr-report-${repo.id}-${steps.env.BUILD_ID}"
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
         def documentIssue = createJiraDocumentIssues().first()
         def sqReportFiles = [new FixtureHelper().getResource("Test.docx")]
@@ -823,6 +867,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
                 techSpecs     : [techSpec]
             ]
         ]
+        def documentTemplate = "template"
+
         when:
         usecase.createSSDS()
 
@@ -837,10 +883,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         sq.loadReportsFromPath(_) >> sqReportFiles
 
         then:
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], null)
-        1 * usecase.getWatermarkText(documentType)
-        1 * usecase.createDocument(documentType, null, _, _, _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getWatermarkText(documentType, [])
+        1 * usecase.createDocument(documentTemplate, null, _, _, _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create RA"() {
@@ -852,8 +899,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.RA as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createRA()
@@ -865,9 +913,10 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         2 * project.getRisks()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], null)
-        1 * usecase.getWatermarkText(documentType)
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getWatermarkText(documentType, [])
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create TIP"() {
@@ -879,8 +928,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createTIP()
@@ -888,12 +938,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * usecase.getWatermarkText(documentType)
+        1 * usecase.getWatermarkText(documentType, [])
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create TIP without Jira"() {
@@ -904,8 +955,9 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.TIP as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
         def uri = "http://nexus"
+        def documentTemplate = "template"
 
         when:
         usecase.createTIP()
@@ -913,12 +965,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType)
         1 * levaFiles.getDocumentChapterData(documentType) >> chapterData
-        0 * usecase.getWatermarkText(documentType)
+        0 * usecase.getWatermarkText(documentType, [])
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType])
-        1 * usecase.createDocument(documentType, null, _, [:], _, null, _) >> uri
-        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.")
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, null, _, [:], _, documentType, _) >> uri
+        1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType]} has been generated and is available at: ${uri}.", [])
     }
 
     def "create TIR"() {
@@ -930,7 +983,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.TIR as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
+        def documentTemplate = "template"
 
         when:
         usecase.createTIR(repo)
@@ -938,12 +992,13 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * usecase.getWatermarkText(documentType)
+        1 * usecase.getWatermarkText(documentType, [])
 
         then:
         1 * os.getPodDataForComponent(repo.id) >> createOpenShiftPodDataForComponent()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.createDocument(documentType, repo, _, [:], _, null, _)
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, repo, _, [:], _, documentType, _)
     }
 
     def "create TIR without Jira"() {
@@ -957,7 +1012,8 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentType = LeVADocumentUseCase.DocumentType.TIR as String
 
         // Stubbed Method Responses
-        def chapterData = ["sec1": "myContent"]
+        def chapterData = ["sec1": [content: "myContent", status: "DONE"]]
+        def documentTemplate = "template"
 
         when:
         usecase.createTIR(repo)
@@ -965,19 +1021,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
         0 * levaFiles.getDocumentChapterData(documentType)
-        1 * usecase.getWatermarkText(documentType)
+        1 * usecase.getWatermarkText(documentType, [])
 
         then:
         1 * os.getPodDataForComponent(repo.id) >> createOpenShiftPodDataForComponent()
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentType], repo)
-        1 * usecase.createDocument(documentType, repo, _, [:], _, null, _)
+        1 * usecase.getDocumentTemplateName(documentType) >> documentTemplate
+        1 * usecase.createDocument(documentTemplate, repo, _, [:], _, documentType, _)
     }
 
     def "create overall DTR"() {
         given:
-        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
-
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.DTR as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_DTR as String
@@ -990,15 +1044,12 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         then:
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName])
-        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, null, _) >> uri
+        1 * usecase.createOverallDocument("Overall-Cover", documentType, _, _, _) >> uri
         1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.")
     }
 
     def "create overall TIR"() {
         given:
-        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
-
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIR as String
         def documentTypeName = LeVADocumentUseCase.DocumentType.OVERALL_TIR as String
@@ -1043,6 +1094,104 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result.contains("OVERALL_TIR")
     }
 
+    def "update Jira documentation tracking issue in DEV"() {
+        given:
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+
+        def documentType = "myType"
+        def message = "myMessage"
+
+        def trackingIssues = [
+            "TRK-1"      : [
+                "key"        : "TRK-1",
+                "name"       : "Document Demo",
+                "description": "Tracking issue in Q",
+                "status"     : "PENDING",
+                "labels"     : [
+                    "Doc:${documentType}"
+                ]
+            ]
+        ]
+
+        project.data.jira.docs << trackingIssues
+
+        when:
+        usecase.updateJiraDocumentationTrackingIssue(documentType, message)
+
+        then:
+        1 * jiraUseCase.jira.appendCommentToIssue("TRK-1", message)
+    }
+
+    def "update Jira documentation tracking issue when no issues found in project.data.docs"() {
+        given:
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+
+        def documentType = "myTypeNotFound"
+        def message = "myMessage"
+
+        when:
+        usecase.updateJiraDocumentationTrackingIssue(documentType, message)
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message.contains("Error: no Jira tracking issue associated with document type '${documentType}'.")
+    }
+
+    def "update Jira documentation tracking issue with 2 chapters issue not DONE yet"() {
+        given:
+        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
+        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+
+        def documentType = "myTypeNotDone"
+        def message = "myMessage"
+
+        def chapterData = [
+            "sec1": [content: "myContent", status: "NOT DONE", key:"DOC-1"],
+            "sec1.1": [content: "myContent", status: "DONE", key:"DOC-2"],
+            "sec1.2": [content: "myContent", status: "NOT DONE", key:"DOC-3"]
+        ]
+
+        def trackingIssues = [
+            "TRK-1"      : [
+                "key"        : "TRK-1",
+                "name"       : "Document Demo",
+                "description": "Undone document tracking issue in Q",
+                "status"     : "PENDING",
+                "labels"     : [
+                    "Doc:${documentType}"
+                ]
+            ],
+            "TRK-2"      : [
+                "key"        : "TRK-2",
+                "name"       : "Document Demo",
+                "description": "Undone document tracking issue in P",
+                "status"     : "PENDING",
+                "labels"     : [
+                    "Doc:${documentType}"
+                ]
+            ]
+        ]
+
+        project.data.jira.docs << trackingIssues
+
+        when:
+        def chapterIssuesNotDone = usecase.getSectionsNotDone(chapterData)
+        usecase.updateJiraDocumentationTrackingIssue(documentType, message, chapterIssuesNotDone)
+
+        then:
+        1 * project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.DOCUMENTATION_TRACKING)
+
+        then:
+        1 * jiraUseCase.jira.updateFieldsOnIssue("TRK-1", _)
+        1 * jiraUseCase.jira.appendCommentToIssue("TRK-1", "myMessage Attention: this document is work in progress! See issues: DOC-1, DOC-3")
+
+        then:
+        1 * jiraUseCase.jira.updateFieldsOnIssue("TRK-2", _)
+        1 * jiraUseCase.jira.appendCommentToIssue("TRK-2", "myMessage Attention: this document is work in progress! See issues: DOC-1, DOC-3")
+    }
+
     def "docs with watermark text in DEV"() {
         given:
         project.buildParams.targetEnvironment = "dev"
@@ -1051,7 +1200,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.CSD as String)
 
         then:
-        result == "Developer Preview"
+        result == null
 
         when:
         result = usecase.getWatermarkText(LeVADocumentUseCase.DocumentType.DTP as String)
@@ -1138,49 +1287,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         result == "Developer Preview"
     }
 
-    def "update Jira documentation tracking issue in DEV"() {
-        given:
-        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
-
-        def documentType = "myType"
-        def message = "myMessage"
-
+    def "get document templates version"() {
         when:
-        usecase.updateJiraDocumentationTrackingIssue(documentType, message)
+        def result = usecase.getDocumentTemplatesVersion()
 
         then:
-        1 * jiraUseCase.jira.appendCommentToIssue("DEMO-71", message)
-    }
-
-    def "update Jira documentation tracking issue when no issues found in project.data.docs"() {
-        given:
-        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
-
-        def documentType = "myTypeNotfound"
-        def message = "myMessage"
-
-        when:
-        usecase.updateJiraDocumentationTrackingIssue(documentType, message)
-
-        then:
-        def e = thrown(RuntimeException)
-        e.message == "Error: no Jira tracking issue associated with document type '${documentType}'."
-    }
-
-    def "update Jira documentation tracking issue with 2 issues not DONE yet"() {
-        given:
-        jiraUseCase = Spy(new JiraUseCase(project, steps, util, Mock(JiraService)))
-        usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
-
-        def documentType = "myTypeNotDone"
-        def message = "myMessage"
-
-        when:
-        usecase.updateJiraDocumentationTrackingIssue(documentType, message)
-
-        then:
-        2 * jiraUseCase.jira.appendCommentToIssue(_, message.concat(" Attention: this document is work in progress! See issues: DEMO-69,DEMO-70"))
+        result == "1.0"
     }
 }

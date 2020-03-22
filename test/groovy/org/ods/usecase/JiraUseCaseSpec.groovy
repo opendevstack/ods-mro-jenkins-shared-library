@@ -1,13 +1,14 @@
 package org.ods.usecase
 
-import org.ods.service.*
-import org.ods.util.*
 
-import spock.lang.*
+import org.ods.service.JiraService
+import org.ods.util.IPipelineSteps
+import org.ods.util.MROPipelineUtil
+import org.ods.util.Project
+import spock.lang.Ignore
+import util.SpecHelper
 
 import static util.FixtureHelper.*
-
-import util.*
 
 class JiraUseCaseSpec extends SpecHelper {
 
@@ -21,8 +22,17 @@ class JiraUseCaseSpec extends SpecHelper {
         project = Spy(createProject())
         steps = Spy(util.PipelineSteps)
         util = Mock(MROPipelineUtil)
-        jira = Mock(JiraService)
-        usecase = new JiraUseCase(project, steps, util, jira)
+        jira = Mock(JiraService) {
+            createIssueTypeBug(_, _, _) >> {
+                [
+                    key   : "BUG-3",
+                    fields: [
+                        summary: "bug summary / name"
+                    ]
+                ]
+            }
+        }
+        usecase = Spy(new JiraUseCase(project, steps, util, jira))
     }
 
     def "apply test results as test issue labels"() {
@@ -106,12 +116,17 @@ class JiraUseCaseSpec extends SpecHelper {
     def "create bugs and block impacted test cases"() {
         given:
         // Test Parameters
-        def testIssues = createJiraTestIssues()
-        def failures = createTestResultFailures()
+        def testIssues = createSockShopJiraTestIssues()
+        def failures = createSockShopTestResultFailures()
         def comment = "myComment"
 
         // Stubbed Method Responses
-        def bug = [ key: "JIRA-BUG" ]
+        def bug = [
+            key   : "BUG-1",
+            fields: [
+                summary: "my-bug"
+            ]
+        ]
 
         when:
         usecase.createBugsForFailedTestIssues(testIssues, failures, comment)
@@ -122,11 +137,17 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * jira.createIssueLinkTypeBlocks(bug, {
             // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-3"
+            it.key == "NET-140"
         })
 
         then:
         1 * jira.appendCommentToIssue(bug.key, comment)
+
+        then:
+        // verify that bug gets created and registered on the correct test issue
+        project.data.jira.bugs.containsKey("BUG-1")
+        project.data.jiraResolved.bugs.containsKey("BUG-1")
+        testIssues.find { it.key == "NET-140" }.bugs.contains("BUG-1")
     }
 
     def "get document chapter data"() {
@@ -136,32 +157,32 @@ class JiraUseCaseSpec extends SpecHelper {
 
         // Argument Constraints
         def jqlQuery = [
-            jql: "project = ${project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENTATION_CHAPTER}' AND labels = Doc:${documentType}",
-            expand: [ "names", "renderedFields" ]
+            jql   : "project = ${project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENTATION_CHAPTER}' AND labels = Doc:${documentType}",
+            expand: ["names", "renderedFields"]
         ]
 
         // Stubbed Method Responses
-        def jiraIssue1 = createJiraIssue("1")
+        def jiraIssue1 = createJiraIssue("1", null, null, null, "DONE")
         jiraIssue1.fields["0"] = "1.0"
         jiraIssue1.renderedFields = [:]
         jiraIssue1.renderedFields["1"] = "<html>myContent1</html>"
         jiraIssue1.renderedFields.description = "<html>1-description</html>"
 
-        def jiraIssue2 = createJiraIssue("2")
+        def jiraIssue2 = createJiraIssue("2", null, null, null, "DONE")
         jiraIssue2.fields["0"] = "2.0"
         jiraIssue2.renderedFields = [:]
         jiraIssue2.renderedFields["1"] = "<html>myContent2</html>"
         jiraIssue2.renderedFields.description = "<html>2-description</html>"
 
-        def jiraIssue3 = createJiraIssue("3")
+        def jiraIssue3 = createJiraIssue("3", null, null, null, "DONE")
         jiraIssue3.fields["0"] = "3.0"
         jiraIssue3.renderedFields = [:]
         jiraIssue3.renderedFields["1"] = "<html>myContent3</html>"
         jiraIssue3.renderedFields.description = "<html>3-description</html>"
 
         def jiraResult = [
-            issues: [ jiraIssue1, jiraIssue2, jiraIssue3 ],
-            names: [
+            issues: [jiraIssue1, jiraIssue2, jiraIssue3],
+            names : [
                 "0": JiraUseCase.CustomIssueFields.HEADING_NUMBER,
                 "1": JiraUseCase.CustomIssueFields.CONTENT
             ]
@@ -176,19 +197,25 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         def expected = [
             "sec1s0": [
-                number: "1.0",
+                number : "1.0",
                 heading: "1-summary",
-                content: "<html>myContent1</html>"
+                content: "<html>myContent1</html>",
+                status: "DONE",
+                key: "JIRA-1"
             ],
             "sec2s0": [
-                number: "2.0",
+                number : "2.0",
                 heading: "2-summary",
-                content: "<html>myContent2</html>"
+                content: "<html>myContent2</html>",
+                status: "DONE",
+                key: "JIRA-2"
             ],
             "sec3s0": [
-                number: "3.0",
+                number : "3.0",
                 heading: "3-summary",
-                content: "<html>myContent3</html>"
+                content: "<html>myContent3</html>",
+                status: "DONE",
+                key: "JIRA-3"
             ]
         ]
 
@@ -204,9 +231,9 @@ class JiraUseCaseSpec extends SpecHelper {
 
         when:
         def jiraResult = [
-            "total": 0,
-            "maxResults":1000,
-            "issues":[]
+            "total"     : 0,
+            "maxResults": 1000,
+            "issues"    : []
         ]
 
         then:
@@ -226,7 +253,7 @@ class JiraUseCaseSpec extends SpecHelper {
         def matched = [:]
         def matchedHandler = { result ->
             matched = result.collectEntries { jiraTestIssue, testcase ->
-                [ (jiraTestIssue.key.toString()), testcase.name ]
+                [(jiraTestIssue.key.toString()), testcase.name]
             }
         }
 
@@ -264,10 +291,10 @@ class JiraUseCaseSpec extends SpecHelper {
         // Test Parameters
         def componentName = "myComponent"
         def testTypes = ["myTestType"]
-        def testResults = createTestResults()
+        def testResults = createSockShopTestResults()
 
         // Stubbed Method Responses
-        def testIssues = createJiraTestIssues()
+        def testIssues = createSockShopJiraTestIssues()
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
@@ -278,6 +305,7 @@ class JiraUseCaseSpec extends SpecHelper {
         then:
         1 * support.applyXunitTestResults(testIssues, testResults)
         1 * util.warnBuildIfTestResultsContainFailure(testResults)
+        1 * util.warnBuildAboutUnexecutedJiraTests(_)
     }
 
     def "report test results for component with unexecuted Jira tests"() {
@@ -313,16 +341,14 @@ class JiraUseCaseSpec extends SpecHelper {
         // Test Parameters
         def componentName = "myComponent"
         def testTypes = ["myTestType"]
-        def testResults = createTestResults()
+        def testResults = createSockShopTestResults()
 
         // Argument Constraints
-        def error = createTestResultErrors().first()
-        def failure = createTestResultFailures().first()
+        def errors = createSockShopTestResultErrors()
+        def failures = createSockShopTestResultFailures()
 
         // Stubbed Method Responses
-        def testIssues = createJiraTestIssues()
-        def errorBug = [ key: "JIRA-BUG-1" ]
-        def failureBug = [ key: "JIRA-BUG-2" ]
+        def testIssues = createSockShopJiraTestIssues()
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
@@ -334,36 +360,14 @@ class JiraUseCaseSpec extends SpecHelper {
         1 * support.applyXunitTestResults(testIssues, testResults)
         1 * util.warnBuildIfTestResultsContainFailure(testResults)
 
-        // create bug and block impacted test cases for error
         then:
-        1 * jira.createIssueTypeBug(project.key, error.type, error.text) >> errorBug
-
-        then:
-        1 * jira.createIssueLinkTypeBlocks(errorBug, {
-            // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-2"
-        })
-
-        then:
-        1 * jira.appendCommentToIssue(errorBug.key, _)
-
-        // create bug and block impacted test cases for failure
-        then:
-        1 * jira.createIssueTypeBug(project.key, failure.type, failure.text) >> failureBug
-
-        then:
-        1 * jira.createIssueLinkTypeBlocks(failureBug, {
-            // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-3"
-        })
-
-        then:
-        1 * jira.appendCommentToIssue(failureBug.key, _)
+        1 * usecase.createBugsForFailedTestIssues(testIssues, errors, steps.env.RUN_DISPLAY_URL)
+        1 * usecase.createBugsForFailedTestIssues(testIssues, failures, steps.env.RUN_DISPLAY_URL)
     }
 
     def "report test results for component in PROD"() {
         given:
-        project.buildParams.targetEnvironmentToken = "P"
+        project.buildParams.targetEnvironmentToken = "Q"
 
         def support = Mock(JiraUseCaseSupport)
         usecase.setSupport(support)
@@ -371,16 +375,14 @@ class JiraUseCaseSpec extends SpecHelper {
         // Test Parameters
         def componentName = "myComponent"
         def testTypes = ["myTestType"]
-        def testResults = createTestResults()
+        def testResults = createSockShopTestResults()
 
         // Argument Constraints
-        def testIssues = createJiraTestIssues()
-        def error = createTestResultErrors().first()
-        def failure = createTestResultFailures().first()
+        def errors = createSockShopTestResultErrors()
+        def failures = createSockShopTestResultFailures()
 
         // Stubbed Method Responses
-        def errorBug = [ key: "JIRA-BUG-1" ]
-        def failureBug = [ key: "JIRA-BUG-2" ]
+        def testIssues = createSockShopJiraTestIssues()
 
         when:
         usecase.reportTestResultsForComponent(componentName, testTypes, testResults)
@@ -392,31 +394,9 @@ class JiraUseCaseSpec extends SpecHelper {
         1 * support.applyXunitTestResults(testIssues, testResults)
         1 * util.warnBuildIfTestResultsContainFailure(testResults)
 
-        // create bug and block impacted test cases for error
         then:
-        1 * jira.createIssueTypeBug(project.key, error.type, error.text) >> errorBug
-
-        then:
-        1 * jira.createIssueLinkTypeBlocks(errorBug, {
-            // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-2"
-        })
-
-        then:
-        1 * jira.appendCommentToIssue(errorBug.key, _)
-
-        // create bug and block impacted test cases for failure
-        then:
-        1 * jira.createIssueTypeBug(project.key, failure.type, failure.text) >> failureBug
-
-        then:
-        1 * jira.createIssueLinkTypeBlocks(failureBug, {
-            // the Jira issue that shall be linked to the bug
-            it.key == "JIRA-3"
-        })
-
-        then:
-        1 * jira.appendCommentToIssue(failureBug.key, _)
+        1 * usecase.createBugsForFailedTestIssues(testIssues, errors, steps.env.RUN_DISPLAY_URL)
+        1 * usecase.createBugsForFailedTestIssues(testIssues, failures, steps.env.RUN_DISPLAY_URL)
     }
 
     def "update Jira release status issue"() {

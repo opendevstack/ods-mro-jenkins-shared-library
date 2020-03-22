@@ -1,6 +1,6 @@
 package util
 
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 import groovy.transform.InheritConstructors
 
 import org.apache.http.client.utils.URIBuilder
@@ -46,8 +46,12 @@ class FakeProject extends Project {
 
     @Override
     Project load(GitUtil git, JiraUseCase jira) {
+        this.git = git
+        this.jiraUseCase = jiraUseCase
+
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.jira = this.loadJiraData(this.data.metadata.id)
+        this.data.jira.project.version = this.loadJiraDataProjectVersion()
         this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
@@ -73,7 +77,14 @@ class FakeProject extends Project {
 
     protected Map loadJiraData(String projectKey) {
         def file = new FixtureHelper().getResource("project-jira-data.json")
-        return new JsonSlurper().parse(file)
+        return new JsonSlurperClassic().parse(file)
+    }
+
+    protected Map loadJiraDataProjectVersion() {
+        return [
+            "id"  : "11100",
+            "name": "0.3"
+        ]
     }
 
     protected Map loadJiraDataBugs(Map tests) {
@@ -111,7 +122,8 @@ class FixtureHelper {
         def steps = new PipelineSteps()
         steps.env.WORKSPACE = ""
 
-        return new FakeProject(steps).init()
+        return new FakeProject(steps)
+            .init()
             .load(new FakeGitUtil(steps), null)
     }
 
@@ -138,369 +150,327 @@ class FixtureHelper {
     }
 
     static Map createProjectJiraDataBugs() {
+        return [:]
+        /*
         return [
-            "PLTFMDEV-658": [
-                "key": "PLTFMDEV-658",
+            "NET-301": [
+                "key": "NET-301",
                 "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
                 "assignee": "Unassigned",
                 "dueDate": "",
                 "status": "TO DO",
-                "tests": [
-                    "PLTFMDEV-551"
-                ]
-            ],
-            "PLTFMDEV-674": [
-                "key": "PLTFMDEV-674",
-                "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
-                "assignee": "Unassigned",
-                "dueDate": "",
-                "status": "TO DO",
-                "tests": [
-                    "PLTFMDEV-551"
-                ]
-            ],
-            "PLTFMDEV-690": [
-                "key": "PLTFMDEV-690",
-                "name": "org.spockframework.runtime. ConditionFailedWithExceptionError",
-                "assignee": "Unassigned",
-                "dueDate": "",
-                "status": "TO DO",
-                "tests": [
-                    "PLTFMDEV-551"
-                ]
-            ],
-            "PLTFMDEV-10658": [
-                "key": "PLTFMDEV-10658",
-                "name": "One org.spockframework.runtime. ConditionFailedWithExceptionError",
-                "assignee": "Unassigned",
-                "dueDate": "",
-                "status": "TO DO",
-                "tests": [
-                    "PLTFMDEV-554"
-                ]
-            ],
-            "PLTFMDEV-10674": [
-                "key": "PLTFMDEV-10674",
-                "name": "Two org.spockframework.runtime. ConditionFailedWithExceptionError",
-                "assignee": "Unassigned",
-                "dueDate": "",
-                "status": "TO DO",
-                "tests": [
-                    "PLTFMDEV-554"
-                ]
-            ],
-            "PLTFMDEV-10690":[
-                "key": "PLTFMDEV-10690",
-                "name": "Three org.spockframework.runtime. ConditionFailedWithExceptionError",
-                "assignee": "Unassigned",
-                "dueDate": "",
-                "status": "TO DO",
-                "tests": [
-                    "PLTFMDEV-554"
-                ]
+                "tests": []
             ]
         ]
+        */
     }
 
     static Map createProjectJiraDataDocs() {
         return [
             "PLTFMDEV-1072": [
-                "key": "PLTFMDEV-1072",
-                "name": "Test Case Report",
+                "key"        : "PLTFMDEV-1072",
+                "name"       : "Test Case Report",
                 "description": "TCR",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TCR"
                 ]
             ],
             "PLTFMDEV-1071": [
-                "key": "PLTFMDEV-1071",
-                "name": "Test Case Plan",
+                "key"        : "PLTFMDEV-1071",
+                "name"       : "Test Case Plan",
                 "description": "TCP",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TCP"
                 ]
             ],
             "PLTFMDEV-1066": [
-                "key": "PLTFMDEV-1066",
-                "name": "Discrepancy Log for P",
+                "key"        : "PLTFMDEV-1066",
+                "name"       : "Discrepancy Log for P",
                 "description": "C-DIL for P",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:DIL_P"
                 ]
             ],
             "PLTFMDEV-1064": [
-                "key": "PLTFMDEV-1064",
-                "name": "Discrepancy Log for Q",
+                "key"        : "PLTFMDEV-1064",
+                "name"       : "Discrepancy Log for Q",
                 "description": "C-DIL for Q",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:DIL_Q"
                 ]
             ],
-            "PLTFMDEV-1013": [
-                "key": "PLTFMDEV-1013",
-                "name": "Combined Specification Document URS FS CS",
-                "description": "C-CSD",
+            "PLTFMDEV-1142": [
+                "key": "PLTFMDEV-1142",
+                "name": "Discrepancy Log for D",
+                "description": "C-DIL for D",
                 "status": "DONE",
                 "labels": [
+                    "Doc:DIL"
+                ]
+            ],
+            "PLTFMDEV-1013": [
+                "key"        : "PLTFMDEV-1013",
+                "name"       : "Combined Specification Document URS FS CS",
+                "description": "C-CSD",
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:CSD"
                 ]
             ],
-            "PLTFMDEV-938": [
-                "key": "PLTFMDEV-938",
-                "name": "Traceability Matrix",
+            "PLTFMDEV-938" : [
+                "key"        : "PLTFMDEV-938",
+                "name"       : "Traceability Matrix",
                 "description": "TC-CTR",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TRC"
                 ]
             ],
-            "PLTFMDEV-937": [
-                "key": "PLTFMDEV-937",
-                "name": "System and Software Design Specification including Source Code Review Report",
+            "PLTFMDEV-937" : [
+                "key"        : "PLTFMDEV-937",
+                "name"       : "System and Software Design Specification including Source Code Review Report",
                 "description": "C-SSDS",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:SSDS"
                 ]
             ],
-            "PLTFMDEV-494": [
-                "key": "PLTFMDEV-494",
-                "name": "Configuration and Installation Testing Report for Dev",
+            "PLTFMDEV-494" : [
+                "key"        : "PLTFMDEV-494",
+                "name"       : "Configuration and Installation Testing Report for Dev",
                 "description": "C-IVR for DEV",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:IVR"
                 ]
             ],
-            "PLTFMDEV-433": [
-                "key": "PLTFMDEV-433",
-                "name": "Test Case Report_Manual",
+            "PLTFMDEV-433" : [
+                "key"        : "PLTFMDEV-433",
+                "name"       : "Test Case Report_Manual",
                 "description": "TC-CTR_M",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TC_CTR_M"
                 ]
             ],
-            "PLTFMDEV-428": [
-                "key": "PLTFMDEV-428",
-                "name": "Functional / Requirements Testing Report_Manual",
+            "PLTFMDEV-428" : [
+                "key"        : "PLTFMDEV-428",
+                "name"       : "Functional / Requirements Testing Report_Manual",
                 "description": "C-FTR_M",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:FTR_M"
                 ]
             ],
-            "PLTFMDEV-427": [
-                "key": "PLTFMDEV-427",
-                "name": "Test Case Report",
+            "PLTFMDEV-427" : [
+                "key"        : "PLTFMDEV-427",
+                "name"       : "Test Case Report",
                 "description": "TC-CTR",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TC_CTR"
                 ]
             ],
-            "PLTFMDEV-426": [
-                "key": "PLTFMDEV-426",
-                "name": "Test Case Plan",
-                "description": "TC-CTP",
+            "PLTFMDEV-1133": [
+                "key": "PLTFMDEV-1133",
+                "name": "Test Case Plan for P",
+                "description": "TCP_P",
                 "status": "DONE",
                 "labels": [
-                    "Doc:TC_CTP"
+                    "Doc:TCP_P"
                 ]
             ],
-            "PLTFMDEV-416": [
-                "key": "PLTFMDEV-416",
-                "name": "Configuration and Installation Testing Plan for DEV",
-                "description": "C-IVP for Dev",
+            "PLTFMDEV-1132": [
+                "key": "PLTFMDEV-1132",
+                "name": "Test Case Plan for Q",
+                "description": "TCP_Q",
                 "status": "DONE",
                 "labels": [
+                    "Doc:TCP_Q"
+                ]
+            ],
+            "PLTFMDEV-416" : [
+                "key"        : "PLTFMDEV-416",
+                "name"       : "Configuration and Installation Testing Plan for DEV",
+                "description": "C-IVP for Dev",
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:IVP"
                 ]
             ],
-            "PLTFMDEV-318": [
-                "key": "PLTFMDEV-318",
-                "name": "Technical Installation Plan",
+            "PLTFMDEV-318" : [
+                "key"        : "PLTFMDEV-318",
+                "name"       : "Technical Installation Plan",
                 "description": "C-TIP",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TIP"
                 ]
             ],
-            "PLTFMDEV-317": [
-                "key": "PLTFMDEV-317",
-                "name": "Technical Installation Report",
+            "PLTFMDEV-317" : [
+                "key"        : "PLTFMDEV-317",
+                "name"       : "Technical Installation Report",
                 "description": "C-TIR",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TIR"
                 ]
             ],
-            "PLTFMDEV-24": [
-                "key": "PLTFMDEV-24",
-                "name": "Validation Summary Report",
+            "PLTFMDEV-24"  : [
+                "key"        : "PLTFMDEV-24",
+                "name"       : "Validation Summary Report",
                 "description": "C-VSR",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:VSR"
                 ]
             ],
-            "PLTFMDEV-23": [
-                "key": "PLTFMDEV-23",
-                "name": "Configuration and Installation Testing Report for P",
+            "PLTFMDEV-23"  : [
+                "key"        : "PLTFMDEV-23",
+                "name"       : "Configuration and Installation Testing Report for P",
                 "description": "C-IVR for P",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:IVR_P"
                 ]
             ],
-            "PLTFMDEV-22": [
-                "key": "PLTFMDEV-22",
-                "name": "Technical Installation Report for P",
+            "PLTFMDEV-22"  : [
+                "key"        : "PLTFMDEV-22",
+                "name"       : "Technical Installation Report for P",
                 "description": "C-TIR for P",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TIR_P"
                 ]
             ],
-            "PLTFMDEV-21": [
-                "key": "PLTFMDEV-21",
-                "name": "Configuration and Installation Testing Plan for P",
+            "PLTFMDEV-21"  : [
+                "key"        : "PLTFMDEV-21",
+                "name"       : "Configuration and Installation Testing Plan for P",
                 "description": "C-IVP for P",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:IVP_P"
                 ]
             ],
-            "PLTFMDEV-20": [
-                "key": "PLTFMDEV-20",
-                "name": "Technical Installation Plan for P",
+            "PLTFMDEV-20"  : [
+                "key"        : "PLTFMDEV-20",
+                "name"       : "Technical Installation Plan for P",
                 "description": "C-TIP for P",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TIP_P"
                 ]
             ],
-            "PLTFMDEV-19": [
-                "key": "PLTFMDEV-19",
-                "name": "Combined Integration / Acceptance Testing Report",
+            "PLTFMDEV-19"  : [
+                "key"        : "PLTFMDEV-19",
+                "name"       : "Combined Integration / Acceptance Testing Report",
                 "description": "C-CFTR",
-                "status": "DONE",
-                "labels": [
-                    "Doc:CFTR",
-                    "Doc:FTR"
+                "status"     : "DONE",
+                "labels"     : [
+                    "Doc:CFTR"
                 ]
             ],
-            "PLTFMDEV-18": [
-                "key": "PLTFMDEV-18",
-                "name": "Test Cases",
+            "PLTFMDEV-18"  : [
+                "key"        : "PLTFMDEV-18",
+                "name"       : "Test Cases",
                 "description": "C-TC",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TC"
                 ]
             ],
-            "PLTFMDEV-17": [
-                "key": "PLTFMDEV-17",
-                "name": "Combined Integration / Acceptance Testing Plan",
+            "PLTFMDEV-17"  : [
+                "key"        : "PLTFMDEV-17",
+                "name"       : "Combined Integration / Acceptance Testing Plan",
                 "description": "C-CFTP",
-                "status": "DONE",
-                "labels": [
-                    "Doc:CFTP",
-                    "Doc:FTP"
+                "status"     : "DONE",
+                "labels"     : [
+                    "Doc:CFTP"
                 ]
             ],
-            "PLTFMDEV-15": [
-                "key": "PLTFMDEV-15",
-                "name": "Development Test Report",
-                "description": "C-DTR",
+            "PLTFMDEV-1129": [
+                "key": "PLTFMDEV-1129",
+                "name": "Combined Integration / Acceptance Testing Plan for P",
+                "description": "C-CFTP_P",
                 "status": "DONE",
                 "labels": [
+                    "Doc:CFTP_P"
+                ]
+            ],
+            "PLTFMDEV-1128": [
+                "key": "PLTFMDEV-1128",
+                "name": "Combined Integration / Acceptance Testing Plan for Q",
+                "description": "C-CFTP_Q",
+                "status": "DONE",
+                "labels": [
+                    "Doc:CFTP_Q"
+                ]
+            ],
+            "PLTFMDEV-15"  : [
+                "key"        : "PLTFMDEV-15",
+                "name"       : "Development Test Report",
+                "description": "C-DTR",
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:DTR"
                 ]
             ],
-            "PLTFMDEV-14": [
-                "key": "PLTFMDEV-14",
-                "name": "Configuration and Installation Testing Report for Q",
+            "PLTFMDEV-14"  : [
+                "key"        : "PLTFMDEV-14",
+                "name"       : "Configuration and Installation Testing Report for Q",
                 "description": "C-IVR for Q",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:IVR_Q"
                 ]
             ],
-            "PLTFMDEV-13": [
-                "key": "PLTFMDEV-13",
-                "name": "Technical Installation Report for Q",
+            "PLTFMDEV-13"  : [
+                "key"        : "PLTFMDEV-13",
+                "name"       : "Technical Installation Report for Q",
                 "description": "C-TIR for Q",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TIR_Q"
                 ]
             ],
-            "PLTFMDEV-12": [
-                "key": "PLTFMDEV-12",
-                "name": "Development Test Plan",
+            "PLTFMDEV-12"  : [
+                "key"        : "PLTFMDEV-12",
+                "name"       : "Development Test Plan",
                 "description": "C-DTP",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:DTP"
                 ]
             ],
-            "PLTFMDEV-8": [
-                "key": "PLTFMDEV-8",
-                "name": "Configuration and Installation Testing Plan for Q",
+            "PLTFMDEV-8"   : [
+                "key"        : "PLTFMDEV-8",
+                "name"       : "Configuration and Installation Testing Plan for Q",
                 "description": "C-IVP for Q",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:IVP_Q"
                 ]
             ],
-            "PLTFMDEV-7": [
-                "key": "PLTFMDEV-7",
-                "name": "Technical Installation Plan for Q",
+            "PLTFMDEV-7"   : [
+                "key"        : "PLTFMDEV-7",
+                "name"       : "Technical Installation Plan for Q",
                 "description": "C-TIP for Q",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:TIP_Q"
                 ]
             ],
-            "PLTFMDEV-6": [
-                "key": "PLTFMDEV-6",
-                "name": "Risk Assessment",
+            "PLTFMDEV-6"   : [
+                "key"        : "PLTFMDEV-6",
+                "name"       : "Risk Assessment",
                 "description": "C-RA",
-                "status": "DONE",
-                "labels": [
+                "status"     : "DONE",
+                "labels"     : [
                     "Doc:RA"
-                ]
-            ],
-            "DEMO-69": [
-                "key": "DEMO-69",
-                "name": "Document Demo",
-                "description": "Demo",
-                "status": "PENDING",
-                "labels": [
-                    "Doc:myTypeNotDone"
-                ]
-            ],
-            "DEMO-70": [
-                "key": "DEMO-70",
-                "name": "Document Demo",
-                "description": "Demo",
-                "status": "PENDING",
-                "labels": [
-                    "Doc:myTypeNotDone"
-                ]
-            ],
-            "DEMO-71": [
-                "key": "DEMO-71",
-                "name": "Document Demo",
-                "description": "Demo",
-                "status": "DONE",
-                "labels": [
-                    "Doc:myType"
                 ]
             ]
         ]
@@ -595,8 +565,7 @@ class FixtureHelper {
             id    : id,
             key   : "JIRA-${id}",
             fields: [:],
-            self  : "http://${id}",
-            status: status
+            self  : "http://${id}"
         ]
 
         result.fields.summary = summary ?: "${id}-summary"
@@ -606,6 +575,9 @@ class FixtureHelper {
         result.fields.issuelinks = []
         result.fields.issuetype = [
             name: issuetype
+        ]
+        result.fields.status = [
+            name: status
         ]
 
         return result
@@ -766,27 +738,27 @@ class FixtureHelper {
                 <properties>
                     <property name="my-property-a" value="my-property-a-value"/>
                 </properties>
-                <testcase name="PLTFMDEV401_verify-database-setup" classname="org.sockshop.DatabaseSetupTest" status="Succeeded" time="1"/>
-                <testcase name="PLTFMDEV1060_verfify-database-installation" classname="org.sockshop.DatabaseInstallationTest" status="Error" time="2">
+                <testcase name="130_verify-database-setup" classname="org.sockshop.DatabaseSetupTest" status="Succeeded" time="1"/>
+                <testcase name="139_verify-payment-service-installation" classname="org.sockshop.PaymentServiceInstallationTest" status="Error" time="2">
                     <error type="my-error-type" message="my-error-message">This is an error.</error>
                 </testcase>
             </testsuite>
             <testsuite name="sockshop-suite-2" tests="2" failures="1" errors="0" skipped="1" timestamp="2020-03-08T20:46:54Z">
-                <testcase name="PLTFMDEV1061_verify-database-is-operational" classname="org.sockshop.DatabaseOperationalTest" status="Failed" time="3">
+                <testcase name="140_verify-order-service-installation" classname="org.sockshop.OrderServiceInstallationTest" status="Failed" time="3">
                     <failure type="my-failure-type" message="my-failure-message">This is a failure.</failure>
                 </testcase>
-                <testcase name="PLTFMDEV1062_verify-databse-authentication" classname="org.sockshop.DatabaseAuthenticationTest" status="Missing" time="4">
+                <testcase name="141_verify-databse-authentication" classname="org.sockshop.ShippingServiceInstallationTest" status="Missing" time="4">
                     <skipped/>
                 </testcase>
             </testsuite>
             <testsuite name="sockshop-suite-3" tests="1" failures="0" errors="0" skipped="0" timestamp="2020-03-08T20:46:55Z">
-                <testcase name="PLTFMDEV1046_verify-frontend-is-setup-correctly" classname="org.sockshop.FrontendSetupTest" status="Succeeded" time="5"/>
+                <testcase name="138_verify-frontend-is-setup-correctly" classname="org.sockshop.FrontendSetupTest" status="Succeeded" time="5"/>
             </testsuite>
             <testsuite name="sockshop-suite-4" tests="4" failures="0" errors="0" skipped="1" timestamp="2020-03-08T20:46:56Z">
-                <testcase name="PLTFMDEV554_user-exists-in-system" classname="org.sockshop.integration.UserTest" status="Succeeded" time="3" />
-                <testcase name="PLTFMDEV1073_carts-gets-processed-correctly" classname="org.sockshop.integration.CartTest" status="Succeeded" time="3" />
-                <testcase name="PLTFMDEV1074_frontend-retrieves-cart-correctly" classname="org.sockshop.integration.FrontendTest" status="Succeeded" time="3" />
-                <testcase name="PLTFMDEV1075_frontend-retrieves-payment-data-correctly" classname="org.sockshop.integration.PaymentTest" status="Succeeded" time="3" />
+                <testcase name="136_user-exists-in-system" classname="org.sockshop.integration.UserTest" status="Succeeded" time="3" />
+                <testcase name="142_carts-gets-processed-correctly" classname="org.sockshop.integration.CartTest" status="Succeeded" time="3" />
+                <testcase name="143_frontend-retrieves-cart-correctly" classname="org.sockshop.integration.FrontendTest" status="Succeeded" time="3" />
+                <testcase name="144_frontend-retrieves-payment-data-correctly" classname="org.sockshop.integration.PaymentTest" status="Succeeded" time="3" />
             </testsuite>
         </testsuites>
         """
@@ -822,12 +794,33 @@ class FixtureHelper {
         )
     }
 
+    static Map createSockShopTestResults() {
+        return JUnitParser.parseJUnitXML(
+            createSockShopJUnitXmlTestResults()
+        )
+    }
+
     static Set createTestResultErrors() {
         return JUnitParser.Helper.getErrors(createTestResults())
     }
 
     static Set createTestResultFailures() {
         return JUnitParser.Helper.getFailures(createTestResults())
+    }
+
+    static Set createSockShopTestResultErrors() {
+        return JUnitParser.Helper.getErrors(createSockShopTestResults())
+    }
+
+    static Set createSockShopTestResultFailures() {
+        return JUnitParser.Helper.getFailures(createSockShopTestResults())
+    }
+
+    static List createSockShopJiraTestIssues() {
+        def file = FixtureHelper.class.getResource("/project-jira-data.json")
+        return new JsonSlurperClassic().parse(file).tests.collect { mapEntry ->
+            mapEntry.value
+        }
     }
 
     File getResource(String path) {

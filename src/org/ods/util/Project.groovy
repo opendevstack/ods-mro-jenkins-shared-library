@@ -8,12 +8,13 @@ import groovy.json.JsonSlurperClassic
 import java.nio.file.Paths
 
 import org.apache.http.client.utils.URIBuilder
+import org.ods.service.JiraService
 import org.ods.usecase.*
 import org.yaml.snakeyaml.Yaml
 
 class Project {
 
-    class JiraDataItem extends HashMap {
+    class JiraDataItem implements Map, Serializable {
         static final String TYPE_BUGS = "bugs"
         static final String TYPE_COMPONENTS = "components"
         static final String TYPE_EPICS = "epics"
@@ -36,48 +37,144 @@ class Project {
         ]
 
         private final String type
+        private HashMap delegate
 
         JiraDataItem(Map map, String type) {
-            super(map)
+            this.delegate = new HashMap(map)
             this.type = type
         }
 
         @NonCPS
+        @Override
+        int size() {
+            return delegate.size()
+        }
+
+        @NonCPS
+        @Override
+        boolean isEmpty() {
+            return delegate.isEmpty()
+        }
+
+        @NonCPS
+        @Override
+        boolean containsKey(Object key) {
+            return delegate.containsKey(key)
+        }
+
+        @NonCPS
+        @Override
+        boolean containsValue(Object value) {
+            return delegate.containsValue(value)
+        }
+
+        @NonCPS
+        @Override
+        Object get(Object key) {
+            return delegate.get(key)
+        }
+
+        @NonCPS
+        @Override
+        Object put(Object key, Object value) {
+            return delegate.put(key, value)
+        }
+
+        @NonCPS
+        @Override
+        Object remove(Object key) {
+            return delegate.remove(key)
+        }
+
+        @NonCPS
+        @Override
+        void putAll(Map m) {
+            delegate.putAll(m)
+        }
+
+        @NonCPS
+        @Override
+        void clear() {
+            delegate.clear()
+        }
+
+        @NonCPS
+        @Override
+        Set keySet() {
+            return delegate.keySet()
+        }
+
+        @NonCPS
+        @Override
+        Collection values() {
+            return delegate.values()
+        }
+
+        @NonCPS
+        @Override
+        Set<Entry> entrySet() {
+            return delegate.entrySet()
+        }
+
+        @NonCPS
+        String getType() {
+            return type
+        }
+
+        @NonCPS
+        Map getDelegate() {
+            return delegate
+        }
+
+        @NonCPS
+        JiraDataItem cloneIt() {
+            def bos = new ByteArrayOutputStream()
+            def os = new ObjectOutputStream(bos)
+            os.writeObject(this.delegate)
+            def ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()))
+
+            def newDelegate = ois.readObject()
+            JiraDataItem result = new JiraDataItem(newDelegate, type)
+            return result
+        }
+
+        @NonCPS
         // FIXME: why can we not invoke derived methods in short form, e.g. .resolvedBugs?
-        private List<Map> getResolvedReferences(String type) {
-            def item = Project.this.data.jiraResolved[this.type][this.getAt("key")]
+        private List<JiraDataItem> getResolvedReferences(String type) {
+            // Reference this within jiraResolved (contains readily resolved references to other entities)
+            def item = Project.this.data.jiraResolved[this.type][this.key]
             return item[type] ?: []
         }
 
-        List<Map> getResolvedBugs() {
+        List<JiraDataItem> getResolvedBugs() {
             return this.getResolvedReferences("bugs")
         }
 
-        List<Map> getResolvedComponents() {
+        List<JiraDataItem> getResolvedComponents() {
             return this.getResolvedReferences("components")
         }
 
-        List<Map> getResolvedEpics() {
+        List<JiraDataItem> getResolvedEpics() {
             return this.getResolvedReferences("epics")
         }
 
-        List<Map> getResolvedMitigations() {
+        List<JiraDataItem> getResolvedMitigations() {
             return this.getResolvedReferences("mitigations")
         }
 
-        List<Map> getResolvedSystemRequirements() {
+        List<JiraDataItem> getResolvedSystemRequirements() {
             return this.getResolvedReferences("requirements")
         }
 
-        List<Map> getResolvedRisks() {
+        List<JiraDataItem> getResolvedRisks() {
             return this.getResolvedReferences("risks")
         }
 
-        List<Map> getResolvedTechnicalSpecifications() {
+        List<JiraDataItem> getResolvedTechnicalSpecifications() {
             return this.getResolvedReferences("techSpecs")
         }
 
-        List<Map> getResolvedTests() {
+        List<JiraDataItem> getResolvedTests() {
             return this.getResolvedReferences("tests")
         }
     }
@@ -101,11 +198,11 @@ class Project {
     private static final TEMP_FAKE_JIRA_DATA = """
 {
     "project": {
-        "name": "PLTFMDEV",
-        "description": "Sample Project with 68 fictional Issues",
-        "key": "PLTFMDEV",
-        "id": 4711,
-        "jiraBaseUrl": "http://localhost:2990/jira/DEMO",
+        "name": "Sock Shop",
+        "description": "Sock Shop: A Microservice Demo Application",
+        "key": "SOCKSHOP",
+        "id": "1",
+        "jiraBaseUrl": "https://jira.example.com:2990/jira/SOCKSHOP",
         "gampTopics": [
             "operational requirements",
             "functional requirements",
@@ -228,210 +325,111 @@ class Project {
         }
     },
     "components": {
-        "DEMO-2": {
-            "name": "Technology-demo-app-front-end",
-            "description": "Technology component demo-app-front-end stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-front-end/browse",
-            "key": "DEMO-2",
+        "Technology-demo-app-payment": {
+            "key": "Technology-demo-app-payment",
+            "id": "2",
+            "version": "1.0",
+            "name": "Technology-demo-app-payment",
+            "description": "Technology component demo-app-paymnent stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-payment/browse",
             "epics": [
-                "DEMO-5",
-                "DEMO-39"
+                "NET-124"
             ],
             "requirements": [
-                "DEMO-40",
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-60",
-                "DEMO-49",
-                "DEMO-26"
+                "NET-128"
             ],
             "tests": [
-                "PLTFMDEV-549",
-                "PLTFMDEV-550",
-                "PLTFMDEV-551",
-                "PLTFMDEV-552",
-                "PLTFMDEV-553",
-                "PLTFMDEV-554",
-                "PLTFMDEV-1046",
-                "PLTFMDEV-1074",
-                "PLTFMDEV-1075"
+                "NET-127"
+            ],
+            "risks": [
+                "NET-126"
             ],
             "mitigations": [
-                "DEMO-8",
-                "DEMO-46",
-                "DEMO-12",
-                "DEMO-42"
-            ]
-        },
-        "DEMO-3": {
-            "name": "Technology-demo-app-carts",
-            "description": "Technology component demo-app-carts stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-carts/browse",
-            "key": "DEMO-3",
-            "epics": [
-                "DEMO-5",
-                "DEMO-39"
-            ],
-            "requirements": [
-                "DEMO-40",
-                "DEMO-6"
-            ],
-            "techSpecs": [
-                "DEMO-49",
-                "DEMO-15",
-                "DEMO-26"
-            ],
-            "tests": [
-                "PLTFMDEV-1045",
-                "PLTFMDEV-401",
-                "PLTFMDEV-1060",
-                "PLTFMDEV-1061",
-                "PLTFMDEV-1062",
-                "PLTFMDEV-1073",
-                "PLTFMDEV-1074",
-                "PLTFMDEV-1075"
-            ],
-            "mitigations": [
-                "DEMO-8",
-                "DEMO-46",
-                "DEMO-12",
-                "DEMO-42"
-            ]
-        },
-        "DEMO-4": {
-            "name": "Technology-demo-app-catalogue",
-            "description": "Technology component demo-app-catalogue stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-catalogue/browse",
-            "key": "DEMO-4",
-            "epics": [
-                "DEMO-5",
-                "DEMO-39"
-            ],
-            "requirements": [
-                "DEMO-40",
-                "DEMO-6"
-            ],
-            "techSpecs": [
-                "DEMO-60",
-                "DEMO-15"
-            ],
-            "tests": [],
-            "mitigations": [
-                "DEMO-8",
-                "DEMO-46",
-                "DEMO-12",
-                "DEMO-42"
+                "NET-123"
             ]
         }
     },
     "epics": {
-        "DEMO-5": {
-            "name": "Epic-1",
-            "description": "Epic-1 is described here...",
-            "key": "DEMO-5",
+        "NET-124": {
+            "key": "NET-124",
+            "id": "124",
             "version": "1.0",
-            "status": "TO DO",
-            "epicName": "Epic-1",
+            "name": "As a user I want to be able to do payments",
+            "description": "Implement a payment service that integrates with Payment Service Providers and allows a secure and reliable payment for merchandise offered in the Sock Shop.",
+            "status": "Open",
+            "epicName": "Payments",
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ]
-        },
-        "DEMO-39": {
-            "name": "Epic-2",
-            "description": "Epic-2 is described here...",
-            "key": "DEMO-39",
+        }
+    },
+    "mitigations": {
+        "NET-123": {
+            "key": "NET-123",
+            "id": "123",
             "version": "1.0",
+            "name": "Provide discount for the next purchase",
+            "description": "If a payment cannot be processed within the required time provide a discount for the next purchase for the same customer to make them come back.",
             "status": "TO DO",
-            "epicName": "Epic-2",
+            "components": [
+                "Technology-demo-app-payment"
+            ],
             "requirements": [
-                "DEMO-40"
+                "NET-125"
+            ],
+            "risks": [
+                "NET-126"
             ]
         }
     },
     "requirements": {
-        "DEMO-6": {
-            "name": "Req-1",
-            "description": "Req-1 is described here...",
-            "key": "DEMO-6",
+        "NET-125": {
+            "key": "NET-125",
+            "id": "125",
             "version": "1.0",
+            "name": "As a user I want my payments to be processed quickly",
+            "description": "Payments have to be conducted quickly to keep up with the elevated expectations of customers",
             "status": "IN DESIGN",
             "gampTopic": "performance requirements",
             "acceptanceCriteria": "acceptance of Req-1 only if ...",
             "configSpec": {
-                "name": "Config.Spec for Req-1",
-                "description": "Config.Spec for Req-1 description: ..."
+                "name": "Payment Service must be configured to communicate with payment service providers",
+                "description": "Configuration for secure and reliable payments."
             },
             "funcSpec": {
-                "name": "Func.Spec for Req-1",
-                "description": "Func.Spec for Req-1 description: ...",
-                "acceptanceCriteria": "Func.Spec accepted only, if Req-1 works as described here."
+                "name": "The payment must be confirmed in less than a set interval",
+                "description": "A payment must be completed with the Payment Service Provider within the given time interval",
+                "acceptanceCriteria": "The desired payment interval can be configured on system level."
             },
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "epics": [
-                "DEMO-5"
+                "NET-124"
             ],
             "risks": [
-                "DEMO-7",
-                "DEMO-11"
+                "NET-126"
             ],
             "tests": [
-                "PLTFMDEV-401",
-                "PLTFMDEV-550",
-                "PLTFMDEV-549"
+                "NET-127"
             ],
             "mitigations": [
-                "DEMO-8",
-                "DEMO-12"
+                "NET-123"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
-        },
-        "DEMO-40": {
-            "name": "Req-2",
-            "description": "Req-2 is described here...",
-            "key": "DEMO-40",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "gampTopic": "compatibility",
-            "acceptanceCriteria": "acceptance of Req-2 only if ...",
-            "configSpec": {
-                "name": "Config.Spec for Req-2",
-                "description": "Config.Spec for Req-2 description: ..."
-            },
-            "funcSpec": {
-                "name": "Func.Spec for Req-2",
-                "description": "Func.Spec for Req-2 description: ...",
-                "acceptanceCriteria": "Func.Spec accepted only, if Req-2 works as described here."
-            },
-            "components": [
-                "DEMO-4"
-            ],
-            "epics": [
-                "DEMO-39"
-            ],
-            "risks": [
-                "DEMO-41",
-                "DEMO-45"
-            ],
-            "tests": [],
-            "mitigations": [
-                "DEMO-46",
-                "DEMO-42"
-            ],
-            "techSpecs": [
-                "DEMO-60",
-                "DEMO-49"
+                "NET-128"
             ]
         }
     },
     "risks": {
-        "DEMO-41": {
-            "name": "Risk-1 on Req DEMO-40",
-            "description": "Risk-1 on Req DEMO-40 is described here...",
-            "key": "DEMO-41",
+        "NET-126": {
+            "key": "NET-126",
+            "id": "126",
             "version": "1.0",
+            "name": "If payments take too long we can loose business and customers",
+            "description": "Adverse Event: Payments take too long. Impact: User will take their business elsewhere.",
             "status": "TO DO",
             "gxpRelevance": "N0",
             "probabilityOfOccurrence": 1,
@@ -440,243 +438,100 @@ class Project {
             "riskPriorityNumber": 0,
             "riskPriority": 0,
             "mitigations": [
-                "DEMO-42"
+                "NET-123"
             ],
             "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-61": {
-            "name": "Risk-1 on TechSpec DEMO-60",
-            "description": "Risk-1 on TechSpec DEMO-60 is described here...",
-            "key": "DEMO-61",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N0",
-            "probabilityOfOccurrence": 3,
-            "severityOfImpact": 2,
-            "probabilityOfDetection": 2,
-            "riskPriorityNumber": 0,
-            "riskPriority": 0,
-            "mitigations": [
-                "DEMO-62"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-50": {
-            "name": "Risk-1 on TechSpec DEMO-49",
-            "description": "Risk-1 on TechSpec DEMO-49 is described here...",
-            "key": "DEMO-50",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N1",
-            "probabilityOfOccurrence": 2,
-            "severityOfImpact": 3,
-            "probabilityOfDetection": 2,
-            "riskPriorityNumber": 12,
-            "riskPriority": 2,
-            "mitigations": [
-                "DEMO-51"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-7": {
-            "name": "Risk-1 on Req DEMO-6",
-            "description": "Risk-1 on Req DEMO-6 is described here...",
-            "key": "DEMO-7",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N0",
-            "probabilityOfOccurrence": 3,
-            "severityOfImpact": 2,
-            "probabilityOfDetection": 3,
-            "riskPriorityNumber": 0,
-            "riskPriority": 0,
-            "mitigations": [
-                "DEMO-8"
-            ],
-            "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "tests": [
-                "PLTFMDEV-550"
+                "NET-127"
             ]
-        },
-        "DEMO-27": {
-            "name": "Risk-1 on TechSpec DEMO-26",
-            "description": "Risk-1 on TechSpec DEMO-26 is described here...",
-            "key": "DEMO-27",
+        }
+    },
+    "techSpecs": {
+        "NET-128": {
+            "key": "NET-128",
+            "id": "128",
             "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "R2",
-            "probabilityOfOccurrence": 2,
-            "severityOfImpact": 2,
-            "probabilityOfDetection": 2,
-            "riskPriorityNumber": 16,
-            "riskPriority": 2,
-            "mitigations": [
-                "DEMO-28"
+            "name": "Containerized Infrastructure",
+            "description": "The system should be set up as containerized infrastructure in the openshift cluster.",
+            "status": "IN DESIGN",
+            "systemDesignSpec": "Use containerized infrastructure to support quick and easy provisioning of a multitude of micro services that do one thing only and one thing right and fast.",
+            "softwareDesignSpec": "Implement the system using a loosely coupled micro services architecture for improved extensibility and maintainability.",
+            "components": [
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
-            "tests": []
-        },
-        "DEMO-16": {
-            "name": "Risk-1 on TechSpec DEMO-15",
-            "description": "Risk-1 on TechSpec DEMO-15 is described here...",
-            "key": "DEMO-16",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N1",
-            "probabilityOfOccurrence": 3,
-            "severityOfImpact": 1,
-            "probabilityOfDetection": 3,
-            "riskPriorityNumber": 9,
-            "riskPriority": 2,
-            "mitigations": [
-                "DEMO-17"
+            "risks": [
+                "NET-126"
             ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-45": {
-            "name": "Risk-2 on Req DEMO-40",
-            "description": "Risk-2 on Req DEMO-40 is described here...",
-            "key": "DEMO-45",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N0",
-            "probabilityOfOccurrence": 3,
-            "severityOfImpact": 3,
-            "probabilityOfDetection": 1,
-            "riskPriorityNumber": 0,
-            "riskPriority": 0,
-            "mitigations": [
-                "DEMO-46"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-11": {
-            "name": "Risk-2 on Req DEMO-6",
-            "description": "Risk-2 on Req DEMO-6 is described here...",
-            "key": "DEMO-11",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N0",
-            "probabilityOfOccurrence": 3,
-            "severityOfImpact": 3,
-            "probabilityOfDetection": 3,
-            "riskPriorityNumber": 0,
-            "riskPriority": 0,
-            "mitigations": [
-                "DEMO-12"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-65": {
-            "name": "Risk-2 on TechSpec DEMO-60",
-            "description": "Risk-2 on TechSpec DEMO-60 is described here...",
-            "key": "DEMO-65",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N1",
-            "probabilityOfOccurrence": 2,
-            "severityOfImpact": 3,
-            "probabilityOfDetection": 3,
-            "riskPriorityNumber": 18,
-            "riskPriority": 1,
-            "mitigations": [
-                "DEMO-66"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-54": {
-            "name": "Risk-2 on TechSpec DEMO-49",
-            "description": "Risk-2 on TechSpec DEMO-49 is described here...",
-            "key": "DEMO-54",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N2",
-            "probabilityOfOccurrence": 1,
-            "severityOfImpact": 3,
-            "probabilityOfDetection": 3,
-            "riskPriorityNumber": 18,
-            "riskPriority": 1,
-            "mitigations": [
-                "DEMO-55"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "tests": []
-        },
-        "DEMO-31": {
-            "name": "Risk-2 on TechSpec DEMO-26",
-            "description": "Risk-2 on TechSpec DEMO-26 is described here...",
-            "key": "DEMO-31",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "N2",
-            "probabilityOfOccurrence": 3,
-            "severityOfImpact": 3,
-            "probabilityOfDetection": 2,
-            "riskPriorityNumber": 36,
-            "riskPriority": 1,
-            "mitigations": [
-                "DEMO-32"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
-        },
-        "DEMO-20": {
-            "name": "Risk-2 on TechSpec DEMO-15",
-            "description": "Risk-2 on TechSpec DEMO-15 is described here...",
-            "key": "DEMO-20",
-            "version": "1.0",
-            "status": "TO DO",
-            "gxpRelevance": "R2",
-            "probabilityOfOccurrence": 2,
-            "severityOfImpact": 2,
-            "probabilityOfDetection": 2,
-            "riskPriorityNumber": 16,
-            "riskPriority": 2,
-            "mitigations": [
-                "DEMO-21"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "tests": []
+            "tests": [
+                "NET-5",
+                "NET-9",
+                "NET-10",
+                "NET-127",
+                "NET-130",
+                "NET-131",
+                "NET-132",
+                "NET-133",
+                "NET-134",
+                "NET-135",
+                "NET-136",
+                "NET-137",
+                "NET-138",
+                "NET-139",
+                "NET-140",
+                "NET-141",
+                "NET-142",
+                "NET-143",
+                "NET-144"
+            ]
         }
     },
     "tests": {
-        "PLTFMDEV-401": {
-            "name": "verify database is correctly installed",
-            "description": "verify database is correctly setup. Outcome: Succeeded",
-            "key": "PLTFMDEV-401",
+        "NET-127": {
+            "key": "NET-127",
+            "id": "127",
             "version": "1.0",
+            "name": "Stress test for the payment duration SLAs",
+            "description": "verify payments are executed within the payment SLAs",
             "status": "DONE",
+            "testType": "Acceptance",
+            "executionType": "Automated",
+            "steps": [
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                },
+                {
+                    "index": 0,
+                    "step": "Connect to the service on :80/health via HTTP",
+                    "data": "N/A",
+                    "expectedResult": "Connection to the service is established and the service returns 'OK'"
+                }
+            ],
+            "components": [
+                "Technology-demo-app-payment"
+            ],
+            "requirements": [
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
+            ],
+            "bugs": []
+        },
+        "NET-130": {
+            "name": "Verify database is correctly installed",
+            "description": "Verify database is correctly setup.",
+            "key": "NET-130",
+            "id": "130",
+            "version": "1.0",
+            "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -700,22 +555,26 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "risks": [
+                "DEMO-50"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-549": {
+        "NET-131": {
             "name": "User interacts with the cart",
             "description": "User interacts with the cart",
-            "key": "PLTFMDEV-549",
+            "key": "NET-131",
+            "id": "131",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [
@@ -739,18 +598,23 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
-            ]
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-550": {
+        "NET-132": {
             "name": "User shows catalogue",
             "description": "User shows catalogue",
-            "key": "PLTFMDEV-550",
+            "key": "NET-132",
+            "id": "132",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [
@@ -768,18 +632,23 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
-            ]
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-551": {
+        "NET-133": {
             "name": "User buys some socks",
             "description": "User buys some socks",
-            "key": "PLTFMDEV-551",
+            "key": "NET-133",
+            "id": "133",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [
@@ -809,89 +678,107 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
-            ]
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-552": {
+        "NET-134": {
             "name": "Home page looks sexy",
             "description": "Home page looks sexy",
-            "key": "PLTFMDEV-552",
+            "key": "NET-134",
+            "id": "134",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
-            ]
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-553": {
+        "NET-135": {
             "name": "User logs in",
             "description": "User logs in",
-            "key": "PLTFMDEV-553",
+            "key": "NET-135",
+            "id": "135",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Acceptance",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
-            ]
+                "NET-125"
+            ],
+            "techSpecs": [
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-554": {
+        "NET-136": {
             "name": "User exists in system",
             "description": "User exists in system",
-            "key": "PLTFMDEV-554",
+            "key": "NET-136",
+            "id": "136",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1045": {
+        "NET-137": {
             "name": "FirstResultOrDefault returns the default for an empty list",
             "description": "FirstResultOrDefault returns the default for an empty list",
-            "key": "PLTFMDEV-1045",
+            "key": "NET-137",
+            "id": "137",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Unit",
             "executionType": "Automated",
             "steps": [],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
                 "DEMO-15"
-            ]
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1046": {
-            "name": "verify frontend is correctly installed",
-            "description": "verify frontend is correctly installed. Outcome: Succeeded",
-            "key": "PLTFMDEV-1046",
+        "NET-138": {
+            "name": "Verify frontend is correctly installed",
+            "description": "Verify frontend is correctly installed.",
+            "key": "NET-138",
+            "id": "138",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -903,22 +790,26 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-2"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "risks": [
+                "DEMO-50"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1060": {
-            "name": "verify payment service is correctly installed",
-            "description": "verify payment service is correctly setup. Outcome: Error",
-            "key": "PLTFMDEV-1060",
+        "NET-139": {
+            "name": "Verify payment service is correctly installed",
+            "description": "Verify payment service is correctly setup.",
+            "key": "NET-139",
+            "id": "139",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -930,22 +821,23 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1061": {
-            "name": "verify order service is correctly installed",
-            "description": "verify order service is correctly installed. Outcome: Failed",
-            "key": "PLTFMDEV-1061",
+        "NET-140": {
+            "name": "Verify order service is correctly installed",
+            "description": "Verify order service is correctly installed.",
+            "key": "NET-140",
+            "id": "140",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -957,22 +849,23 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1062": {
-            "name": "verify shipping service is correctly installed",
-            "description": "verify shipping service is correctly installed. Outcome: Missing",
-            "key": "PLTFMDEV-1062",
+        "NET-141": {
+            "name": "Verify shipping service is correctly installed",
+            "description": "Verify shipping service is correctly installed.",
+            "key": "NET-141",
+            "id": "141",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Installation",
             "executionType": "Automated",
             "steps": [
@@ -984,22 +877,23 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1073": {
+        "NET-142": {
             "name": "Cart gets processed correctly",
-            "description": "Cart gets processed correctly. Outcome: Succeeded",
-            "key": "PLTFMDEV-1073",
+            "description": "Cart gets processed correctly.",
+            "key": "NET-142",
+            "id": "142",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [
@@ -1011,22 +905,23 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1074": {
+        "NET-143": {
             "name": "Frontend retrieves cart data correctly",
-            "description": "Frontend retrieves cart data correctly. Outcome: Succeeded",
-            "key": "PLTFMDEV-1074",
+            "description": "Frontend retrieves cart data correctly.",
+            "key": "NET-143",
+            "id": "143",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [
@@ -1038,22 +933,23 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
+                "NET-128"
+            ],
+            "bugs": []
         },
-        "PLTFMDEV-1075": {
+        "NET-144": {
             "name": "Frontend retrieves payment data correctly",
-            "description": "Frontend retrieves payment data correctly. Outcome: Succeeded",
-            "key": "PLTFMDEV-1075",
+            "description": "Frontend retrieves payment data correctly.",
+            "key": "NET-144",
+            "id": "144",
             "version": "1.0",
-            "status": "DONE",
+            "status": "READY TO TEST",
             "testType": "Integration",
             "executionType": "Automated",
             "steps": [
@@ -1065,303 +961,15 @@ class Project {
                 }
             ],
             "components": [
-                "DEMO-3"
+                "Technology-demo-app-payment"
             ],
             "requirements": [
-                "DEMO-6"
+                "NET-125"
             ],
             "techSpecs": [
-                "DEMO-15",
-                "DEMO-26"
-            ]
-        }
-    },
-    "mitigations": {
-        "DEMO-8": {
-            "name": "Mitigation-1 for Risk-1 on Req DEMO-6",
-            "description": "Mitigation-1 for Risk-1 on Req DEMO-6 is described here...",
-            "key": "DEMO-8",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-2"
+                "NET-128"
             ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-7"
-            ]
-        },
-        "DEMO-12": {
-            "name": "Mitigation-1 for Risk-2 on Req DEMO-6",
-            "description": "Mitigation-1 for Risk-2 on Req DEMO-6 is described here...",
-            "key": "DEMO-12",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-2"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-11"
-            ]
-        },
-        "DEMO-17": {
-            "name": "Mitigation-1 for Risk-1 on TechSpec DEMO-15",
-            "description": "Mitigation-1 for Risk-1 on TechSpec DEMO-15 is described here...",
-            "key": "DEMO-17",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-16"
-            ]
-        },
-        "DEMO-21": {
-            "name": "Mitigation-1 for Risk-2 on TechSpec DEMO-15",
-            "description": "Mitigation-1 for Risk-2 on TechSpec DEMO-15 is described here...",
-            "key": "DEMO-21",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-20"
-            ]
-        },
-        "DEMO-28": {
-            "name": "Mitigation-1 for Risk-1 on TechSpec DEMO-26",
-            "description": "Mitigation-1 for Risk-1 on TechSpec DEMO-26 is described here...",
-            "key": "DEMO-28",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-27"
-            ]
-        },
-        "DEMO-32": {
-            "name": "Mitigation-1 for Risk-2 on TechSpec DEMO-26",
-            "description": "Mitigation-1 for Risk-2 on TechSpec DEMO-26 is described here...",
-            "key": "DEMO-32",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-31"
-            ]
-        },
-        "DEMO-42": {
-            "name": "Mitigation-1 for Risk-1 on Req DEMO-40",
-            "description": "Mitigation-1 for Risk-1 on Req DEMO-40 is described here...",
-            "key": "DEMO-42",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-41"
-            ]
-        },
-        "DEMO-46": {
-            "name": "Mitigation-1 for Risk-2 on Req DEMO-40",
-            "description": "Mitigation-1 for Risk-2 on Req DEMO-40 is described here...",
-            "key": "DEMO-46",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-45"
-            ]
-        },
-        "DEMO-51": {
-            "name": "Mitigation-1 for Risk-1 on TechSpec DEMO-49",
-            "description": "Mitigation-1 for Risk-1 on TechSpec DEMO-49 is described here...",
-            "key": "DEMO-51",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-50"
-            ]
-        },
-        "DEMO-55": {
-            "name": "Mitigation-1 for Risk-2 on TechSpec DEMO-49",
-            "description": "Mitigation-1 for Risk-2 on TechSpec DEMO-49 is described here...",
-            "key": "DEMO-55",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4",
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-54"
-            ]
-        },
-        "DEMO-62": {
-            "name": "Mitigation-1 for Risk-1 on TechSpec DEMO-60",
-            "description": "Mitigation-1 for Risk-1 on TechSpec DEMO-60 is described here...",
-            "key": "DEMO-62",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4",
-                "DEMO-2"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-61"
-            ]
-        },
-        "DEMO-66": {
-            "name": "Mitigation-1 for Risk-2 on TechSpec DEMO-60",
-            "description": "Mitigation-1 for Risk-2 on TechSpec DEMO-60 is described here...",
-            "key": "DEMO-66",
-            "version": "1.0",
-            "status": "TO DO",
-            "components": [
-                "DEMO-4",
-                "DEMO-2"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-65"
-            ]
-        }
-    },
-    "techSpecs": {
-        "DEMO-15": {
-            "name": "TechSpec-1",
-            "description": "TechSpec-1 is described here...",
-            "key": "DEMO-15",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "systemDesignSpec": "Some system design specification.",
-            "softwareDesignSpec": "Some software design specification.",
-            "components": [
-                "DEMO-4",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-16",
-                "DEMO-20"
-            ],
-            "tests": [
-                "PLTFMDEV-1045"
-            ]
-        },
-        "DEMO-26": {
-            "name": "TechSpec-2",
-            "description": "TechSpec-2 is described here...",
-            "key": "DEMO-26",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "components": [
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-6"
-            ],
-            "risks": [
-                "DEMO-27",
-                "DEMO-31"
-            ],
-            "tests": []
-        },
-        "DEMO-49": {
-            "name": "TechSpec-1",
-            "description": "TechSpec-1 is described here...",
-            "key": "DEMO-49",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "components": [
-                "DEMO-2",
-                "DEMO-3"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-50",
-                "DEMO-54"
-            ],
-            "tests": []
-        },
-        "DEMO-60": {
-            "name": "TechSpec-2",
-            "description": "TechSpec-2 is described here...",
-            "key": "DEMO-60",
-            "version": "1.0",
-            "status": "IN DESIGN",
-            "components": [
-                "DEMO-4",
-                "DEMO-2"
-            ],
-            "requirements": [
-                "DEMO-40"
-            ],
-            "risks": [
-                "DEMO-61",
-                "DEMO-65"
-            ],
-            "tests": []
+            "bugs": []
         }
     }
 }
@@ -1377,7 +985,7 @@ class Project {
         this.steps = steps
 
         this.data.build = [
-            hasFailingTests: false,
+            hasFailingTests       : false,
             hasUnexecutedJiraTests: false
         ]
     }
@@ -1394,6 +1002,7 @@ class Project {
 
         this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
         this.data.jira = this.loadJiraData(this.data.metadata.id)
+        this.data.jira.project.version = this.loadJiraDataProjectVersion()
         this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
         this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
@@ -1428,45 +1037,45 @@ class Project {
         return data
     }
 
-    List<Map> getAutomatedTests(String componentName = null, List<String> testTypes = []) {
+    List<JiraDataItem> getAutomatedTests(String componentName = null, List<String> testTypes = []) {
         return this.data.jira.tests.findAll { key, testIssue ->
             def result = testIssue.status.toLowerCase() == "done" && testIssue.executionType?.toLowerCase() == "automated"
 
             if (result && componentName) {
-                result = testIssue.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
+                result = testIssue.getResolvedComponents()
+                    .collect { it.name.toLowerCase() }
+                    .contains(componentName.toLowerCase())
             }
 
             if (result && testTypes) {
-                result = testTypes.collect{ it.toLowerCase() }.contains(testIssue.testType.toLowerCase())
+                result = testTypes.collect { it.toLowerCase() }.contains(testIssue.testType.toLowerCase())
             }
 
             return result
         }.values() as List
     }
 
-    Map getEnumDictionary(String dictionaryName = null) {
-        return this.data.jira.project.enumDictionary.find { d ->
-            d.key.toLowerCase() == dictionaryName.toLowerCase()
-        }.value
+    Map getEnumDictionary(String name) {
+        return this.data.jira.project.enumDictionary[name]
     }
 
     Map getProjectProperties() {
         return this.data.jira.project.projectProperties
     }
 
-    List<Map> getAutomatedTestsTypeAcceptance(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeAcceptance(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.ACCEPTANCE])
     }
 
-    List<Map> getAutomatedTestsTypeInstallation(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeInstallation(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.INSTALLATION])
     }
 
-    List<Map> getAutomatedTestsTypeIntegration(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeIntegration(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.INTEGRATION])
     }
 
-    List<Map> getAutomatedTestsTypeUnit(String componentName = null) {
+    List<JiraDataItem> getAutomatedTestsTypeUnit(String componentName = null) {
         return this.getAutomatedTests(componentName, [TestType.UNIT])
     }
 
@@ -1496,11 +1105,20 @@ class Project {
         return this.data.metadata.capabilities
     }
 
-    List<Map> getBugs() {
+    Object getCapability(String name) {
+        def entry = this.getCapabilities().find { it instanceof Map ? it.find { it.key == name } : it == name }
+        if (entry) {
+            return entry instanceof Map ? entry[name] : true
+        }
+
+        return null
+    }
+
+    List<JiraDataItem> getBugs() {
         return this.data.jira.bugs.values() as List
     }
 
-    List<Map> getComponents() {
+    List<JiraDataItem> getComponents() {
         return this.data.jira.components.values() as List
     }
 
@@ -1517,7 +1135,7 @@ class Project {
 
         labels.each { label ->
             this.getDocumentTrackingIssues().each { issue ->
-                if (issue.labels.collect{ it.toLowerCase() }.contains(label.toLowerCase())) {
+                if (issue.labels.collect { it.toLowerCase() }.contains(label.toLowerCase())) {
                     result << [key: issue.key, status: issue.status]
                 }
             }
@@ -1551,7 +1169,7 @@ class Project {
 
         this.steps.dir(path) {
             result = this.steps.sh(
-                label : "Get Git URL for repository at path '${path}' and origin '${remote}'",
+                label: "Get Git URL for repository at path '${path}' and origin '${remote}'",
                 script: "git config --get remote.${remote}.url",
                 returnStdout: true
             ).trim()
@@ -1560,12 +1178,12 @@ class Project {
         return new URIBuilder(result).build()
     }
 
-    List<Map> getEpics() {
+    List<JiraDataItem> getEpics() {
         return this.data.jira.epics.values() as List
     }
 
     String getId() {
-        return this.data.jira.id
+        return this.data.jira.project.id
     }
 
     Map getJiraFieldsForIssueType(String issueTypeName) {
@@ -1576,7 +1194,7 @@ class Project {
         return this.data.metadata.id
     }
 
-    List<Map> getMitigations() {
+    List<JiraDataItem> getMitigations() {
         return this.data.jira.mitigations.values() as List
     }
 
@@ -1588,7 +1206,7 @@ class Project {
         return this.data.metadata.repositories
     }
 
-    List<Map> getRisks() {
+    List<JiraDataItem> getRisks() {
         return this.data.jira.risks.values() as List
     }
 
@@ -1596,52 +1214,56 @@ class Project {
         return this.data.metadata.services
     }
 
-    List<Map> getSystemRequirements(String componentName = null, List<String> gampTopics = []) {
+    List<JiraDataItem> getSystemRequirements(String componentName = null, List<String> gampTopics = []) {
         return this.data.jira.requirements.findAll { key, req ->
             def result = true
 
             if (result && componentName) {
-                result = req.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
+                result = req.getResolvedComponents().collect { it.name.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
             if (result && gampTopics) {
-                result = gampTopics.collect{ it.toLowerCase() }.contains(req.gampTopic.toLowerCase())
+                result = gampTopics.collect { it.toLowerCase() }.contains(req.gampTopic.toLowerCase())
             }
 
             return result
         }.values() as List
     }
 
-    List<Map> getSystemRequirementsTypeAvailability(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeAvailability(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.AVAILABILITY_REQUIREMENT])
     }
 
-    List<Map> getSystemRequirementsTypeConstraints(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeConstraints(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.CONSTRAINT])
     }
 
-    List<Map> getSystemRequirementsTypeFunctional(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeFunctional(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.FUNCTIONAL_REQUIREMENT])
     }
 
-    List<Map> getSystemRequirementsTypeInterfaces(String componentName = null) {
+    List<JiraDataItem> getSystemRequirementsTypeInterfaces(String componentName = null) {
         return this.getSystemRequirements(componentName, [GampTopic.INTERFACE_REQUIREMENT])
     }
 
-    List<Map> getTechnicalSpecifications(String componentName = null) {
+    List<JiraDataItem> getTechnicalSpecifications(String componentName = null) {
         return this.data.jira.techSpecs.findAll { key, techSpec ->
             def result = true
 
             if (result && componentName) {
-                result = techSpec.getResolvedComponents().collect{ it.name.toLowerCase() }.contains(componentName.toLowerCase())
+                result = techSpec.getResolvedComponents().collect { it.name.toLowerCase() }.contains(componentName.toLowerCase())
             }
 
             return result
         }.values() as List
     }
 
-    List<Map> getTests() {
+    List<JiraDataItem> getTests() {
         return this.data.jira.tests.values() as List
+    }
+
+    String getOpenShiftApiUrl() {
+        return "N/A"
     }
 
     boolean hasCapability(String name) {
@@ -1683,15 +1305,15 @@ class Project {
         def changeDescription = steps.env.changeDescription?.trim() ?: "UNDEFINED"
 
         return [
-            changeDescription: changeDescription,
-            changeId: changeId,
-            configItem: configItem,
-            releaseStatusJiraIssueKey: releaseStatusJiraIssueKey,
-            sourceEnvironmentToClone: sourceEnvironmentToClone,
+            changeDescription            : changeDescription,
+            changeId                     : changeId,
+            configItem                   : configItem,
+            releaseStatusJiraIssueKey    : releaseStatusJiraIssueKey,
+            sourceEnvironmentToClone     : sourceEnvironmentToClone,
             sourceEnvironmentToCloneToken: sourceEnvironmentToCloneToken,
-            targetEnvironment: targetEnvironment,
-            targetEnvironmentToken: targetEnvironmentToken,
-            version: version
+            targetEnvironment            : targetEnvironment,
+            targetEnvironmentToken       : targetEnvironmentToken,
+            version                      : version
         ]
     }
 
@@ -1740,6 +1362,15 @@ class Project {
         }
     }
 
+    protected Map loadJiraDataProjectVersion() {
+        if (!this.jiraUseCase) return [:]
+        if (!this.jiraUseCase.jira) return [:]
+
+        return this.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
+            this.buildParams.version == version.value
+        }
+    }
+
     protected Map loadJiraDataDocs() {
         if (!this.jiraUseCase) return [:]
         if (!this.jiraUseCase.jira) return [:]
@@ -1755,11 +1386,11 @@ class Project {
             [
                 jiraIssue.key,
                 [
-                    key         : jiraIssue.key,
-                    name        : jiraIssue.fields.summary,
-                    description : jiraIssue.fields.description,
-                    status      : jiraIssue.fields.status.name,
-                    labels      : jiraIssue.fields.labels
+                    key        : jiraIssue.key,
+                    name       : jiraIssue.fields.summary,
+                    description: jiraIssue.fields.description,
+                    status     : jiraIssue.fields.status.name,
+                    labels     : jiraIssue.fields.labels
                 ]
             ]
         }
@@ -1860,6 +1491,26 @@ class Project {
             result.capabilities = []
         }
 
+        // TODO move me to the LeVA documents plugin
+        def levaDocsCapabilities = result.capabilities.findAll { it instanceof Map && it.containsKey("LeVADocs") }
+        if (levaDocsCapabilities) {
+            if (levaDocsCapabilities.size() > 1) {
+                throw new IllegalArgumentException("Error: unable to parse project metadata. More than one LeVADoc capability has been defined.")
+            }
+
+            def levaDocsCapability = levaDocsCapabilities.first()
+
+            def gampCategory = levaDocsCapability.LeVADocs?.GAMPCategory
+            if (!gampCategory) {
+                throw new IllegalArgumentException("Error: LeVADocs capability has been defined but contains no GAMPCategory.")
+            }
+
+            def templatesVersion = levaDocsCapability.LeVADocs?.templatesVersion
+            if (!templatesVersion) {
+                levaDocsCapability.LeVADocs.templatesVersion = "1.0"
+            }
+        }
+
         return result
     }
 
@@ -1868,6 +1519,7 @@ class Project {
         this.jiraUseCase.updateJiraReleaseStatusIssue(error)
     }
 
+    @NonCPS
     protected Map resolveJiraDataItemReferences(Map data) {
         def result = [:]
 
