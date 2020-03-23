@@ -193,6 +193,8 @@ class Project {
         static final String INTERFACE_REQUIREMENT = "Interface Requirement"
     }
 
+    static final String BUILD_PARAM_VERSION_DEFAULT = "WIP"
+
     protected static String METADATA_FILE_NAME = "metadata.yml"
 
     private static final TEMP_FAKE_JIRA_DATA = """
@@ -996,11 +998,42 @@ class Project {
         return this
     }
 
+    // CAUTION! This needs to be called from the root of the release manager repo.
+    // Otherwise the Git information cannot be retrieved correctly.
     Project load(GitUtil git, JiraUseCase jiraUseCase) {
         this.git = git
         this.jiraUseCase = jiraUseCase
 
-        this.data.git = [ commit: git.getCommit(), url: git.getURL() ]
+        def version = this.data.buildParams.version
+        def changeId = this.data.buildParams.changeId
+        def targetEnvironmentToken = this.data.buildParams.targetEnvironmentToken
+        def baseTag = null
+        def targetTag = null
+        if (!getIsWorkInProgress()) {
+            def tagList = git.readBaseTagList(version, changeId, targetEnvironmentToken)
+            baseTag = GitTag.readLatestBaseTag(tagList, version, changeId, targetEnvironmentToken)
+
+            if (getIsAssembleMode()) {
+                if (baseTag) {
+                    targetTag = baseTag.withNextBuildNumber()
+                } else {
+                    targetTag = new GitTag(version, changeId, 0, targetEnvironmentToken)
+                }
+            } else {
+                if (baseTag) {
+                    targetTag = baseTag.withEnvToken(targetEnvironmentToken)
+                } else {
+                    throw new RuntimeException("Error: unable to find latest tag for ${version}/${changeId}.")
+                }
+            }
+        }
+
+        this.data.git = [
+            commit: git.getCommit(),
+            url: git.getURL(),
+            baseTag: baseTag.toString(),
+            targetTag: targetTag.toString()
+        ]
         this.data.jira = this.loadJiraData(this.data.metadata.id)
         this.data.jira.project.version = this.loadJiraDataProjectVersion()
         this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
@@ -1009,6 +1042,9 @@ class Project {
 
         this.data.jira.docs = this.loadJiraDataDocs()
         this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
+
+        this.data.openshift = [:]
+
         return this
     }
 
@@ -1079,25 +1115,121 @@ class Project {
         return this.getAutomatedTests(componentName, [TestType.UNIT])
     }
 
+    boolean getIsPromotionMode() {
+        isPromotionMode(buildParams.targetEnvironmentToken)
+    }
+
+    boolean getIsAssembleMode() {
+        !getIsPromotionMode()
+    }
+
+    static boolean isPromotionMode(String targetEnvironmentToken) {
+        ["Q", "P"].contains(targetEnvironmentToken)
+    }
+
+    boolean getIsWorkInProgress() {
+        isWorkInProgress(buildParams.version)
+    }
+
+    static boolean isWorkInProgress(String version) {
+        version == BUILD_PARAM_VERSION_DEFAULT
+    }
+
     Map getBuildParams() {
         return this.data.buildParams
+    }
+
+    String getEnvironmentParamsFile() {
+        def envParamsFile = "${steps.env.WORKSPACE}/${buildParams.targetEnvironment}.env"
+        if (!steps.fileExists(envParamsFile)) {
+            envParamsFile = ''
+        }
+        envParamsFile
+    }
+
+    Map getEnvironmentParams(String envParamsFile) {
+        def envParams = [:]
+        if (envParamsFile) {
+            def paramsFileContent = steps.readFile(envParamsFile)
+            def params = paramsFileContent.split("\n")
+            envParams = params.collectEntries {
+                if (it.trim().size() > 0 && !it.trim().startsWith('#')) {
+                    def vals = it.split('=')
+                    [vals.first(), vals[1..vals.size()-1].join('=')]
+                } else {
+                    [:]
+                }
+            }
+        }
+        envParams
+    }
+
+    void setOpenShiftData(String sessionApiUrl) {
+        def envConfig = getEnvironmentConfig()
+        def targetApiUrl = envConfig?.apiUrl
+        if (!targetApiUrl) {
+            targetApiUrl = sessionApiUrl
+        }
+        this.data.openshift['sessionApiUrl'] = sessionApiUrl
+        this.data.openshift['targetApiUrl'] = targetApiUrl
+    }
+
+    boolean getTargetClusterIsExternal() {
+      def isExternal = false
+      def sessionApiUrl = this.data.openshift.sessionApiUrl
+      def targetApiUrl = this.data.openshift.targetApiUrl
+      def targetApiUrlMatcher = targetApiUrl =~ /:[0-9]+$/
+      if (targetApiUrlMatcher.find()) {
+        isExternal = sessionApiUrl != targetApiUrl
+      } else {
+        def sessionApiUrlWithoutPort = sessionApiUrl.split(':').dropRight(1).join(':')
+        isExternal = sessionApiUrlWithoutPort != targetApiUrl
+      }
+      steps.echo "Cluster ${targetApiUrl} is external=${isExternal}"
+      isExternal
+    }
+
+    String getSourceEnv() {
+        ['dev': 'dev', 'qa': 'dev', 'prod': 'qa'].get(buildParams.targetEnvironment)
+    }
+
+    String getBaseTag() {
+        this.data.git.baseTag
+    }
+
+    def getTargetTag() {
+        this.data.git.targetTag
+    }
+
+    String getConcreteEnvironment() {
+        getConcreteEnvironment(buildParams.targetEnvironment, buildParams.version)
+    }
+
+    static String getConcreteEnvironment(String environment, String version) {
+        if (environment == 'dev' && version != BUILD_PARAM_VERSION_DEFAULT) {
+            def cleanedVersion = version.replaceAll('[^A-Za-z0-9-]', '-')
+            environment = "${environment}-${cleanedVersion}"
+        } else if (environment == 'qa') {
+            environment = 'test'
+        }
+        environment
     }
 
     static List<String> getBuildEnvironment(IPipelineSteps steps, boolean debug = false) {
         def params = loadBuildParams(steps)
 
+        def concreteEnv = getConcreteEnvironment(params.targetEnvironment, params.version)
+
         return [
             "DEBUG=${debug}",
             "MULTI_REPO_BUILD=true",
-            "MULTI_REPO_ENV=${params.targetEnvironment}",
+            "MULTI_REPO_ENV=${concreteEnv}",
             "MULTI_REPO_ENV_TOKEN=${params.targetEnvironmentToken}",
             "RELEASE_PARAM_CHANGE_ID=${params.changeId}",
             "RELEASE_PARAM_CHANGE_DESC=${params.changeDescription}",
             "RELEASE_PARAM_CONFIG_ITEM=${params.configItem}",
             "RELEASE_PARAM_VERSION=${params.version}",
-            "RELEASE_STATUS_JIRA_ISSUE_KEY=${params.releaseStatusJiraIssueKey}",
-            "SOURCE_CLONE_ENV=${params.sourceEnvironmentToClone}",
-            "SOURCE_CLONE_ENV_TOKEN=${params.sourceEnvironmentToCloneToken}"
+            "RELEASE_STATUS_JIRA_ISSUE_KEY=${params.releaseStatusJiraIssueKey}"
         ]
     }
 
@@ -1206,6 +1338,10 @@ class Project {
         return this.data.metadata.repositories
     }
 
+    Map getEnvironments() {
+        return this.data.metadata.environments
+    }
+
     List<JiraDataItem> getRisks() {
         return this.data.jira.risks.values() as List
     }
@@ -1262,8 +1398,18 @@ class Project {
         return this.data.jira.tests.values() as List
     }
 
+    Map getEnvironmentConfig() {
+        def environments = getEnvironments()
+        environments[buildParams.targetEnvironment]
+    }
+
+    // Deprecated in favour of getOpenShiftTargetApiUrl
     String getOpenShiftApiUrl() {
-        return "N/A"
+        this.data.openshift.targetApiUrl
+    }
+
+    String getOpenShiftTargetApiUrl() {
+        this.data.openshift.targetApiUrl
     }
 
     boolean hasCapability(String name) {
@@ -1288,19 +1434,25 @@ class Project {
         return changeId && configItem
     }
 
+    String getGitReleaseBranch() {
+        GitUtil.getReleaseBranch(buildParams.version)
+    }
+
+    String getTargetProject() {
+        "${getKey()}-${getConcreteEnvironment()}"
+    }
+
     static Map loadBuildParams(IPipelineSteps steps) {
         def releaseStatusJiraIssueKey = steps.env.releaseStatusJiraIssueKey?.trim()
         if (isTriggeredByChangeManagementProcess(steps) && !releaseStatusJiraIssueKey) {
             throw new IllegalArgumentException("Error: unable to load build param 'releaseStatusJiraIssueKey': undefined")
         }
 
-        def version = steps.env.version?.trim() ?: "WIP"
-        def targetEnvironment = steps.env.environment?.trim() ?: "dev"
+        def version = steps.env.version?.trim() ?: BUILD_PARAM_VERSION_DEFAULT
+        def targetEnvironment = (steps.env.environment?.trim() ?: "dev").toLowerCase()
         def targetEnvironmentToken = targetEnvironment[0].toUpperCase()
-        def sourceEnvironmentToClone = steps.env.sourceEnvironmentToClone?.trim() ?: targetEnvironment
-        def sourceEnvironmentToCloneToken = sourceEnvironmentToClone[0].toUpperCase()
 
-        def changeId = steps.env.changeId?.trim() ?: "${version}-${targetEnvironment}"
+        def changeId = steps.env.changeId?.trim() ?: "UNDEFINED"
         def configItem = steps.env.configItem?.trim() ?: "UNDEFINED"
         def changeDescription = steps.env.changeDescription?.trim() ?: "UNDEFINED"
 
@@ -1309,8 +1461,6 @@ class Project {
             changeId                     : changeId,
             configItem                   : configItem,
             releaseStatusJiraIssueKey    : releaseStatusJiraIssueKey,
-            sourceEnvironmentToClone     : sourceEnvironmentToClone,
-            sourceEnvironmentToCloneToken: sourceEnvironmentToCloneToken,
             targetEnvironment            : targetEnvironment,
             targetEnvironmentToken       : targetEnvironmentToken,
             version                      : version
@@ -1509,6 +1659,10 @@ class Project {
             if (!templatesVersion) {
                 levaDocsCapability.LeVADocs.templatesVersion = "1.0"
             }
+        }
+
+        if (result.environments == null) {
+            result.environments = [:]
         }
 
         return result

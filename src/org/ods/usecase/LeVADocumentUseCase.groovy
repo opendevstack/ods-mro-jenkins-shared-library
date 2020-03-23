@@ -1002,7 +1002,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         return uri
     }
 
-    String createTIR(Map repo, Map data = null) {
+    String createTIR(Map repo, Map data) {
         def documentType = DocumentType.TIR as String
 
         def watermarkText
@@ -1019,16 +1019,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata     : this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             openShiftData: [
-                ocpBuildId          : repo?.data.odsBuildArtifacts?."OCP Build Id" ?: "N/A",
-                ocpDockerImage      : repo?.data.odsBuildArtifacts?."OCP Docker image" ?: "N/A",
-                ocpDeploymentId     : repo?.data.odsBuildArtifacts?."OCP Deployment Id" ?: "N/A",
-                podName             : pods?.items[0]?.metadata?.name ?: "N/A",
-                podNamespace        : pods?.items[0]?.metadata?.namespace ?: "N/A",
-                podCreationTimestamp: pods?.items[0]?.metadata?.creationTimestamp ?: "N/A",
-                podEnvironment      : pods?.items[0]?.metadata?.labels?.env ?: "N/A",
-                podNode             : pods?.items[0]?.spec?.nodeName ?: "N/A",
-                podIp               : pods?.items[0]?.status?.podIP ?: "N/A",
-                podStatus           : pods?.items[0]?.status?.phase ?: "N/A"
+                ocpBuildId          : data.odsBuildArtifacts?."OCP Build Id" ?: "N/A",
+                ocpDockerImage      : data.odsBuildArtifacts?."OCP Docker image" ?: "N/A",
+                ocpDeploymentId     : data.odsBuildArtifacts?."OCP Deployment Id" ?: "N/A",
+                podName             : data.pods.items[0].metadata?.name ?: "N/A",
+                podNamespace        : data.pods.items[0].metadata?.namespace ?: "N/A",
+                podCreationTimestamp: data.pods.items[0].metadata?.creationTimestamp ?: "N/A",
+                podEnvironment      : data.pods.items[0].metadata?.labels?.env ?: "N/A",
+                podNode             : data.pods.items[0].spec?.nodeName ?: "N/A",
+                podIp               : data.pods.items[0].status?.podIP ?: "N/A",
+                podStatus           : data.pods.items[0].status?.phase ?: "N/A"
             ],
             data         : [
                 repo    : repo,

@@ -31,7 +31,7 @@ def call(Project project, List<Set<Map>> repos) {
     def postExecuteRepo = { steps, repo ->
         // FIXME: we are mixing a generic scheduler capability with a data dependency and an explicit repository constraint.
         // We should turn the last argument 'data' of the scheduler into a closure that return data.
-        if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
+        if (project.isAssembleMode && repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
             def data = [
                 tests: [
                     unit: getUnitTestResults(steps, repo)

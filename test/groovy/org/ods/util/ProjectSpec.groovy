@@ -93,11 +93,11 @@ class ProjectSpec extends SpecHelper {
         result.find { it == "MULTI_REPO_ENV=dev" }
 
         when:
-        steps.env.environment = "myEnv"
+        steps.env.environment = "qa"
         result = Project.getBuildEnvironment(steps)
 
         then:
-        result.find { it == "MULTI_REPO_ENV=myEnv" }
+        result.find { it == "MULTI_REPO_ENV=test" }
     }
 
     def "get build environment for MULTI_REPO_ENV_TOKEN"() {
@@ -219,55 +219,6 @@ class ProjectSpec extends SpecHelper {
 
         then:
         result.find { it == "RELEASE_PARAM_VERSION=0.1" }
-    }
-
-    def "get build environment for SOURCE_CLONE_ENV"() {
-        when:
-        steps.env.environment = "myEnv"
-        steps.env.sourceEnvironmentToClone = null
-        def result = Project.getBuildEnvironment(steps)
-
-        then:
-        result.find { it == "SOURCE_CLONE_ENV=myEnv" }
-
-        when:
-        steps.env.environment = "myEnv"
-        steps.env.sourceEnvironmentToClone = ""
-        result = Project.getBuildEnvironment(steps)
-
-        then:
-        result.find { it == "SOURCE_CLONE_ENV=myEnv" }
-
-        when:
-        steps.env.environment = "mvEnv"
-        steps.env.sourceEnvironmentToClone = "mySourceEnv"
-        result = Project.getBuildEnvironment(steps)
-
-        then:
-        result.find { it == "SOURCE_CLONE_ENV=mySourceEnv" }
-    }
-
-    def "get build environment for SOURCE_CLONE_ENV_TOKEN"() {
-        when:
-        steps.env.sourceEnvironmentToClone = "dev"
-        def result = Project.getBuildEnvironment(steps)
-
-        then:
-        result.find { it == "SOURCE_CLONE_ENV_TOKEN=D" }
-
-        when:
-        steps.env.sourceEnvironmentToClone = "qa"
-        result = Project.getBuildEnvironment(steps)
-
-        then:
-        result.find { it == "SOURCE_CLONE_ENV_TOKEN=Q" }
-
-        when:
-        steps.env.sourceEnvironmentToClone = "prod"
-        result = Project.getBuildEnvironment(steps)
-
-        then:
-        result.find { it == "SOURCE_CLONE_ENV_TOKEN=P" }
     }
 
     def "get capabilities"() {
@@ -711,55 +662,6 @@ class ProjectSpec extends SpecHelper {
         result.releaseStatusJiraIssueKey == null
     }
 
-    def "load build param sourceEnvironmentToClone"() {
-        when:
-        steps.env.environment = "myEnv"
-        steps.env.sourceEnvironmentToClone = null
-        def result = Project.loadBuildParams(steps)
-
-        then:
-        result.sourceEnvironmentToClone == "myEnv"
-
-        when:
-        steps.env.environment = "myEnv"
-        steps.env.sourceEnvironmentToClone = ""
-        result = Project.loadBuildParams(steps)
-
-        then:
-        result.sourceEnvironmentToClone == "myEnv"
-
-        when:
-        steps.env.environment = "mvEnv"
-        steps.env.sourceEnvironmentToClone = "mySourceEnv"
-        result = Project.loadBuildParams(steps)
-
-        then:
-        result.sourceEnvironmentToClone == "mySourceEnv"
-    }
-
-    def "load build param sourceEnvironmentToCloneToken"() {
-        when:
-        steps.env.sourceEnvironmentToClone = "dev"
-        def result = Project.loadBuildParams(steps)
-
-        then:
-        result.sourceEnvironmentToCloneToken == "D"
-
-        when:
-        steps.env.sourceEnvironmentToClone = "qa"
-        result = Project.loadBuildParams(steps)
-
-        then:
-        result.sourceEnvironmentToCloneToken == "Q"
-
-        when:
-        steps.env.sourceEnvironmentToClone = "prod"
-        result = Project.loadBuildParams(steps)
-
-        then:
-        result.sourceEnvironmentToCloneToken == "P"
-    }
-
     def "load build param targetEnvironment"() {
         when:
         steps.env.environment = null
@@ -776,11 +678,11 @@ class ProjectSpec extends SpecHelper {
         result.targetEnvironment == "dev"
 
         when:
-        steps.env.environment = "myEnv"
+        steps.env.environment = "qa"
         result = Project.loadBuildParams(steps)
 
         then:
-        result.targetEnvironment == "myEnv"
+        result.targetEnvironment == "test"
     }
 
     def "load build param targetEnvironmentToken"() {
