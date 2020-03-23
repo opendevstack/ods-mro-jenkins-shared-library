@@ -20,6 +20,7 @@ import org.ods.usecase.JiraUseCaseZephyrSupport
 import org.ods.usecase.LeVADocumentUseCase
 import org.ods.usecase.SonarQubeUseCase
 import org.ods.util.GitUtil
+import org.ods.util.GitTag
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PDFUtil
 import org.ods.util.PipelineSteps
@@ -35,20 +36,79 @@ def call() {
             .socketTimeout(1200000)
             .connectTimeout(120000)
 
-        project.init()
+        def git = new GitUtil(steps)
 
-        def util = new MROPipelineUtil(project, steps)
+        if (!env.environment) {
+            echo 'Skipping build due to missing parameter: "environment" is required.'
+            currentBuild.result = 'NOT_BUILT'
+            return [:]
+        }
+
+        git.configureUser()
+
+        // load build params
+        def buildParams = Project.loadBuildParams(steps)
+        def gitReleaseBranch = GitUtil.getReleaseBranch(buildParams.version)
+
+        // git checkout
+        if (!Project.isWorkInProgress(buildParams.version)) {
+            if (Project.isPromotionMode(buildParams.targetEnvironmentToken)) {
+                def tagList = git.readBaseTagList(
+                    buildParams.version,
+                    buildParams.changeId,
+                    buildParams.targetEnvironmentToken
+                )
+                def baseTag = GitTag.readLatestBaseTag(
+                    tagList,
+                    buildParams.version,
+                    buildParams.changeId,
+                    buildParams.targetEnvironmentToken
+                )?.toString()
+                if (!baseTag) {
+                    throw new RuntimeException("Error: unable to find latest tag for version ${buildParams.version}/${buildParams.changeId}.")
+                }
+                echo "Checkout release manager repository @ ${baseTag}"
+                checkoutGitRef(
+                    baseTag,
+                    []
+                )
+            } else {
+                if (git.remoteBranchExists(gitReleaseBranch)) {
+                    echo "Checkout release manager repository @ ${gitReleaseBranch}"
+                    checkoutGitRef(
+                        gitReleaseBranch,
+                        [[$class: 'LocalBranch', localBranch: "**"]]
+                    )
+                } else {
+                    git.checkoutNewLocalBranch(gitReleaseBranch)
+                }
+            }
+        }
+
+        // Load build params and metadata file information.
+        project.init()
 
         // Register global services
         def registry = ServiceRegistry.instance
-        registry.add(GitUtil, new GitUtil(steps))
+        registry.add(GitUtil, git)
         registry.add(PDFUtil, new PDFUtil())
         registry.add(PipelineSteps, steps)
+        def util = new MROPipelineUtil(project, steps, git)
         registry.add(MROPipelineUtil, util)
         registry.add(Project, project)
 
         registry.add(DocGenService,
             new DocGenService(env.DOCGEN_URL)
+        )
+
+        registry.add(LeVADocumentChaptersFileService,
+            new LeVADocumentChaptersFileService(steps)
+        )
+
+        registry.add(JenkinsService,
+            new JenkinsService(
+                registry.get(PipelineSteps)
+            )
         )
 
         registry.add(LeVADocumentChaptersFileService,
@@ -91,6 +151,19 @@ def call() {
             )
         )
 
+        def tailorPrivateKeyFile = ''
+        def tailorPrivateKeyCredentialsId = "${project.key}-cd-tailor-private-key"
+        if (privateKeyExists(tailorPrivateKeyCredentialsId)) {
+            withCredentials([
+                sshUserPrivateKey(
+                    credentialsId: tailorPrivateKeyCredentialsId,
+                    keyFileVariable: 'PKEY_FILE'
+                )
+            ]) {
+                tailorPrivateKeyFile = PKEY_FILE
+            }
+        }
+
         withCredentials([ usernamePassword(credentialsId: project.services.bitbucket.credentials.id, usernameVariable: "BITBUCKET_USER", passwordVariable: "BITBUCKET_PW") ]) {
             registry.add(OpenShiftService,
                 new OpenShiftService(
@@ -98,7 +171,8 @@ def call() {
                     env.OPENSHIFT_API_URL,
                     env.BITBUCKET_HOST,
                     env.BITBUCKET_USER,
-                    env.BITBUCKET_PW
+                    env.BITBUCKET_PW,
+                    tailorPrivateKeyFile
                 )
             )
         }
@@ -164,13 +238,21 @@ def call() {
         project.load(registry.get(GitUtil), registry.get(JiraUseCase))
         def repos = project.repositories
 
+        if (project.isPromotionMode && git.localTagExists(project.targetTag)) {
+            if (project.buildParams.targetEnvironmentToken == 'Q') {
+                echo "WARNING: Deploying tag ${project.targetTag} again!"
+            } else {
+                throw new RuntimeException("Error: tag ${project.targetTag} already exists - it cannot be deployed again to P.")
+            }
+        }
+
         // Configure current build
         currentBuild.description = "Build #${BUILD_NUMBER} - Change: ${env.RELEASE_PARAM_CHANGE_ID}, Project: ${project.key}, Target Environment: ${project.key}-${env.MULTI_REPO_ENV}"
 
         // Clean workspace from previous runs
         [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->
-        echo "Cleaning workspace directory '${name}' from previous runs"
-        Paths.get(env.WORKSPACE, name).toFile().deleteDir()
+            echo "Cleaning workspace directory '${name}' from previous runs"
+            Paths.get(env.WORKSPACE, name).toFile().deleteDir()
         }
 
         // Checkout repositories into the workspace
@@ -182,6 +264,62 @@ def call() {
         // Load configs from each repo's release-manager.yml
         util.loadPipelineConfigs(repos)
 
+        def os = registry.get(OpenShiftService)
+
+        project.setOpenShiftData(os.sessionApiUrl)
+
+        // It is assumed that the pipeline runs in the same cluster as the 'D' env.
+        if (project.buildParams.targetEnvironmentToken == 'D' && !os.envExists(project.targetProject)) {
+
+            runOnAgentPod(true) {
+
+                def sourceEnv = project.buildParams.targetEnvironment
+                os.createVersionedDevelopmentEnvironment(project.key, sourceEnv, project.concreteEnvironment)
+
+                def envParamsFile = project.environmentParamsFile
+                def envParams = project.getEnvironmentParams(envParamsFile)
+
+                repos.each { repo ->
+                    steps.dir("${steps.env.WORKSPACE}/${MROPipelineUtil.REPOS_BASE_DIR}/${repo.id}") {
+                        def openshiftDir = 'openshift-exported'
+                        def exportRequired = true
+                        if (fileExists('openshift')) {
+                            steps.echo "Found 'openshift' folder, current OpenShift state will not be exported into 'openshift-exported'."
+                            openshiftDir = 'openshift'
+                            exportRequired = false
+                        } else {
+                            steps.sh(
+                                script: "mkdir -p ${openshiftDir}",
+                                label: "Ensure ${openshiftDir} exists"
+                            )
+                        }
+                        def componentSelector = "app=${project.key}-${repo.id}"
+                        steps.dir(openshiftDir) {
+                            if (exportRequired) {
+                                steps.echo "Exporting current OpenShift state to folder '${openshiftDir}'."
+                                def targetFile = 'template.yml'
+                                os.tailorExport(
+                                    "${project.key}-${sourceEnv}",
+                                    componentSelector,
+                                    envParams,
+                                    targetFile
+                                )
+                            }
+
+                            steps.echo "Applying desired OpenShift state defined in ${openshiftDir} to ${project.targetProject}."
+                            os.tailorApply(
+                                project.targetProject,
+                                componentSelector,
+                                '', // do not exlude any resources
+                                envParamsFile,
+                                false
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         // Compute groups of repository configs for convenient parallelization
         repos = util.computeRepoGroups(repos)
 
@@ -192,6 +330,26 @@ def call() {
         project.reportPipelineStatus(e)
         throw e
     }
+}
+
+private boolean privateKeyExists(def privateKeyCredentialsId) {
+    try {
+        withCredentials([sshUserPrivateKey(credentialsId: privateKeyCredentialsId, keyFileVariable: 'PKEY_FILE')]) {
+            true
+        }
+    } catch (_) {
+        false
+    }
+}
+
+private checkoutGitRef(String gitRef, def extensions) {
+    checkout([
+        $class: 'GitSCM',
+        branches: [[name: gitRef]],
+        doGenerateSubmoduleConfigurations: false,
+        extensions: extensions,
+        userRemoteConfigs: scm.userRemoteConfigs
+    ])
 }
 
 return this

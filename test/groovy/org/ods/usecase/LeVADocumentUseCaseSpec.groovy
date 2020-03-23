@@ -45,6 +45,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         pdf = Mock(PDFUtil)
         sq = Mock(SonarQubeUseCase)
         usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
+        project.getOpenShiftApiUrl() >> 'https://api.dev-openshift.com'
     }
 
     def "compute test discrepancies"() {
@@ -978,6 +979,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         given:
         // Test Parameters
         def repo = project.repositories.first()
+        def data = [
+            pods: [
+                items: [
+                    [
+                        metadata: [:],
+                        spec: [:],
+                        status: [:]
+                    ]
+                ]
+            ]
+        ]
 
         // Argument Constraints
         def documentType = LeVADocumentUseCase.DocumentType.TIR as String
@@ -987,7 +999,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentTemplate = "template"
 
         when:
-        usecase.createTIR(repo)
+        usecase.createTIR(repo, data)
 
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
@@ -1004,6 +1016,17 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
     def "create TIR without Jira"() {
         given:
         project.services.jira = null
+        def data = [
+            pods: [
+                items: [
+                    [
+                        metadata: [:],
+                        spec: [:],
+                        status: [:]
+                    ]
+                ]
+            ]
+        ]
 
         // Test Parameters
         def repo = project.repositories.first()
@@ -1016,7 +1039,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         def documentTemplate = "template"
 
         when:
-        usecase.createTIR(repo)
+        usecase.createTIR(repo, data)
 
         then:
         1 * jiraUseCase.getDocumentChapterData(documentType) >> chapterData
