@@ -27,163 +27,169 @@ import org.ods.util.PipelineUtil
 import org.ods.util.Project
 
 def call() {
-    Unirest.config()
-        .socketTimeout(1200000)
-        .connectTimeout(120000)
+    def project
+    try {
+        Unirest.config()
+            .socketTimeout(1200000)
+            .connectTimeout(120000)
 
-    def steps = new PipelineSteps(this)
-    def project = new Project(steps).init()
-    def util = new MROPipelineUtil(project, steps)
+        def steps = new PipelineSteps(this)
+        project = new Project(steps).init()
+        def util = new MROPipelineUtil(project, steps)
 
-    // Register global services
-    def registry = ServiceRegistry.instance
-    registry.add(GitUtil, new GitUtil(steps))
-    registry.add(PDFUtil, new PDFUtil())
-    registry.add(PipelineSteps, steps)
-    registry.add(MROPipelineUtil, util)
-    registry.add(Project, project)
+        // Register global services
+        def registry = ServiceRegistry.instance
+        registry.add(GitUtil, new GitUtil(steps))
+        registry.add(PDFUtil, new PDFUtil())
+        registry.add(PipelineSteps, steps)
+        registry.add(MROPipelineUtil, util)
+        registry.add(Project, project)
 
-    registry.add(DocGenService,
-        new DocGenService(env.DOCGEN_URL)
-    )
-
-    registry.add(LeVADocumentChaptersFileService,
-        new LeVADocumentChaptersFileService(steps)
-    )
-
-    registry.add(JenkinsService,
-        new JenkinsService(
-            registry.get(PipelineSteps)
+        registry.add(DocGenService,
+            new DocGenService(env.DOCGEN_URL)
         )
-    )
 
-    if (project.services?.jira) {
-        withCredentials([ usernamePassword(credentialsId: project.services.jira.credentials.id, usernameVariable: "JIRA_USERNAME", passwordVariable: "JIRA_PASSWORD") ]) {
-            registry.add(JiraService,
-                new JiraService(
-                    env.JIRA_URL,
-                    env.JIRA_USERNAME,
-                    env.JIRA_PASSWORD
-                )
+        registry.add(LeVADocumentChaptersFileService,
+            new LeVADocumentChaptersFileService(steps)
+        )
+
+        registry.add(JenkinsService,
+            new JenkinsService(
+                registry.get(PipelineSteps)
             )
+        )
 
-            if (project.hasCapability("Zephyr")) {
-                registry.add(JiraZephyrService,
-                    new JiraZephyrService(
+        if (project.services?.jira) {
+            withCredentials([ usernamePassword(credentialsId: project.services.jira.credentials.id, usernameVariable: "JIRA_USERNAME", passwordVariable: "JIRA_PASSWORD") ]) {
+                registry.add(JiraService,
+                    new JiraService(
                         env.JIRA_URL,
                         env.JIRA_USERNAME,
                         env.JIRA_PASSWORD
                     )
                 )
+
+                if (project.hasCapability("Zephyr")) {
+                    registry.add(JiraZephyrService,
+                        new JiraZephyrService(
+                            env.JIRA_URL,
+                            env.JIRA_USERNAME,
+                            env.JIRA_PASSWORD
+                        )
+                    )
+                }
             }
         }
-    }
 
-    registry.add(NexusService,
-        new NexusService(
-            env.NEXUS_URL,
-            env.NEXUS_USERNAME,
-            env.NEXUS_PASSWORD
-        )
-    )
-
-    withCredentials([ usernamePassword(credentialsId: project.services.bitbucket.credentials.id, usernameVariable: "BITBUCKET_USER", passwordVariable: "BITBUCKET_PW") ]) {
-        registry.add(OpenShiftService,
-            new OpenShiftService(
-                registry.get(PipelineSteps),
-                env.OPENSHIFT_API_URL,
-                env.BITBUCKET_HOST,
-                env.BITBUCKET_USER,
-                env.BITBUCKET_PW
+        registry.add(NexusService,
+            new NexusService(
+                env.NEXUS_URL,
+                env.NEXUS_USERNAME,
+                env.NEXUS_PASSWORD
             )
         )
-    }
 
-    def jiraUseCase = new JiraUseCase(
-        registry.get(Project),
-        registry.get(PipelineSteps),
-        registry.get(MROPipelineUtil),
-        registry.get(JiraService)
-    )
+        withCredentials([ usernamePassword(credentialsId: project.services.bitbucket.credentials.id, usernameVariable: "BITBUCKET_USER", passwordVariable: "BITBUCKET_PW") ]) {
+            registry.add(OpenShiftService,
+                new OpenShiftService(
+                    registry.get(PipelineSteps),
+                    env.OPENSHIFT_API_URL,
+                    env.BITBUCKET_HOST,
+                    env.BITBUCKET_USER,
+                    env.BITBUCKET_PW
+                )
+            )
+        }
 
-    jiraUseCase.setSupport(
-        project.hasCapability("Zephyr")
-            ? new JiraUseCaseZephyrSupport(project, steps, jiraUseCase, registry.get(JiraZephyrService), registry.get(MROPipelineUtil))
-            : new JiraUseCaseSupport(project, steps, jiraUseCase)
-    )
-
-    registry.add(JiraUseCase, jiraUseCase)
-
-    registry.add(JUnitTestReportsUseCase,
-        new JUnitTestReportsUseCase(
-            registry.get(Project),
-            registry.get(PipelineSteps)
-        )
-    )
-
-    registry.add(SonarQubeUseCase,
-        new SonarQubeUseCase(
-            registry.get(Project),
-            registry.get(PipelineSteps),
-            registry.get(NexusService)
-        )
-    )
-
-    registry.add(LeVADocumentUseCase,
-        new LeVADocumentUseCase(
+        def jiraUseCase = new JiraUseCase(
             registry.get(Project),
             registry.get(PipelineSteps),
             registry.get(MROPipelineUtil),
-            registry.get(DocGenService),
-            registry.get(JenkinsService),
-            registry.get(JiraUseCase),
-            registry.get(JUnitTestReportsUseCase),
-            registry.get(LeVADocumentChaptersFileService),
-            registry.get(NexusService),
-            registry.get(OpenShiftService),
-            registry.get(PDFUtil),
-            registry.get(SonarQubeUseCase)
+            registry.get(JiraService)
         )
-    )
 
-    registry.add(LeVADocumentScheduler,
-        new LeVADocumentScheduler(
-            registry.get(Project),
-            registry.get(PipelineSteps),
-            registry.get(MROPipelineUtil),
-            registry.get(LeVADocumentUseCase)
+        jiraUseCase.setSupport(
+            project.hasCapability("Zephyr")
+                ? new JiraUseCaseZephyrSupport(project, steps, jiraUseCase, registry.get(JiraZephyrService), registry.get(MROPipelineUtil))
+                : new JiraUseCaseSupport(project, steps, jiraUseCase)
         )
-    )
 
-    def phase = MROPipelineUtil.PipelinePhases.INIT
+        registry.add(JiraUseCase, jiraUseCase)
 
-    project.load(registry.get(GitUtil), registry.get(JiraUseCase))
-    def repos = project.repositories
+        registry.add(JUnitTestReportsUseCase,
+            new JUnitTestReportsUseCase(
+                registry.get(Project),
+                registry.get(PipelineSteps)
+            )
+        )
 
-    // Configure current build
-    currentBuild.description = "Build #${BUILD_NUMBER} - Change: ${env.RELEASE_PARAM_CHANGE_ID}, Project: ${project.key}, Target Environment: ${project.key}-${env.MULTI_REPO_ENV}"
+        registry.add(SonarQubeUseCase,
+            new SonarQubeUseCase(
+                registry.get(Project),
+                registry.get(PipelineSteps),
+                registry.get(NexusService)
+            )
+        )
 
-    // Clean workspace from previous runs
-    [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->
-       echo "Cleaning workspace directory '${name}' from previous runs"
-       Paths.get(env.WORKSPACE, name).toFile().deleteDir()
+        registry.add(LeVADocumentUseCase,
+            new LeVADocumentUseCase(
+                registry.get(Project),
+                registry.get(PipelineSteps),
+                registry.get(MROPipelineUtil),
+                registry.get(DocGenService),
+                registry.get(JenkinsService),
+                registry.get(JiraUseCase),
+                registry.get(JUnitTestReportsUseCase),
+                registry.get(LeVADocumentChaptersFileService),
+                registry.get(NexusService),
+                registry.get(OpenShiftService),
+                registry.get(PDFUtil),
+                registry.get(SonarQubeUseCase)
+            )
+        )
+
+        registry.add(LeVADocumentScheduler,
+            new LeVADocumentScheduler(
+                registry.get(Project),
+                registry.get(PipelineSteps),
+                registry.get(MROPipelineUtil),
+                registry.get(LeVADocumentUseCase)
+            )
+        )
+
+        def phase = MROPipelineUtil.PipelinePhases.INIT
+
+        project.load(registry.get(GitUtil), registry.get(JiraUseCase))
+        def repos = project.repositories
+
+        // Configure current build
+        currentBuild.description = "Build #${BUILD_NUMBER} - Change: ${env.RELEASE_PARAM_CHANGE_ID}, Project: ${project.key}, Target Environment: ${project.key}-${env.MULTI_REPO_ENV}"
+
+        // Clean workspace from previous runs
+        [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->
+        echo "Cleaning workspace directory '${name}' from previous runs"
+        Paths.get(env.WORKSPACE, name).toFile().deleteDir()
+        }
+
+        // Checkout repositories into the workspace
+        parallel(util.prepareCheckoutReposNamedJob(repos) { steps_, repo ->
+            echo "Repository: ${repo}"
+            echo "Environment configuration: ${env.getEnvironment()}"
+        })
+
+        // Load configs from each repo's release-manager.yml
+        util.loadPipelineConfigs(repos)
+
+        // Compute groups of repository configs for convenient parallelization
+        repos = util.computeRepoGroups(repos)
+
+        registry.get(LeVADocumentScheduler).run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+
+        return [ project: project, repos: repos ]
+    } catch (e) {
+        project.reportPipelineStatus(e)
+        throw e
     }
-
-    // Checkout repositories into the workspace
-    parallel(util.prepareCheckoutReposNamedJob(repos) { steps_, repo ->
-        echo "Repository: ${repo}"
-        echo "Environment configuration: ${env.getEnvironment()}"
-    })
-
-    // Load configs from each repo's release-manager.yml
-    util.loadPipelineConfigs(repos)
-
-    // Compute groups of repository configs for convenient parallelization
-    repos = util.computeRepoGroups(repos)
-
-    registry.get(LeVADocumentScheduler).run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
-
-    return [ project: project, repos: repos ]
 }
 
 return this

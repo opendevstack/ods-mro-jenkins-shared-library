@@ -252,6 +252,8 @@ class JiraUseCase {
     }
 
     void updateJiraReleaseStatusIssue(Throwable error) {
+        if (!this.jira) return
+
         def status = error ? "Failed" : "Successful"
 
         def releaseStatusIssueKey = this.project.buildParams.releaseStatusJiraIssueKey

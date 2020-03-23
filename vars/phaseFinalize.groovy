@@ -14,39 +14,47 @@ def call(Project project, List<Set<Map>> repos) {
 
     def phase = MROPipelineUtil.PipelinePhases.FINALIZE
 
-    echo "Finalizing deployment of project '${project.key}' into environment '${env.MULTI_REPO_ENV}'"
+    try {
+        echo "Finalizing deployment of project '${project.key}' into environment '${env.MULTI_REPO_ENV}'"
 
-    // Check if the target environment exists in OpenShift
-    def environment = "${project.key}-${env.MULTI_REPO_ENV}".toLowerCase()
-    if (!os.envExists(environment)) {
-        throw new RuntimeException("Error: target environment '${environment}' does not exist in OpenShift.")
-    }
-
-    project.gitData.location = os.exportProject(env.MULTI_REPO_ENV, project.key.toLowerCase(), env.RELEASE_PARAM_CHANGE_ID)
-
-    // Dump a representation of the project
-    echo "Project ${JsonOutput.toJson(project)}"
-
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
-
-    // Fail the build in case of failing tests.
-    if (project.hasFailingTests() || project.hasUnexecutedJiraTests()) {
-        def message = "Error: "
-
-        if (project.hasFailingTests()) {
-            message += "found failing tests"
+        // Check if the target environment exists in OpenShift
+        def environment = "${project.key}-${env.MULTI_REPO_ENV}".toLowerCase()
+        if (!os.envExists(environment)) {
+            throw new RuntimeException("Error: target environment '${environment}' does not exist in OpenShift.")
         }
 
-        if (project.hasFailingTests() && project.hasUnexecutedJiraTests()) {
-            message += " and "
-        }
+        project.gitData.location = os.exportProject(env.MULTI_REPO_ENV, project.key.toLowerCase(), env.RELEASE_PARAM_CHANGE_ID)
 
-        if (project.hasUnexecutedJiraTests()) {
-            message += "found unexecuted Jira tests"
-        }
+        // Dump a representation of the project
+        echo "Project ${JsonOutput.toJson(project)}"
 
-        message += "."
-        util.failBuild(message)
+        levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+
+        // Fail the build in case of failing tests.
+        if (project.hasFailingTests() || project.hasUnexecutedJiraTests()) {
+            def message = "Error: "
+
+            if (project.hasFailingTests()) {
+                message += "found failing tests"
+            }
+
+            if (project.hasFailingTests() && project.hasUnexecutedJiraTests()) {
+                message += " and "
+            }
+
+            if (project.hasUnexecutedJiraTests()) {
+                message += "found unexecuted Jira tests"
+            }
+
+            message += "."
+            util.failBuild(message)
+            throw new IllegalStateException(message)
+        } else {
+            project.reportPipelineStatus()
+        }
+    } catch (e) {
+        project.reportPipelineStatus(e)
+        throw e
     }
 }
 
