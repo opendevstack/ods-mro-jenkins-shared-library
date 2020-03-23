@@ -1184,13 +1184,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         1 * project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.DOCUMENTATION_TRACKING)
 
         then:
-        // FIXME: not yet implemented in Jira
-        // 1 * jiraUseCase.jira.updateFieldsOnIssue("TRK-1", _)
+        1 * jiraUseCase.jira.updateFieldsOnIssue("TRK-1", _)
         1 * jiraUseCase.jira.appendCommentToIssue("TRK-1", "myMessage Attention: this document is work in progress! See issues: DOC-1, DOC-3")
 
         then:
-        // FIXME: not yet implemented in Jira
-        // 1 * jiraUseCase.jira.updateFieldsOnIssue("TRK-2", _)
+        1 * jiraUseCase.jira.updateFieldsOnIssue("TRK-2", _)
         1 * jiraUseCase.jira.appendCommentToIssue("TRK-2", "myMessage Attention: this document is work in progress! See issues: DOC-1, DOC-3")
     }
 
