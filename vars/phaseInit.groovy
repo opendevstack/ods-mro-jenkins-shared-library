@@ -37,13 +37,6 @@ def call() {
             .connectTimeout(120000)
 
         def git = new GitUtil(steps)
-
-        if (!env.environment) {
-            echo 'Skipping build due to missing parameter: "environment" is required.'
-            currentBuild.result = 'NOT_BUILT'
-            return [:]
-        }
-
         git.configureUser()
 
         // load build params
