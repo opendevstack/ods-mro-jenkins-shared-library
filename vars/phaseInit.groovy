@@ -27,14 +27,16 @@ import org.ods.util.PipelineUtil
 import org.ods.util.Project
 
 def call() {
-    def project
+    def steps = new PipelineSteps(this)
+    def project = new Project(steps)
+
     try {
         Unirest.config()
             .socketTimeout(1200000)
             .connectTimeout(120000)
 
-        def steps = new PipelineSteps(this)
-        project = new Project(steps).init()
+        project.init()
+
         def util = new MROPipelineUtil(project, steps)
 
         // Register global services
