@@ -19,20 +19,21 @@ import org.ods.usecase.JiraUseCaseSupport
 import org.ods.usecase.JiraUseCaseZephyrSupport
 import org.ods.usecase.LeVADocumentUseCase
 import org.ods.usecase.SonarQubeUseCase
-import org.ods.util.GitTag
 import org.ods.util.GitUtil
-import org.ods.util.IPipelineSteps
+import org.ods.util.GitTag
 import org.ods.util.MROPipelineUtil
 import org.ods.util.PDFUtil
 import org.ods.util.PipelineSteps
 import org.ods.util.PipelineUtil
 import org.ods.util.Project
 
-def call(Project project, IPipelineSteps steps) {
+def call() {
     Unirest.config()
         .socketTimeout(1200000)
         .connectTimeout(120000)
 
+    def steps = new PipelineSteps(this)
+    def project = new Project(steps)
     def git = new GitUtil(steps)
 
     if (!env.environment) {
