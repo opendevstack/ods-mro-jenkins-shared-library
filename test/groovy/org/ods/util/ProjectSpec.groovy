@@ -125,7 +125,7 @@ class ProjectSpec extends SpecHelper {
 
     def "get build environment for RELEASE_PARAM_CHANGE_ID"() {
         when:
-        steps.env.changeId = null
+        steps.env.changeId = 'asdf'
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
         def result = Project.getBuildEnvironment(steps)
@@ -682,7 +682,7 @@ class ProjectSpec extends SpecHelper {
         result = Project.loadBuildParams(steps)
 
         then:
-        result.targetEnvironment == "test"
+        result.targetEnvironment == "qa"
     }
 
     def "load build param targetEnvironmentToken"() {
