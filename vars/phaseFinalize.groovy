@@ -74,6 +74,7 @@ def call(Project project, List<Set<Map>> repos) {
             project.reportPipelineStatus()
         }
     } catch (e) {
+        this.steps.echo(e.message)
         project.reportPipelineStatus(e)
         throw e
     }

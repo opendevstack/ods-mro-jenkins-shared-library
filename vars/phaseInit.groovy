@@ -320,6 +320,7 @@ def call() {
 
         return [ project: project, repos: repos ]
     } catch (e) {
+        this.steps.echo(e.message)
         project.reportPipelineStatus(e)
         throw e
     }

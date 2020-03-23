@@ -27,6 +27,7 @@ def call(Project project, List<Set<Map>> repos) {
 
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
     } catch (e) {
+        this.steps.echo(e.message)
         project.reportPipelineStatus(e)
         throw e
     }
