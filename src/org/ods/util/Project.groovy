@@ -1366,7 +1366,7 @@ class Project {
         if (!this.jiraUseCase) return [:]
         if (!this.jiraUseCase.jira) return [:]
 
-        return this.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
+        return this.jiraUseCase.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
             this.buildParams.version == version.value
         }
     }
