@@ -45,7 +45,7 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
         pdf = Mock(PDFUtil)
         sq = Mock(SonarQubeUseCase)
         usecase = Spy(new LeVADocumentUseCase(project, steps, util, docGen, jenkins, jiraUseCase, junit, levaFiles, nexus, os, pdf, sq))
-        project.getEnvironments() >> [dev: [ apiUrl: 'https://api.dev-openshift.com']]
+        project.getOpenShiftApiUrl() >> 'https://api.dev-openshift.com'
     }
 
     def "compute test discrepancies"() {
