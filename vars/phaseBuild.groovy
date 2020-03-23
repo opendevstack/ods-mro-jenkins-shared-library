@@ -47,18 +47,23 @@ def call(Project project, List<Set<Map>> repos) {
         }
     }
 
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
+    try {
+        levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_START)
 
-    // Execute phase for each repository
-    util.prepareExecutePhaseForReposNamedJob(phase, repos, preExecuteRepo, postExecuteRepo)
-        .each { group ->
-            parallel(group)
-        }
+        // Execute phase for each repository
+        util.prepareExecutePhaseForReposNamedJob(phase, repos, preExecuteRepo, postExecuteRepo)
+            .each { group ->
+                parallel(group)
+            }
 
-    // Parse all test report files into a single data structure
-    globalData.tests.unit.testResults = junit.parseTestReportFiles(globalData.tests.unit.testReportFiles)
+        // Parse all test report files into a single data structure
+        globalData.tests.unit.testResults = junit.parseTestReportFiles(globalData.tests.unit.testReportFiles)
 
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+        levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+    } catch (e) {
+        project.reportPipelineStatus(e)
+        throw e
+    }
 }
 
 private List getUnitTestResults(def steps, Map repo) {

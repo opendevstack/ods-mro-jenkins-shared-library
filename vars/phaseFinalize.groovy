@@ -24,52 +24,58 @@ def call(Project project, List<Set<Map>> repos) {
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, repo)
     }
 
-    if (project.isAssembleMode) {
-        // Check if the target environment exists in OpenShift
-        def targetProject = project.targetProject
-        if (!os.envExists(targetProject)) {
-            throw new RuntimeException("Error: target environment '${targetProject}' does not exist in OpenShift.")
+    try {
+        if (project.isAssembleMode) {
+            // Check if the target environment exists in OpenShift
+            def targetProject = project.targetProject
+            if (!os.envExists(targetProject)) {
+                throw new RuntimeException("Error: target environment '${targetProject}' does not exist in OpenShift.")
+            }
         }
-    }
 
-    runOnAgentPod(project.isAssembleMode) {
+        runOnAgentPod(project.isAssembleMode) {
+            // Execute phase for each repository
+            util.prepareExecutePhaseForReposNamedJob(phase, repos, preExecuteRepo, postExecuteRepo)
+                .each { group ->
+                    parallel(group)
+                }
+        }
 
-        // Execute phase for each repository
-        util.prepareExecutePhaseForReposNamedJob(phase, repos, preExecuteRepo, postExecuteRepo)
-            .each { group ->
-                parallel(group)
+        // record release manager repo state
+        if (project.isAssembleMode && !project.isWorkInProgress) {
+            util.tagAndPushBranch(project.gitReleaseBranch, project.targetTag)
+        }
+
+        // Dump a representation of the project
+        echo "Project ${JsonOutput.toJson(project)}"
+
+        levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+
+        // Fail the build in case of failing tests.
+        if (project.hasFailingTests() || project.hasUnexecutedJiraTests()) {
+            def message = "Error: "
+
+            if (project.hasFailingTests()) {
+                message += "found failing tests"
             }
 
-    }
+            if (project.hasFailingTests() && project.hasUnexecutedJiraTests()) {
+                message += " and "
+            }
 
-    // record release manager repo state
-    if (project.isAssembleMode && !project.isWorkInProgress) {
-        util.tagAndPushBranch(project.gitReleaseBranch, project.targetTag)
-    }
+            if (project.hasUnexecutedJiraTests()) {
+                message += "found unexecuted Jira tests"
+            }
 
-    // Dump a representation of the project
-    echo "Project ${JsonOutput.toJson(project)}"
-
-    levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
-
-    // Fail the build in case of failing tests.
-    if (project.hasFailingTests() || project.hasUnexecutedJiraTests()) {
-        def message = "Error: "
-
-        if (project.hasFailingTests()) {
-            message += "found failing tests"
+            message += "."
+            util.failBuild(message)
+            throw new IllegalStateException(message)
+        } else {
+            project.reportPipelineStatus()
         }
-
-        if (project.hasFailingTests() && project.hasUnexecutedJiraTests()) {
-            message += " and "
-        }
-
-        if (project.hasUnexecutedJiraTests()) {
-            message += "found unexecuted Jira tests"
-        }
-
-        message += "."
-        util.failBuild(message)
+    } catch (e) {
+        project.reportPipelineStatus(e)
+        throw e
     }
 }
 

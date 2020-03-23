@@ -19,71 +19,60 @@ def call(Map config) {
             userRemoteConfigs: scm.userRemoteConfigs
         ])
 
-        def error
-        try {
-            def envs = mroEnvironment(debug)
+        def envs = mroEnvironment(debug)
 
-            withPodTemplate(odsImageTag) {
+        withPodTemplate(odsImageTag) {
 
-                withEnv (envs) {
+            withEnv (envs) {
 
-                    def ciSkip = false
+                def ciSkip = false
 
-                    stage('Init') {
-                        echo "**** STARTING stage Init ****"
-                        def result = phaseInit()
-                        if (result) {
-                            project = result.project
-                            repos = result.repos
-                        } else {
-                            ciSkip = true
-                        }
-                        echo "**** ENDED stage Init ****"
+                stage('Init') {
+                    echo "**** STARTING stage Init ****"
+                    def result = phaseInit()
+                    if (result) {
+                        project = result.project
+                        repos = result.repos
+                    } else {
+                        ciSkip = true
                     }
+                    echo "**** ENDED stage Init ****"
+                }
 
-                    if (ciSkip) {
-                        return
-                    }
+                if (ciSkip) {
+                    return
+                }
 
-                    stage('Build') {
-                        echo "**** STARTING stage Build ****"
-                        phaseBuild(project, repos)
-                        echo "**** ENDED stage Build ****"
-                    }
+                stage('Build') {
+                    echo "**** STARTING stage Build ****"
+                    phaseBuild(project, repos)
+                    echo "**** ENDED stage Build ****"
+                }
 
-                    stage('Deploy') {
-                        echo "**** STARTING stage Deploy ****"
-                        phaseDeploy(project, repos)
-                        echo "**** ENDED stage Deploy ****"
-                    }
+                stage('Deploy') {
+                    echo "**** STARTING stage Deploy ****"
+                    phaseDeploy(project, repos)
+                    echo "**** ENDED stage Deploy ****"
+                }
 
-                    stage('Test') {
-                        echo "**** STARTING stage Test ****"
-                        phaseTest(project, repos)
-                        echo "**** ENDED stage Test ****"
-                    }
+                stage('Test') {
+                    echo "**** STARTING stage Test ****"
+                    phaseTest(project, repos)
+                    echo "**** ENDED stage Test ****"
+                }
 
-                    stage('Release') {
-                        echo "**** STARTING stage Release ****"
-                        phaseRelease(project, repos)
-                        echo "**** ENDED stage Release ****"
-                    }
+                stage('Release') {
+                    echo "**** STARTING stage Release ****"
+                    phaseRelease(project, repos)
+                    echo "**** ENDED stage Release ****"
+                }
 
-                    stage('Finalize') {
-                        echo "**** STARTING stage Finalize ****"
-                        phaseFinalize(project, repos)
-                        echo "**** ENDED stage Finalize ****"
-                    }
+                stage('Finalize') {
+                    echo "**** STARTING stage Finalize ****"
+                    phaseFinalize(project, repos)
+                    echo "**** ENDED stage Finalize ****"
                 }
             }
-
-        }
-        catch (e) {
-            error = e
-            throw e
-        }
-        finally {
-            project.reportPipelineStatus(error)
         }
     }
 }

@@ -202,8 +202,8 @@ class Project {
     "project": {
         "name": "Sock Shop",
         "description": "Sock Shop: A Microservice Demo Application",
-        "key": "SOCKSHOP",
-        "id": "1",
+        "key": "NET",
+        "id": "12605",
         "jiraBaseUrl": "https://jira.example.com:2990/jira/SOCKSHOP",
         "gampTopics": [
             "operational requirements",
@@ -332,7 +332,7 @@ class Project {
             "id": "2",
             "version": "1.0",
             "name": "Technology-demo-app-payment",
-            "description": "Technology component demo-app-paymnent stored at https://bitbucket-dev.biscrum.com/projects/PLTFMDEV/repos/pltfmdev-demo-app-payment/browse",
+            "description": "Technology component demo-app-paymnent stored at https://bitbucket-dev.biscrum.com/projects/NET/repos/net-demo-app-payment/browse",
             "epics": [
                 "NET-124"
             ],
@@ -1516,7 +1516,7 @@ class Project {
         if (!this.jiraUseCase) return [:]
         if (!this.jiraUseCase.jira) return [:]
 
-        return this.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
+        return this.jiraUseCase.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
             this.buildParams.version == version.value
         }
     }

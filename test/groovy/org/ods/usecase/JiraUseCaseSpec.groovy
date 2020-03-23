@@ -422,8 +422,9 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * jira.updateFieldsOnIssue("JIRA-4711", [
-            "customfield_2": "1.0-0815",
-            "customfield_1": "Failed",
+            // FIXME: not yet implemented in Jira
+            // "customfield_2": "1.0-0815",
+            "customfield_1": "Failed"
         ])
 
         then:
@@ -455,8 +456,9 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * jira.updateFieldsOnIssue("JIRA-4711", [
-            "customfield_2": "1.0-0815",
-            "customfield_1": "Successful",
+            // FIXME: not yet implemented in Jira
+            // "customfield_2": "1.0-0815",
+            "customfield_1": "Successful"
         ])
     }
 
