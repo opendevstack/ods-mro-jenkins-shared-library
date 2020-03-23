@@ -1,7 +1,9 @@
+import org.ods.util.Project
+
 def call(Map config) {
 
-    def project = [:]
-    def repos   = []
+    Project project
+    def repos = []
 
     def debug = config.get('debug', false)
 
