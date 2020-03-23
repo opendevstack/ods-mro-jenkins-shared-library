@@ -234,7 +234,7 @@ class JiraService {
         }
 
         def response = Unirest.get("${this.baseURL}/rest/platform/1.0/docgenreports/{projectKey}")
-            .routeParam("projectKey", projectKey)
+            .routeParam("projectKey", projectKey.toUpperCase())
             .basicAuth(this.username, this.password)
             .header("Accept", "application/json")
             .asString()
@@ -290,7 +290,7 @@ class JiraService {
         }
 
         def response = Unirest.get("${this.baseURL}/rest/api/2/issue/createmeta/{projectKey}/issuetypes/{issueTypeId}")
-            .routeParam("projectKey", projectKey)
+            .routeParam("projectKey", projectKey.toUpperCase())
             .routeParam("issueTypeId", issueTypeId)
             .basicAuth(this.username, this.password)
             .header("Accept", "application/json")
@@ -316,7 +316,7 @@ class JiraService {
         }
 
         def response = Unirest.get("${this.baseURL}/rest/api/2/issue/createmeta/{projectKey}/issuetypes")
-            .routeParam("projectKey", projectKey)
+            .routeParam("projectKey", projectKey.toUpperCase())
             .basicAuth(this.username, this.password)
             .header("Accept", "application/json")
             .asString()
