@@ -1,8 +1,10 @@
+import org.ods.util.PipelineSteps
 import org.ods.util.Project
 
 def call(Map config) {
 
-    Project project
+    def steps = new PipelineSteps(this)
+    def project = new Project(steps)
     def repos = []
 
     def debug = config.get('debug', false)
@@ -31,9 +33,8 @@ def call(Map config) {
 
                     stage('Init') {
                         echo "**** STARTING stage Init ****"
-                        def result = phaseInit()
+                        def result = phaseInit(project, steps)
                         if (result) {
-                            project = result.project
                             repos = result.repos
                         } else {
                             ciSkip = true
