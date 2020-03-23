@@ -125,13 +125,12 @@ class ProjectSpec extends SpecHelper {
 
     def "get build environment for RELEASE_PARAM_CHANGE_ID"() {
         when:
-        steps.env.changeId = 'asdf'
         steps.env.environment = "myEnv"
         steps.env.version = "0.1"
         def result = Project.getBuildEnvironment(steps)
 
         then:
-        result.find { it == "RELEASE_PARAM_CHANGE_ID=0.1-myEnv" }
+        result.find { it == "RELEASE_PARAM_CHANGE_ID=UNDEFINED" }
 
         when:
         steps.env.changeId = ""
@@ -140,7 +139,7 @@ class ProjectSpec extends SpecHelper {
         result = Project.getBuildEnvironment(steps)
 
         then:
-        result.find { it == "RELEASE_PARAM_CHANGE_ID=0.1-myEnv" }
+        result.find { it == "RELEASE_PARAM_CHANGE_ID=UNDEFINED" }
 
         when:
         steps.env.changeId = "myId"
@@ -583,7 +582,7 @@ class ProjectSpec extends SpecHelper {
         def result = Project.loadBuildParams(steps)
 
         then:
-        result.changeId == "0.1-myEnv"
+        result.changeId == "UNDEFINED"
 
         when:
         steps.env.changeId = ""
@@ -592,7 +591,7 @@ class ProjectSpec extends SpecHelper {
         result = Project.loadBuildParams(steps)
 
         then:
-        result.changeId == "0.1-myEnv"
+        result.changeId == "UNDEFINED"
 
         when:
         steps.env.changeId = "myId"
