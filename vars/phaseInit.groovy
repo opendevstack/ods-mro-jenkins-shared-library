@@ -36,7 +36,6 @@ def call() {
             .socketTimeout(1200000)
             .connectTimeout(120000)
 
-
         def git = new GitUtil(steps)
 
         if (!env.environment) {
