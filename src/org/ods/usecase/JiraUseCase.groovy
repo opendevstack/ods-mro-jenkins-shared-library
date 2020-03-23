@@ -261,8 +261,9 @@ class JiraUseCase {
         def releaseStatusIssueBuildNumberField = releaseStatusIssueFields["Build Number"]
 
         this.jira.updateFieldsOnIssue(releaseStatusIssueKey, [
-            (releaseStatusIssueBuildNumberField.id): "${this.project.buildParams.version}-${this.project.buildParams.jenkins.buildNumber}",
-            (releaseStatusIssueReleaseManagerStatusField.id): status,
+            // FIXME: not yet implemented in Jira
+            // (releaseStatusIssueBuildNumberField.id): "${this.project.buildParams.version}-${this.project.buildParams.jenkins.buildNumber}", // not yet implemented
+            (releaseStatusIssueReleaseManagerStatusField.id): status
         ])
 
         if (error) {

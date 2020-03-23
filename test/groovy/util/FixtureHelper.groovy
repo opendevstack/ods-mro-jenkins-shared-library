@@ -167,8 +167,8 @@ class FixtureHelper {
 
     static Map createProjectJiraDataDocs() {
         return [
-            "PLTFMDEV-1072": [
-                "key"        : "PLTFMDEV-1072",
+            "NET-1072": [
+                "key"        : "NET-1072",
                 "name"       : "Test Case Report",
                 "description": "TCR",
                 "status"     : "DONE",
@@ -176,8 +176,8 @@ class FixtureHelper {
                     "Doc:TCR"
                 ]
             ],
-            "PLTFMDEV-1071": [
-                "key"        : "PLTFMDEV-1071",
+            "NET-1071": [
+                "key"        : "NET-1071",
                 "name"       : "Test Case Plan",
                 "description": "TCP",
                 "status"     : "DONE",
@@ -185,8 +185,8 @@ class FixtureHelper {
                     "Doc:TCP"
                 ]
             ],
-            "PLTFMDEV-1066": [
-                "key"        : "PLTFMDEV-1066",
+            "NET-1066": [
+                "key"        : "NET-1066",
                 "name"       : "Discrepancy Log for P",
                 "description": "C-DIL for P",
                 "status"     : "DONE",
@@ -194,8 +194,8 @@ class FixtureHelper {
                     "Doc:DIL_P"
                 ]
             ],
-            "PLTFMDEV-1064": [
-                "key"        : "PLTFMDEV-1064",
+            "NET-1064": [
+                "key"        : "NET-1064",
                 "name"       : "Discrepancy Log for Q",
                 "description": "C-DIL for Q",
                 "status"     : "DONE",
@@ -203,8 +203,8 @@ class FixtureHelper {
                     "Doc:DIL_Q"
                 ]
             ],
-            "PLTFMDEV-1142": [
-                "key": "PLTFMDEV-1142",
+            "NET-1142": [
+                "key": "NET-1142",
                 "name": "Discrepancy Log for D",
                 "description": "C-DIL for D",
                 "status": "DONE",
@@ -212,8 +212,8 @@ class FixtureHelper {
                     "Doc:DIL"
                 ]
             ],
-            "PLTFMDEV-1013": [
-                "key"        : "PLTFMDEV-1013",
+            "NET-1013": [
+                "key"        : "NET-1013",
                 "name"       : "Combined Specification Document URS FS CS",
                 "description": "C-CSD",
                 "status"     : "DONE",
@@ -221,8 +221,8 @@ class FixtureHelper {
                     "Doc:CSD"
                 ]
             ],
-            "PLTFMDEV-938" : [
-                "key"        : "PLTFMDEV-938",
+            "NET-938" : [
+                "key"        : "NET-938",
                 "name"       : "Traceability Matrix",
                 "description": "TC-CTR",
                 "status"     : "DONE",
@@ -230,8 +230,8 @@ class FixtureHelper {
                     "Doc:TRC"
                 ]
             ],
-            "PLTFMDEV-937" : [
-                "key"        : "PLTFMDEV-937",
+            "NET-937" : [
+                "key"        : "NET-937",
                 "name"       : "System and Software Design Specification including Source Code Review Report",
                 "description": "C-SSDS",
                 "status"     : "DONE",
@@ -239,8 +239,8 @@ class FixtureHelper {
                     "Doc:SSDS"
                 ]
             ],
-            "PLTFMDEV-494" : [
-                "key"        : "PLTFMDEV-494",
+            "NET-494" : [
+                "key"        : "NET-494",
                 "name"       : "Configuration and Installation Testing Report for Dev",
                 "description": "C-IVR for DEV",
                 "status"     : "DONE",
@@ -248,8 +248,8 @@ class FixtureHelper {
                     "Doc:IVR"
                 ]
             ],
-            "PLTFMDEV-433" : [
-                "key"        : "PLTFMDEV-433",
+            "NET-433" : [
+                "key"        : "NET-433",
                 "name"       : "Test Case Report_Manual",
                 "description": "TC-CTR_M",
                 "status"     : "DONE",
@@ -257,8 +257,8 @@ class FixtureHelper {
                     "Doc:TC_CTR_M"
                 ]
             ],
-            "PLTFMDEV-428" : [
-                "key"        : "PLTFMDEV-428",
+            "NET-428" : [
+                "key"        : "NET-428",
                 "name"       : "Functional / Requirements Testing Report_Manual",
                 "description": "C-FTR_M",
                 "status"     : "DONE",
@@ -266,8 +266,8 @@ class FixtureHelper {
                     "Doc:FTR_M"
                 ]
             ],
-            "PLTFMDEV-427" : [
-                "key"        : "PLTFMDEV-427",
+            "NET-427" : [
+                "key"        : "NET-427",
                 "name"       : "Test Case Report",
                 "description": "TC-CTR",
                 "status"     : "DONE",
@@ -275,8 +275,8 @@ class FixtureHelper {
                     "Doc:TC_CTR"
                 ]
             ],
-            "PLTFMDEV-1133": [
-                "key": "PLTFMDEV-1133",
+            "NET-1133": [
+                "key": "NET-1133",
                 "name": "Test Case Plan for P",
                 "description": "TCP_P",
                 "status": "DONE",
@@ -284,8 +284,8 @@ class FixtureHelper {
                     "Doc:TCP_P"
                 ]
             ],
-            "PLTFMDEV-1132": [
-                "key": "PLTFMDEV-1132",
+            "NET-1132": [
+                "key": "NET-1132",
                 "name": "Test Case Plan for Q",
                 "description": "TCP_Q",
                 "status": "DONE",
@@ -293,8 +293,8 @@ class FixtureHelper {
                     "Doc:TCP_Q"
                 ]
             ],
-            "PLTFMDEV-416" : [
-                "key"        : "PLTFMDEV-416",
+            "NET-416" : [
+                "key"        : "NET-416",
                 "name"       : "Configuration and Installation Testing Plan for DEV",
                 "description": "C-IVP for Dev",
                 "status"     : "DONE",
@@ -302,8 +302,8 @@ class FixtureHelper {
                     "Doc:IVP"
                 ]
             ],
-            "PLTFMDEV-318" : [
-                "key"        : "PLTFMDEV-318",
+            "NET-318" : [
+                "key"        : "NET-318",
                 "name"       : "Technical Installation Plan",
                 "description": "C-TIP",
                 "status"     : "DONE",
@@ -311,8 +311,8 @@ class FixtureHelper {
                     "Doc:TIP"
                 ]
             ],
-            "PLTFMDEV-317" : [
-                "key"        : "PLTFMDEV-317",
+            "NET-317" : [
+                "key"        : "NET-317",
                 "name"       : "Technical Installation Report",
                 "description": "C-TIR",
                 "status"     : "DONE",
@@ -320,8 +320,8 @@ class FixtureHelper {
                     "Doc:TIR"
                 ]
             ],
-            "PLTFMDEV-24"  : [
-                "key"        : "PLTFMDEV-24",
+            "NET-24"  : [
+                "key"        : "NET-24",
                 "name"       : "Validation Summary Report",
                 "description": "C-VSR",
                 "status"     : "DONE",
@@ -329,8 +329,8 @@ class FixtureHelper {
                     "Doc:VSR"
                 ]
             ],
-            "PLTFMDEV-23"  : [
-                "key"        : "PLTFMDEV-23",
+            "NET-23"  : [
+                "key"        : "NET-23",
                 "name"       : "Configuration and Installation Testing Report for P",
                 "description": "C-IVR for P",
                 "status"     : "DONE",
@@ -338,8 +338,8 @@ class FixtureHelper {
                     "Doc:IVR_P"
                 ]
             ],
-            "PLTFMDEV-22"  : [
-                "key"        : "PLTFMDEV-22",
+            "NET-22"  : [
+                "key"        : "NET-22",
                 "name"       : "Technical Installation Report for P",
                 "description": "C-TIR for P",
                 "status"     : "DONE",
@@ -347,8 +347,8 @@ class FixtureHelper {
                     "Doc:TIR_P"
                 ]
             ],
-            "PLTFMDEV-21"  : [
-                "key"        : "PLTFMDEV-21",
+            "NET-21"  : [
+                "key"        : "NET-21",
                 "name"       : "Configuration and Installation Testing Plan for P",
                 "description": "C-IVP for P",
                 "status"     : "DONE",
@@ -356,8 +356,8 @@ class FixtureHelper {
                     "Doc:IVP_P"
                 ]
             ],
-            "PLTFMDEV-20"  : [
-                "key"        : "PLTFMDEV-20",
+            "NET-20"  : [
+                "key"        : "NET-20",
                 "name"       : "Technical Installation Plan for P",
                 "description": "C-TIP for P",
                 "status"     : "DONE",
@@ -365,8 +365,8 @@ class FixtureHelper {
                     "Doc:TIP_P"
                 ]
             ],
-            "PLTFMDEV-19"  : [
-                "key"        : "PLTFMDEV-19",
+            "NET-19"  : [
+                "key"        : "NET-19",
                 "name"       : "Combined Integration / Acceptance Testing Report",
                 "description": "C-CFTR",
                 "status"     : "DONE",
@@ -374,8 +374,8 @@ class FixtureHelper {
                     "Doc:CFTR"
                 ]
             ],
-            "PLTFMDEV-18"  : [
-                "key"        : "PLTFMDEV-18",
+            "NET-18"  : [
+                "key"        : "NET-18",
                 "name"       : "Test Cases",
                 "description": "C-TC",
                 "status"     : "DONE",
@@ -383,8 +383,8 @@ class FixtureHelper {
                     "Doc:TC"
                 ]
             ],
-            "PLTFMDEV-17"  : [
-                "key"        : "PLTFMDEV-17",
+            "NET-17"  : [
+                "key"        : "NET-17",
                 "name"       : "Combined Integration / Acceptance Testing Plan",
                 "description": "C-CFTP",
                 "status"     : "DONE",
@@ -392,8 +392,8 @@ class FixtureHelper {
                     "Doc:CFTP"
                 ]
             ],
-            "PLTFMDEV-1129": [
-                "key": "PLTFMDEV-1129",
+            "NET-1129": [
+                "key": "NET-1129",
                 "name": "Combined Integration / Acceptance Testing Plan for P",
                 "description": "C-CFTP_P",
                 "status": "DONE",
@@ -401,8 +401,8 @@ class FixtureHelper {
                     "Doc:CFTP_P"
                 ]
             ],
-            "PLTFMDEV-1128": [
-                "key": "PLTFMDEV-1128",
+            "NET-1128": [
+                "key": "NET-1128",
                 "name": "Combined Integration / Acceptance Testing Plan for Q",
                 "description": "C-CFTP_Q",
                 "status": "DONE",
@@ -410,8 +410,8 @@ class FixtureHelper {
                     "Doc:CFTP_Q"
                 ]
             ],
-            "PLTFMDEV-15"  : [
-                "key"        : "PLTFMDEV-15",
+            "NET-15"  : [
+                "key"        : "NET-15",
                 "name"       : "Development Test Report",
                 "description": "C-DTR",
                 "status"     : "DONE",
@@ -419,8 +419,8 @@ class FixtureHelper {
                     "Doc:DTR"
                 ]
             ],
-            "PLTFMDEV-14"  : [
-                "key"        : "PLTFMDEV-14",
+            "NET-14"  : [
+                "key"        : "NET-14",
                 "name"       : "Configuration and Installation Testing Report for Q",
                 "description": "C-IVR for Q",
                 "status"     : "DONE",
@@ -428,8 +428,8 @@ class FixtureHelper {
                     "Doc:IVR_Q"
                 ]
             ],
-            "PLTFMDEV-13"  : [
-                "key"        : "PLTFMDEV-13",
+            "NET-13"  : [
+                "key"        : "NET-13",
                 "name"       : "Technical Installation Report for Q",
                 "description": "C-TIR for Q",
                 "status"     : "DONE",
@@ -437,8 +437,8 @@ class FixtureHelper {
                     "Doc:TIR_Q"
                 ]
             ],
-            "PLTFMDEV-12"  : [
-                "key"        : "PLTFMDEV-12",
+            "NET-12"  : [
+                "key"        : "NET-12",
                 "name"       : "Development Test Plan",
                 "description": "C-DTP",
                 "status"     : "DONE",
@@ -446,8 +446,8 @@ class FixtureHelper {
                     "Doc:DTP"
                 ]
             ],
-            "PLTFMDEV-8"   : [
-                "key"        : "PLTFMDEV-8",
+            "NET-8"   : [
+                "key"        : "NET-8",
                 "name"       : "Configuration and Installation Testing Plan for Q",
                 "description": "C-IVP for Q",
                 "status"     : "DONE",
@@ -455,8 +455,8 @@ class FixtureHelper {
                     "Doc:IVP_Q"
                 ]
             ],
-            "PLTFMDEV-7"   : [
-                "key"        : "PLTFMDEV-7",
+            "NET-7"   : [
+                "key"        : "NET-7",
                 "name"       : "Technical Installation Plan for Q",
                 "description": "C-TIP for Q",
                 "status"     : "DONE",
@@ -464,8 +464,8 @@ class FixtureHelper {
                     "Doc:TIP_Q"
                 ]
             ],
-            "PLTFMDEV-6"   : [
-                "key"        : "PLTFMDEV-6",
+            "NET-6"   : [
+                "key"        : "NET-6",
                 "name"       : "Risk Assessment",
                 "description": "C-RA",
                 "status"     : "DONE",

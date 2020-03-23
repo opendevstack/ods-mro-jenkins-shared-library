@@ -8,7 +8,7 @@ The table below lists the test cases provided by the Jira mock data.
 The mock data is aligned with
 - Jira Test Issues in the jira-dev project
 - JUnit XML mock data as provided in FixtureHelper
-- Unit tests in pltfmdev-demo-app-test
+- Unit tests in net-demo-app-test
 
 Note: if mock Jira test cases are changed, these changes also need to be reflected in all other systems listed above!
 

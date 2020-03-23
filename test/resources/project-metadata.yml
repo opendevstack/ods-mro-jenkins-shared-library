@@ -1,15 +1,15 @@
 ---
-id: pltfmdev
+id: net
 name: Sock Shop
 description: A socks-selling e-commerce demo application.
 
 services:
   bitbucket:
     credentials:
-      id: pltfmdev-cd-cd-user-with-password
+      id: net-cd-cd-user-with-password
   jira:
     credentials:
-      id: pltfmdev-cd-cd-user-with-password
+      id: net-cd-cd-user-with-password
   nexus:
     repository:
        name: leva-documentation

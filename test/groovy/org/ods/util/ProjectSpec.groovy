@@ -838,7 +838,7 @@ class ProjectSpec extends SpecHelper {
         expected.repositories.each { repo ->
             repo.branch = "master"
             repo.data = [ documents: [:] ]
-            repo.url = "https://github.com/my-org/pltfmdev-${repo.id}.git"
+            repo.url = "https://github.com/my-org/net-${repo.id}.git"
         }
 
         expected.capabilities = [
