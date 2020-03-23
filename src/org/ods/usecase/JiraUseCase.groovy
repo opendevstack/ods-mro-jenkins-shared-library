@@ -260,11 +260,10 @@ class JiraUseCase {
         def releaseStatusIssueFields = this.project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.RELEASE_STATUS)
 
         def releaseStatusIssueReleaseManagerStatusField = releaseStatusIssueFields["Release Manager Status"]
-        def releaseStatusIssueBuildNumberField = releaseStatusIssueFields["Build Number"]
+        def releaseStatusIssueBuildNumberField = releaseStatusIssueFields["Release Build"]
 
         this.jira.updateFieldsOnIssue(releaseStatusIssueKey, [
-            // FIXME: not yet implemented in Jira
-            // (releaseStatusIssueBuildNumberField.id): "${this.project.buildParams.version}-${this.project.buildParams.jenkins.buildNumber}", // not yet implemented
+            (releaseStatusIssueBuildNumberField.id): "${this.project.buildParams.version}-${this.project.buildParams.jenkins.buildNumber}", // not yet implemented
             (releaseStatusIssueReleaseManagerStatusField.id): status
         ])
 

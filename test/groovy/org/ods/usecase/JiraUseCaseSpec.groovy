@@ -392,15 +392,14 @@ class JiraUseCaseSpec extends SpecHelper {
             "Release Manager Status": [
                 id: "customfield_1"
             ],
-            "Build Number": [
+            "Release Build": [
                 id: "customfield_2"
             ]
         ]
 
         then:
         1 * jira.updateFieldsOnIssue("JIRA-4711", [
-            // FIXME: not yet implemented in Jira
-            // "customfield_2": "1.0-0815",
+            "customfield_2": "1.0-0815",
             "customfield_1": "Failed"
         ])
 
@@ -425,7 +424,7 @@ class JiraUseCaseSpec extends SpecHelper {
                 "Release Manager Status": [
                     id: "customfield_1"
                 ],
-                "Build Number": [
+                "Release Build": [
                     id: "customfield_2"
                 ]
             ]
@@ -433,8 +432,7 @@ class JiraUseCaseSpec extends SpecHelper {
 
         then:
         1 * jira.updateFieldsOnIssue("JIRA-4711", [
-            // FIXME: not yet implemented in Jira
-            // "customfield_2": "1.0-0815",
+            "customfield_2": "1.0-0815",
             "customfield_1": "Successful"
         ])
     }
