@@ -939,6 +939,147 @@ class JiraServiceSpec extends SpecHelper {
     }
 
 
+    Map getDocGenDataRequestData(Map mixins = [:]) {
+        def result = [
+            data: [
+                projectKey: "DEMO"
+            ],
+            headers: [
+                "Accept": "application/json"
+            ],
+            password: "password",
+            username: "username"
+        ]
+
+        result.path = "/rest/platform/1.0/docgenreports/${result.data.projectKey}"
+
+        return result << mixins
+    }
+
+    Map getDocGenDataResponseData(Map mixins = [:]) {
+        def result = [
+            body: JsonOutput.toJson([
+                project: [:],
+                components: [:],
+                epics: [:],
+                migitations: [:],
+                tests: [:]
+            ]),
+            status: 200
+        ]
+
+        return result << mixins
+    }
+
+    def "get doc gen data with invalid project key"() {
+        given:
+        def request = getDocGenDataRequestData()
+        def response = getDocGenDataResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getDocGenData(null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == "Error: unable to get documentation generation data from Jira. 'projectKey' is undefined."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get doc gen data"() {
+        given:
+        def request = getDocGenDataRequestData()
+        def response = getDocGenDataResponseData()
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        def result = service.getDocGenData("DEMO")
+
+        then:
+        result == [
+            project: [:],
+            components: [:],
+            epics: [:],
+            migitations: [:],
+            tests: [:]
+        ]
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get doc gen data with HTTP 400 failure"() {
+        given:
+        def request = getDocGenDataRequestData()
+        def response = getDocGenDataResponseData([
+            body: "Sorry, doesn't work!",
+            status: 400
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.getDocGenData("DEMO")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get documentation generation data. Jira responded with code: '${response.status}' and message: 'Sorry, doesn\'t work!'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get doc gen data with HTTP 404 failure"() {
+        given:
+        def request = getDocGenDataRequestData()
+        def response = getDocGenDataResponseData([
+            status: 404
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.getDocGenData("DEMO")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get documentation generation data. Jira could not be found at: 'http://localhost:${server.port()}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+    def "get doc gen data with HTTP 500 failure"() {
+        given:
+        def request = getDocGenDataRequestData()
+        def response = getDocGenDataResponseData([
+            body: "Sorry, doesn't work!",
+            status: 500
+        ])
+
+        def server = createServer(WireMock.&get, request, response)
+        def service = createService(server.port(), request.username, request.password)
+
+        when:
+        service.getDocGenData("DEMO")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Error: unable to get documentation generation data. Jira responded with code: '${response.status}' and message: '${response.body}'."
+
+        cleanup:
+        stopServer(server)
+    }
+
+
     Map getIssuesForJQLQueryRequestData(Map mixins = [:]) {
         def result = [
             data: [

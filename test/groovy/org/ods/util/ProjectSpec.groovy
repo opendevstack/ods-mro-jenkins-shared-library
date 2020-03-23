@@ -33,6 +33,10 @@ class ProjectSpec extends SpecHelper {
                 return new URIBuilder("https://github.com/my-org/my-pipeline-repo.git").build()
             }
 
+            loadJiraData(_) >> {
+                return createProjectJiraData()
+            }
+
             loadJiraDataBugs(_) >> {
                 return createProjectJiraDataBugs()
             }

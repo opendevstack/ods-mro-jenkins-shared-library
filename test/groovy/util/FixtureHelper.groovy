@@ -76,8 +76,7 @@ class FakeProject extends Project {
     }
 
     protected Map loadJiraData(String projectKey) {
-        def file = new FixtureHelper().getResource("project-jira-data.json")
-        return new JsonSlurperClassic().parse(file)
+        return FixtureHelper.createProjectJiraData()
     }
 
     protected Map loadJiraDataProjectVersion() {
@@ -145,6 +144,11 @@ class FixtureHelper {
             targetEnvironmentToken       : "D",
             version                      : "0.1"
         ]
+    }
+
+    static Map createProjectJiraData() {
+        def file = new FixtureHelper().getResource("project-jira-data.json")
+        return new JsonSlurperClassic().parse(file)
     }
 
     static Map createProjectJiraDataBugs() {
