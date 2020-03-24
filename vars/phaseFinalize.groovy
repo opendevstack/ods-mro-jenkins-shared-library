@@ -47,7 +47,7 @@ def call(Project project, List<Set<Map>> repos) {
         }
 
         // Dump a representation of the project
-        echo "Project ${JsonOutput.toJson(project)}"
+        echo "Project ${project.toString()}"
 
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
 
