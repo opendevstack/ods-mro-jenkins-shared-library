@@ -258,16 +258,14 @@ class Project {
         ]
 
         this.data.jira = [:]
-        if (jiraUseCase.jira) {
-            this.data.jira = this.loadJiraData(this.jiraProjectKey)
-            this.data.jira.project.version = this.loadJiraDataProjectVersion()
-            this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
-            this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
-            this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
+        this.data.jira = this.loadJiraData(this.jiraProjectKey)
+        this.data.jira.project.version = this.loadJiraDataProjectVersion()
+        this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
+        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
+        this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
-            this.data.jira.docs = this.loadJiraDataDocs()
-            this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
-        }
+        this.data.jira.docs = this.loadJiraDataDocs()
+        this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
 
         this.data.openshift = [:]
 
@@ -703,8 +701,18 @@ class Project {
     }
 
     protected Map loadJiraData(String projectKey) {
-        if (!this.jiraUseCase) return [:]
-        if (!this.jiraUseCase.jira) return [:]
+        def result = [
+            components: [:],
+            mitigations: [:],
+            project: [:],
+            requirements: [:],
+            risks: [:],
+            techSpecs: [:],
+            tests: [:]
+        ]
+
+        if (!this.jiraUseCase) return result
+        if (!this.jiraUseCase.jira) return result
         return this.jiraUseCase.jira.getDocGenData(projectKey)
     }
 
