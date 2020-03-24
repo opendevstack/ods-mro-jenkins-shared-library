@@ -706,6 +706,7 @@ class Project {
     protected Map loadJiraData(String projectKey) {
         def result = [
             components: [:],
+            epics: [:],
             mitigations: [:],
             project: [:],
             requirements: [:],
