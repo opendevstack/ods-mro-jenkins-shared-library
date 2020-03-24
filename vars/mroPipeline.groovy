@@ -7,7 +7,10 @@ def call(Map config) {
     def repos = []
 
     def debug = config.get('debug', false)
-    def odsImageTag = config.get('odsImageTag', 'latest')
+    def odsImageTag = config.odsImageTag
+    if (!odsImageTag) {
+        error "You must set 'odsImageTag' in the config map"
+    }
     def versionedDevEnvsEnabled = config.get('versionedDevEnvs', false)
 
     node {
