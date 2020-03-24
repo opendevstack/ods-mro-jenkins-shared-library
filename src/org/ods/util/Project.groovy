@@ -552,10 +552,11 @@ class Project {
     }
 
     String getJiraProjectKey() {
-        def services = getServices()
+        def services = this.getServices()
         if (services?.jira?.project) {
-            services.jira.project
+            return services.jira.project
         }
+
         return getKey()
     }
 
@@ -677,6 +678,7 @@ class Project {
 
     static Map loadBuildParams(IPipelineSteps steps) {
         def releaseStatusJiraIssueKey = steps.env.releaseStatusJiraIssueKey?.trim()
+        steps.echo("releaseStatusJiraIssueKey: ${steps.env.releaseStatusJiraIssueKey}")
         if (isTriggeredByChangeManagementProcess(steps) && !releaseStatusJiraIssueKey) {
             throw new IllegalArgumentException("Error: unable to load build param 'releaseStatusJiraIssueKey': undefined")
         }
