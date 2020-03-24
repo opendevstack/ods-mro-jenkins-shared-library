@@ -200,11 +200,13 @@ class Project {
     protected IPipelineSteps steps
     protected GitUtil git
     protected JiraUseCase jiraUseCase
+    protected Map config
 
     protected Map data = [:]
 
-    Project(IPipelineSteps steps) {
+    Project(IPipelineSteps steps, Map config = [:]) {
         this.steps = steps
+        this.config = config
 
         this.data.build = [
             hasFailingTests       : false,
@@ -422,11 +424,12 @@ class Project {
     }
 
     String getConcreteEnvironment() {
-        getConcreteEnvironment(buildParams.targetEnvironment, buildParams.version)
+        def versionedDevEnvs = this.config.get('versionedDevEnvs', false)
+        getConcreteEnvironment(buildParams.targetEnvironment, buildParams.version, versionedDevEnvs)
     }
 
-    static String getConcreteEnvironment(String environment, String version) {
-        if (environment == 'dev' && version != BUILD_PARAM_VERSION_DEFAULT) {
+    static String getConcreteEnvironment(String environment, String version, boolean versionedDevEnvsEnabled) {
+        if (versionedDevEnvsEnabled && environment == 'dev' && version != BUILD_PARAM_VERSION_DEFAULT) {
             def cleanedVersion = version.replaceAll('[^A-Za-z0-9-]', '-')
             environment = "${environment}-${cleanedVersion}"
         } else if (environment == 'qa') {
@@ -435,10 +438,10 @@ class Project {
         environment
     }
 
-    static List<String> getBuildEnvironment(IPipelineSteps steps, boolean debug = false) {
+    static List<String> getBuildEnvironment(IPipelineSteps steps, boolean debug = false, boolean versionedDevEnvsEnabled = false) {
         def params = loadBuildParams(steps)
 
-        def concreteEnv = getConcreteEnvironment(params.targetEnvironment, params.version)
+        def concreteEnv = getConcreteEnvironment(params.targetEnvironment, params.version, versionedDevEnvsEnabled)
 
         return [
             "DEBUG=${debug}",
