@@ -256,14 +256,18 @@ class Project {
             baseTag: baseTag.toString(),
             targetTag: targetTag.toString()
         ]
-        this.data.jira = this.loadJiraData(this.data.metadata.id)
-        this.data.jira.project.version = this.loadJiraDataProjectVersion()
-        this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
-        this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
-        this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
-        this.data.jira.docs = this.loadJiraDataDocs()
-        this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
+        this.data.jira = [:]
+        if (jiraUseCase.jira) {
+            this.data.jira = this.loadJiraData(this.data.metadata.id)
+            this.data.jira.project.version = this.loadJiraDataProjectVersion()
+            this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
+            this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
+            this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
+
+            this.data.jira.docs = this.loadJiraDataDocs()
+            this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
+        }
 
         this.data.openshift = [:]
 
