@@ -259,7 +259,7 @@ class Project {
 
         this.data.jira = [:]
         if (jiraUseCase.jira) {
-            this.data.jira = this.loadJiraData(this.data.metadata.id)
+            this.data.jira = this.loadJiraData(this.jiraProjectKey)
             this.data.jira.project.version = this.loadJiraDataProjectVersion()
             this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
             this.data.jira = this.cleanJiraDataItems(this.convertJiraDataToJiraDataItems(this.data.jira))
@@ -713,7 +713,7 @@ class Project {
         if (!this.jiraUseCase.jira) return [:]
 
         def jqlQuery = [
-            jql: "project = ${this.data.jira.project.key} AND issuetype = Bug AND status != Done",
+            jql: "project = ${this.jiraProjectKey} AND issuetype = Bug AND status != Done",
             expand: [],
             fields: ["assignee", "duedate", "issuelinks", "status", "summary"]
         ]
@@ -753,7 +753,7 @@ class Project {
         if (!this.jiraUseCase) return [:]
         if (!this.jiraUseCase.jira) return [:]
 
-        return this.jiraUseCase.jira.getVersionsForProject(this.data.jira.project.key).find { version ->
+        return this.jiraUseCase.jira.getVersionsForProject(this.jiraProjectKey).find { version ->
             this.buildParams.version == version.value
         }
     }
@@ -762,7 +762,7 @@ class Project {
         if (!this.jiraUseCase) return [:]
         if (!this.jiraUseCase.jira) return [:]
 
-        def jqlQuery = [jql: "project = ${this.data.jira.project.key} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENTATION_TRACKING}'"]
+        def jqlQuery = [jql: "project = ${this.jiraProjectKey} AND issuetype = '${JiraUseCase.IssueTypes.DOCUMENTATION_TRACKING}'"]
 
         def jiraIssues = this.jiraUseCase.jira.getIssuesForJQLQuery(jqlQuery)
         if (jiraIssues.isEmpty()) {
@@ -787,14 +787,14 @@ class Project {
         if (!this.jiraUseCase) return [:]
         if (!this.jiraUseCase.jira) return [:]
 
-        def jiraIssueTypes = this.jiraUseCase.jira.getIssueTypes(this.data.jira.project.key)
+        def jiraIssueTypes = this.jiraUseCase.jira.getIssueTypes(this.jiraProjectKey)
         return jiraIssueTypes.values.collectEntries { jiraIssueType ->
             [
                 jiraIssueType.name,
                 [
                     id     : jiraIssueType.id,
                     name   : jiraIssueType.name,
-                    fields : this.jiraUseCase.jira.getIssueTypeMetadata(this.data.jira.project.key, jiraIssueType.id).values.collectEntries { value ->
+                    fields : this.jiraUseCase.jira.getIssueTypeMetadata(this.jiraProjectKey, jiraIssueType.id).values.collectEntries { value ->
                         [
                             value.name,
                             [
