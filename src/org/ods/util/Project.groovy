@@ -284,6 +284,9 @@ class Project {
     }
 
     protected Map convertJiraDataToJiraDataItems(Map data) {
+        this.steps.echo("???")
+        this.steps.echo(JsonOutput.toJson(data))
+
         JiraDataItem.TYPES.each { type ->
             if (data[type] == null) {
                 throw new IllegalArgumentException("Error: Jira data does not include references to items of type '${type}'.")
