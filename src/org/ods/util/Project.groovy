@@ -553,6 +553,14 @@ class Project {
         return this.data.metadata.id
     }
 
+    String getJiraProjectKey() {
+        def services = getServices()
+        if (services?.jira?.project) {
+            services.jira.project
+        }
+        return getKey()
+    }
+
     List<JiraDataItem> getMitigations() {
         return this.data.jira.mitigations.values() as List
     }
