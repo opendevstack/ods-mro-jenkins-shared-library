@@ -193,7 +193,7 @@ class Project {
         static final String INTERFACE_REQUIREMENT = "Interface Requirement"
     }
 
-    static final String BUILD_PARAM_VERSION_DEFAULT = "WIP"
+    protected static final String BUILD_PARAM_VERSION_DEFAULT = "WIP"
 
     protected static String METADATA_FILE_NAME = "metadata.yml"
 
