@@ -1031,13 +1031,13 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 ocpBuildId          : data.odsBuildArtifacts?."OCP Build Id" ?: "N/A",
                 ocpDockerImage      : data.odsBuildArtifacts?."OCP Docker image" ?: "N/A",
                 ocpDeploymentId     : data.odsBuildArtifacts?."OCP Deployment Id" ?: "N/A",
-                podName             : data.pod.metadata?.name ?: "N/A",
-                podNamespace        : data.pod.metadata?.namespace ?: "N/A",
-                podCreationTimestamp: data.pod.metadata?.creationTimestamp ?: "N/A",
-                podEnvironment      : data.pod.metadata?.labels?.env ?: "N/A",
-                podNode             : data.pod.spec?.nodeName ?: "N/A",
-                podIp               : data.pod.status?.podIP ?: "N/A",
-                podStatus           : data.pod.status?.phase ?: "N/A"
+                podName             : data.pod?.metadata?.name ?: "N/A",
+                podNamespace        : data.pod?.metadata?.namespace ?: "N/A",
+                podCreationTimestamp: data.pod?.metadata?.creationTimestamp ?: "N/A",
+                podEnvironment      : data.pod?.metadata?.labels?.env ?: "N/A",
+                podNode             : data.pod?.spec?.nodeName ?: "N/A",
+                podIp               : data.pod?.status?.podIP ?: "N/A",
+                podStatus           : data.pod?.status?.phase ?: "N/A"
             ],
             data         : [
                 repo    : repo,
