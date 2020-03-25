@@ -1178,7 +1178,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             labels.add("Doc:${label}")
         }
 
-        if (labels.isEmpty() && environment.equals('D')) {
+        if (environment.equals('D')) {
             labels.add("Doc:${documentType}")
         }
 
