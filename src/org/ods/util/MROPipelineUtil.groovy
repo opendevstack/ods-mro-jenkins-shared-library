@@ -222,14 +222,12 @@ class MROPipelineUtil extends PipelineUtil {
             }
 
             // collect data required for documents
-            def pods = os.getPodDataForComponent(repo.id)
-            repo.data['openshift'] = [
-                'pods': pods,
-                'odsBuildArtifacts': [
-                    "OCP Build Id": "N/A",
-                    "OCP Docker image": runningImageSha.split(':').last(),
-                    "OCP Deployment Id": latestVersion,
-                ]
+            def pod = os.getPodDataForComponent("${repo.id}-${latestVersion}")
+            repo.data.pod = pod
+            repo.data.odsBuildArtifacts = [
+                "OCP Build Id": "N/A",
+                "OCP Docker image": runningImageSha.split(':').last(),
+                "OCP Deployment Id": latestVersion,
             ]
 
             if (git.remoteTagExists(this.project.targetTag)) {

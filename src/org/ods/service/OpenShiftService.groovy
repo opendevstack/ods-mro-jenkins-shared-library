@@ -253,13 +253,18 @@ class OpenShiftService {
       ''
     }
 
-    Map getPodDataForComponent(String name) {
-        String stdout = this.steps.sh(
-          script: "oc get pod -l component=${name} -o json --show-all=false",
-          returnStdout: true,
-          label: "Getting OpenShift Pod data for ${name}"
-        ).trim()
+    Map getPodDataForComponent(String deploymentName) {
+      String stdout = this.steps.sh(
+        script: "oc get pod -l deployment=${deploymentName} -o json",
+        returnStdout: true,
+        label: "Getting OpenShift pod data for ${deploymentName}"
+      ).trim()
 
-        return new JsonSlurperClassic().parseText(stdout)
+      def j = new JsonSlurperClassic().parseText(stdout)
+      if (j?.items[0]?.status?.phase?.toLowerCase() != 'running') {
+        throw new RuntimeException("Error: pod '${deploymentName}' is not running.")
+      }
+
+      return j.items[0]
     }
 }
