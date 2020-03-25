@@ -1022,7 +1022,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def sectionsNotDone = this.getSectionsNotDone(sections)
 
         if (!data.pod) {
-            data.pod = os.getPodDataForComponent(data.odsBuildArtifacts?."OCP Deployment Id")
+            this.steps.echo "Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}..."
+            data.pod = os.getPodDataForComponent(this.project.key, repo.id)
         }
 
         def data_ = [

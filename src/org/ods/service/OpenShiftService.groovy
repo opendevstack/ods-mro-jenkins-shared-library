@@ -253,18 +253,37 @@ class OpenShiftService {
       ''
     }
 
-    Map getPodDataForComponent(String deploymentName) {
-      String stdout = this.steps.sh(
-        script: "oc get pod -l deployment=${deploymentName} -o json",
+    // Gets pod of deployment
+    Map getPodDataForDeployment(String component, String version) {
+      def deployment = "${component}-${version}"
+      def stdout = this.steps.sh(
+        script: "oc get pod -l deployment=${deployment} -o json",
         returnStdout: true,
-        label: "Getting OpenShift pod data for ${deploymentName}"
+        label: "Getting OpenShift pod data for deployment ${deployment}"
       ).trim()
 
-      def j = new JsonSlurperClassic().parseText(stdout)
+      extractPodData(stdout, "deployment '${deployment}'")
+    }
+
+    // Gets current pod for component
+    Map getPodDataForComponent(String project, String component) {
+      def componentSelector = "app=${project}-${component}"
+      def stdout = this.steps.sh(
+        script: "oc get pod -l ${componentSelector} -o json --show-all=false",
+        returnStdout: true,
+        label: "Getting OpenShift pod data for component ${component}"
+      ).trim()
+
+      extractPodData(stdout, "component '${component}'")
+    }
+
+    private Map extractPodData(String ocOutput, String description) {
+      def j = new JsonSlurperClassic().parseText(ocOutput)
       if (j?.items[0]?.status?.phase?.toLowerCase() != 'running') {
-        throw new RuntimeException("Error: pod '${deploymentName}' is not running.")
+        throw new RuntimeException("Error: no pod for ${description} running / found.")
       }
 
       return j.items[0]
     }
+
 }

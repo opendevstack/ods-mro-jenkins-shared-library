@@ -222,7 +222,7 @@ class MROPipelineUtil extends PipelineUtil {
             }
 
             // collect data required for documents
-            def pod = os.getPodDataForComponent("${repo.id}-${latestVersion}")
+            def pod = os.getPodDataForDeployment(repo.id, latestVersion)
             repo.data.pod = pod
             repo.data.odsBuildArtifacts = [
                 "OCP Build Id": "N/A",
