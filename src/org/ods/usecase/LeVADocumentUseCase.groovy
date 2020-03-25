@@ -1179,6 +1179,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         if (environment.equals('D')) {
+            // Assumes that every document we generate along the pipeline has a tracking issue in Jira
             labels.add("Doc:${documentType}")
         }
 

@@ -495,8 +495,9 @@ class Project {
     List<Map> getDocumentTrackingIssues(List<String> labels) {
         def result = []
 
+        def issues = this.getDocumentTrackingIssues()
         labels.each { label ->
-            this.getDocumentTrackingIssues().each { issue ->
+            issues.each { issue ->
                 if (issue.labels.collect { it.toLowerCase() }.contains(label.toLowerCase())) {
                     result << [key: issue.key, status: issue.status]
                 }
