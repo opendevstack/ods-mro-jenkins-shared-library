@@ -291,7 +291,13 @@ class OpenShiftService {
     private Map extractPodData(String ocOutput, String description) {
       def j = new JsonSlurperClassic().parseText(ocOutput)
       if (j?.items[0]?.status?.phase?.toLowerCase() != 'running') {
-        throw new RuntimeException("Error: no pod for ${description} running / found.")
+        def currentProject = this.steps.sh(
+          script: "oc project | cut -d \" \" -f3",
+          returnStdout: true,
+          label: "Getting OC project"
+        ).trim()
+        
+        throw new RuntimeException("Error: no pod for ${description} running / found in project ${currentProject}")
       }
       
       def podOCData = j.items[0]
