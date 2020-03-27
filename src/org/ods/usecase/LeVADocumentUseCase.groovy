@@ -1106,7 +1106,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def metadata = this.getDocumentMetadata(documentTypeName)
 
         def documentType = DocumentType.DTR as String
-
+this.steps.echo("TRACE***************: " + repo)
         def sectionsNotDone = repo?.data?.sectionsNotDoneDTR ? repo.data.sectionsNotDoneDTR : []
 
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, sectionsNotDone))
