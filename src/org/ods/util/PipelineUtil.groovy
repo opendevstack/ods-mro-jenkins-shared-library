@@ -71,8 +71,8 @@ class PipelineUtil {
 
         def path = "${this.steps.env.WORKSPACE}/${ARTIFACTS_BASE_DIR}/${name}".toString()
         
-        def result = this.createZipFile(name, files)
-        this.archiveArtifact(name, result)
+        def result = this.createZipFile(path, files)
+        this.archiveArtifact(path, result)
         return result
     }
 
@@ -104,7 +104,7 @@ class PipelineUtil {
             fileInput.close()
           }
         }
-                
+
         return bytes
     }
 
