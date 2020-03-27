@@ -1034,9 +1034,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         if (!data.openshift?.pod) {
             this.steps.echo "Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}..."
-            data.openshift.pod = os.getPodDataForComponent(this.project.key, repo.id) 
+            data.openshift = ['pod' : os.getPodDataForComponent(this.project.key, repo.id)]
         }
 
+        this.steps.echo("Pod: ${description} ${pod}")
+        
         def data_ = [
             metadata     : this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             openShiftData: [

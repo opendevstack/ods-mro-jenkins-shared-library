@@ -306,8 +306,6 @@ class OpenShiftService {
         pod.podNode = podOCData?.status?.podIP ?: "N/A"
         pod.podNode = podOCData?.status?.phase ?: "N/A"
       
-      this.steps.echo("Pod: ${description} ${pod}")
-      
       return pod
     }
 
