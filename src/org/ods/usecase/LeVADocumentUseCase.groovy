@@ -435,6 +435,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
         def sectionsNotDone = this.getSectionsNotDone(sections)
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
+        repo.data.sectionsNotDoneDTR = sectionsNotDone
 
         def testIssues = this.project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         def discrepancies = this.computeTestDiscrepancies("Development Tests", testIssues, unitTestData.testResults)
@@ -1031,6 +1032,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
         def sectionsNotDone = this.getSectionsNotDone(sections)
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
+        repo.data.sectionsNotDoneTIR = sectionsNotDone
 
         if (!data.pod) {
             this.steps.echo "Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}..."
@@ -1105,12 +1107,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.DTR as String
 
-        // Same behaviour to get sections not done as DTR
-        def sections = this.jiraUseCase.getDocumentChapterData(documentType)
-        if (!sections) {
-            sections = this.levaFiles.getDocumentChapterData(documentType)
-        }
-        def sectionsNotDone = this.getSectionsNotDone(sections)
+        def sectionsNotDone = repo?.data?.sectionsNotDoneDTR ? repo.data.sectionsNotDoneDTR : []
 
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, sectionsNotDone))
         this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", sectionsNotDone)
@@ -1123,12 +1120,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.TIR as String
 
-        // Same behaviour to get sections not done as TIR
-        def sections = this.jiraUseCase.getDocumentChapterData(documentType)
-        if (!sections) {
-            sections = this.levaFiles.getDocumentChapterData(documentType)
-        }
-        def sectionsNotDone = this.getSectionsNotDone(sections)
+        def sectionsNotDone = repo?.data?.sectionsNotDoneTIR ? repo.data.sectionsNotDoneTIR : []
 
         def visitor = { data_ ->
             // Prepend a section for the Jenkins build log
