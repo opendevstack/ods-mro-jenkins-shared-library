@@ -2,7 +2,7 @@ import org.ods.util.PipelineSteps
 import org.ods.util.Project
 
 def call(Map config) {
-    def steps = new PipelineSteps(this)
+
     Project project
     def repos = []
 
@@ -30,6 +30,7 @@ def call(Map config) {
             userRemoteConfigs: scm.userRemoteConfigs
         ])
 
+        def steps = new PipelineSteps(this)
         def envs = Project.getBuildEnvironment(steps, debug, versionedDevEnvsEnabled)
 
         withPodTemplate(odsImageTag) {
@@ -39,7 +40,7 @@ def call(Map config) {
                 def ciSkip = false
 
                 stage('Init') {
-                    steps.echo("**** STARTING stage Init ****")
+                    echo "**** STARTING stage Init ****"
                     def result = phaseInit()
                     if (result) {
                         project = result.project
@@ -47,7 +48,7 @@ def call(Map config) {
                     } else {
                         ciSkip = true
                     }
-                    steps.echo("**** ENDED stage Init ****")
+                    echo "**** ENDED stage Init ****"
                 }
 
                 if (ciSkip) {
@@ -55,33 +56,33 @@ def call(Map config) {
                 }
 
                 stage('Build') {
-                    steps.echo("**** STARTING stage Build ****")
+                    echo "**** STARTING stage Build ****"
                     phaseBuild(project, repos)
-                    steps.echo("**** ENDED stage Build ****")
+                    echo "**** ENDED stage Build ****"
                 }
 
                 stage('Deploy') {
-                    steps.echo("**** STARTING stage Deploy ****")
+                    echo "**** STARTING stage Deploy ****"
                     phaseDeploy(project, repos)
-                    steps.echo("**** ENDED stage Deploy ****")
+                    echo "**** ENDED stage Deploy ****"
                 }
 
                 stage('Test') {
-                    steps.echo("**** STARTING stage Test ****")
+                    echo "**** STARTING stage Test ****"
                     phaseTest(project, repos)
-                    steps.echo("**** ENDED stage Test ****")
+                    echo "**** ENDED stage Test ****"
                 }
 
                 stage('Release') {
-                    steps.echo("**** STARTING stage Release ****")
+                    echo "**** STARTING stage Release ****"
                     phaseRelease(project, repos)
-                    steps.echo("**** ENDED stage Release ****")
+                    echo "**** ENDED stage Release ****"
                 }
 
                 stage('Finalize') {
-                    steps.echo("**** STARTING stage Finalize ****")
+                    echo "**** STARTING stage Finalize ****"
                     phaseFinalize(project, repos)
-                    steps.echo("**** ENDED stage Finalize ****")
+                    echo "**** ENDED stage Finalize ****"
                 }
             }
         }
