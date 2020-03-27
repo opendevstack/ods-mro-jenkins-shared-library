@@ -435,6 +435,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
         def sectionsNotDone = this.getSectionsNotDone(sections)
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
+        // Save info for OVERALL
         this.project.data.sectionsNotDoneDTR = sectionsNotDone
 
         def testIssues = this.project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
@@ -1032,6 +1033,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
         def sectionsNotDone = this.getSectionsNotDone(sections)
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
+        // Save info for OVERALL
         this.project.data.sectionsNotDoneTIR = sectionsNotDone
 
         if (!data.pod) {
@@ -1106,8 +1108,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def metadata = this.getDocumentMetadata(documentTypeName)
 
         def documentType = DocumentType.DTR as String
-this.steps.echo("TRACE***************: " + this.project.data)
-        def sectionsNotDone = this.project?.data?.sectionsNotDoneDTR ? this.project.data.report.sectionsNotDoneDTR : []
+
+        def sectionsNotDone = this.project?.data?.sectionsNotDoneDTR ? this.project.data.sectionsNotDoneDTR : []
 
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, sectionsNotDone))
         this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", sectionsNotDone)
