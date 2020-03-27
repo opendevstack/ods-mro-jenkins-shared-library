@@ -23,6 +23,8 @@ class LeVADocumentChaptersFileService {
         }
         this.steps.sh("ls -la ./docs/${documentType}.yaml")
         this.steps.sh("chmod 744 ./docs/${documentType}.yaml")
+        this.steps.sh("pwd")
+        this.steps.sh("find . -name ${documentType}.yaml")
         def file = Paths.get(this.steps.env.WORKSPACE, DOCUMENT_CHAPTERS_BASE_DIR, "${documentType}.yaml").toFile()
         if (!file.exists()) {
             throw new RuntimeException("Error: unable to load document chapters. File '${file.toString()}' does not exist.")
