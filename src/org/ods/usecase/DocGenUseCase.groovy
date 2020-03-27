@@ -63,6 +63,7 @@ abstract class DocGenUseCase {
             "application/zip"
         )
 
+        this.steps.echo ("Document ${documentType} for ${repo.id} uploaded @ ${uri.toString()}")
         return uri.toString()
     }
 
