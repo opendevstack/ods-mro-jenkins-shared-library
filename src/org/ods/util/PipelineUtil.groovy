@@ -40,11 +40,16 @@ class PipelineUtil {
         if (!data) {
             throw new IllegalArgumentException("Cannot archive a null data artifact into ${path}")
         }
-        
+
+        /*
+         * @FIXME encoding : "Base64" - throws a yak error..
+         * The only option I can see is to do this really different - 
+         * namely .. populate a map with docs in the repo / project - and to the
+         * archive outside of the slaves /on master ... ?!
+         */
         this.steps.writeFile([
             file : path,
-            text : new String (data),
-            encoding : "Base64"
+            text : new String (data)
           ])
 
         String fileNameFromPath = new File (path).getName();
