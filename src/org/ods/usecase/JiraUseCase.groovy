@@ -266,7 +266,7 @@ class JiraUseCase {
         this.jira.updateSelectListFieldsOnIssue(releaseStatusIssueKey, [(releaseStatusIssueReleaseManagerStatusField.id): status])
 
         if (error) {
-            this.jira.appendCommentToIssue(releaseStatusIssueKey, "${error.message}\nSee: ${this.steps.env.RUN_DISPLAY_URL}")
+            this.jira.appendCommentToIssue(releaseStatusIssueKey, "${error.message}\n\nSee: ${this.steps.env.RUN_DISPLAY_URL}")
         }
     }
 
