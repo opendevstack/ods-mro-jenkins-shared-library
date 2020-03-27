@@ -41,13 +41,13 @@ class PipelineUtil {
             throw new IllegalArgumentException("Cannot archive a null data artifact into ${path}")
         }
         
-/*        this.steps.writeFile([
+        this.steps.writeFile([
             file : path,
             text : new String (data),
+            encoding : "Base64"
           ])
 
         String fileNameFromPath = new File (path).getName();
-        */
         this.steps.archiveArtifacts(path)
     }
 
