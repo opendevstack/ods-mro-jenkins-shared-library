@@ -1037,7 +1037,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
             data.openshift = ['pod' : os.getPodDataForComponent(this.project.key, repo.id)]
         }
 
-        this.steps.echo("Pod: ${description} ${pod}")
+        this.steps.echo("Pod: ${repo.id} ${data.openshift.pod}")
         
         def data_ = [
             metadata     : this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
