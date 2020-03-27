@@ -41,8 +41,7 @@ class PipelineUtil {
             def fileName = new File(path).getName()
             this.steps.writeFile([
                 file : fileName,
-                text : new String (data),
-                encoding : "Base64"
+                text : new String (data)
               ])
 
             this.steps.archiveArtifacts(fileName)
