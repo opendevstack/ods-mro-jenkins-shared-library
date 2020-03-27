@@ -28,10 +28,10 @@ class LeVADocumentChaptersFileService {
             this.steps.echo("Error: unable to load document chapters. File '${file.toString()}' does not exist.")
             yamlText = this.steps.readFile("docs/${documentType}.yaml")
         } else {
-            yamlTest = file.text
+            yamlText = file.text
         }
         
-        this.steps.echo("template: ${yamlTest}")
+        this.steps.echo("template: ${yamlText}")
 
         def data = new Yaml().load(yamlText) ?: [:]
         return data.collectEntries { chapter ->
