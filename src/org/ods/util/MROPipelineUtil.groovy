@@ -401,7 +401,7 @@ class MROPipelineUtil extends PipelineUtil {
         steps.echo "Checkout ${repo.id}@${tag}"
         def credentialsId = this.project.services.bitbucket.credentials.id
         git.checkout(
-            tag,
+            "refs/tags/${tag}",
             [[ $class: 'RelativeTargetDirectory', relativeTargetDir: "${REPOS_BASE_DIR}/${repo.id}" ]],
             [[ credentialsId: credentialsId, url: repo.url ]]
         )
