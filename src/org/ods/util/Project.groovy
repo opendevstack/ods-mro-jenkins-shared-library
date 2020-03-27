@@ -507,7 +507,7 @@ class Project {
     }
 
     List<Map> getDocumentTrackingIssuesNotDone(List<String> labels) {
-        return this.getDocumentTrackingIssues(labels).findAll { !it.status.equalsIgnoreCase("done") }
+        return this.getDocumentTrackingIssues(labels).findAll { !it.status?.equalsIgnoreCase("done") }
     }
 
     Map getGitData() {

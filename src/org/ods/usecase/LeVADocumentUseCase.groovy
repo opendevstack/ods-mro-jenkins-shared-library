@@ -1105,7 +1105,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.DTR as String
 
-        def jiraIssues = this.getDocumentTrackingIssues(documentType)
+        def jiraIssues = this.project.getDocumentTrackingIssuesNotDone(this.getJiraTrackingIssueLabelsForDocumentType(documentType))
         def docIssuesNotDone = this.getSectionsNotDone(jiraIssues)
 
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, docIssuesNotDone))
@@ -1119,7 +1119,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.TIR as String
 
-        def jiraIssues = this.getDocumentTrackingIssues(documentType)
+        def jiraIssues = this.project.getDocumentTrackingIssuesNotDone(this.getJiraTrackingIssueLabelsForDocumentType(documentType))
         def docIssuesNotDone = this.getSectionsNotDone(jiraIssues)
 
         def visitor = { data_ ->
@@ -1227,7 +1227,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!this.jiraUseCase) return
         if (!this.jiraUseCase.jira) return
 
-        def jiraIssues = this.getDocumentTrackingIssues(documentType)
+        def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
+
+        def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
+        if (jiraIssues.isEmpty()) {
+            throw new RuntimeException("Error: no Jira tracking issue associated with document type '${documentType}'.")
+        }
 
         // Append a warning message for documents which are considered work in progress
         if (!sectionsNotDone.isEmpty()) {
@@ -1242,17 +1247,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
             this.jiraUseCase.jira.updateTextFieldsOnIssue(jiraIssue.key, [(documentationTrackingIssueDocumentVersionField.id): "${metadata.version}-${metadata.jenkins.buildNumber}"])
             this.jiraUseCase.jira.appendCommentToIssue(jiraIssue.key, message)
         }
-    }
-
-    protected List<Map> getDocumentTrackingIssues(String documentType) {
-        def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
-
-        def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
-        if (jiraIssues.isEmpty()) {
-            throw new RuntimeException("Error: no Jira tracking issue associated with document type '${documentType}'.")
-        }
-
-        return jiraIssues
     }
 
     protected List<Map> getSectionsNotDone (Map issues = [:]) {
