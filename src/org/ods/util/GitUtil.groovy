@@ -67,6 +67,16 @@ class GitUtil {
         ])
     }
 
+    def checkoutTag(String gitTag, def extensions, def userRemoteConfigs, boolean doGenerateSubmoduleConfigurations = false) {
+      steps.checkout([
+          $class: 'GitSCM',
+          branches: [[name: "refs/tags/${gitRef}"]],
+          doGenerateSubmoduleConfigurations: doGenerateSubmoduleConfigurations,
+          extensions: extensions,
+          userRemoteConfigs: userRemoteConfigs
+      ])
+    }
+    
     boolean remoteTagExists(String name) {
         def tagStatus = steps.sh(
             script: "git ls-remote --exit-code --tags origin ${name} &>/dev/null",
