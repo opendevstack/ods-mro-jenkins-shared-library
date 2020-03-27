@@ -26,11 +26,11 @@ def call(Project project, List<Set<Map>> repos) {
         ]
     ]
 
-    def preExecuteRepo = { steps, repo ->
+    def preExecuteRepo = { steps_, repo ->
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO, repo)
     }
 
-    def postExecuteRepo = { steps, repo ->
+    def postExecuteRepo = { steps_, repo ->
         // FIXME: we are mixing a generic scheduler capability with a data dependency and an explicit repository constraint.
         // We should turn the last argument 'data' of the scheduler into a closure that return data.
         if (project.isAssembleMode && repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) {
@@ -42,7 +42,7 @@ def call(Project project, List<Set<Map>> repos) {
 
             levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, repo, data)
 
-            steps.echo("Reporting unit test results to corresponding test cases in Jira for ${repo.id}")
+            steps_.echo("Reporting unit test results to corresponding test cases in Jira for ${repo.id}")
             jira.reportTestResultsForComponent("Technology-${repo.id}", [Project.TestType.UNIT], data.tests.unit.testResults)
 
             globalData.tests.unit.testReportFiles.addAll(data.tests.unit.testReportFiles)

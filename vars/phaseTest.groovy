@@ -34,11 +34,11 @@ def call(Project project, List<Set<Map>> repos) {
         ]
     ]
 
-    def preExecuteRepo = { steps, repo ->
+    def preExecuteRepo = { steps_, repo ->
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO, repo)
     }
 
-    def postExecuteRepo = { steps, repo ->
+    def postExecuteRepo = { steps_, repo ->
         if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
             def data = [
                 tests: [

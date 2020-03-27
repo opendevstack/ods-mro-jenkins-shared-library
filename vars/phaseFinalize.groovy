@@ -18,11 +18,11 @@ def call(Project project, List<Set<Map>> repos) {
 
     def phase = MROPipelineUtil.PipelinePhases.FINALIZE
 
-    def preExecuteRepo = { steps, repo ->
+    def preExecuteRepo = { steps_, repo ->
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_EXECUTE_REPO, repo)
     }
 
-    def postExecuteRepo = { steps, repo ->
+    def postExecuteRepo = { steps_, repo ->
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, repo)
     }
 
