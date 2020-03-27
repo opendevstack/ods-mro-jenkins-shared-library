@@ -37,27 +37,16 @@ class PipelineUtil {
             throw new IllegalArgumentException("Error: unable to archive artifact. 'path' must be inside the Jenkins workspace: ${path}")
         }
 
-        def file = null
-
         try {
-            // Write the artifact data to file
-            // file = new File(path).setBytes(data)
-          
             def fileName = new File(path).getName()
             this.steps.writeFile([
                 file : fileName,
-                text : new String (data)
+                text : new String (data),
+                encoding : "Base64"
               ])
 
-            // Compute the relative path inside the Jenkins workspace
-            //def workspacePath = new File(this.steps.env.WORKSPACE).toURI().relativize(new File(path).toURI()).getPath()
-
-            // Archive the artifact (requires a relative path inside the Jenkins workspace)
             this.steps.archiveArtifacts(fileName)
         } finally {
-            if (file && file.exists()) {
-                file.delete()
-            }
         }
     }
 
