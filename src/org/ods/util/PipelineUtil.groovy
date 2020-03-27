@@ -37,16 +37,14 @@ class PipelineUtil {
             throw new IllegalArgumentException("Error: unable to archive artifact. 'path' must be inside the Jenkins workspace: ${path}")
         }
 
-        try {
-            def fileName = new File(path).getName()
-            this.steps.writeFile([
-                file : fileName,
-                text : new String (data)
-              ])
+        def fileName = new File(path).getName()
+        this.steps.writeFile([
+            file : fileName,
+            text : new String (data),
+            encoding : "Base64"
+          ])
 
-            this.steps.archiveArtifacts(fileName)
-        } finally {
-        }
+        this.steps.archiveArtifacts(fileName)
     }
 
     @NonCPS
@@ -84,9 +82,6 @@ class PipelineUtil {
         if (files == null) {
             throw new IllegalArgumentException("Error: unable to create Zip file. 'files' is undefined.")
         }
-
-        // Create parent directory if needed
-        this.createDirectory(new File(path).getParent())
 
         // Create the Zip file
         def zipFile = new ZipFile(path)
