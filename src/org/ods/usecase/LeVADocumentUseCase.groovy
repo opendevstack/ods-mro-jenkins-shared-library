@@ -1105,8 +1105,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.DTR as String
 
-        def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType))
-        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        def jiraIssues = this.getDocumentTrackingIssues(documentType)
+        def docIssuesNotDone = this.getSectionsNotDone(jiraIssues)
+
+        def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, docIssuesNotDone))
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", docIssuesNotDone)
         return uri
     }
 
@@ -1115,6 +1118,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def metadata = this.getDocumentMetadata(documentTypeName)
 
         def documentType = DocumentType.TIR as String
+
+        def jiraIssues = this.getDocumentTrackingIssues(documentType)
+        def docIssuesNotDone = this.getSectionsNotDone(jiraIssues)
 
         def visitor = { data_ ->
             // Prepend a section for the Jenkins build log
@@ -1128,8 +1134,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         }
 
-        def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, visitor, this.getWatermarkText(documentType))
-        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.")
+        def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, visitor, this.getWatermarkText(documentType, docIssuesNotDone))
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", docIssuesNotDone)
         return uri
     }
 
@@ -1221,12 +1227,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         if (!this.jiraUseCase) return
         if (!this.jiraUseCase.jira) return
 
-        def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
-
-        def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
-        if (jiraIssues.isEmpty()) {
-            throw new RuntimeException("Error: no Jira tracking issue associated with document type '${documentType}'.")
-        }
+        def jiraIssues = this.getDocumentTrackingIssues(documentType)
 
         // Append a warning message for documents which are considered work in progress
         if (!sectionsNotDone.isEmpty()) {
@@ -1241,6 +1242,17 @@ class LeVADocumentUseCase extends DocGenUseCase {
             this.jiraUseCase.jira.updateTextFieldsOnIssue(jiraIssue.key, [(documentationTrackingIssueDocumentVersionField.id): "${metadata.version}-${metadata.jenkins.buildNumber}"])
             this.jiraUseCase.jira.appendCommentToIssue(jiraIssue.key, message)
         }
+    }
+
+    protected List<Map> getDocumentTrackingIssues(String documentType) {
+        def jiraDocumentLabels = this.getJiraTrackingIssueLabelsForDocumentType(documentType)
+
+        def jiraIssues = this.project.getDocumentTrackingIssues(jiraDocumentLabels)
+        if (jiraIssues.isEmpty()) {
+            throw new RuntimeException("Error: no Jira tracking issue associated with document type '${documentType}'.")
+        }
+
+        return jiraIssues
     }
 
     protected List<Map> getSectionsNotDone (Map issues = [:]) {
