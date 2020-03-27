@@ -260,13 +260,13 @@ class JiraUseCase {
         def releaseStatusIssueFields = this.project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.RELEASE_STATUS)
 
         def releaseStatusIssueBuildNumberField = releaseStatusIssueFields["Release Build"]
-        this.steps.echo("nifl::updateJiraReleaseStatusIssue() releaseStatusIssueKey -> ${releaseStatusIssueKey}; releaseStatusIssueBuildNumberField: ${releaseStatusIssueBuildNumberField}; releaseStatusIssueBuildNumberField.id -> ${releaseStatusIssueBuildNumberField.id}; buildParams.version: ${this.project.buildParams.version}; buildNumber -> ${this.steps.env.BUILD_NUMBER}")
+        def myMsg = "nifl::updateJiraReleaseStatusIssue() releaseStatusIssueKey -> ${releaseStatusIssueKey}; releaseStatusIssueBuildNumberField: ${releaseStatusIssueBuildNumberField}; releaseStatusIssueBuildNumberField.id -> ${releaseStatusIssueBuildNumberField.id}; buildParams.version: ${this.project.buildParams.version}; buildNumber -> ${this.steps.env.BUILD_NUMBER}; "
         this.jira.updateTextFieldsOnIssue(releaseStatusIssueKey, [(releaseStatusIssueBuildNumberField.id): "${this.project.buildParams.version}-${this.steps.env.BUILD_NUMBER}"])
 
         def releaseStatusIssueReleaseManagerStatusField = releaseStatusIssueFields["Release Manager Status"]
-        this.steps.echo("nifl::updateJiraReleaseStatusIssue() releaseStatusIssueKey ${releaseStatusIssueKey}; releaseStatusIssueReleaseManagerStatusField -> ${releaseStatusIssueReleaseManagerStatusField}; its id -> ${releaseStatusIssueReleaseManagerStatusField.id}; status: ${status}")
+        myMsg += "nifl::updateJiraReleaseStatusIssue() releaseStatusIssueKey ${releaseStatusIssueKey}; releaseStatusIssueReleaseManagerStatusField -> ${releaseStatusIssueReleaseManagerStatusField}; its id -> ${releaseStatusIssueReleaseManagerStatusField.id}; status: ${status}"
         this.jira.updateSelectListFieldsOnIssue(releaseStatusIssueKey, [(releaseStatusIssueReleaseManagerStatusField.id): status])
-
+        throw new IllegalStateException(myMsg)
         if (error) {
             this.jira.appendCommentToIssue(releaseStatusIssueKey, error.message)
         }
