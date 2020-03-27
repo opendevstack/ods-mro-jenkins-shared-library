@@ -1103,13 +1103,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def uri = "http://nexus"
-        def docData = [["doc1": [content: "myContent", status: "DONE"]]]
 
         when:
         usecase.createOverallDTR()
 
         then:
-        1 * project.getDocumentTrackingIssues(_) >> docData
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName])
         1 * usecase.createOverallDocument("Overall-Cover", documentType, _, _, _) >> uri
         1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.", [])
@@ -1123,13 +1121,11 @@ class LeVADocumentUseCaseSpec extends SpecHelper {
 
         // Stubbed Method Responses
         def uri = "http://nexus"
-        def docData = [["doc1": [content: "myContent", status: "DONE"]]]
 
         when:
         usecase.createOverallTIR()
 
         then:
-        1 * project.getDocumentTrackingIssues(_) >> docData
         1 * usecase.getDocumentMetadata(LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName])
         1 * usecase.createOverallDocument("Overall-TIR-Cover", documentType, _, _, _) >> uri
         1 * usecase.updateJiraDocumentationTrackingIssue(documentType, "A new ${LeVADocumentUseCase.DOCUMENT_TYPE_NAMES[documentTypeName]} has been generated and is available at: ${uri}.", [])

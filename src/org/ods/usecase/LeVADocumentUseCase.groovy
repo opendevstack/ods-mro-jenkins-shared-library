@@ -1105,11 +1105,15 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.DTR as String
 
-        def jiraIssues = this.project.getDocumentTrackingIssuesNotDone(this.getJiraTrackingIssueLabelsForDocumentType(documentType))
-        def docIssuesNotDone = this.getSectionsNotDone(jiraIssues)
+        // Same behaviour to get sections not done as DTR
+        def sections = this.jiraUseCase.getDocumentChapterData(documentType)
+        if (!sections) {
+            sections = this.levaFiles.getDocumentChapterData(documentType)
+        }
+        def sectionsNotDone = this.getSectionsNotDone(sections)
 
-        def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, docIssuesNotDone))
-        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", docIssuesNotDone)
+        def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, sectionsNotDone))
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
 
@@ -1119,8 +1123,12 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.TIR as String
 
-        def jiraIssues = this.project.getDocumentTrackingIssuesNotDone(this.getJiraTrackingIssueLabelsForDocumentType(documentType))
-        def docIssuesNotDone = this.getSectionsNotDone(jiraIssues)
+        // Same behaviour to get sections not done as TIR
+        def sections = this.jiraUseCase.getDocumentChapterData(documentType)
+        if (!sections) {
+            sections = this.levaFiles.getDocumentChapterData(documentType)
+        }
+        def sectionsNotDone = this.getSectionsNotDone(sections)
 
         def visitor = { data_ ->
             // Prepend a section for the Jenkins build log
@@ -1134,8 +1142,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         }
 
-        def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, visitor, this.getWatermarkText(documentType, docIssuesNotDone))
-        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", docIssuesNotDone)
+        def uri = this.createOverallDocument("Overall-TIR-Cover", documentType, metadata, visitor, this.getWatermarkText(documentType, sectionsNotDone))
+        this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", sectionsNotDone)
         return uri
     }
 
