@@ -42,7 +42,7 @@ class PipelineUtil {
         }
         
         this.steps.writeFile([
-            file : name,
+            file : path,
             text : new String (data),
           ])
 
