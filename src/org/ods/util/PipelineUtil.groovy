@@ -41,7 +41,6 @@ class PipelineUtil {
         this.steps.writeFile([
             file : fileName,
             text : new String (data),
-            encoding : "Base64"
           ])
 
         this.steps.archiveArtifacts(fileName)
@@ -95,8 +94,6 @@ class PipelineUtil {
           throw new RuntimeException ("Zipfile for ${path} is INVALID!")
         }
 
-        this.steps.echo("ZipFile - ${path} exists? ${zipFile.getFile().exists()}")
-                
         FileInputStream fileInput = new FileInputStream(zipFile.getFile())
         
         final byte[] bytes;
@@ -108,6 +105,8 @@ class PipelineUtil {
           }
         }
         
+        this.steps.echo("ZipFile - ${path} exists? ${zipFile.getFile().exists()} bytes-l ${bytes.length}")
+                
         return bytes
     }
 
