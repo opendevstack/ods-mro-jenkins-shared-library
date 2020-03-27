@@ -46,7 +46,9 @@ class PipelineUtil {
             text : new String (data),
           ])
 
-        this.steps.archiveArtifacts(path)
+        String fileNameFromPath = new File (path).getName();
+        
+        this.steps.archiveArtifacts("artifacts/${fileNameFromPath}")
     }
 
     @NonCPS
