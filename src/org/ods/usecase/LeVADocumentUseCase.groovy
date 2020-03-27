@@ -77,10 +77,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
         this.levaFiles = levaFiles
         this.os = os
         this.sq = sq
-        
-        if (!project.getCapability('LeVADocs')) {
-          steps.echo("----- Attention: NO documents will be generated, as no Capability is defined -----")
-        }
     }
 
     /**
