@@ -1,9 +1,11 @@
 import org.ods.scheduler.LeVADocumentScheduler
 import org.ods.service.ServiceRegistry
 import org.ods.util.MROPipelineUtil
+import org.ods.util.PipelineSteps
 import org.ods.util.Project
 
 def call(Project project, List<Set<Map>> repos) {
+    def steps = new PipelineSteps(this)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler)
     def util             = ServiceRegistry.instance.get(MROPipelineUtil)
 
@@ -27,7 +29,7 @@ def call(Project project, List<Set<Map>> repos) {
 
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
     } catch (e) {
-        this.steps.echo(e.message)
+        steps.echo(e.message)
         project.reportPipelineStatus(e)
         throw e
     }

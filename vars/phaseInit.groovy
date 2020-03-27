@@ -41,7 +41,7 @@ def call() {
 
         // load build params
         def buildParams = Project.loadBuildParams(steps)
-        steps.echo "Build Parameters: ${buildParams}"
+        steps.echo("Build Parameters: ${buildParams}")
 
 
         // git checkout
@@ -62,14 +62,14 @@ def call() {
                 if (!baseTag) {
                     throw new RuntimeException("Error: unable to find latest tag for version ${buildParams.version}/${buildParams.changeId}.")
                 }
-                echo "Checkout release manager repository @ ${baseTag}"
+                steps.echo("Checkout release manager repository @ ${baseTag}")
                 checkoutGitRef(
                     baseTag,
                     []
                 )
             } else {
                 if (git.remoteBranchExists(gitReleaseBranch)) {
-                    echo "Checkout release manager repository @ ${gitReleaseBranch}"
+                    steps.echo("Checkout release manager repository @ ${gitReleaseBranch}")
                     checkoutGitRef(
                         gitReleaseBranch,
                         [[$class: 'LocalBranch', localBranch: "**"]]
@@ -236,7 +236,7 @@ def call() {
 
         if (project.isPromotionMode && git.localTagExists(project.targetTag)) {
             if (project.buildParams.targetEnvironmentToken == 'Q') {
-                echo "WARNING: Deploying tag ${project.targetTag} again!"
+                steps.echo("WARNING: Deploying tag ${project.targetTag} again!")
             } else {
                 throw new RuntimeException("Error: tag ${project.targetTag} already exists - it cannot be deployed again to P.")
             }
@@ -247,14 +247,14 @@ def call() {
 
         // Clean workspace from previous runs
         [PipelineUtil.ARTIFACTS_BASE_DIR, PipelineUtil.SONARQUBE_BASE_DIR, PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR, MROPipelineUtil.REPOS_BASE_DIR].each { name ->
-            echo "Cleaning workspace directory '${name}' from previous runs"
+            steps.echo("Cleaning workspace directory '${name}' from previous runs")
             Paths.get(env.WORKSPACE, name).toFile().deleteDir()
         }
 
         // Checkout repositories into the workspace
         parallel(util.prepareCheckoutReposNamedJob(repos) { steps_, repo ->
-            echo "Repository: ${repo}"
-            echo "Environment configuration: ${env.getEnvironment()}"
+            steps.echo("Repository: ${repo}")
+            steps.echo("Environment configuration: ${env.getEnvironment()}")
         })
 
         // Load configs from each repo's release-manager.yml
@@ -280,7 +280,7 @@ def call() {
                         def openshiftDir = 'openshift-exported'
                         def exportRequired = true
                         if (fileExists('openshift')) {
-                            steps.echo "Found 'openshift' folder, current OpenShift state will not be exported into 'openshift-exported'."
+                            steps.echo("Found 'openshift' folder, current OpenShift state will not be exported into 'openshift-exported'.")
                             openshiftDir = 'openshift'
                             exportRequired = false
                         } else {
@@ -292,7 +292,7 @@ def call() {
                         def componentSelector = "app=${project.key}-${repo.id}"
                         steps.dir(openshiftDir) {
                             if (exportRequired) {
-                                steps.echo "Exporting current OpenShift state to folder '${openshiftDir}'."
+                                steps.echo("Exporting current OpenShift state to folder '${openshiftDir}'.")
                                 def targetFile = 'template.yml'
                                 os.tailorExport(
                                     "${project.key}-${sourceEnv}",
@@ -302,7 +302,7 @@ def call() {
                                 )
                             }
 
-                            steps.echo "Applying desired OpenShift state defined in ${openshiftDir} to ${project.targetProject}."
+                            steps.echo("Applying desired OpenShift state defined in ${openshiftDir} to ${project.targetProject}.")
                             os.tailorApply(
                                 project.targetProject,
                                 componentSelector,
@@ -323,7 +323,7 @@ def call() {
 
         return [ project: project, repos: repos ]
     } catch (e) {
-        this.steps.echo(e.message)
+        steps.echo(e.message)
         project.reportPipelineStatus(e)
         throw e
     }

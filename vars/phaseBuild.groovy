@@ -4,10 +4,12 @@ import org.ods.service.ServiceRegistry
 import org.ods.usecase.JUnitTestReportsUseCase
 import org.ods.usecase.JiraUseCase
 import org.ods.util.MROPipelineUtil
+import org.ods.util.PipelineSteps
 import org.ods.util.PipelineUtil
 import org.ods.util.Project
 
 def call(Project project, List<Set<Map>> repos) {
+    def steps = new PipelineSteps(this)
     def jira             = ServiceRegistry.instance.get(JiraUseCase)
     def junit            = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
     def util             = ServiceRegistry.instance.get(MROPipelineUtil)
@@ -40,7 +42,7 @@ def call(Project project, List<Set<Map>> repos) {
 
             levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.POST_EXECUTE_REPO, repo, data)
 
-            echo "Reporting unit test results to corresponding test cases in Jira for ${repo.id}"
+            steps.echo("Reporting unit test results to corresponding test cases in Jira for ${repo.id}")
             jira.reportTestResultsForComponent("Technology-${repo.id}", [Project.TestType.UNIT], data.tests.unit.testResults)
 
             globalData.tests.unit.testReportFiles.addAll(data.tests.unit.testReportFiles)
@@ -61,7 +63,7 @@ def call(Project project, List<Set<Map>> repos) {
 
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
     } catch (e) {
-        this.steps.echo(e.message)
+        steps.echo(e.message)
         project.reportPipelineStatus(e)
         throw e
     }
@@ -73,7 +75,7 @@ private List getUnitTestResults(def steps, Map repo) {
 
     def testReportsPath = "${PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR}/${repo.id}/unit"
 
-    echo "Collecting JUnit XML Reports for ${repo.id}"
+    steps.echo("Collecting JUnit XML Reports for ${repo.id}")
     def testReportsStashName = "test-reports-junit-xml-${repo.id}-${steps.env.BUILD_ID}"
     def testReportsUnstashPath = "${steps.env.WORKSPACE}/${testReportsPath}"
     def hasStashedTestReports = jenkins.unstashFilesIntoPath(testReportsStashName, testReportsUnstashPath, "JUnit XML Report")
