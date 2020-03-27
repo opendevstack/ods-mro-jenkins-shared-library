@@ -91,6 +91,12 @@ class PipelineUtil {
             zipFile.addStream(new ByteArrayInputStream(fileData), params)
         }
 
+        if (!zipFile.isValidZipFile()) {
+          throw new RuntimeException ("Zipfile for ${path} is INVALID!")
+        }
+
+        this.steps.echo("ZipFile - ${path} exists? ${zipFile.getFile().exists()}")
+                
         FileInputStream fileInput = new FileInputStream(zipFile.getFile())
         
         final byte[] bytes;
