@@ -37,13 +37,16 @@ class PipelineUtil {
             throw new IllegalArgumentException("Error: unable to archive artifact. 'path' must be inside the Jenkins workspace: ${path}")
         }
 
-        def fileName = new File(path).getName()
+        if (!data) {
+            throw new IllegalArgumentException("Data cannot be null")
+        }
+        
         this.steps.writeFile([
-            file : fileName,
+            file : name,
             text : new String (data),
           ])
 
-        this.steps.archiveArtifacts(fileName)
+        this.steps.archiveArtifacts(name)
     }
 
     @NonCPS
@@ -67,8 +70,9 @@ class PipelineUtil {
         }
 
         def path = "${this.steps.env.WORKSPACE}/${ARTIFACTS_BASE_DIR}/${name}".toString()
-        def result = this.createZipFile(path, files)
-        this.archiveArtifact(path, result)
+        
+        def result = this.createZipFile(name, files)
+        this.archiveArtifact(name, result)
         return result
     }
 
@@ -90,10 +94,6 @@ class PipelineUtil {
             zipFile.addStream(new ByteArrayInputStream(fileData), params)
         }
 
-        if (!zipFile.isValidZipFile()) {
-          throw new RuntimeException ("Zipfile for ${path} is INVALID!")
-        }
-
         FileInputStream fileInput = new FileInputStream(zipFile.getFile())
         
         final byte[] bytes;
@@ -104,8 +104,6 @@ class PipelineUtil {
             fileInput.close()
           }
         }
-        
-        this.steps.echo("ZipFile - ${path} exists? ${zipFile.getFile().exists()} bytes-l ${bytes.length}")
                 
         return bytes
     }
