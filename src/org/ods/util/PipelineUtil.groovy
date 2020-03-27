@@ -38,17 +38,17 @@ class PipelineUtil {
         }
 
         if (!data) {
-            throw new IllegalArgumentException("Data cannot be null")
+            throw new IllegalArgumentException("Cannot archive a null data artifact into ${path}")
         }
         
-        this.steps.writeFile([
+/*        this.steps.writeFile([
             file : path,
             text : new String (data),
           ])
 
         String fileNameFromPath = new File (path).getName();
-        
-        this.steps.archiveArtifacts("artifacts/${fileNameFromPath}")
+        */
+        this.steps.archiveArtifacts(path)
     }
 
     @NonCPS
