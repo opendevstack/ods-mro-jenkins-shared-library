@@ -435,7 +435,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
         def sectionsNotDone = this.getSectionsNotDone(sections)
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
-        this.project.data.report.overallDTR.sectionsNotDone = sectionsNotDone
+        this.project.data.sectionsNotDoneDTR = sectionsNotDone
 
         def testIssues = this.project.getAutomatedTestsTypeUnit("Technology-${repo.id}")
         def discrepancies = this.computeTestDiscrepancies("Development Tests", testIssues, unitTestData.testResults)
@@ -1032,7 +1032,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
         def sectionsNotDone = this.getSectionsNotDone(sections)
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
-        this.project.data.report.overallTIR.sectionsNotDone = sectionsNotDone
+        this.project.data.sectionsNotDoneTIR = sectionsNotDone
 
         if (!data.pod) {
             this.steps.echo "Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}..."
@@ -1107,7 +1107,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def documentType = DocumentType.DTR as String
 this.steps.echo("TRACE***************: " + this.project.data)
-        def sectionsNotDone = this.project?.data?.report?.overallDTR?.sectionsNotDone ? this.project.data.report.overallDTR.sectionsNotDone : []
+        def sectionsNotDone = this.project?.data?.sectionsNotDoneDTR ? this.project.data.report.sectionsNotDoneDTR : []
 
         def uri = this.createOverallDocument("Overall-Cover", documentType, metadata, null, this.getWatermarkText(documentType, sectionsNotDone))
         this.updateJiraDocumentationTrackingIssue(documentType, "A new ${documentTypeName} has been generated and is available at: ${uri}.", sectionsNotDone)
@@ -1120,7 +1120,7 @@ this.steps.echo("TRACE***************: " + this.project.data)
 
         def documentType = DocumentType.TIR as String
 
-        def sectionsNotDone = this.project?.data?.report?.overallTIR?.sectionsNotDone ? this.project.data.report.overallTIR.sectionsNotDone : []
+        def sectionsNotDone = this.project?.data?.sectionsNotDoneTIR ? this.project.data.sectionsNotDoneTIR : []
 
         def visitor = { data_ ->
             // Prepend a section for the Jenkins build log
