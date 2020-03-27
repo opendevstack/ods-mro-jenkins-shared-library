@@ -25,13 +25,10 @@ class LeVADocumentChaptersFileService {
         def String yamlText
         def file = Paths.get(this.steps.env.WORKSPACE, DOCUMENT_CHAPTERS_BASE_DIR, "${documentType}.yaml").toFile()
         if (!file.exists()) {
-            this.steps.echo("Error: unable to load document chapters. File '${file.toString()}' does not exist.")
             yamlText = this.steps.readFile("docs/${documentType}.yaml")
         } else {
             yamlText = file.text
         }
-        
-        this.steps.echo("template: ${yamlText}")
 
         def data = new Yaml().load(yamlText) ?: [:]
         return data.collectEntries { chapter ->

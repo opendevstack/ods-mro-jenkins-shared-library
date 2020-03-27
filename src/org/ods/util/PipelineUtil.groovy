@@ -41,13 +41,17 @@ class PipelineUtil {
 
         try {
             // Write the artifact data to file
-            file = new File(path).setBytes(data)
+            // file = new File(path).setBytes(data)
+            this.steps.writeFile([
+                file : path,
+                text : new String (data)
+              ])
 
             // Compute the relative path inside the Jenkins workspace
-            def workspacePath = new File(this.steps.env.WORKSPACE).toURI().relativize(new File(path).toURI()).getPath()
+            //def workspacePath = new File(this.steps.env.WORKSPACE).toURI().relativize(new File(path).toURI()).getPath()
 
             // Archive the artifact (requires a relative path inside the Jenkins workspace)
-            this.steps.archiveArtifacts(workspacePath)
+            this.steps.archiveArtifacts(path)
         } finally {
             if (file && file.exists()) {
                 file.delete()
