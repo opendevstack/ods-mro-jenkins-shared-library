@@ -46,6 +46,7 @@ class PipelineUtil {
             text : new String (data),
           ])
 
+        this.steps.archiveArtifacts(path)
     }
 
     @NonCPS
