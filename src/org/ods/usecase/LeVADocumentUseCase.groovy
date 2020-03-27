@@ -1032,24 +1032,24 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def sectionsNotDone = this.getSectionsNotDone(sections)
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
 
-        if (!data.pod) {
+        if (!data.openshift.pod) {
             this.steps.echo "Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}..."
-            data.pod = os.getPodDataForComponent(this.project.key, repo.id)
+            data.openshift.pod = os.getPodDataForComponent(this.project.key, repo.id)
         }
 
         def data_ = [
             metadata     : this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             openShiftData: [
-                ocpBuildId          : data.odsBuildArtifacts?."OCP Build Id" ?: "N/A",
-                ocpDockerImage      : data.odsBuildArtifacts?."OCP Docker image" ?: "N/A",
-                ocpDeploymentId     : data.odsBuildArtifacts?."OCP Deployment Id" ?: "N/A",
-                podName             : data.pod?.metadata?.name ?: "N/A",
-                podNamespace        : data.pod?.metadata?.namespace ?: "N/A",
-                podCreationTimestamp: data.pod?.metadata?.creationTimestamp ?: "N/A",
-                podEnvironment      : data.pod?.metadata?.labels?.env ?: "N/A",
-                podNode             : data.pod?.spec?.nodeName ?: "N/A",
-                podIp               : data.pod?.status?.podIP ?: "N/A",
-                podStatus           : data.pod?.status?.phase ?: "N/A"
+              ocpBuildId          : data.odsBuildArtifacts?."OCP Build Id" ?: "N/A",
+              ocpDockerImage      : data.odsBuildArtifacts?."OCP Docker image" ?: "N/A",
+              ocpDeploymentId     : data.odsBuildArtifacts?."OCP Deployment Id" ?: "N/A",
+              podName             : data.openshift.pod.podName,
+              podNamespace        : data.openshift.pod.podNamespace,
+              podCreationTimestamp: data.openshift.pod.podCreationTimestamp,
+              podEnvironment      : data.openshift.pod.podEnvironment,
+              podNode             : data.openshift.pod.podNode,
+              podIp               : data.openshift.pod.podIp,
+              podStatus           : data.openshift.pod.podStatus
             ],
             data         : [
                 repo    : repo,
