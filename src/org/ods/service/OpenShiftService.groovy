@@ -303,8 +303,8 @@ class OpenShiftService {
         pod.podCreationTimestamp = podOCData?.metadata?.creationTimestamp?: "N/A"
         pod.podEnvironment = podOCData?.metadata?.labels?.env?: "N/A"
         pod.podNode = podOCData?.spec?.nodeName ?: "N/A"
-        pod.podNode = podOCData?.status?.podIP ?: "N/A"
-        pod.podNode = podOCData?.status?.phase ?: "N/A"
+        pod.podIp = podOCData?.status?.podIP ?: "N/A"
+        pod.podStatus = podOCData?.status?.phase ?: "N/A"
       
       return pod
     }
