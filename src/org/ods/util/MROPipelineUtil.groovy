@@ -405,7 +405,7 @@ class MROPipelineUtil extends PipelineUtil {
             [[ $class: 'RelativeTargetDirectory', relativeTargetDir: "${REPOS_BASE_DIR}/${repo.id}" ]],
             [[ credentialsId: credentialsId, url: repo.url ]]
         )
-    }
+    } 
 
     def checkoutBranchInRepoDir(Map repo, String branch) {
         steps.echo "Checkout Branch: ${repo.id}@${branch}"
