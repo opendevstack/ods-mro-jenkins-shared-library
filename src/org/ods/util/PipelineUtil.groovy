@@ -52,8 +52,7 @@ class PipelineUtil {
         
         this.steps.writeFile([
             file : path,
-            text : new String (Base64.decoder.decode(data), "UTF-8"),
-            encoding : "Base64"
+            text : new String (Base64.decoder.decode(data), "UTF-8")
           ])
 
         String fileNameFromPath = new File (path).getName();
