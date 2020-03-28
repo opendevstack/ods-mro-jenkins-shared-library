@@ -102,18 +102,7 @@ class PipelineUtil {
             zipFile.addStream(new ByteArrayInputStream(fileData), params)
         }
 
-        FileInputStream fileInput = new FileInputStream(zipFile.getFile())
-        
-        final byte[] bytes;
-        try {
-            bytes = fileInput.readAllBytes();
-        } finally {
-          if (fileInput != null) {
-            fileInput.close()
-          }
-        }
-
-        return bytes
+        return new FileInputStream(zipFile.getFile()).getBytes();
     }
 
     void executeBlockAndFailBuild(Closure block) {
