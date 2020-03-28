@@ -44,7 +44,7 @@ abstract class DocGenUseCase {
         def basename = this.getDocumentBasename(documentTypeEmbedded ?: documentType, this.project.buildParams.version, this.steps.env.BUILD_ID, repo)
 
         // Create an archive with the document and raw data
-        def byte[] archive = this.util.createZipArtifact(
+        def archive = this.util.createZipArtifact(
             "${basename}.zip",
             [
                 "${basename}.pdf": document,

@@ -72,7 +72,6 @@ class PipelineUtil {
         return dir
     }
 
-    @NonCPS
     byte[] createZipArtifact(String name, Map<String, byte[]> files) {
         if (!name?.trim()) {
             throw new IllegalArgumentException("Error: unable to create Zip artifact. 'name' is undefined.")
