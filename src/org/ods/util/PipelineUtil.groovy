@@ -47,11 +47,6 @@ class PipelineUtil {
             text : new String (data, "UTF-8"),
             encoding : "Base64"
           ])
-
-        String fileNameFromPath = new File (path).getName();
-        this.steps.archiveArtifacts(path)
-        
-        this.steps.echo("Archived artifact for ${path}")
     }
 
     @NonCPS
@@ -78,6 +73,11 @@ class PipelineUtil {
         
         def result = this.createZipFile(path, files)
         this.archiveArtifact(path, result)
+        
+        String fileNameFromPath = new File (path).getName();
+        this.steps.archiveArtifacts(path)
+        this.steps.echo("Archived artifact for ${path}")
+
         return result
     }
 
