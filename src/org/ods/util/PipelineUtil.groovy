@@ -47,9 +47,12 @@ class PipelineUtil {
          * namely .. populate a map with docs in the repo / project - and to the
          * archive outside of the slaves /on master ... ?!
          */
+        byte[] decoded = Base64.decoder.decode(data);
+        byte[] encoded = Base64.encoder.encode(decoded)
+        
         this.steps.writeFile([
             file : path,
-            text : new String (data, "UTF-8"),
+            text : new String (Base64.decoder.decode(data), "UTF-8"),
             encoding : "Base64"
           ])
 
