@@ -28,6 +28,7 @@ class PipelineUtil {
         this.git = git
     }
 
+    @NonCPS
     void archiveArtifact(String path, byte[] data) {
         if (!path?.trim()) {
             throw new IllegalArgumentException("Error: unable to archive artifact. 'path' is undefined.")
@@ -52,7 +53,7 @@ class PipelineUtil {
         
         this.steps.writeFile([
             file : path,
-            text : new String (Base64.decoder.decode(data), "UTF-8")
+            text : new String (data, "UTF-8")
           ])
 
         String fileNameFromPath = new File (path).getName();
@@ -70,6 +71,7 @@ class PipelineUtil {
         return dir
     }
 
+    @NonCPS
     byte[] createZipArtifact(String name, Map<String, byte[]> files) {
         if (!name?.trim()) {
             throw new IllegalArgumentException("Error: unable to create Zip artifact. 'name' is undefined.")
