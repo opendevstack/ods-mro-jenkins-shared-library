@@ -5,7 +5,7 @@ import org.ods.util.PipelineSteps
 import org.ods.util.Project
 
 def call(Project project, List<Set<Map>> repos) {
-    def steps = new PipelineSteps(this)
+    def steps            = ServiceRegistry.instance.get(PipelineSteps)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler)
     def util             = ServiceRegistry.instance.get(MROPipelineUtil)
 

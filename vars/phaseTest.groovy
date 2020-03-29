@@ -9,7 +9,7 @@ import org.ods.util.PipelineUtil
 import org.ods.util.Project
 
 def call(Project project, List<Set<Map>> repos) {
-    def steps = new PipelineSteps(this)
+    def steps            = ServiceRegistry.instance.get(PipelineSteps)
     def jira             = ServiceRegistry.instance.get(JiraUseCase)
     def junit            = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler)
