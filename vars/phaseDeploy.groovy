@@ -7,11 +7,11 @@ import org.ods.util.PipelineSteps
 import org.ods.util.Project
 
 def call(Project project, List<Set<Map>> repos) {
-    def steps            = ServiceRegistry.instance.get(PipelineSteps)
+    def steps = ServiceRegistry.instance.get(PipelineSteps)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler)
-    def os               = ServiceRegistry.instance.get(OpenShiftService)
-    def util             = ServiceRegistry.instance.get(MROPipelineUtil)
-    def git              = ServiceRegistry.instance.get(GitUtil)
+    def os = ServiceRegistry.instance.get(OpenShiftService)
+    def util = ServiceRegistry.instance.get(MROPipelineUtil)
+    def git = ServiceRegistry.instance.get(GitUtil)
 
     def phase = MROPipelineUtil.PipelinePhases.DEPLOY
 
@@ -69,7 +69,11 @@ def call(Project project, List<Set<Map>> repos) {
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
     } catch (e) {
         steps.echo(e.message)
-        project.reportPipelineStatus(e)
+        try {
+            project.reportPipelineStatus(e)
+        } catch (reportError) {
+            this.steps.echo("Error: Found a second error while trying to report the pipeline status with ${reportError.message}")
+        }
         throw e
     }
 }

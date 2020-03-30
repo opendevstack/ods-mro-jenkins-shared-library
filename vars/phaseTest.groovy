@@ -9,27 +9,27 @@ import org.ods.util.PipelineUtil
 import org.ods.util.Project
 
 def call(Project project, List<Set<Map>> repos) {
-    def steps            = ServiceRegistry.instance.get(PipelineSteps)
-    def jira             = ServiceRegistry.instance.get(JiraUseCase)
-    def junit            = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
+    def steps = ServiceRegistry.instance.get(PipelineSteps)
+    def jira = ServiceRegistry.instance.get(JiraUseCase)
+    def junit = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler)
-    def util             = ServiceRegistry.instance.get(MROPipelineUtil)
+    def util = ServiceRegistry.instance.get(MROPipelineUtil)
 
     def phase = MROPipelineUtil.PipelinePhases.TEST
 
     def globalData = [
         tests: [
-            acceptance: [
+            acceptance  : [
                 testReportFiles: [],
-                testResults: [:]
+                testResults    : [:]
             ],
             installation: [
                 testReportFiles: [],
-                testResults: [:]
+                testResults    : [:]
             ],
-            integration: [
+            integration : [
                 testReportFiles: [],
-                testResults: [:]
+                testResults    : [:]
             ]
         ]
     ]
@@ -42,9 +42,9 @@ def call(Project project, List<Set<Map>> repos) {
         if (repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_TEST) {
             def data = [
                 tests: [
-                    acceptance: getAcceptanceTestResults(steps, repo),
+                    acceptance  : getAcceptanceTestResults(steps, repo),
                     installation: getInstallationTestResults(steps, repo),
-                    integration: getIntegrationTestResults(steps, repo)
+                    integration : getIntegrationTestResults(steps, repo)
                 ]
             ]
 
@@ -86,7 +86,11 @@ def call(Project project, List<Set<Map>> repos) {
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END, [:], globalData)
     } catch (e) {
         steps.echo(e.message)
-        project.reportPipelineStatus(e)
+        try {
+            project.reportPipelineStatus(e)
+        } catch (reportError) {
+            this.steps.echo("Error: Found a second error while trying to report the pipeline status with ${reportError.message}")
+        }
         throw e
     }
 }
@@ -105,7 +109,7 @@ private List getIntegrationTestResults(def steps, Map repo) {
 
 private List getTestResults(def steps, Map repo, String type) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService)
-    def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
+    def junit = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
 
     def testReportsPath = "${PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR}/${repo.id}/${type}"
 
@@ -123,7 +127,7 @@ private List getTestResults(def steps, Map repo, String type) {
         // Load JUnit test report files from path
         testReportFiles: testReportFiles,
         // Parse JUnit test report files into a report
-        testResults: junit.parseTestReportFiles(testReportFiles)
+        testResults    : junit.parseTestReportFiles(testReportFiles)
     ]
 }
 

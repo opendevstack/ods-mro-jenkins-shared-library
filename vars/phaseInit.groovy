@@ -1,31 +1,12 @@
-@Grab(group="com.konghq", module="unirest-java", version="2.4.03", classifier="standalone")
+import kong.unirest.Unirest
+import org.ods.scheduler.LeVADocumentScheduler
+import org.ods.service.*
+import org.ods.usecase.*
+import org.ods.util.*
+
+@Grab(group = "com.konghq", module = "unirest-java", version = "2.4.03", classifier = "standalone")
 
 import java.nio.file.Paths
-
-import kong.unirest.Unirest
-
-import org.ods.scheduler.LeVADocumentScheduler
-import org.ods.service.DocGenService
-import org.ods.service.JenkinsService
-import org.ods.service.JiraService
-import org.ods.service.JiraZephyrService
-import org.ods.service.LeVADocumentChaptersFileService
-import org.ods.service.NexusService
-import org.ods.service.OpenShiftService
-import org.ods.service.ServiceRegistry
-import org.ods.usecase.JUnitTestReportsUseCase
-import org.ods.usecase.JiraUseCase
-import org.ods.usecase.JiraUseCaseSupport
-import org.ods.usecase.JiraUseCaseZephyrSupport
-import org.ods.usecase.LeVADocumentUseCase
-import org.ods.usecase.SonarQubeUseCase
-import org.ods.util.GitUtil
-import org.ods.util.GitTag
-import org.ods.util.MROPipelineUtil
-import org.ods.util.PDFUtil
-import org.ods.util.PipelineSteps
-import org.ods.util.PipelineUtil
-import org.ods.util.Project
 
 def call() {
     def steps = new PipelineSteps(this)
@@ -118,7 +99,7 @@ def call() {
         )
 
         if (project.services?.jira) {
-            withCredentials([ usernamePassword(credentialsId: project.services.jira.credentials.id, usernameVariable: "JIRA_USERNAME", passwordVariable: "JIRA_PASSWORD") ]) {
+            withCredentials([usernamePassword(credentialsId: project.services.jira.credentials.id, usernameVariable: "JIRA_USERNAME", passwordVariable: "JIRA_PASSWORD")]) {
                 registry.add(JiraService,
                     new JiraService(
                         env.JIRA_URL,
@@ -160,7 +141,7 @@ def call() {
             }
         }
 
-        withCredentials([ usernamePassword(credentialsId: project.services.bitbucket.credentials.id, usernameVariable: "BITBUCKET_USER", passwordVariable: "BITBUCKET_PW") ]) {
+        withCredentials([usernamePassword(credentialsId: project.services.bitbucket.credentials.id, usernameVariable: "BITBUCKET_USER", passwordVariable: "BITBUCKET_PW")]) {
             registry.add(OpenShiftService,
                 new OpenShiftService(
                     registry.get(PipelineSteps),
@@ -321,10 +302,14 @@ def call() {
 
         registry.get(LeVADocumentScheduler).run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
 
-        return [ project: project, repos: repos ]
+        return [project: project, repos: repos]
     } catch (e) {
         steps.echo(e.message)
-        project.reportPipelineStatus(e)
+        try {
+            project.reportPipelineStatus(e)
+        } catch (reportError) {
+            this.steps.echo("Error: Found a second error while trying to report the pipeline status with ${reportError.message}")
+        }
         throw e
     }
 }
@@ -341,11 +326,11 @@ private boolean privateKeyExists(def privateKeyCredentialsId) {
 
 private checkoutGitRef(String gitRef, def extensions) {
     checkout([
-        $class: 'GitSCM',
-        branches: [[name: "*/${gitRef}"]],
+        $class                           : 'GitSCM',
+        branches                         : [[name: "*/${gitRef}"]],
         doGenerateSubmoduleConfigurations: false,
-        extensions: extensions,
-        userRemoteConfigs: scm.userRemoteConfigs
+        extensions                       : extensions,
+        userRemoteConfigs                : scm.userRemoteConfigs
     ])
 }
 

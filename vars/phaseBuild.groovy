@@ -9,10 +9,10 @@ import org.ods.util.PipelineUtil
 import org.ods.util.Project
 
 def call(Project project, List<Set<Map>> repos) {
-    def steps            = ServiceRegistry.instance.get(PipelineSteps)
-    def jira             = ServiceRegistry.instance.get(JiraUseCase)
-    def junit            = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
-    def util             = ServiceRegistry.instance.get(MROPipelineUtil)
+    def steps = ServiceRegistry.instance.get(PipelineSteps)
+    def jira = ServiceRegistry.instance.get(JiraUseCase)
+    def junit = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
+    def util = ServiceRegistry.instance.get(MROPipelineUtil)
     def levaDocScheduler = ServiceRegistry.instance.get(LeVADocumentScheduler)
 
     def phase = MROPipelineUtil.PipelinePhases.BUILD
@@ -21,7 +21,7 @@ def call(Project project, List<Set<Map>> repos) {
         tests: [
             unit: [
                 testReportFiles: [],
-                testResults: [:]
+                testResults    : [:]
             ]
         ]
     ]
@@ -64,14 +64,18 @@ def call(Project project, List<Set<Map>> repos) {
         levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
     } catch (e) {
         steps.echo(e.message)
-        project.reportPipelineStatus(e)
+        try {
+            project.reportPipelineStatus(e)
+        } catch (reportError) {
+            this.steps.echo("Error: Found a second error while trying to report the pipeline status with ${reportError.message}")
+        }
         throw e
     }
 }
 
 private List getUnitTestResults(def steps, Map repo) {
     def jenkins = ServiceRegistry.instance.get(JenkinsService)
-    def junit   = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
+    def junit = ServiceRegistry.instance.get(JUnitTestReportsUseCase)
 
     def testReportsPath = "${PipelineUtil.XUNIT_DOCUMENTS_BASE_DIR}/${repo.id}/unit"
 
@@ -89,7 +93,7 @@ private List getUnitTestResults(def steps, Map repo) {
         // Load JUnit test report files from path
         testReportFiles: testReportFiles,
         // Parse JUnit test report files into a report
-        testResults: junit.parseTestReportFiles(testReportFiles)
+        testResults    : junit.parseTestReportFiles(testReportFiles)
     ]
 }
 
