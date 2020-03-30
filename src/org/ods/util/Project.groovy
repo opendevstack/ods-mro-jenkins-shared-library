@@ -258,7 +258,6 @@ class Project {
         ]
 
         this.data.jira = [:]
-        this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
         this.data.jira = this.loadJiraData(this.jiraProjectKey)
         this.data.jira.project.version = this.loadJiraDataProjectVersion()
         this.data.jira.bugs = this.loadJiraDataBugs(this.data.jira.tests)
@@ -266,6 +265,7 @@ class Project {
         this.data.jiraResolved = this.resolveJiraDataItemReferences(this.data.jira)
 
         this.data.jira.docs = this.loadJiraDataDocs()
+        this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
 
         this.data.openshift = [:]
 
