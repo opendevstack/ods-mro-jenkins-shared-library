@@ -327,7 +327,7 @@ def call() {
         try {
             project.reportPipelineStatus(e)
         } catch (reportError) {
-            this.steps.echo("Error while trying to report the pipeline status with ${reportError.message}")
+            this.steps.echo("Error: Found a second error while trying to report the pipeline status with ${reportError.message}")
         }
         throw e
     }
