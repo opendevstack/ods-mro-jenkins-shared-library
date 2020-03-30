@@ -1033,7 +1033,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def watermarkText = this.getWatermarkText(documentType, sectionsNotDone)
 
         if (!data.pod) {
-            this.steps.echo "Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}..."
+            this.steps.echo("Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}...")
             data.pod = os.getPodDataForComponent(this.project.key, repo.id)
         }
 

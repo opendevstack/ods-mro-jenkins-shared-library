@@ -30,7 +30,7 @@ def call(Project project, List<Set<Map>> repos) {
             if (project.isPromotionMode) {
                 def targetEnvironment = project.buildParams.targetEnvironment
                 def targetProject = project.targetProject
-                steps.echo "Deploying project '${project.key}' into environment '${targetEnvironment}'"
+                steps.echo("Deploying project '${project.key}' into environment '${targetEnvironment}'")
 
                 if (project.targetClusterIsExternal) {
                     withCredentials([
@@ -59,7 +59,7 @@ def call(Project project, List<Set<Map>> repos) {
             // record release manager repo state
             if (project.isPromotionMode) {
                 if (git.remoteTagExists(project.targetTag)) {
-                    steps.echo "Skipping tag because it already exists."
+                    steps.echo("Skipping tag because it already exists.")
                 } else {
                     util.tagAndPush(project.targetTag)
                 }
