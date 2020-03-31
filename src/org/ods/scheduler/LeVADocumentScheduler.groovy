@@ -10,70 +10,70 @@ class LeVADocumentScheduler extends DocGenScheduler {
     // Document types per GAMP category
     private static Map GAMP_CATEGORIES = [
         "1": [
-            LeVADocumentUseCase.DocumentType.CSD as String,
-            LeVADocumentUseCase.DocumentType.RA as String,
-            LeVADocumentUseCase.DocumentType.SSDS as String,
-            LeVADocumentUseCase.DocumentType.TIP as String,
-            LeVADocumentUseCase.DocumentType.TIR as String,
-            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
-            LeVADocumentUseCase.DocumentType.IVP as String,
-            LeVADocumentUseCase.DocumentType.IVR as String,
             LeVADocumentUseCase.DocumentType.CFTP as String,
             LeVADocumentUseCase.DocumentType.CFTR as String,
+            LeVADocumentUseCase.DocumentType.CSD as String,
+            LeVADocumentUseCase.DocumentType.DIL as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
+            LeVADocumentUseCase.DocumentType.RA as String,
+            LeVADocumentUseCase.DocumentType.SSDS as String,
             LeVADocumentUseCase.DocumentType.TCP as String,
             LeVADocumentUseCase.DocumentType.TCR as String,
-            LeVADocumentUseCase.DocumentType.DIL as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String
         ],
         "3": [
-            LeVADocumentUseCase.DocumentType.CSD as String,
-            LeVADocumentUseCase.DocumentType.RA as String,
-            LeVADocumentUseCase.DocumentType.SSDS as String,
-            LeVADocumentUseCase.DocumentType.TIP as String,
-            LeVADocumentUseCase.DocumentType.TIR as String,
-            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
-            LeVADocumentUseCase.DocumentType.IVP as String,
-            LeVADocumentUseCase.DocumentType.IVR as String,
             LeVADocumentUseCase.DocumentType.CFTP as String,
             LeVADocumentUseCase.DocumentType.CFTR as String,
+            LeVADocumentUseCase.DocumentType.CSD as String,
+            LeVADocumentUseCase.DocumentType.DIL as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
+            LeVADocumentUseCase.DocumentType.RA as String,
+            LeVADocumentUseCase.DocumentType.SSDS as String,
             LeVADocumentUseCase.DocumentType.TCP as String,
             LeVADocumentUseCase.DocumentType.TCR as String,
-            LeVADocumentUseCase.DocumentType.DIL as String,
-            LeVADocumentUseCase.DocumentType.TRC as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String,
+            LeVADocumentUseCase.DocumentType.TRC as String
         ],
         "4": [
-            LeVADocumentUseCase.DocumentType.CSD as String,
-            LeVADocumentUseCase.DocumentType.RA as String,
-            LeVADocumentUseCase.DocumentType.SSDS as String,
-            LeVADocumentUseCase.DocumentType.TIP as String,
-            LeVADocumentUseCase.DocumentType.TIR as String,
-            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
-            LeVADocumentUseCase.DocumentType.IVP as String,
-            LeVADocumentUseCase.DocumentType.IVR as String,
-            LeVADocumentUseCase.DocumentType.TCP as String,
-            LeVADocumentUseCase.DocumentType.TCR as String,
             LeVADocumentUseCase.DocumentType.CFTP as String,
             LeVADocumentUseCase.DocumentType.CFTR as String,
+            LeVADocumentUseCase.DocumentType.CSD as String,
             LeVADocumentUseCase.DocumentType.DIL as String,
-            LeVADocumentUseCase.DocumentType.TRC as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
+            LeVADocumentUseCase.DocumentType.RA as String,
+            LeVADocumentUseCase.DocumentType.SSDS as String,
+            LeVADocumentUseCase.DocumentType.TCP as String,
+            LeVADocumentUseCase.DocumentType.TCR as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String,
+            LeVADocumentUseCase.DocumentType.TRC as String
         ],
         "5": [
-            LeVADocumentUseCase.DocumentType.CSD as String,
-            LeVADocumentUseCase.DocumentType.RA as String,
-            LeVADocumentUseCase.DocumentType.SSDS as String,
-            LeVADocumentUseCase.DocumentType.DTP as String,
-            LeVADocumentUseCase.DocumentType.DTR as String,
-            LeVADocumentUseCase.DocumentType.OVERALL_DTR as String,
-            LeVADocumentUseCase.DocumentType.TIP as String,
-            LeVADocumentUseCase.DocumentType.TIR as String,
-            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
-            LeVADocumentUseCase.DocumentType.IVP as String,
-            LeVADocumentUseCase.DocumentType.IVR as String,
             LeVADocumentUseCase.DocumentType.CFTP as String,
             LeVADocumentUseCase.DocumentType.CFTR as String,
+            LeVADocumentUseCase.DocumentType.CSD as String,
+            LeVADocumentUseCase.DocumentType.DIL as String,
+            LeVADocumentUseCase.DocumentType.DTP as String,
+            LeVADocumentUseCase.DocumentType.DTR as String,
+            LeVADocumentUseCase.DocumentType.IVP as String,
+            LeVADocumentUseCase.DocumentType.IVR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_DTR as String,
+            LeVADocumentUseCase.DocumentType.OVERALL_TIR as String,
+            LeVADocumentUseCase.DocumentType.RA as String,
+            LeVADocumentUseCase.DocumentType.SSDS as String,
             LeVADocumentUseCase.DocumentType.TCP as String,
             LeVADocumentUseCase.DocumentType.TCR as String,
-            LeVADocumentUseCase.DocumentType.DIL as String,
-            LeVADocumentUseCase.DocumentType.TRC as String,
+            LeVADocumentUseCase.DocumentType.TIP as String,
+            LeVADocumentUseCase.DocumentType.TIR as String,
+            LeVADocumentUseCase.DocumentType.TRC as String
         ]
     ]
 
@@ -256,8 +256,8 @@ class LeVADocumentScheduler extends DocGenScheduler {
     }
 
     protected boolean isDocumentApplicableForEnvironment(String documentType, String environment) {
-        // In D always created
-        if ("D".equalsIgnoreCase(environment)) {
+        // in developer preview mode always create
+        if (project.isDeveloperPreviewMode()) {
             return true
         }
 
