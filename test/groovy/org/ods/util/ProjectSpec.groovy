@@ -596,16 +596,45 @@ class ProjectSpec extends SpecHelper {
         !result
     }
 
+    def "get undone issues"() {
+        given:
+        def data = [:]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            data[type] = [
+                "${type}-1": [
+                    status: "TODO"
+                ],
+                "${type}-2": [
+                    status: "DOING"
+                ],
+                "${type}-3": [
+                    status: "DONE"
+                ]
+            ]
+        }
+
+        def expected = [:]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            expected[type] = [ "${type}-1", "${type}-2" ]
+        }
+
+        when:
+        def result = project.computeUndoneIssues(data)
+
+        then:
+        result == expected
+    }
+
     def "load"() {
         given:
         def component1 = [key: "CMP-1", name: "Component 1"]
-        def epic1 = [key: "EPC-1", name: "Epic 1"]
-        def mitigation1 = [key: "MTG-1", name: "Mitigation 1"]
-        def requirement1 = [key: "REQ-1", name: "Requirement 1"]
-        def risk1 = [key: "RSK-1", name: "Risk 1"]
-        def techSpec1 = [key: "TS-1", name: "Technical Specification 1"]
-        def test1 = [key: "TST-1", name: "Test 1"]
-        def test2 = [key: "TST-2", name: "Test 2"]
+        def epic1 = [key: "EPC-1", name: "Epic 1", status: "OPEN"]
+        def mitigation1 = [key: "MTG-1", name: "Mitigation 1", status: "OPEN"]
+        def requirement1 = [key: "REQ-1", name: "Requirement 1", status: "OPEN"]
+        def risk1 = [key: "RSK-1", name: "Risk 1", status: "OPEN"]
+        def techSpec1 = [key: "TS-1", name: "Technical Specification 1", status: "OPEN"]
+        def test1 = [key: "TST-1", name: "Test 1", status: "OPEN"]
+        def test2 = [key: "TST-2", name: "Test 2", status: "OPEN"]
         def doc1 = [key: "DOC-1", name: "Doc 1", status: "OPEN"]
 
         // Define key-based references
@@ -879,7 +908,6 @@ class ProjectSpec extends SpecHelper {
 
         def jira = Mock(JiraService) {
             getDocGenData(_) >> {
-                println "D: " + docGenData
                 return docGenData
             }
         }

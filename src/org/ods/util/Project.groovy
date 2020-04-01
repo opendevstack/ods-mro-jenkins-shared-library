@@ -36,6 +36,17 @@ class Project {
             TYPE_TESTS
         ]
 
+        static final List TYPES_WITH_STATUS = [
+            TYPE_BUGS,
+            TYPE_EPICS,
+            TYPE_MITIGATIONS,
+            TYPE_REQUIREMENTS,
+            TYPE_RISKS,
+            TYPE_TECHSPECS,
+            TYPE_TESTS,
+            TYPE_DOCS
+        ]
+
         private final String type
         private HashMap delegate
 
@@ -267,12 +278,30 @@ class Project {
         this.data.jira.docs = this.loadJiraDataDocs()
         this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
 
+        this.data.jira.undone = this.computeUndoneIssues(this.data.jira)
+
         this.data.openshift = [:]
 
         this.data.documents = [:]
         this.data.documents.sectionsNotDone = [:]
 
         return this
+    }
+
+    protected Map computeUndoneIssues(Map data) {
+        def result = [:]
+
+        JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            if (data[type]) {
+                result[type] = data[type].findAll { key, issue ->
+                    issue.status != null && issue.status.toLowerCase() != "done" && issue.status.toLowerCase() != "cancelled"
+                }.collect { key, issue ->
+                    return key
+                }
+            }
+        }
+
+        return result
     }
 
     protected Map convertJiraDataToJiraDataItems(Map data) {

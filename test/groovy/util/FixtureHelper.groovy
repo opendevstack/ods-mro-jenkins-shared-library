@@ -59,6 +59,8 @@ class FakeProject extends Project {
         this.data.jira.docs = this.loadJiraDataDocs()
         this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
 
+        this.data.jira.undone = this.computeUndoneIssues(this.data.jira)
+
         this.data.documents = [:]
         this.data.documents.sectionsNotDone = [:]
 
