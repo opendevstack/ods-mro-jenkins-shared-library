@@ -1192,14 +1192,14 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     private List<String> getJiraTrackingIssueLabelsForDocumentType(String documentType) {
-        def environment = this.project.buildParams.targetEnvironmentToken
         def labels = []
 
+        def environment = this.project.buildParams.targetEnvironmentToken
         LeVADocumentScheduler.ENVIRONMENT_TYPE[environment].get(documentType).each { label ->
             labels.add("Doc:${label}")
         }
 
-        if (environment.equals('D')) {
+        if (this.project.isDeveloperPreviewMode()) {
             // Assumes that every document we generate along the pipeline has a tracking issue in Jira
             labels.add("Doc:${documentType}")
         }
