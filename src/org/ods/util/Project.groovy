@@ -278,7 +278,7 @@ class Project {
         this.data.jira.docs = this.loadJiraDataDocs()
         this.data.jira.issueTypes = this.loadJiraDataIssueTypes()
 
-        this.data.jira.undone = this.computeUndoneIssues(this.data.jira)
+        this.data.jira.undone = this.computeUndoneJiraIssues(this.data.jira)
 
         this.data.openshift = [:]
 
@@ -288,7 +288,11 @@ class Project {
         return this
     }
 
-    protected Map computeUndoneIssues(Map data) {
+    boolean hasUndoneJiraIssues() {
+        return !this.getUndoneJiraIssues().isEmpty()
+    }
+
+    protected Map computeUndoneJiraIssues(Map data) {
         def result = [:]
 
         JiraDataItem.TYPES_WITH_STATUS.each { type ->

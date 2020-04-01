@@ -596,7 +596,7 @@ class ProjectSpec extends SpecHelper {
         !result
     }
 
-    def "get undone issues"() {
+    def "get undone jira issues"() {
         given:
         def data = [:]
         Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
@@ -619,7 +619,7 @@ class ProjectSpec extends SpecHelper {
         }
 
         when:
-        def result = project.computeUndoneIssues(data)
+        def result = project.computeUndoneJiraIssues(data)
 
         then:
         result == expected
