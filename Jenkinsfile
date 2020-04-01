@@ -1,6 +1,6 @@
 /* generated jenkins file used for building ODS Document generation service in the prov-dev namespace */
 def final projectId = 'prov' // Change if you want to build it elsewhere ...
-def final componentId = 'mrosharedlib'
+def final componentId = 'mro-shared-library'
 def final credentialsId = "${projectId}-cd-cd-user-with-password"
 def dockerRegistry
 def odsGitRef 
