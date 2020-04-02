@@ -295,6 +295,8 @@ class Project {
         this.data.documents = [:]
         this.data.openshift = [:]
 
+        this.jiraUseCase.updateJiraReleaseStatusBuildNumber()
+
         return this
     }
 
@@ -990,7 +992,7 @@ class Project {
 
     public void reportPipelineStatus(String message = "", boolean isError = false) {
         if (!this.jiraUseCase) return
-        this.jiraUseCase.updateJiraReleaseStatusIssue(message, isError)
+        this.jiraUseCase.updateJiraReleaseStatusResult(message, isError)
     }
 
     @NonCPS
