@@ -1291,15 +1291,17 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
 
     protected String getWatermarkText(String documentType, boolean hasWipJiraIssues) {
+        def result = null
+
         if (this.project.isDeveloperPreviewMode()){
-            return this.DEVELOPER_PREVIEW_WATERMARK
+            result = this.DEVELOPER_PREVIEW_WATERMARK
         }
 
         if (hasWipJiraIssues) {
-            return this.WORK_IN_PROGRESS_WATERMARK
+            result = this.WORK_IN_PROGRESS_WATERMARK
         }
 
-        return null
+        return result
     }
 
     void updateJiraDocumentationTrackingIssue(String documentType, String message, List<Map> sectionsNotDone = []) {
