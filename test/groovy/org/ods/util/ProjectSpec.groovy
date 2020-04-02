@@ -596,7 +596,7 @@ class ProjectSpec extends SpecHelper {
         !result
     }
 
-    def "get undone jira issues"() {
+    def "compute wip jira issues"() {
         given:
         def data = [:]
         Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
@@ -619,10 +619,184 @@ class ProjectSpec extends SpecHelper {
         }
 
         when:
-        def result = project.computeUndoneJiraIssues(data)
+        def result = project.computeWipJiraIssues(data)
 
         then:
         result == expected
+    }
+
+    def "get wip Jira issues for an empty collection"() {
+        setup:
+        def data = [project: [:], components: [:]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            data[type] = [:]
+        }
+
+        def expected = [docChapters: [:]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            expected[type] = []
+        }
+
+        project = createProject([
+            "loadJiraData": {
+                return data
+            },
+            "loadJiraDataBugs": {
+                return [:]
+            }
+        ]).init()
+
+        when:
+        project.load(git, jiraUseCase)
+
+        then:
+        !project.hasWipJiraIssues()
+        0 * project.reportPipelineStatus(*_)
+
+        then:
+        project.getWipJiraIssues() == expected
+    }
+
+    def "get wip Jira issues for a collection of DONE issues"() {
+        setup:
+        def data = [project: [:], components: [:]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            data[type] = [
+                "${type}-1": [
+                    status: "DONE"
+                ],
+                "${type}-2": [
+                    status: "DONE"
+                ],
+                "${type}-3": [
+                    status: "DONE"
+                ]
+            ]
+        }
+
+        def expected = [docChapters: [:]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            expected[type] = []
+        }
+
+        project = createProject([
+            "loadJiraData": {
+                return data
+            },
+            "loadJiraDataBugs": {
+                return [
+                    "bugs-1": [
+                        status: "DONE"
+                    ],
+                    "bugs-2": [
+                        status: "DONE"
+                    ],
+                    "bugs-3": [
+                        status: "DONE"
+                    ]
+                ]
+            }
+        ]).init()
+
+        when:
+        project.load(git, jiraUseCase)
+
+        then:
+        !project.hasWipJiraIssues()
+        0 * project.reportPipelineStatus(*_)
+
+        then:
+        project.getWipJiraIssues() == expected
+    }
+
+    def "get wip Jira issues for a mixed collection of DONE and other issues"() {
+        setup:
+        def data = [project: [:], components: [:]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            data[type] = [
+                "${type}-1": [
+                    status: "TODO"
+                ],
+                "${type}-2": [
+                    status: "DOING"
+                ],
+                "${type}-3": [
+                    status: "DONE"
+                ]
+            ]
+        }
+
+        def expected = [docChapters: [:]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            expected[type] = [ "${type}-1", "${type}-2" ]
+        }
+
+        def expectedMessage = "The following issues were detected to be work in progress:"
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            expectedMessage += "\n\n${type.capitalize()}: ${type}-1, ${type}-2"
+        }
+
+        project = createProject([
+            "loadJiraData": {
+                return data
+            },
+            "loadJiraDataBugs": {
+                return [
+                    "bugs-1": [
+                        status: "TODO"
+                    ],
+                    "bugs-2": [
+                        status: "DOING"
+                    ],
+                    "bugs-3": [
+                        status: "DONE"
+                    ]
+                ]
+            }
+        ]).init()
+
+        when:
+        project.load(git, jiraUseCase)
+
+        then:
+        project.hasWipJiraIssues()
+        1 * project.reportPipelineStatus(expectedMessage, false)
+
+        then:
+        project.getWipJiraIssues() == expected
+    }
+
+    def "get wip Jira issues for a collection of document chapters"() {
+        setup:
+        def data = [project: [:], components: [:]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            data[type] = [:]
+        }
+
+        def expected = [docChapters: ["myDocumentType": ["docChapters-1", "docChapters-2"]]]
+        Project.JiraDataItem.TYPES_WITH_STATUS.each { type ->
+            expected[type] = []
+        }
+
+        project = createProject([
+            "loadJiraData": {
+                return data
+            },
+            "loadJiraDataBugs": {
+                return [:]
+            }
+        ]).init()
+
+        when:
+        project.load(git, jiraUseCase)
+
+        project.data.jira.undone.docChapters["myDocumentType"] = ["docChapters-1", "docChapters-2"]
+
+        then:
+        project.hasWipJiraIssues()
+
+        then:
+        project.getWipJiraIssues() == expected
     }
 
     def "load"() {
