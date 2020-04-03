@@ -1041,6 +1041,6 @@ class Project {
             repo.data.documents = [:]
         }
 
-        return JsonOutput.toJson(result)
+        return JsonOutput.prettyPrint(JsonOutput.toJson(result))
     }
 }
