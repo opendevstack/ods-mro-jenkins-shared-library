@@ -1165,7 +1165,6 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
 
         this.computeTestDiscrepancies(null, testIssues, junit.combineTestResults([acceptanceTestData.testResults, installationTestData.testResults, integrationTestData.testResults]))
-        this.steps.echo("??? testIssues (after combination) ${JsonOutput.toJson(testIssues)}")
 
         def testIssuesWip = testIssues.findAll { !it.status.equalsIgnoreCase("cancelled") && (!it.isSuccess || it.isUnexecuted) }
 
