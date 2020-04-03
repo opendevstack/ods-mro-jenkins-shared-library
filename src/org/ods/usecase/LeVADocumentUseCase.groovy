@@ -1164,13 +1164,15 @@ class LeVADocumentUseCase extends DocGenUseCase {
         this.steps.echo("??? testIssues: ${JsonOutput.toJson(testIssues)}")
 
         this.computeTestDiscrepancies(null, testIssues, junit.combineTestResults([acceptanceTestData.testResults, installationTestData.testResults, integrationTestData.testResults]))
+        this.steps.echo("??? testIssues (after combination) ${JsonOutput.toJson(testIssues)}")
+
         def testIssuesWip = testIssues.findAll { !it.status.equalsIgnoreCase("cancelled") && (!it.isSuccess || it.isUnexecuted) }
         this.steps.echo("??? testIssuesWip: ${JsonOutput.toJson(testIssuesWip)}")
 
-        def hasFailingTestIssues = !testIssuesWip.isEmpty()
-        this.steps.echo("??? hasFailingTestIssues: ${hasFailingTestIssues}")
+        def hasWipTestIssues = !testIssuesWip.isEmpty()
+        this.steps.echo("??? hasWipTestIssues: ${hasWipTestIssues}")
 
-        def watermarkText = this.getWatermarkText(documentType, hasFailingTestIssues || this.project.hasWipJiraIssues())
+        def watermarkText = this.getWatermarkText(documentType, hasWipTestIssues || this.project.hasWipJiraIssues())
         this.steps.echo("??? watermarkText: ${watermarkText}")
 
         systemRequirements = systemRequirements.collect { r ->
