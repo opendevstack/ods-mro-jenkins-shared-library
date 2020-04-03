@@ -277,6 +277,14 @@ class JiraUseCase {
         }
     }
 
+    void addCommentInReleaseStatus(String message) {
+        def releaseStatusIssueKey = this.project.buildParams.releaseStatusJiraIssueKey
+        if (message) {
+            this.jira.appendCommentToIssue(releaseStatusIssueKey, "${message}\n\nSee: ${this.steps.env.RUN_DISPLAY_URL}")
+        }
+
+    }
+
     private void walkTestIssuesAndTestResults(List testIssues, Map testResults, Closure visitor) {
         testResults.testsuites.each { testSuite ->
             testSuite.testcases.each { testCase ->
