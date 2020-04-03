@@ -254,19 +254,16 @@ class JiraUseCase {
     void updateJiraReleaseStatusBuildNumber() {
         if (!this.jira) return
 
-        /*
         def releaseStatusIssueKey = this.project.buildParams.releaseStatusJiraIssueKey
         def releaseStatusIssueFields = this.project.getJiraFieldsForIssueType(JiraUseCase.IssueTypes.RELEASE_STATUS)
 
         def releaseStatusIssueBuildNumberField = releaseStatusIssueFields["Release Build"]
         this.jira.updateTextFieldsOnIssue(releaseStatusIssueKey, [(releaseStatusIssueBuildNumberField.id): "${this.project.buildParams.version}-${this.steps.env.BUILD_NUMBER}"])
-        */
     }
 
     void updateJiraReleaseStatusResult(String message, boolean isError) {
         if (!this.jira) return
 
-        /*
         def status = isError ? "Failed" : "Successful"
 
         def releaseStatusIssueKey = this.project.buildParams.releaseStatusJiraIssueKey
@@ -278,7 +275,6 @@ class JiraUseCase {
         if (message) {
             this.jira.appendCommentToIssue(releaseStatusIssueKey, "${message}\n\nSee: ${this.steps.env.RUN_DISPLAY_URL}")
         }
-        */
     }
 
     private void walkTestIssuesAndTestResults(List testIssues, Map testResults, Closure visitor) {

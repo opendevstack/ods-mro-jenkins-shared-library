@@ -1160,20 +1160,18 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def systemRequirements = this.project.getSystemRequirements()
 
         // Compute the test issues we do not consider done (not successful)
-        def testIssues = systemRequirements.collect { it.getResolvedTests() }.flatten().unique()
-        this.steps.echo("??? testIssues: ${JsonOutput.toJson(testIssues)}")
+        def testIssues = systemRequirements.collect { it.getResolvedTests() }.flatten().unique().findAll {
+            [Project.TestType.ACCEPTANCE, Project.TestType.INSTALLATION, Project.TestType.INTEGRATION].contains(it.testType)
+        }
 
         this.computeTestDiscrepancies(null, testIssues, junit.combineTestResults([acceptanceTestData.testResults, installationTestData.testResults, integrationTestData.testResults]))
         this.steps.echo("??? testIssues (after combination) ${JsonOutput.toJson(testIssues)}")
 
         def testIssuesWip = testIssues.findAll { !it.status.equalsIgnoreCase("cancelled") && (!it.isSuccess || it.isUnexecuted) }
-        this.steps.echo("??? testIssuesWip: ${JsonOutput.toJson(testIssuesWip)}")
 
-        def hasWipTestIssues = !testIssuesWip.isEmpty()
-        this.steps.echo("??? hasWipTestIssues: ${hasWipTestIssues}")
+        def hasFailingTestIssues = !testIssuesWip.isEmpty()
 
-        def watermarkText = this.getWatermarkText(documentType, hasWipTestIssues || this.project.hasWipJiraIssues())
-        this.steps.echo("??? watermarkText: ${watermarkText}")
+        def watermarkText = this.getWatermarkText(documentType, hasFailingTestIssues || this.project.hasWipJiraIssues())
 
         systemRequirements = systemRequirements.collect { r ->
             [
