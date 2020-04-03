@@ -272,9 +272,7 @@ class JiraUseCase {
         def releaseStatusIssueReleaseManagerStatusField = releaseStatusIssueFields["Release Manager Status"]
         this.jira.updateSelectListFieldsOnIssue(releaseStatusIssueKey, [(releaseStatusIssueReleaseManagerStatusField.id): status])
 
-        if (message) {
-            this.jira.appendCommentToIssue(releaseStatusIssueKey, "${message}\n\nSee: ${this.steps.env.RUN_DISPLAY_URL}")
-        }
+        addCommentInReleaseStatus(message)
     }
 
     void addCommentInReleaseStatus(String message) {
