@@ -44,5 +44,5 @@ interface IPipelineSteps {
 
     def deleteDir()
     
-    def withEnv(List<String> env)
+    def withEnv(List<String> env, Closure block)
 }
