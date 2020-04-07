@@ -35,7 +35,7 @@ class GitUtil {
     }
   
     String getCommitMessage() {
-        return this.script.sh(
+        return this.steps.sh(
             returnStdout: true,
             script: "git log -1 --pretty=%B HEAD",
             label: 'Get Git commit message'
