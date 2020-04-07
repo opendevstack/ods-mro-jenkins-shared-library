@@ -1059,7 +1059,7 @@ class Project {
     
     List<String> getMainReleaseManagerEnv () {
         def mroSharedLibVersion = 
-          this.script.sh(script: "env | grep 'library.ods-mro-jenkins-shared-library.version' | cut -d= -f2", returnStdout: true, label: 'getting ODS shared lib version').trim()
+          this.steps.sh(script: "env | grep 'library.ods-mro-jenkins-shared-library.version' | cut -d= -f2", returnStdout: true, label: 'getting ODS shared lib version').trim()
         
         return [
           "ods.build.rm.${this.project.getKey()}.repo.url=${this.project.gitData.url}",
