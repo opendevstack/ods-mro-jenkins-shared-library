@@ -96,4 +96,8 @@ class PipelineSteps implements IPipelineSteps, Serializable {
     def deleteDir() {
         this.context.deleteDir()
     }
+    
+    def withEnv(List<String> env) {
+        this.context.withEnv (env)
+    }
 }
