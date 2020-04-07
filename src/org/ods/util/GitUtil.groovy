@@ -27,27 +27,27 @@ class GitUtil {
     }
 
     String getCommitAuthor() {
-      script.sh(
-        returnStdout: true,
-        script: "git --no-pager show -s --format='%an (%ae)' HEAD",
-        label: 'Get Git commit author'
-      ).trim()
+        return this.script.sh(
+            returnStdout: true,
+            script: "git --no-pager show -s --format='%an (%ae)' HEAD",
+            label: 'Get Git commit author'
+        ).trim()
     }
   
     String getCommitMessage() {
-      script.sh(
-        returnStdout: true,
-        script: "git log -1 --pretty=%B HEAD",
-        label: 'Get Git commit message'
-      ).trim()
+        return this.script.sh(
+            returnStdout: true,
+            script: "git log -1 --pretty=%B HEAD",
+            label: 'Get Git commit message'
+        ).trim()
     }
   
     String getCommitTime() {
-      script.sh(
-        returnStdout: true,
-        script: "git show -s --format=%ci HEAD",
-        label: 'Get Git commit timestamp'
-      ).trim()
+        return this.script.sh(
+            returnStdout: true,
+            script: "git show -s --format=%ci HEAD",
+            label: 'Get Git commit timestamp'
+        ).trim()
     }
 
     def configureUser() {
