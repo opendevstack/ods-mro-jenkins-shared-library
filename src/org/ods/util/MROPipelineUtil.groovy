@@ -238,6 +238,7 @@ class MROPipelineUtil extends PipelineUtil {
             def job
             this.steps.withEnv (this.project.getMainReleaseManagerEnv()) {
               this.steps.sh (script : "env")
+              this.steps.echo("${this.steps.env['ods.build.mro.lib.version']}")
               job = this.loadGroovySourceFile("${baseDir}/Jenkinsfile")
             }
             // Collect ODS build artifacts for repo
