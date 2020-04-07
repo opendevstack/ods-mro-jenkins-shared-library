@@ -1062,12 +1062,12 @@ class Project {
           this.steps.sh(script: "env | grep 'library.ods-mro-jenkins-shared-library.version' | cut -d= -f2", returnStdout: true, label: 'getting ODS shared lib version').trim()
         
         return [
-          "ods.build.rm.${this.project.getKey()}.repo.url=${this.project.gitData.url}",
-          "ods.build.rm.${this.project.getKey()}.repo.commit.sha=${this.project.gitData.commit}",
-          "ods.build.rm.${this.project.getKey()}.repo.commit.msg=${this.project.gitData.message}",
-          "ods.build.rm.${this.project.getKey()}.repo.commit.timestamp=${this.project.gitData.time}",
-          "ods.build.rm.${this.project.getKey()}.repo.commit.author=${this.project.gitData.author}",
-          "ods.build.rm.${this.project.getKey()}.repo.branch=${this.project.gitData.baseTag}",
+          "ods.build.rm.${getKey()}.repo.url=${gitData.url}",
+          "ods.build.rm.${getKey()}.repo.commit.sha=${gitData.commit}",
+          "ods.build.rm.${getKey()}.repo.commit.msg=${gitData.message}",
+          "ods.build.rm.${getKey()}.repo.commit.timestamp=${gitData.time}",
+          "ods.build.rm.${getKey()}.repo.commit.author=${gitData.author}",
+          "ods.build.rm.${getKey()}.repo.branch=${gitData.baseTag}",
           "ods.build.mro.lib.version=${mroSharedLibVersion}"
       ]
     }
