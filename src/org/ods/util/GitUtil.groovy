@@ -27,7 +27,7 @@ class GitUtil {
     }
 
     String getCommitAuthor() {
-        return this.script.sh(
+        return this.steps.sh(
             returnStdout: true,
             script: "git --no-pager show -s --format='%an (%ae)' HEAD",
             label: 'Get Git commit author'
@@ -43,7 +43,7 @@ class GitUtil {
     }
   
     String getCommitTime() {
-        return this.script.sh(
+        return this.steps.sh(
             returnStdout: true,
             script: "git show -s --format=%ci HEAD",
             label: 'Get Git commit timestamp'
