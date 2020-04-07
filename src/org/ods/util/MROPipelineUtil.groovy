@@ -236,9 +236,9 @@ class MROPipelineUtil extends PipelineUtil {
     private void executeODSComponent(Map repo, String baseDir) {
         this.steps.dir(baseDir) {
             def job
-            this.steps.withEnv (this.project.getMainReleaseManagerEnv()) {
+//            this.steps.withEnv (this.project.getMainReleaseManagerEnv()) {
               job = this.loadGroovySourceFile("${baseDir}/Jenkinsfile")
-            }
+//            }
             // Collect ODS build artifacts for repo
             repo.data.odsBuildArtifacts = job.getBuildArtifactURIs()
             this.steps.echo("Collected ODS build artifacts for repo '${repo.id}': ${repo.data.odsBuildArtifacts}")
