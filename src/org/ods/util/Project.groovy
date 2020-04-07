@@ -1068,8 +1068,7 @@ class Project {
           "ods.build.rm.${getKey()}.repo.commit.timestamp=${gitData.time}",
           "ods.build.rm.${getKey()}.repo.commit.author=${gitData.author}",
           "ods.build.rm.${getKey()}.repo.branch=${gitData.baseTag}",
-          "ods.build.mro.lib.version=${mroSharedLibVersion}",
-          "ODS.TEST=clemens"
+          "ods.build.mro.lib.version=${mroSharedLibVersion}"
         ]
     }
 }
