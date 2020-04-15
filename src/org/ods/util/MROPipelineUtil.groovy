@@ -216,7 +216,7 @@ class MROPipelineUtil extends PipelineUtil {
                     )
                 }
                 // tag with latest, which triggers rollout
-                os.tagImageWithLatest("${imageInfo[0]}@${imageInfo[1]}", targetProject, this.project.targetTag)
+                os.tagImageWithLatest(imageInfo[0], targetProject, this.project.targetTag)
               }
 
               // verify that image sha is running
@@ -230,9 +230,9 @@ class MROPipelineUtil extends PipelineUtil {
                 def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
                 
                 if (imageInfo[1] != runningImageSha) {
-                    throw new RuntimeException("Error: running image '${imageInfo[1]}' is not the same as the defined image '${definedImageSha}'.")
+                    throw new RuntimeException("Error: in container ${containerName} running image '${imageInfo[1]}' is not the same as the defined image '${definedImageSha}'.")
                 } else {
-                    steps.echo("Running container is using defined image ${imageInfo[1]}.")
+                    steps.echo("Running container ${containerName} is using defined image ${imageInfo[1]}.")
                 }
               }
               // collect data required for documents
