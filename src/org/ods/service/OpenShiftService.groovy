@@ -132,13 +132,14 @@ class OpenShiftService {
       ).trim()
     }
 
-    String getRunningImageSha(String project, String component, String version) {
+    String getRunningImageSha(String project, String component, String version, index = 0) {
       def runningImage = steps.sh(
-        script: "oc -n ${project} get rc/${component}-${version} -o jsonpath='{.spec.template.spec.containers[0].image}'",
+        script: "oc -n ${project} get rc/${component}-${version} -o jsonpath='{.spec.template.spec.containers[${index}].image}'",
         label: "Get running image",
         returnStdout: true
       ).trim()
       runningImage.substring(runningImage.lastIndexOf("@sha256:") + 1)
+      return runningImage
     }
 
     void importImageFromSourceRegistry(String name, String sourceProject, String imageSha, String targetProject, String imageTag) {
