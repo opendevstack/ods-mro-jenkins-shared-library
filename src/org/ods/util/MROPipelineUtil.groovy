@@ -238,7 +238,6 @@ class MROPipelineUtil extends PipelineUtil {
               def pod = os.getPodDataForDeployment(deploymentName, latestVersion)
               repo.data.openshift.deployments << ["${deploymentName}" : pod]
             }
-          steps.echo("Openshift data for repo ${repo.id} \r {repo.data.openshift}")
           tagAndPush(this.project.targetTag)
         }
     }
