@@ -1120,8 +1120,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
             metadata     : this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             deployNote   : deploynoteData,
             openShiftData: [
-                builds      : repo.data.openshift?.builds ?: "N/A",
-                deployments : repo.data.openshift?.deployments ?: "N/A"
+                builds      : repo.data.openshift?.builds ?: "{}",
+                deployments : repo.data.openshift?.deployments ?: "{}"
             ],
             data         : [
                 repo    : repo,
