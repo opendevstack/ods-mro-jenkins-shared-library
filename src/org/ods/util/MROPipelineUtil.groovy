@@ -192,7 +192,7 @@ class MROPipelineUtil extends PipelineUtil {
             def deployments = new JsonSlurperClassic().parseText(storedDeployments)
             
             def sourceProject = "${this.project.key}-${Project.getConcreteEnvironment(this.project.sourceEnv, this.project.buildParams.version, this.project.versionedDevEnvsEnabled)}"
-            repo.data["openshift"] = [ : ]
+            repo.data["openshift"] = [ "deployments" : ]
             deployments.each { deploymentName, deployment -> 
               deployment.containers?.each {containerName, imageRaw ->
                 int projectLengthEnd = sourceProject.length() + 1
@@ -236,7 +236,7 @@ class MROPipelineUtil extends PipelineUtil {
                 }
               }
               def pod = os.getPodDataForDeployment(deploymentName, latestVersion)
-              repo.data.openshift << [deploymentName : pod]
+              repo.data.openshift.deployments << ["${deploymentName}" : pod]
             }
           steps.echo("Openshift data for repo ${repo.id} \r {repo.data.openshift}")
           tagAndPush(this.project.targetTag)
