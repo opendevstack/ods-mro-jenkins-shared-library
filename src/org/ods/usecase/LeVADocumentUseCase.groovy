@@ -1107,7 +1107,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         if (!data.openshift) {
             this.steps.echo("No deployment data found, expecting from input .. ")
-            data["openshift"] = data.odsBuildArtifacts.subMap (["builds","deployments"])
+            data["openshift"] << data.odsBuildArtifacts.subMap (["builds","deployments"])
         }
 
         this.steps.echo("Openshift data: ${repo.id} ${data.openshift}")
@@ -1115,16 +1115,8 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def data_ = [
             metadata     : this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
             openShiftData: [
-                ocpBuildId          : data.odsBuildArtifacts?."OCP Build Id" ?: "N/A",
-                ocpDockerImage      : data.odsBuildArtifacts?."OCP Docker image" ?: "N/A",
-                ocpDeploymentId     : data.odsBuildArtifacts?."OCP Deployment Id" ?: "N/A",
-                podName             : data.openshift.pod.podName,
-                podNamespace        : data.openshift.pod.podNamespace,
-                podCreationTimestamp: data.openshift.pod.podCreationTimestamp,
-                podEnvironment      : data.openshift.pod.podEnvironment,
-                podNode             : data.openshift.pod.podNode,
-                podIp               : data.openshift.pod.podIp,
-                podStatus           : data.openshift.pod.podStatus
+                builds      : data.builds ?: "N/A",
+                deployments : data.deployments ?: "N/A",
             ],
             data         : [
                 repo    : repo,
