@@ -305,8 +305,33 @@ class OpenShiftService {
         pod.podNode = podOCData?.spec?.nodeName ?: "N/A"
         pod.podIp = podOCData?.status?.podIP ?: "N/A"
         pod.podStatus = podOCData?.status?.phase ?: "N/A"
-
+        pod.deploymentId = podOCData?.metadata?.annotations['openshift.io/deployment.name']?: "N/A"
+        pod["containers"] = [ : ]
+        
+      podOCData?.spec?.containers?.each { container ->
+        pod.containers[container.name] = container.image
+      }
+ 
       return pod
     }
 
+    List getDeploymentConfigsForComponent(String project, String component) {
+      def componentSelector = "app=${project}-${component}"
+      def stdout = this.steps.sh(
+        script: "oc get dc -l ${componentSelector} -o json --show-all=false",
+        returnStdout: true,
+        label: "Getting OpenShift pod data for component ${component}"
+      ).trim()
+
+      def j = new JsonSlurperClassic().parseText(ocOutput)
+      def deploymentNames = []
+      if (!j.items || j.items.size() == 0) {
+        return deploymentNames
+      }
+      
+      j.items.each {dc -> 
+        deploymentNames.add (dc.metadata.name)
+      }
+      return deploymentNames
+    }
 }

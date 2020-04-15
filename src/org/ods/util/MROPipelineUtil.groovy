@@ -235,15 +235,8 @@ class MROPipelineUtil extends PipelineUtil {
                     steps.echo("Running container '${containerName}' is using defined image ${imageInfo[1]}.")
                 }
               }
-              // collect data required for documents
-              // @ FIXME!
               def pod = os.getPodDataForDeployment(deploymentName, latestVersion)
-              repo.data.openshift = ['pod' : pod]
-              repo.data.odsBuildArtifacts = [
-                  "OCP Build Id": "N/A",
-                  "OCP Docker image": "N/A",
-                  "OCP Deployment Id": latestVersion,
-              ]
+              repo.data.openshift << [deploymentName : pod]
             }
           tagAndPush(this.project.targetTag)
         }

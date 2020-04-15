@@ -1105,12 +1105,14 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
         def watermarkText = this.getWatermarkText(documentType, this.project.hasWipJiraIssues())
 
-        if (!data.openshift?.pod) {
-            this.steps.echo("Repo data 'pod' not populated, retrieving latest pod of component ${repo.id}...")
-            data.openshift = ['pod': os.getPodDataForComponent(this.project.key, repo.id)]
+        if (!data.openshift?.size() == 0) {
+            os.getDeploymentConfigsForComponent.each { dcName ->
+              this.steps.echo("Repo data 'openshift' not populated, retrieving latest pod of component ${dcName}...")
+              data.openshift << ['pod': os.getPodDataForComponent(this.project.key, dcName)]
+            }
         }
 
-        this.steps.echo("Got pod data: ${repo.id} ${data.openshift.pod}")
+        this.steps.echo("Got openshift data: ${repo.id} ${data.openshift}")
 
         def data_ = [
             metadata     : this.getDocumentMetadata(this.DOCUMENT_TYPE_NAMES[documentType], repo),
