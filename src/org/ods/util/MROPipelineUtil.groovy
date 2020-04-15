@@ -200,7 +200,7 @@ class MROPipelineUtil extends PipelineUtil {
             deployments.each { deploymentName, deployment -> 
               deployment.containers?.each {containerName, imageRaw ->
                 int projectLengthEnd = sourceProject.length() + 1
-                def imageInfo = (imageRaw.subString(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
+                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
                 steps.echo ("deployment: ${deploymentName}, containter ${containerName}, image ${imageInfo[0]}, stream ${imageInfo[1]}}, source: ${sourceProject}")
                 if (this.project.targetClusterIsExternal) {
                     os.importImageFromSourceRegistry(
@@ -231,7 +231,7 @@ class MROPipelineUtil extends PipelineUtil {
               deployment.containers?.each {containerName, imageRaw ->
                 def runningImages = os.getRunningImageSha(targetProject, deploymentName, latestVersion)
                 int projectLengthEnd = sourceProject.length() + 1
-                def imageInfo = (imageRaw.subString(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
+                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
                 
                 if (imageInfo[1] != runningImageSha) {
                     throw new RuntimeException("Error: running image '${imageInfo[1]}' is not the same as the defined image '${definedImageSha}'.")
