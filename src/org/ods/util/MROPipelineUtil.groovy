@@ -227,7 +227,7 @@ class MROPipelineUtil extends PipelineUtil {
               deployment.containers?.each {containerName, imageRaw ->
                 def runningImageSha = os.getRunningImageSha(targetProject, deploymentName, latestVersion)
                 int projectLengthEnd = sourceProject.length() + 1
-                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
+                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).split ("@")
                 
                 if (imageInfo[1] != runningImageSha) {
                     throw new RuntimeException("Error: in container '${containerName}' running image '${imageInfo[1]}' is not the same as the defined image '${runningImageSha}'.")
