@@ -197,7 +197,7 @@ class MROPipelineUtil extends PipelineUtil {
               deployment.containers?.each {containerName, imageRaw ->
                 int projectLengthEnd = sourceProject.length() + 1
                 def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).split ("@")
-                steps.echo ("deployment: ${deploymentName}, containter ${containerName}, image ${imageInfo[0]}, sha ${imageInfo[1]}, source: ${sourceProject}")
+                steps.echo ("Importing images - deployment: ${deploymentName}, container: ${containerName}, image: ${imageInfo[0]}, sha: ${imageInfo[1]}, source: ${sourceProject}")
                 if (this.project.targetClusterIsExternal) {
                     os.importImageFromSourceRegistry(
                         imageInfo[0],
@@ -225,12 +225,12 @@ class MROPipelineUtil extends PipelineUtil {
               os.watchRollout(targetProject, deploymentName, openshiftRolloutTimeoutMinutes)
               
               deployment.containers?.each {containerName, imageRaw ->
-                def runningImages = os.getRunningImageSha(targetProject, deploymentName, latestVersion)
+                def runningImageSha = os.getRunningImageSha(targetProject, deploymentName, latestVersion)
                 int projectLengthEnd = sourceProject.length() + 1
                 def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
                 
                 if (imageInfo[1] != runningImageSha) {
-                    throw new RuntimeException("Error: in container ${containerName} running image '${imageInfo[1]}' is not the same as the defined image '${definedImageSha}'.")
+                    throw new RuntimeException("Error: in container ${containerName} running image '${imageInfo[1]}' is not the same as the defined image '${imageInfo[1]}'.")
                 } else {
                     steps.echo("Running container ${containerName} is using defined image ${imageInfo[1]}.")
                 }
