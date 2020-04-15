@@ -132,9 +132,6 @@ class MROPipelineUtil extends PipelineUtil {
                     // }
                 }
 
-//                def collectedImage = repo?.data.odsBuildArtifacts?."OCP Docker image"
-//                def imageSha = collectedImage.substring(collectedImage.lastIndexOf("@sha256:") + 1)
-//                steps.writeFile(file: imageShaFile, text: imageSha)
                 steps.echo("Deployments for ${repo.id} \r ${JsonOutput.toJson(repo?.data.odsBuildArtifacts?.deployments)}")
                 steps.writeFile(file: ODS_DEPLOYMENTS_DESCRIPTOR, text: JsonOutput.toJson(repo?.data.odsBuildArtifacts?.deployments))
                 
@@ -150,7 +147,6 @@ class MROPipelineUtil extends PipelineUtil {
                         label: "commit and push new state"
                     )
                 } else {
-//                    os.tagImageSha(repo.id, targetProject, imageSha, this.project.targetTag)
                     steps.sh(
                         script: """
                         git add ${filesToStage.join(' ')}
@@ -200,8 +196,8 @@ class MROPipelineUtil extends PipelineUtil {
             deployments.each { deploymentName, deployment -> 
               deployment.containers?.each {containerName, imageRaw ->
                 int projectLengthEnd = sourceProject.length() + 1
-                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
-                steps.echo ("deployment: ${deploymentName}, containter ${containerName}, image ${imageInfo[0]}, stream ${imageInfo[1]}}, source: ${sourceProject}")
+                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).split ("@")
+                steps.echo ("deployment: ${deploymentName}, containter ${containerName}, image ${imageInfo[0]}, sha ${imageInfo[1]}, source: ${sourceProject}")
                 if (this.project.targetClusterIsExternal) {
                     os.importImageFromSourceRegistry(
                         imageInfo[0],
@@ -220,7 +216,7 @@ class MROPipelineUtil extends PipelineUtil {
                     )
                 }
                 // tag with latest, which triggers rollout
-                os.tagImageWithLatest(imageInfo[0], targetProject, this.project.targetTag)
+                os.tagImageWithLatest("${imageInfo[0]}@${imageInfo[1]}", targetProject, this.project.targetTag)
               }
 
               // verify that image sha is running
