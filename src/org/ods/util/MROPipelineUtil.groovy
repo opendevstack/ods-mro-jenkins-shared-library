@@ -192,7 +192,7 @@ class MROPipelineUtil extends PipelineUtil {
             def deployments = new JsonSlurperClassic().parseText(storedDeployments)
             
             def sourceProject = "${this.project.key}-${Project.getConcreteEnvironment(this.project.sourceEnv, this.project.buildParams.version, this.project.versionedDevEnvsEnabled)}"
-            repo.data["openshift"] = [ "deployments" : ]
+            repo.data["openshift"] = [ "deployments" : [ : ]]
             deployments.each { deploymentName, deployment -> 
               deployment.containers?.each {containerName, imageRaw ->
                 int projectLengthEnd = sourceProject.length() + 1
