@@ -230,9 +230,9 @@ class MROPipelineUtil extends PipelineUtil {
                 def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).replace("sha256:","").split ("@")
                 
                 if (imageInfo[1] != runningImageSha) {
-                    throw new RuntimeException("Error: in container ${containerName} running image '${imageInfo[1]}' is not the same as the defined image '${imageInfo[1]}'.")
+                    throw new RuntimeException("Error: in container '${containerName}' running image '${imageInfo[1]}' is not the same as the defined image '${runningImageSha}'.")
                 } else {
-                    steps.echo("Running container ${containerName} is using defined image ${imageInfo[1]}.")
+                    steps.echo("Running container '${containerName}' is using defined image ${imageInfo[1]}.")
                 }
               }
               // collect data required for documents
