@@ -1112,7 +1112,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
         }
         
         def deploynoteData = "Components were built & deployed during installation."
-        if (repo.data.openshift?.builds || repo.data.openshift?.builds?.size() == 0) {
+        if (!repo.data.openshift?.builds || repo.data.openshift?.builds?.size() == 0) {
            deploynoteData = "NO Components were built during installation, existing components (created in Dev) were deployed."
         }
         
