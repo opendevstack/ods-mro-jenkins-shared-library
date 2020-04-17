@@ -135,14 +135,14 @@ class MROPipelineUtil extends PipelineUtil {
                 // verify that all DCs are managed thru ods 
                 Set odsBuiltDeployments = repo?.data.odsBuildArtifacts?.deployments?.keySet() ?: []
                 List ocpBasedDeployments = os.getDeploymentConfigsForComponent (componentSelector)
-                steps.echo("ODS created deployments for ${repo.id}: \r${JsonOutput.toJson(odsBuiltDeployments)}, \rOCP Deployments: ${ocpBasedDeployments}")
+                steps.echo("ODS created deployments for ${repo.id}: ${odsBuiltDeployments}, OCP Deployments: ${ocpBasedDeployments}")
 
                 odsBuiltDeployments.each {odsBuildDeployment ->
                   ocpBasedDeployments.remove(odsBuildDeployment)
                 }
-                
+
                 if (ocpBasedDeployments.size() > 0 ) {
-                  def message = "Components (DeploymentConfigs) found that are not ODS managed: '${ocpBasedDeployments}' \r- please fix by rolling them out thru the shared lib!"
+                  def message = "DeploymentConfigs (component: '${repo.id}') found that are not ODS managed: '${ocpBasedDeployments}'!\rPlease fix by rolling them out thru the shared lib!"
                   if (this.project.isWorkInProgress)
                   {
                     steps.unstable(message)
