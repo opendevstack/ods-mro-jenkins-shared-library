@@ -318,14 +318,14 @@ class OpenShiftService {
 
     List getDeploymentConfigsForComponent(String componentSelector) {
       def stdout = this.steps.sh(
-        script: "oc get dc -l ${componentSelector} jsonpath='{.items[*].metadata.name}'",
+        script: "oc get dc -l ${componentSelector} -o jsonpath='{.items[*].metadata.name}'",
         returnStdout: true,
-        label: "Getting all deploymentconfig names for selector ${componentSelector}"
+        label: "Getting all deploymentconfig names for selector '${componentSelector}'"
       ).trim()
 
       def deploymentNames = []
 
-      stdout.tokenize(" ").items.each {dc -> 
+      stdout.tokenize(" ").each {dc -> 
         deploymentNames.add (dc)
       }
       return deploymentNames
