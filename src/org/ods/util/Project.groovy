@@ -1043,9 +1043,9 @@ class Project {
 
     String toString() {
         // Don't serialize resolved Jira data items
-        def result = this.data.subMap(["build", "buildParams", "metadata", "git", "jira"])
+        def result = new HashMap(this.data.subMap(["build", "buildParams", "metadata", "git", "jira"]))
 
-        if (!services?.jira && capabilities?.empty) {
+        if (!services?.jira) {
           result.remove("jira")
         }
 
