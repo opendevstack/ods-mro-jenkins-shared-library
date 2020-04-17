@@ -49,12 +49,11 @@ def call(Project project, List<Set<Map>> repos) {
             steps.echo("!!! CAUTION: Any future changes that should affect version '${project.buildParams.version}' need to be committed into branch '${project.gitReleaseBranch}'.")
         }
 
-        // @ FIXME - this will break if we remove the embedded docs!
-        levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
-
         // Dump a representation of the project
         steps.echo(" ---- ODS Project (${project.key}) data: \r${project.toString()}\r -----")
 
+        levaDocScheduler.run(phase, MROPipelineUtil.PipelinePhaseLifecycleStage.PRE_END)
+        
         // Fail the build in case of failing tests.
         if (project.hasFailingTests() || project.hasUnexecutedJiraTests()) {
             def message = "Error: "
