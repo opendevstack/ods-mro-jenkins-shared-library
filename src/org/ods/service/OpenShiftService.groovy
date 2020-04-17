@@ -320,7 +320,7 @@ class OpenShiftService {
       def stdout = this.steps.sh(
         script: "oc get dc -l ${componentSelector} jsonpath='{.items[*].metadata.name}'",
         returnStdout: true,
-        label: "Getting all deploymentconfig names for component ${component}"
+        label: "Getting all deploymentconfig names for selector ${componentSelector}"
       ).trim()
 
       def deploymentNames = []
@@ -333,14 +333,14 @@ class OpenShiftService {
     
     String getOpenshiftApplicationDomain (String project) {
       def routeName = "test-route-" + System.currentTimeMillis()
-      script.sh (
+      this.steps.sh (
         script: "oc -n ${project} create route edge ${routeName} --service=dummy --port=80 | true",
         label : "create dummy route for extraction (${routeName})")
-      def routeUrl = script.sh (script: "oc -n ${project} get route ${routeName} -o jsonpath='{.spec.host}'",
+      def routeUrl = this.steps.sh (script: "oc -n ${project} get route ${routeName} -o jsonpath='{.spec.host}'",
         returnStdout : true, label : "get cluster route domain")
       def routePrefixLength = "${routeName}-${project}".length() + 1
       String openShiftPublicHost = routeUrl.substring(routePrefixLength)
-      script.sh (script: "oc -n ${project} delete route ${routeName} | true",
+      this.steps.sh (script: "oc -n ${project} delete route ${routeName} | true",
         label : "delete dummy route for extraction (${routeName})")
       
       return openShiftPublicHost
