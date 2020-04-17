@@ -46,5 +46,5 @@ interface IPipelineSteps {
     
     def withEnv(List<String> env, Closure block)
     
-    def unstable (String message) {
+    def unstable (String message)
 }
