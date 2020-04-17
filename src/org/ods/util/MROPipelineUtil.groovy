@@ -224,8 +224,8 @@ class MROPipelineUtil extends PipelineUtil {
               def latestVersion = os.getLatestVersion(targetProject, deploymentName)
               os.watchRollout(targetProject, deploymentName, openshiftRolloutTimeoutMinutes)
               
-              deployment.containers?.each {containerName, imageRaw ->
-                def runningImageSha = os.getRunningImageSha(targetProject, deploymentName, latestVersion)
+              deployment.containers?.eachWithIndex {containerName, imageRaw, index ->
+                def runningImageSha = os.getRunningImageSha(targetProject, deploymentName, latestVersion, index)
                 int projectLengthEnd = sourceProject.length() + 1
                 def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).split ("@")
                 
