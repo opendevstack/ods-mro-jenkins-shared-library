@@ -1111,11 +1111,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
             this.steps.echo("fetched openshift data from build for repo: ${repo.id} \r${repo.data.openshift}")
         }
         
-        this.steps.echo ("found builds? ${repo.data.openshift?.builds?.size()}")
-        
         def deploynoteData = "Components were built & deployed during installation."
-        if (repo.data.openshift?.builds?.size() == 0) {
-           deploynoteData = "NO Components were built during installation, existing components (from Dev or QA) were deployed."
+        if (repo.data.openshift?.builds || repo.data.openshift?.builds?.size() == 0) {
+           deploynoteData = "NO Components were built during installation, existing components (created in Dev) were deployed."
         }
         
         def data_ = [
