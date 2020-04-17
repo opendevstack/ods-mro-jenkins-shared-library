@@ -51,7 +51,8 @@ class OpenShiftService {
       if (exclude) {
         excludeFlag = "--exclude ${exclude}"
       }
-      doTailorApply(project, "-l ${selector} ${excludeFlag} ${buildParamFileFlag(paramFile)} --ignore-unknown-parameters ${tailorPrivateKeyFlag()} ${verifyFlag}")
+      String openshiftAppDomain = getOpenshiftApplicationDomain(project)
+      doTailorApply(project, "-l ${selector} ${excludeFlag} ${buildParamFileFlag(paramFile)} --param=ODS_OPENSHIFT_APP_DOMAIN=${openshiftAppDomain} --ignore-unknown-parameters ${tailorPrivateKeyFlag()} ${verifyFlag}")
     }
 
     private void doTailorApply(String project, String tailorParams) {
@@ -87,6 +88,7 @@ class OpenShiftService {
 
     private void doTailorExport(String project, String tailorParams, Map<String, String> envParams, String targetFile) {
       envParams['TAILOR_NAMESPACE'] = project
+      envParams['ODS_OPENSHIFT_APP_DOMAIN'] = getOpenshiftApplicationDomain(project)
       def templateParams = ''
       def sedReplacements = ''
       envParams.each { key, val ->
@@ -314,23 +316,33 @@ class OpenShiftService {
       return pod
     }
 
-    List getDeploymentConfigsForComponent(String project, String component) {
-      def componentSelector = "app=${project}-${component}"
+    List getDeploymentConfigsForComponent(String componentSelector) {
       def stdout = this.steps.sh(
-        script: "oc get dc -l ${componentSelector} -o json --show-all=false",
+        script: "oc get dc -l ${componentSelector} jsonpath='{.items[*].metadata.name}'",
         returnStdout: true,
-        label: "Getting OpenShift pod data for component ${component}"
+        label: "Getting all deploymentconfig names for component ${component}"
       ).trim()
 
-      def j = new JsonSlurperClassic().parseText(ocOutput)
       def deploymentNames = []
-      if (!j.items || j.items.size() == 0) {
-        return deploymentNames
-      }
-      
-      j.items.each {dc -> 
-        deploymentNames.add (dc.metadata.name)
+
+      stdout.tokenize(" ").items.each {dc -> 
+        deploymentNames.add (dc)
       }
       return deploymentNames
+    }
+    
+    String getOpenshiftApplicationDomain (String project) {
+      def routeName = "test-route-" + System.currentTimeMillis()
+      script.sh (
+        script: "oc -n ${project} create route edge ${routeName} --service=dummy --port=80 | true",
+        label : "create dummy route for extraction (${routeName})")
+      def routeUrl = script.sh (script: "oc -n ${project} get route ${routeName} -o jsonpath='{.spec.host}'",
+        returnStdout : true, label : "get cluster route domain")
+      def routePrefixLength = "${routeName}-${project}".length() + 1
+      String openShiftPublicHost = routeUrl.substring(routePrefixLength)
+      script.sh (script: "oc -n ${project} delete route ${routeName} | true",
+        label : "delete dummy route for extraction (${routeName})")
+      
+      return openShiftPublicHost
     }
 }

@@ -132,9 +132,20 @@ class MROPipelineUtil extends PipelineUtil {
                     // }
                 }
 
-                steps.echo("Deployments for ${repo.id} \r ${JsonOutput.toJson(repo?.data.odsBuildArtifacts?.deployments)}")
-                steps.writeFile(file: ODS_DEPLOYMENTS_DESCRIPTOR, text: JsonOutput.toJson(repo?.data.odsBuildArtifacts?.deployments))
+                // verify that all DCs are managed thru ods 
+                Set odsBuiltDeployments = repo?.data.odsBuildArtifacts?.deployments?.keySet() ?: []
+                List ocpBasedDeployments = os.getDeploymentConfigsForComponent (componentSelector)
+                steps.echo("ODS created deployments for ${repo.id} \r ${JsonOutput.toJson(builtDeployments)}, \rOCP Deployments: ${ocpBasedDeployments}")
+
+                odsBuiltDeployments.each {odsBuildDeployment ->
+                  ocpBasedDeployments.remove(odsBuildDeployment)
+                }
                 
+                if (ocpBasedDeployments.size() > 0 ) {
+                  throw new RuntimeException ("Components found that are not ODS managed '${ocpBasedDeployments}' \r- please fix by rolling them out thru the shared lib!")
+                }
+
+                steps.writeFile(file: ODS_DEPLOYMENTS_DESCRIPTOR, text: JsonOutput.toJson(repo?.data.odsBuildArtifacts?.deployments))
                 filesToStage << ODS_DEPLOYMENTS_DESCRIPTOR
 
                 if (this.project.isWorkInProgress) {
@@ -166,7 +177,6 @@ class MROPipelineUtil extends PipelineUtil {
         def targetEnvironment = this.project.buildParams.targetEnvironment
         def targetProject = this.project.targetProject
         def envParamsFile = this.project.environmentParamsFile
-        def envParams = this.project.getEnvironmentParams(envParamsFile)
         def openshiftRolloutTimeoutMinutes = this.project.environmentConfig?.openshiftRolloutTimeoutMinutes ?: 10
 
         def componentSelector = "app=${this.project.key}-${repo.id}"
