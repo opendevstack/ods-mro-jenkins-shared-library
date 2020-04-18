@@ -50,7 +50,7 @@ class GitTag {
         def buildNumber = -1
         if (tag && tag.contains('-') && tag.size() > 4) {
             buildNumber = tag
-                .replace("ods-mro-v${version}-${changeId}-", '')
+                .replace("ods-generated-v${version}-${changeId}-", '')
                 .replace("-${envToken}", '')
                 .toInteger()
         }
