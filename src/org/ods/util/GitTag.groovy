@@ -7,7 +7,7 @@ class GitTag {
     private int buildNumber
     private String envToken
 
-    public static String ODS_GIT_TAG_BRANCH_PREFIX = "ods-generated"
+    public static String ODS_GIT_TAG_BRANCH_PREFIX = "ods-generated-"
     
     GitTag(String version, String changeId, int buildNumber, String envToken) {
         this.version = version
@@ -17,7 +17,7 @@ class GitTag {
     }
 
     String toString() {
-        "${ODS_GIT_TAG_BRANCH_PREFIX}-v${version}-${changeId}-${buildNumber}-${envToken}"
+        "${ODS_GIT_TAG_BRANCH_PREFIX}v${version}-${changeId}-${buildNumber}-${envToken}"
     }
 
     GitTag withNextBuildNumber() {
@@ -52,7 +52,7 @@ class GitTag {
         def buildNumber = -1
         if (tag && tag.contains('-') && tag.size() > 4) {
             buildNumber = tag
-                .replace("${ODS_GIT_TAG_BRANCH_PREFIX}-v${version}-${changeId}-", '')
+                .replace("${ODS_GIT_TAG_BRANCH_PREFIX}v${version}-${changeId}-", '')
                 .replace("-${envToken}", '')
                 .toInteger()
         }

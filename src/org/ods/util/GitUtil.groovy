@@ -148,13 +148,13 @@ class GitUtil {
                 previousEnvToken = 'Q'
             }
         steps.sh(
-            script: "git tag --list '${GitTag.ODS_GIT_TAG_BRANCH_PREFIX}-v${version}-${changeId}-[0-9]*-${previousEnvToken}'",
+            script: "git tag --list '${GitTag.ODS_GIT_TAG_BRANCH_PREFIX}v${version}-${changeId}-[0-9]*-${previousEnvToken}'",
             returnStdout: true,
             label: "list tags for version ${version}-${changeId}-*-${previousEnvToken}"
         ).trim()
     }
 
     static String getReleaseBranch(String version) {
-        "release/${GitTag.ODS_GIT_TAG_BRANCH_PREFIX}-${version}"
+        "release/${GitTag.ODS_GIT_TAG_BRANCH_PREFIX}${version}"
     }
 }
