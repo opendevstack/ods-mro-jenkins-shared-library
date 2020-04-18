@@ -154,6 +154,6 @@ class GitUtil {
     }
 
     static String getReleaseBranch(String version) {
-        "release/${version}"
+        "release/ods-mro-${version}"
     }
 }

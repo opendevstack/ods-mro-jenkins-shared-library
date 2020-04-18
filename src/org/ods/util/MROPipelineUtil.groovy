@@ -114,7 +114,7 @@ class MROPipelineUtil extends PipelineUtil {
                 def filesToStage = []
                 def commitMessage = ''
                 if (exportRequired) {
-                    commitMessage = 'ODS: Export OpenShift configuration \r ${steps.currentBuild.description}\r ${steps.steps.env.BUILD_URL}'
+                    commitMessage = "ODS: Export OpenShift configuration \r${steps.currentBuild.description}\r${steps.steps.env.BUILD_URL}"
                     steps.echo("Exporting current OpenShift state to folder '${openshiftDir}'.")
                     def targetFile = 'template.yml'
                     os.tailorExport(
@@ -125,7 +125,7 @@ class MROPipelineUtil extends PipelineUtil {
                     )
                     filesToStage << targetFile
                 } else {
-                    commitMessage = 'ODS: Export OpenShift image SHA'
+                    commitMessage = "ODS: Export Openshift deployment state \r${steps.currentBuild.description}\r${steps.steps.env.BUILD_URL}"
                     // TODO: Display drift?
                     // if (os.tailorHasDrift(targetProject, componentSelector, envParamsFile)) {
                     //     throw new RuntimeException("Error: environment '${targetProject}' is not in sync with definition in 'openshift' folder.")
