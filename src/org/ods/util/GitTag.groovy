@@ -15,7 +15,7 @@ class GitTag {
     }
 
     String toString() {
-        "v${version}-${changeId}-${buildNumber}-${envToken}"
+        "ods-mro-v${version}-${changeId}-${buildNumber}-${envToken}"
     }
 
     GitTag withNextBuildNumber() {
@@ -50,7 +50,7 @@ class GitTag {
         def buildNumber = -1
         if (tag && tag.contains('-') && tag.size() > 4) {
             buildNumber = tag
-                .replace("v${version}-${changeId}-", '')
+                .replace("ods-mro-v${version}-${changeId}-", '')
                 .replace("-${envToken}", '')
                 .toInteger()
         }

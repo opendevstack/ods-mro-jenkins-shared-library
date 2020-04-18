@@ -114,7 +114,7 @@ class MROPipelineUtil extends PipelineUtil {
                 def filesToStage = []
                 def commitMessage = ''
                 if (exportRequired) {
-                    commitMessage = 'ODS: Export OpenShift configuration'
+                    commitMessage = 'ODS: Export OpenShift configuration \r ${steps.currentBuild.description}\r ${steps.steps.env.BUILD_URL}'
                     steps.echo("Exporting current OpenShift state to folder '${openshiftDir}'.")
                     def targetFile = 'template.yml'
                     os.tailorExport(
