@@ -212,7 +212,7 @@ class MROPipelineUtil extends PipelineUtil {
             deployments.each { deploymentName, deployment -> 
               deployment.containers?.each {containerName, imageRaw ->
                 // skip excluded images from defined image streams!
-                Map imageInformation = os.getImageInformationFromImageUrl(imageRaw)
+                def imageInformation = os.getImageInformationFromImageUrl(imageRaw)
                 steps.echo ("Importing images - deployment: ${deploymentName}, container: ${containerName}, imageInformation: ${imageInformation}, source: ${sourceProject}")
                 if (EXCLUDE_NAMESPACES_FROM_IMPORT.contains(imageInformation.imageStream))
                 {
@@ -247,7 +247,7 @@ class MROPipelineUtil extends PipelineUtil {
               
               deployment.containers?.eachWithIndex {containerName, imageRaw, index ->
                 def runningImageSha = os.getRunningImageSha(targetProject, deploymentName, latestVersion, index)
-                Map imageInformation = os.getImageInformationFromImageUrl(imageRaw)
+                def imageInformation = os.getImageInformationFromImageUrl(imageRaw)
                 if (imageInformation.imageSha != runningImageSha) {
                     throw new RuntimeException("Error: in container '${containerName}' running image '${imageInformation.imageSha}' is not the same as the defined image '${runningImageSha}'.")
                 } else {
