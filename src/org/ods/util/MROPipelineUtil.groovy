@@ -222,7 +222,7 @@ class MROPipelineUtil extends PipelineUtil {
                       os.importImageFromSourceRegistry(
                           imageInformation.imageName,
                           sourceProject,
-                          imageInformation.imageShaStripped,
+                          imageInformation.imageSha,
                           targetProject,
                           this.project.targetTag
                       )
@@ -230,7 +230,7 @@ class MROPipelineUtil extends PipelineUtil {
                       os.importImageFromProject(
                           imageInformation.imageName,
                           sourceProject,
-                          imageInformation.imageShaStripped,
+                          imageInformation.imageSha,
                           targetProject,
                           this.project.targetTag
                       )
