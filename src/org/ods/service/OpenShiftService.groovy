@@ -350,6 +350,8 @@ class OpenShiftService {
       if (!url?.contains("@") || !url?.contains("/")) {
         this.steps.echo("Cannot parse imageUrl '${url}' to extract image information!")
         return [ : ]
+      } else {
+        this.steps.echo("Extracting image information from ${url}")
       }
         
       List <String> imageStreamDefinition = (url.split ("@"))
