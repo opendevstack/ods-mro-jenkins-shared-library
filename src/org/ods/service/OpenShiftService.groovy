@@ -345,4 +345,17 @@ class OpenShiftService {
       
       return openShiftPublicHost
     }
+    
+    Map<String> getImageInformationFromImageUrl (String url) {
+      List <String> imageStreamDefinition = (url.split ("@"))
+      List <String> imagePath = imageStreamDefinition[0].split("/")
+
+      return
+        [
+          "imageStream" : imagePath[imagePath.size()-2],
+          "imageName" : imagePath[imagePath.size()-1],
+          "imageSha" : imageStreamDefinition [1],
+          "imageShaStripped" : (imageStreamDefinition [1]).replace("sha256:","")
+        ]
+    }
 }

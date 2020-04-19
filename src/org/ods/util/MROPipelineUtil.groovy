@@ -66,7 +66,7 @@ class MROPipelineUtil extends PipelineUtil {
     static final String REPOS_BASE_DIR = "repositories"
 
     static final String ODS_DEPLOYMENTS_DESCRIPTOR = "ods-deployments.json"
-
+    static final List EXCLUDE_NAMESPACES_FROM_IMPORT = ["openshift"] 
     
     List<Set<Map>> computeRepoGroups(List<Map> repos) {
         // Transform the list of repository configs into a list of graph nodes
@@ -211,28 +211,33 @@ class MROPipelineUtil extends PipelineUtil {
             repo.data["openshift"] = [ "deployments" : [ : ]]
             deployments.each { deploymentName, deployment -> 
               deployment.containers?.each {containerName, imageRaw ->
-                int projectLengthEnd = sourceProject.length() + 1
-                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).split ("@")
-                steps.echo ("Importing images - deployment: ${deploymentName}, container: ${containerName}, image: ${imageInfo[0]}, sha: ${imageInfo[1]}, source: ${sourceProject}")
-                if (this.project.targetClusterIsExternal) {
-                    os.importImageFromSourceRegistry(
-                        imageInfo[0],
-                        sourceProject,
-                        imageInfo[1],
-                        targetProject,
-                        this.project.targetTag
-                    )
+                // skip excluded images from defined image streams!
+                Map imageInformation = os.getImageInformationFromImageUrl(imageRaw)
+                steps.echo ("Importing images - deployment: ${deploymentName}, container: ${containerName}, imageInformation: ${imageInformation}, source: ${sourceProject}")
+                if (EXCLUDE_NAMESPACES_FROM_IMPORT.contains(imageInformation.imageStream))
+                {
+                  steps.echo("Skipping import of ${imageInformation.imageStream}, because its defined as excude: ${EXCLUDE_NAMESPACES_FROM_IMPORT}")  
                 } else {
-                    os.importImageFromProject(
-                        imageInfo[0],
-                        sourceProject,
-                        imageInfo[1],
-                        targetProject,
-                        this.project.targetTag
-                    )
+                  if (this.project.targetClusterIsExternal) {
+                      os.importImageFromSourceRegistry(
+                          imageInformation.imageName,
+                          sourceProject,
+                          imageInformation.imageShaStripped,
+                          targetProject,
+                          this.project.targetTag
+                      )
+                  } else {
+                      os.importImageFromProject(
+                          imageInformation.imageName,
+                          sourceProject,
+                          imageInformation.imageShaStripped,
+                          targetProject,
+                          this.project.targetTag
+                      )
+                  }
+                  // tag with latest, which triggers rollout
+                  os.tagImageWithLatest(imageInfo[0], targetProject, this.project.targetTag)
                 }
-                // tag with latest, which triggers rollout
-                os.tagImageWithLatest(imageInfo[0], targetProject, this.project.targetTag)
               }
 
               // verify that image sha is running
@@ -242,13 +247,11 @@ class MROPipelineUtil extends PipelineUtil {
               
               deployment.containers?.eachWithIndex {containerName, imageRaw, index ->
                 def runningImageSha = os.getRunningImageSha(targetProject, deploymentName, latestVersion, index)
-                int projectLengthEnd = sourceProject.length() + 1
-                def imageInfo = (imageRaw.substring(imageRaw.indexOf(sourceProject) + projectLengthEnd)).split ("@")
-                
-                if (imageInfo[1] != runningImageSha) {
-                    throw new RuntimeException("Error: in container '${containerName}' running image '${imageInfo[1]}' is not the same as the defined image '${runningImageSha}'.")
+                Map imageInformation = os.getImageInformationFromImageUrl(imageRaw)
+                if (imageInformation.imageSha != runningImageSha) {
+                    throw new RuntimeException("Error: in container '${containerName}' running image '${imageInformation.imageSha}' is not the same as the defined image '${runningImageSha}'.")
                 } else {
-                    steps.echo("Running container '${containerName}' is using defined image ${imageInfo[1]}.")
+                    steps.echo("Running container '${containerName}' is using defined image '${imageInformation.imageSha}'.")
                 }
               }
               def pod = os.getPodDataForDeployment(deploymentName, latestVersion)
