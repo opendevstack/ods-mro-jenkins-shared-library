@@ -347,15 +347,17 @@ class OpenShiftService {
     }
     
     Map<String, String> getImageInformationFromImageUrl (String url) {
-      if (!url?.contains("@") || !url?.contains("/")) {
+      List <String> imagePath
+      if (!url?.contains("@")) {
         this.steps.echo("Cannot parse imageUrl '${url}' to extract image information!")
-        return [ "imageStream" : url.split("/")[0]]
+        imagePath = url.split("/")
+        return [ "imageStream" : imagePath[0], "imageName" : imagePath[1], "imageSha" : url]
       } else {
         this.steps.echo("Extracting image information from ${url}")
       }
         
       List <String> imageStreamDefinition = (url.split ("@"))
-      List <String> imagePath = imageStreamDefinition[0].split("/")
+      imagePath = imageStreamDefinition[0].split("/")
 
       def imageInformation =
         [
