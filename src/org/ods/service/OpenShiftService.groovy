@@ -365,7 +365,6 @@ class OpenShiftService {
           "imageShaStripped" : (imageStreamDefinition [1]).replace("sha256:","")
         ]
         
-      this.steps.echo("Image information '${imageInformation}'")
       return imageInformation
     }
 }

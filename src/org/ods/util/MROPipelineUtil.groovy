@@ -236,7 +236,7 @@ class MROPipelineUtil extends PipelineUtil {
                       )
                   }
                   // tag with latest, which triggers rollout
-                  os.tagImageWithLatest(imageInfo[0], targetProject, this.project.targetTag)
+                  os.tagImageWithLatest(imageInformation.imageName, targetProject, this.project.targetTag)
                 }
               }
 
