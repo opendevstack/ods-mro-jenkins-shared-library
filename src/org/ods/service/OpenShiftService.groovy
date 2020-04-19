@@ -346,7 +346,12 @@ class OpenShiftService {
       return openShiftPublicHost
     }
     
-    Map<String> getImageInformationFromImageUrl (String url) {
+    Map<String, String> getImageInformationFromImageUrl (String url) {
+      if (!url?.contains("@") || !url?.contains("/")) {
+        this.steps.echo("Cannot parse imageUrl '${url}' to extract image information!")
+        return [ : ]
+      }
+        
       List <String> imageStreamDefinition = (url.split ("@"))
       List <String> imagePath = imageStreamDefinition[0].split("/")
 
