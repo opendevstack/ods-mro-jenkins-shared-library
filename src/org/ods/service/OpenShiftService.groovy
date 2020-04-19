@@ -357,12 +357,15 @@ class OpenShiftService {
       List <String> imageStreamDefinition = (url.split ("@"))
       List <String> imagePath = imageStreamDefinition[0].split("/")
 
-      return
+      def imageInformation =
         [
           "imageStream" : imagePath[imagePath.size()-2],
           "imageName" : imagePath[imagePath.size()-1],
           "imageSha" : imageStreamDefinition [1],
           "imageShaStripped" : (imageStreamDefinition [1]).replace("sha256:","")
         ]
+        
+      this.steps.echo("Image information '${imageInformation}'")
+      return imageInformation
     }
 }
