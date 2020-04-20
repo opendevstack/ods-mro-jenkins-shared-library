@@ -409,7 +409,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
             def softwareDesignSpecs = testIssue.getResolvedTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }
 			def riskLevels = testIssue.getResolvedRisks().collect{
-                def value = obtainEnum("SeverityOfImpact", it.severityOfImpact)
+                def value = obtainEnum("RiskPriority", it.riskPriority)
                 return value ? value.text : "None"
             }
 
@@ -475,7 +475,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 sections          : sections,
                 tests             : testIssues.collect { testIssue ->
                     def riskLevels = testIssue.getResolvedRisks().collect{
-                        def value = obtainEnum("SeverityOfImpact", it.severityOfImpact)
+                        def value = obtainEnum("RiskPriority", it.riskPriority)
                         return value ? value.text : "None"
                     }
 
