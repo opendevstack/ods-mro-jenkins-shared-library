@@ -151,6 +151,27 @@ class MROPipelineUtil extends PipelineUtil {
                   } 
                 }
                 
+                List imagesFromOtherProjectsFail = []
+                Map odsBuiltDeploymentInformation = repo?.data.odsBuildArtifacts?.deployments ?: [ : ]
+                odsBuiltDeployments.each {odsBuildDeployment, odsBuildDeploymentInfo ->
+                  odsBuildDeploymentInfo.containers.each {containerName, containerImage ->
+                    String owningProject = os.getImageInformationFromImageUrl(containerImage).imageProject
+                    if (targetProject != owningProject && !EXCLUDE_NAMESPACES_FROM_IMPORT.contains(owningProject)) {
+                      imagesFromOtherProjectsFail << "${odsBuildDeployment} / ${containerName}"
+                    }
+                  }
+                }
+
+                if (imagesFromOtherProjectsFail.size() > 0 ) {
+                  def message = "Containers (component: '${repo.id}') found that will NOT be transferred to other environments - please fix!! \rOffending: ${imagesFromOtherProjectsFail}"
+                  if (this.project.isWorkInProgress)
+                  {
+                    steps.unstable(message)
+                  } else {
+                    throw new RuntimeException (message)
+                  }
+                }
+
                 steps.writeFile(file: ODS_DEPLOYMENTS_DESCRIPTOR, text: JsonOutput.toJson(repo?.data.odsBuildArtifacts?.deployments))
                 filesToStage << ODS_DEPLOYMENTS_DESCRIPTOR
 
