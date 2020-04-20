@@ -153,11 +153,11 @@ class MROPipelineUtil extends PipelineUtil {
                 
                 List imagesFromOtherProjectsFail = []
                 Map odsBuiltDeploymentInformation = repo?.data.odsBuildArtifacts?.deployments ?: [ : ]
-                odsBuiltDeployments.each {odsBuildDeployment, odsBuildDeploymentInfo ->
-                  odsBuildDeploymentInfo.containers.each {containerName, containerImage ->
+                odsBuiltDeploymentInformation.each {odsBuildDeployment, odsBuildDeploymentInfo ->
+                  odsBuildDeploymentInfo.containers?.each {containerName, containerImage ->
                     String owningProject = os.getImageInformationFromImageUrl(containerImage).imageProject
                     if (targetProject != owningProject && !EXCLUDE_NAMESPACES_FROM_IMPORT.contains(owningProject)) {
-                      imagesFromOtherProjectsFail << "${odsBuildDeployment} / ${containerName}"
+                      imagesFromOtherProjectsFail << "Deployment: ${odsBuildDeployment} / Container: ${containerName} / Owner: ${owningProject}"
                     }
                   }
                 }
