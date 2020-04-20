@@ -145,7 +145,7 @@ class MROPipelineUtil extends PipelineUtil {
                   def message = "DeploymentConfigs (component: '${repo.id}') found that are not ODS managed: '${ocpBasedDeployments}'!\rPlease fix by rolling them out thru 'odsComponentStageRolloutOpenShiftDeployment(..)'!"
                   if (this.project.isWorkInProgress)
                   {
-                    steps.unstable(message)
+                    warnBuild(message)
                   } else {
                     throw new RuntimeException (message)
                   } 
@@ -166,7 +166,7 @@ class MROPipelineUtil extends PipelineUtil {
                   def message = "Containers (component: '${repo.id}') found that will NOT be transferred to other environments - please fix!! \rOffending: ${imagesFromOtherProjectsFail}"
                   if (this.project.isWorkInProgress)
                   {
-                    steps.unstable(message)
+                    warnBuild(message)
                   } else {
                     throw new RuntimeException (message)
                   }
