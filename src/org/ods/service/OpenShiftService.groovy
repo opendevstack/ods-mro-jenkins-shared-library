@@ -356,6 +356,7 @@ class OpenShiftService {
       imageInformation [ "imageShaStripped" ] = (imageStreamDefinition [1]).replace("sha256:","")
       imagePath = imageStreamDefinition[0].split("/")
     } else {
+      url = url.split(":")[0]
       imagePath = url.split("/")
       imageInformation [ "imageSha" ] = url
       imageInformation [ "imageShaStripped" ] = url
