@@ -142,7 +142,7 @@ class MROPipelineUtil extends PipelineUtil {
                 }
 
                 if (ocpBasedDeployments.size() > 0 ) {
-                  def message = "DeploymentConfigs (component: '${repo.id}') found that are not ODS managed: '${ocpBasedDeployments}'!\rPlease fix by rolling them out thru the shared lib!"
+                  def message = "DeploymentConfigs (component: '${repo.id}') found that are not ODS managed: '${ocpBasedDeployments}'!\rPlease fix by rolling them out thru 'odsComponentStageRolloutOpenShiftDeployment(..)'!"
                   if (this.project.isWorkInProgress)
                   {
                     steps.unstable(message)
@@ -214,13 +214,13 @@ class MROPipelineUtil extends PipelineUtil {
                 // skip excluded images from defined image streams!
                 def imageInformation = os.getImageInformationFromImageUrl(imageRaw)
                 steps.echo ("Importing images - deployment: ${deploymentName}, container: ${containerName}, imageInformation: ${imageInformation}, source: ${sourceProject}")
-                if (EXCLUDE_NAMESPACES_FROM_IMPORT.contains(imageInformation.imageStream))
+                if (EXCLUDE_NAMESPACES_FROM_IMPORT.contains(imageInformation.imageStreamProject))
                 {
-                  steps.echo("Skipping import of ${imageInformation.imageStream}, because its defined as excude: ${EXCLUDE_NAMESPACES_FROM_IMPORT}")  
+                  steps.echo("Skipping import of '${imageInformation.imageStream}', because its defined as excude: ${EXCLUDE_NAMESPACES_FROM_IMPORT}")  
                 } else {
                   if (this.project.targetClusterIsExternal) {
                       os.importImageFromSourceRegistry(
-                          imageInformation.imageName,
+                          imageInformation.imageStream,
                           sourceProject,
                           imageInformation.imageSha,
                           targetProject,
@@ -228,7 +228,7 @@ class MROPipelineUtil extends PipelineUtil {
                       )
                   } else {
                       os.importImageFromProject(
-                          imageInformation.imageName,
+                          imageInformation.imageStream,
                           sourceProject,
                           imageInformation.imageSha,
                           targetProject,
@@ -236,7 +236,7 @@ class MROPipelineUtil extends PipelineUtil {
                       )
                   }
                   // tag with latest, which triggers rollout
-                  os.tagImageWithLatest(imageInformation.imageName, targetProject, this.project.targetTag)
+                  os.tagImageWithLatest(imageInformation.imageStream, targetProject, this.project.targetTag)
                 }
               }
 

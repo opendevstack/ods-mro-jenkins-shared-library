@@ -346,27 +346,24 @@ class OpenShiftService {
       return openShiftPublicHost
     }
     
-    Map<String, String> getImageInformationFromImageUrl (String url) {
-      List <String> imagePath
-      if (!url?.contains("@")) {
-        this.steps.echo("Cannot parse imageUrl '${url}' to extract image information!")
-        imagePath = url.split("/")
-        return [ "imageStream" : imagePath[0], "imageName" : imagePath[1], "imageSha" : url]
-      } else {
-        this.steps.echo("Extracting image information from ${url}")
-      }
-        
+  Map<String, String> getImageInformationFromImageUrl (String url) {
+    script.echo ("Deciphering imageURL ${url} into pieces")
+    def imageInformation = [ : ]
+    List <String> imagePath
+    if (url?.contains("@")) {
       List <String> imageStreamDefinition = (url.split ("@"))
+      imageInformation [ "imageSha" ] = imageStreamDefinition [1]
+      imageInformation [ "imageShaStripped" ] = (imageStreamDefinition [1]).replace("sha256:","")
       imagePath = imageStreamDefinition[0].split("/")
-
-      def imageInformation =
-        [
-          "imageStream" : imagePath[imagePath.size()-2],
-          "imageName" : imagePath[imagePath.size()-1],
-          "imageSha" : imageStreamDefinition [1],
-          "imageShaStripped" : (imageStreamDefinition [1]).replace("sha256:","")
-        ]
-        
-      return imageInformation
+    } else {
+      imagePath = url.split("/")
+      imageInformation [ "imageSha" ] = url
+      imageInformation [ "imageShaStripped" ] = url
     }
+    imageInformation [ "imageStreamProject" ] = imagePath[imagePath.size()-2]
+    imageInformation [ "imageStream" ] = imagePath[imagePath.size()-1]
+      
+    return imageInformation
+  }
+
 }
