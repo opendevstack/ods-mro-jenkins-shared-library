@@ -347,7 +347,7 @@ class OpenShiftService {
     }
     
   Map<String, String> getImageInformationFromImageUrl (String url) {
-    script.echo ("Deciphering imageURL ${url} into pieces")
+    this.steps.echo ("Deciphering imageURL ${url} into pieces")
     def imageInformation = [ : ]
     List <String> imagePath
     if (url?.contains("@")) {
