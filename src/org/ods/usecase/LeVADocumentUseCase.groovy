@@ -106,26 +106,27 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
             def metadata = repo_.metadata
 
-            result[component.name] = [
-                key               : component.key,
-                componentName     : component.name,
-                componentId       : metadata.id ?: "N/A - part of this application",
-                componentType     : (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) ? "ODS Component" : "Software",
-                odsRepoType       : repo_.type?.toLowerCase(),
-                description       : metadata.description,
-                nameOfSoftware    : metadata.name,
-                references        : metadata.references ?: "N/A",
-                supplier          : metadata.supplier,
-                version           : (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) ?
-                                    this.project.buildParams.version :
-                                    metadata.version,
-                requirements      : component.getResolvedSystemRequirements(),
-                softwareDesignSpec: component.getResolvedTechnicalSpecifications().findAll {
-                    it.softwareDesignSpec
-                }.collect {
-                    [key: it.key, softwareDesignSpec: it.softwareDesignSpec]
-                }
-            ]
+            result[component.name] =
+                [
+                    key               : component.key,
+                    componentName     : component.name,
+                    componentId       : metadata.id ?: "N/A - part of this application",
+                    componentType     : (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) ? "ODS Component" : "Software",
+                    odsRepoType       : repo_.type?.toLowerCase(),
+                    description       : metadata.description,
+                    nameOfSoftware    : metadata.name,
+                    references        : metadata.references ?: "N/A",
+                    supplier          : metadata.supplier,
+                    version           : (repo_.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE) ?
+                                        this.project.buildParams.version :
+                                        metadata.version,
+                    requirements      : component.getResolvedSystemRequirements(),
+                    softwareDesignSpec: component.getResolvedTechnicalSpecifications().findAll {
+                        it.softwareDesignSpec
+                    }.collect {
+                        [key: it.key, softwareDesignSpec: it.softwareDesignSpec]
+                    }
+                ]
         }
 
         return result
