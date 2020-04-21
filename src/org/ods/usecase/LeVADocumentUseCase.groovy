@@ -87,8 +87,16 @@ class LeVADocumentUseCase extends DocGenUseCase {
      * @return
      */
     protected Map computeComponentMetadata(String documentType) {
-        return this.project.components.collectEntries { component ->
+        def result = [:]
+
+        this.project.components.each { component ->
             def normComponentName = component.name.replaceAll("Technology-", "")
+
+            def gitUrl = new GitUtil(this.steps).getURL()
+            def isReleaseManagerComponent = gitUrl.endsWith("${this.project.key}-${normComponentName}.git".toLowerCase())
+            if (isReleaseManagerComponent) {
+                return
+            }
 
             def repo_ = this.project.repositories.find { [it.id, it.name, it.metadata.name].contains(normComponentName) }
             if (!repo_) {
@@ -98,8 +106,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
             def metadata = repo_.metadata
 
-            return [
-                component.name,
+            result[component.name] =
                 [
                     key               : component.key,
                     componentName     : component.name,
@@ -120,8 +127,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
                         [key: it.key, softwareDesignSpec: it.softwareDesignSpec]
                     }
                 ]
-            ]
         }
+
+        return result
     }
 
     private Map obtainCodeReviewReport(List<Map> repos) {
@@ -402,7 +410,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
 
             def softwareDesignSpecs = testIssue.getResolvedTechnicalSpecifications().findAll{ it.softwareDesignSpec }.collect{ it.key }
 			def riskLevels = testIssue.getResolvedRisks().collect{
-                def value = obtainEnum("SeverityOfImpact", it.severityOfImpact)
+                def value = obtainEnum("RiskPriority", it.riskPriority)
                 return value ? value.text : "None"
             }
 
@@ -468,7 +476,7 @@ class LeVADocumentUseCase extends DocGenUseCase {
                 sections          : sections,
                 tests             : testIssues.collect { testIssue ->
                     def riskLevels = testIssue.getResolvedRisks().collect{
-                        def value = obtainEnum("SeverityOfImpact", it.severityOfImpact)
+                        def value = obtainEnum("RiskPriority", it.riskPriority)
                         return value ? value.text : "None"
                     }
 
