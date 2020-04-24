@@ -1129,7 +1129,18 @@ class LeVADocumentUseCase extends DocGenUseCase {
             ]
         ]
 
+        // Code review report - in the special case of NO jira ..
+        def codeReviewReport
+        if (!this.jiraUseCase.jira &&
+            repo.type?.toLowerCase() == MROPipelineUtil.PipelineConfig.REPO_TYPE_ODS_CODE.toLowerCase()) {
+            def currentRepoAsList = [ repo ]
+            codeReviewReport = obtainCodeReviewReport(currentRepoAsList)
+        }
+        
         def modifier = { document ->
+            if (codeReviewReport) {
+              document = this.pdf.merge([ document, codeReviewReport])
+            }
             repo.data.documents[documentType] = document
             return document
         }
