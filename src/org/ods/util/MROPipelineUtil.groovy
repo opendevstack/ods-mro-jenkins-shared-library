@@ -374,7 +374,7 @@ class MROPipelineUtil extends PipelineUtil {
 
         // for those repos (= quickstarters) we supply we want to own the type
         if (metadata.type?.toString()?.trim()) {
-          this.steps.echo("Type '${metadata.type}' configured on ${repo.id}' thru metadata.yml")
+          this.steps.echo("Repository type '${metadata.type}' configured on '${repo.id}' thru component's metadata.yml")
           repo.type = metadata.type
         }
 
