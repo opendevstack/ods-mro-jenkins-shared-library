@@ -70,9 +70,6 @@ class PipelineUtil {
         if (!name?.trim()) {
             throw new IllegalArgumentException("Error: unable to create Zip artifact. 'name' is undefined.")
         }
-        if (!archive) {
-          steps.echo("Skipping archiving of ${name}")
-        }
 
         if (files == null) {
             throw new IllegalArgumentException("Error: unable to create Zip artifact. 'files' is undefined.")
@@ -80,7 +77,10 @@ class PipelineUtil {
 
         def path = "${this.steps.env.WORKSPACE}/${ARTIFACTS_BASE_DIR}/${name}".toString()
         def result = this.createZipFile(path, files)
-        this.archiveArtifact(path, result)
+        if (archive) {
+          this.archiveArtifact(path, result)
+        }
+
         return result
     }
 
