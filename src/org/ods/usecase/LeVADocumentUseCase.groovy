@@ -1370,7 +1370,11 @@ class LeVADocumentUseCase extends DocGenUseCase {
     }
     
     boolean isArchivalRelevant (String documentType) {
-      List notArchiveDocTypes = ["TIR, DTR"]
+      List notArchiveDocTypes = 
+        [
+          DocumentType.TIR as String,
+          DocumentType.DTR as String
+        ]
       return !(documentType && notArchiveDocTypes.contains(documentType))
     }
 }
