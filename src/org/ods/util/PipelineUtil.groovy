@@ -66,9 +66,12 @@ class PipelineUtil {
         return dir
     }
 
-    byte[] createZipArtifact(String name, Map<String, byte[]> files) {
+    byte[] createZipArtifact(String name, Map<String, byte[]> files, boolean archive = true) {
         if (!name?.trim()) {
             throw new IllegalArgumentException("Error: unable to create Zip artifact. 'name' is undefined.")
+        }
+        if (!archive) {
+          steps.echo("Skipping archiving of ${name}")
         }
 
         if (files == null) {

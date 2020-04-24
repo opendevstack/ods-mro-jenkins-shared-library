@@ -1368,4 +1368,9 @@ class LeVADocumentUseCase extends DocGenUseCase {
         def capability = this.project.getCapability("LeVADocs")
         return capability.templatesVersion
     }
+    
+    boolean isArchivalRelevant (String documentType) {
+      List notArchiveDocTypes = ["TIR, DTR"]
+      return !(documentType && notArchiveDocTypes.contains(documentType))
+    }
 }
