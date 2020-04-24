@@ -372,6 +372,11 @@ class MROPipelineUtil extends PipelineUtil {
             throw new IllegalArgumentException("Error: unable to parse component metadata. Required attribute 'version' is undefined for repository '${repo.id}'.")
         }
 
+        // for those repos (= quickstarters) we supply we want to own the type
+        if (repo.metadata.type?.toString()?.trim()) {
+          repo.type = repo.metadata.type
+        }
+
         repo.metadata = metadata
 
         return repo
