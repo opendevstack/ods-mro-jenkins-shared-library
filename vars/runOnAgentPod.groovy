@@ -16,7 +16,7 @@ def call(Project project, boolean condition, Closure block) {
             git.configureUser()
             unstash("wholeWorkspace")
             withCredentials([usernamePassword(credentialsId: project.services.bitbucket.credentials.id, usernameVariable: 'BITBUCKET_USER', passwordVariable: 'BITBUCKET_PW')]) {
-                def urlWithCredentials = "https://${BITBUCKET_USER}:${BITBUCKET_PW}@${bitbucketHost}"
+                def urlWithCredentials = "https://${java.net.URLEncoder.encode(env.BITBUCKET_USER, "UTF-8")}:${java.net.URLEncoder.encode(env.BITBUCKET_PW, "UTF-8")}@${bitbucketHost}"
                 writeFile(file: "${env.HOME}/.git-credentials", text: urlWithCredentials)
                 sh(script: "git config --global credential.helper store", label : "setup credential helper")
             }
