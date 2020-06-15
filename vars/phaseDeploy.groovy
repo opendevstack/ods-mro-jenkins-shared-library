@@ -54,6 +54,7 @@ def call(Project project, List<Set<Map>> repos) {
                 steps.echo("Deploying project '${project.key}' into environment '${targetEnvironment}'")
 
                 if (project.targetClusterIsExternal) {
+                    steps.echo("Target cluster is external, logging into ${project.openShiftTargetApiUrl}")
                     withCredentials([
                         usernamePassword(
                             credentialsId: project.environmentConfig.credentialsId,
